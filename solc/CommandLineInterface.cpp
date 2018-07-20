@@ -265,10 +265,10 @@ void CommandLineInterface::handleSignatureHashes(string const& _contract)
 	if (!m_options.compiler.outputs.signatureHashes)
 		return;
 
-	Json::Value methodIdentifiers = m_compiler->methodIdentifiers(_contract);
+	Json methodIdentifiers = m_compiler->methodIdentifiers(_contract);
 	string out;
-	for (auto const& name: methodIdentifiers.getMemberNames())
-		out += methodIdentifiers[name].asString() + ": " + name + "\n";
+	for (auto const& [name, hash]: methodIdentifiers.items())
+		out += hash.get<string>() + ": " + name + "\n";
 
 	if (!m_options.output.dir.empty())
 		createFile(m_compiler->filesystemFriendlyName(_contract) + ".signatures", out);
@@ -364,40 +364,40 @@ void CommandLineInterface::handleGasEstimation(string const& _contract)
 {
 	solAssert(m_options.input.mode == InputMode::Compiler || m_options.input.mode == InputMode::CompilerWithASTImport, "");
 
-	Json::Value estimates = m_compiler->gasEstimates(_contract);
+	Json estimates = m_compiler->gasEstimates(_contract);
 	sout() << "Gas estimation:" << endl;
 
-	if (estimates["creation"].isObject())
+	if (estimates["creation"].is_object())
 	{
-		Json::Value creation = estimates["creation"];
+		Json creation = estimates["creation"];
 		sout() << "construction:" << endl;
-		sout() << "   " << creation["executionCost"].asString();
-		sout() << " + " << creation["codeDepositCost"].asString();
-		sout() << " = " << creation["totalCost"].asString() << endl;
+		sout() << "   " << creation["executionCost"].get<string>();
+		sout() << " + " << creation["codeDepositCost"].get<string>();
+		sout() << " = " << creation["totalCost"].get<string>() << endl;
 	}
 
-	if (estimates["external"].isObject())
+	if (estimates["external"].is_object())
 	{
-		Json::Value externalFunctions = estimates["external"];
+		Json externalFunctions = estimates["external"];
 		sout() << "external:" << endl;
-		for (auto const& name: externalFunctions.getMemberNames())
+		for (auto const& [name, gas]: externalFunctions.items())
 		{
 			if (name.empty())
 				sout() << "   fallback:\t";
 			else
 				sout() << "   " << name << ":\t";
-			sout() << externalFunctions[name].asString() << endl;
+			sout() << gas.get<string>() << endl;
 		}
 	}
 
-	if (estimates["internal"].isObject())
+	if (estimates["internal"].is_object())
 	{
-		Json::Value internalFunctions = estimates["internal"];
+		Json internalFunctions = estimates["internal"];
 		sout() << "internal:" << endl;
-		for (auto const& name: internalFunctions.getMemberNames())
+		for (auto const& [name, gas]: internalFunctions.items())
 		{
 			sout() << "   " << name << ":\t";
-			sout() << internalFunctions[name].asString() << endl;
+			sout() << gas.get<string>() << endl;
 		}
 	}
 }
@@ -516,25 +516,25 @@ bool CommandLineInterface::readInputFiles()
 	return true;
 }
 
-map<string, Json::Value> CommandLineInterface::parseAstFromInput()
+map<string, Json> CommandLineInterface::parseAstFromInput()
 {
 	solAssert(m_options.input.mode == InputMode::CompilerWithASTImport, "");
 
-	map<string, Json::Value> sourceJsons;
+	map<string, Json> sourceJsons;
 	map<string, string> tmpSources;
 
 	for (SourceCode const& sourceCode: m_fileReader.sourceCodes() | ranges::views::values)
 	{
-		Json::Value ast;
+		Json ast;
 		astAssert(jsonParseStrict(sourceCode, ast), "Input file could not be parsed to JSON");
-		astAssert(ast.isMember("sources"), "Invalid Format for import-JSON: Must have 'sources'-object");
+		astAssert(ast.contains("sources"), "Invalid Format for import-JSON: Must have 'sources'-object");
 
-		for (auto& src: ast["sources"].getMemberNames())
+		for (auto const& [src, _]: ast["sources"].items())
 		{
-			std::string astKey = ast["sources"][src].isMember("ast") ? "ast" : "AST";
+			std::string astKey = ast["sources"][src].contains("ast") ? "ast" : "AST";
 
-			astAssert(ast["sources"][src].isMember(astKey), "astkey is not member");
-			astAssert(ast["sources"][src][astKey]["nodeType"].asString() == "SourceUnit",  "Top-level node should be a 'SourceUnit'");
+			astAssert(ast["sources"][src].contains(astKey), "astkey is not member");
+			astAssert(ast["sources"][src][astKey]["nodeType"].get<string>() == "SourceUnit",  "Top-level node should be a 'SourceUnit'");
 			astAssert(sourceJsons.count(src) == 0, "All sources must have unique names");
 			sourceJsons.emplace(src, move(ast["sources"][src][astKey]));
 			tmpSources[src] = util::jsonCompactPrint(ast);
@@ -768,16 +768,16 @@ void CommandLineInterface::handleCombinedJSON()
 	if (!m_options.compiler.combinedJsonRequests.has_value())
 		return;
 
-	Json::Value output(Json::objectValue);
+	Json output(Json::object());
 
 	output[g_strVersion] = frontend::VersionString;
 	vector<string> contracts = m_compiler->contractNames();
 
 	if (!contracts.empty())
-		output[g_strContracts] = Json::Value(Json::objectValue);
+		output[g_strContracts] = Json::object();
 	for (string const& contractName: contracts)
 	{
-		Json::Value& contractData = output[g_strContracts][contractName] = Json::objectValue;
+		Json& contractData = output[g_strContracts][contractName] = Json::object();
 		if (m_options.compiler.combinedJsonRequests->abi)
 			contractData[g_strAbi] = m_compiler->contractABI(contractName);
 		if (m_options.compiler.combinedJsonRequests->metadata)
@@ -829,19 +829,19 @@ void CommandLineInterface::handleCombinedJSON()
 	if (needsSourceList)
 	{
 		// Indices into this array are used to abbreviate source names in source locations.
-		output[g_strSourceList] = Json::Value(Json::arrayValue);
+		output[g_strSourceList] = Json::array();
 
 		for (auto const& source: m_compiler->sourceNames())
-			output[g_strSourceList].append(source);
+			output[g_strSourceList].emplace_back(source);
 	}
 
 	if (m_options.compiler.combinedJsonRequests->ast)
 	{
-		output[g_strSources] = Json::Value(Json::objectValue);
+		output[g_strSources] = Json::object();
 		for (auto const& sourceCode: m_fileReader.sourceCodes())
 		{
 			ASTJsonConverter converter(m_compiler->state(), m_compiler->sourceIndices());
-			output[g_strSources][sourceCode.first] = Json::Value(Json::objectValue);
+			output[g_strSources][sourceCode.first] = Json::object();
 			output[g_strSources][sourceCode.first]["AST"] = converter.toJson(m_compiler->ast(sourceCode.first));
 		}
 	}

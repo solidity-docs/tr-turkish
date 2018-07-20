@@ -432,7 +432,7 @@ TestCase::TestResult SemanticTest::runTest(
 			{
 				soltestAssert(
 					m_allowNonExistingFunctions ||
-					m_compiler.methodIdentifiers(m_compiler.lastContractName(m_sources.mainSourceFile)).isMember(test.call().signature),
+					m_compiler.methodIdentifiers(m_compiler.lastContractName(m_sources.mainSourceFile)).contains(test.call().signature),
 					"The function " + test.call().signature + " is not known to the compiler"
 				);
 

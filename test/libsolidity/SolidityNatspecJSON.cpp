@@ -50,16 +50,16 @@ public:
 		m_compilerStack.setEVMVersion(solidity::test::CommonOptions::get().evmVersion());
 		BOOST_REQUIRE_MESSAGE(m_compilerStack.parseAndAnalyze(), "Parsing contract failed");
 
-		Json::Value generatedDocumentation;
+		Json generatedDocumentation;
 		if (_userDocumentation)
 			generatedDocumentation = m_compilerStack.natspecUser(_contractName);
 		else
 			generatedDocumentation = m_compilerStack.natspecDev(_contractName);
-		Json::Value expectedDocumentation;
+		Json expectedDocumentation;
 		util::jsonParseStrict(_expectedDocumentationString, expectedDocumentation);
 
-		expectedDocumentation["version"] = Json::Value(Natspec::c_natspecVersion);
-		expectedDocumentation["kind"] = Json::Value(_userDocumentation ? "user" : "dev");
+		expectedDocumentation["version"] = Natspec::c_natspecVersion;
+		expectedDocumentation["kind"] = _userDocumentation ? "user" : "dev";
 
 		BOOST_CHECK_MESSAGE(
 			expectedDocumentation == generatedDocumentation,
@@ -2080,12 +2080,12 @@ BOOST_AUTO_TEST_CASE(dev_explicit_inehrit_complex)
 
 	BOOST_REQUIRE_MESSAGE(m_compilerStack.parseAndAnalyze(), "Parsing contract failed");
 
-	Json::Value generatedDocumentation = m_compilerStack.natspecDev("Token");
-	Json::Value expectedDocumentation;
+	Json generatedDocumentation = m_compilerStack.natspecDev("Token");
+	Json expectedDocumentation;
 	util::jsonParseStrict(natspec, expectedDocumentation);
 
-	expectedDocumentation["version"] = Json::Value(Natspec::c_natspecVersion);
-	expectedDocumentation["kind"] = Json::Value("dev");
+	expectedDocumentation["version"] = Natspec::c_natspecVersion;
+	expectedDocumentation["kind"] = "dev";
 
 	BOOST_CHECK_MESSAGE(
 		expectedDocumentation == generatedDocumentation,

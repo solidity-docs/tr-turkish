@@ -32,9 +32,8 @@
 #include <liblangutil/SourceLocation.h>
 #include <libevmasm/Instruction.h>
 #include <libsolutil/FixedHash.h>
+#include <libsolutil/JSON.h>
 #include <libsolutil/LazyInit.h>
-
-#include <json/json.h>
 
 #include <range/v3/view/subrange.hpp>
 #include <range/v3/view/map.hpp>
