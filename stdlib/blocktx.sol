@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 function blockhash(uint blockNumber) returns (bytes32 ret) {
   assembly {
     ret := blockhash(blockNumber)

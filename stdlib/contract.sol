@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 // Implements the following issues:
 // - https://github.com/ethereum/solidity/issues/3044
 // - https://github.com/ethereum/solidity/issues/4910

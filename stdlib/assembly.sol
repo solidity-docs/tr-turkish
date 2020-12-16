@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 // These are the helpers from:
 // https://github.com/ethereum/solidity/issues/1319
 // https://github.com/ethereum/solidity/issues/7317
