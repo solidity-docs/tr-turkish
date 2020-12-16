@@ -12,7 +12,7 @@ library Contract {
     }
   }
 
-  function code(address account) internal view returns (bytes memory ret) {
+  function getCode(address account) internal view returns (bytes memory ret) {
     // TODO: optimise for non-ext code case?
     uint size = codesize(account);
     ret = new bytes(size);
