@@ -27,6 +27,7 @@
 #include <libsolidity/ast/ASTVisitor.h>
 #include <libsolidity/ast/AST_accept.h>
 #include <libsolidity/ast/TypeProvider.h>
+#include <libsolidity/ast/CallGraph.h>
 #include <libsolutil/Keccak256.h>
 
 #include <boost/algorithm/string.hpp>
@@ -192,30 +193,22 @@ FunctionDefinition const* ContractDefinition::receiveFunction() const
 	return nullptr;
 }
 
-vector<EventDefinition const*> const& ContractDefinition::interfaceEvents() const
+vector<EventDefinition const*> ContractDefinition::interfaceEvents(bool _requireCallGraph) const
 {
-	return m_interfaceEvents.init([&]{
-		set<string> eventsSeen;
-		vector<EventDefinition const*> interfaceEvents;
-
-		for (ContractDefinition const* contract: annotation().linearizedBaseContracts)
-			for (EventDefinition const* e: contract->events())
-			{
-				/// NOTE: this requires the "internal" version of an Event,
-				///       though here internal strictly refers to visibility,
-				///       and not to function encoding (jump vs. call)
-				auto const& function = e->functionType(true);
-				solAssert(function, "");
-				string eventSignature = function->externalSignature();
-				if (eventsSeen.count(eventSignature) == 0)
-				{
-					eventsSeen.insert(eventSignature);
-					interfaceEvents.push_back(e);
-				}
-			}
-
-		return interfaceEvents;
-	});
+	set<EventDefinition const*, CompareByID> result;
+	for (ContractDefinition const* contract: annotation().linearizedBaseContracts)
+		result += contract->events();
+	solAssert(annotation().creationCallGraph.set() == annotation().deployedCallGraph.set(), "");
+	if (_requireCallGraph)
+		solAssert(annotation().creationCallGraph.set(), "");
+	if (annotation().creationCallGraph.set())
+	{
+		result += (*annotation().creationCallGraph)->emittedEvents;
+		result += (*annotation().deployedCallGraph)->emittedEvents;
+	}
+	// We could filter out all events that do not have an external interface
+	// if _requireCallGraph is false.
+	return convertContainer<vector<EventDefinition const*>>(move(result));
 }
 
 vector<ErrorDefinition const*> ContractDefinition::interfaceErrors(bool _requireCallGraph) const

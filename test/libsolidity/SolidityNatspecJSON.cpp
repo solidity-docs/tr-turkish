@@ -457,13 +457,13 @@ BOOST_AUTO_TEST_CASE(event)
 		"events":
 		{
 			"Transfer(address,address,uint256)":
-			{
+			[{
 				"details": "A test case!",
 				"params":
 				{
 					"amount": "The amount.", "from": "The source account.", "to": "The destination account."
 				}
-			}
+			}]
 		},
 		"methods": {}
 	}
@@ -475,15 +475,68 @@ BOOST_AUTO_TEST_CASE(event)
 		"events":
 		{
 			"Transfer(address,address,uint256)":
-			{
+			[{
 				"notice": "This event is emitted when a transfer occurs."
-			}
+			}]
 		},
 		"methods": {}
 	}
 	)ABCDEF";
 	checkNatspec(sourceCode, "ERC20", userDoc, true);
 }
+
+BOOST_AUTO_TEST_CASE(event_duplicate)
+{
+	char const* sourceCode = R"(
+		library L1 {
+			/// @notice Comment 1
+			/// @dev dev1
+			event E();
+		}
+		library L2 {
+			/// @notice Comment 2
+			/// @dev dev2
+			event E();
+		}
+		contract C {
+			constructor() {
+				emit L1.E();
+				emit L2.E();
+			}
+		}
+	)";
+
+	char const* devDoc = R"ABCDEF(
+	{
+		"events":
+		{
+			"E()":
+			[
+				{ "details": "dev1" },
+				{ "details": "dev2" }
+			]
+		},
+		"methods": {}
+	}
+	)ABCDEF";
+	checkNatspec(sourceCode, "C", devDoc, false);
+
+	char const* userDoc = R"ABCDEF(
+	{
+		"events":
+		{
+			"E()":
+			[
+				{ "notice": "Comment 1" },
+				{ "notice": "Comment 2" }
+			]
+		},
+		"methods": {}
+	}
+	)ABCDEF";
+	checkNatspec(sourceCode, "C", userDoc, true);
+}
+
 
 BOOST_AUTO_TEST_CASE(dev_desc_after_nl)
 {
