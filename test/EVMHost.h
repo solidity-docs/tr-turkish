@@ -103,7 +103,7 @@ private:
 	static evmc::result precompileALTBN128G1Mul(evmc_message const& _message) noexcept;
 	static evmc::result precompileALTBN128PairingProduct(evmc_message const& _message) noexcept;
 	static evmc::result precompileGeneric(evmc_message const& _message, std::map<bytes, bytes> const& _inOut) noexcept;
-	/// Take in a result and the required gas.
+	/// Take in a result and the required gas. It assumes result.gas_left is set to the starting gas.
 	/// @returns the result object with gas deducted, or a failure object.
 	static evmc::result precompileValidateGasUsage(evmc::result result, int64_t gas) noexcept;
 	/// @returns a result object with no gas usage and result data taken from @a _data.
