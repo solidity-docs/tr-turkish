@@ -383,6 +383,7 @@ evmc::result EVMHost::precompileSha256(evmc_message const& _message) noexcept
 	gas_cost += ((_message.input_size + 31) / 32) * int64_t{evmasm::GasCosts::precompileSha256PerWordGas};
 
 	evmc::result result({});
+	result.status_code = EVMC_SUCCESS;
 	result.output_data = hash.data();
 	result.output_size = hash.size();
 	return precompileValidateGasUsage(std::move(result), _message.gas, gas_cost);
@@ -464,6 +465,7 @@ evmc::result EVMHost::precompileIdentity(evmc_message const& _message) noexcept
 	gas_cost += ((_message.input_size + 31) / 32) * int64_t{evmasm::GasCosts::precompileIdentityPerWordGas};
 
 	evmc::result result({});
+	result.status_code = EVMC_SUCCESS;
 	result.output_data = data.data();
 	result.output_size = data.size();
 	return precompileValidateGasUsage(std::move(result), _message.gas, gas_cost);
