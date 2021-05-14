@@ -367,8 +367,7 @@ evmc::result EVMHost::precompileECRecover(evmc_message const& _message) noexcept
 	};
 	evmc::result result = precompileGeneric(_message, inputOutput);
 	result.status_code = EVMC_SUCCESS;
-	result.gas_left = _message.gas;
-	return precompileValidateGasUsage(std::move(result), evmasm::GasCosts::precompileEcrecoverGas);
+	return precompileValidateGasUsage(std::move(result), _message.gas, evmasm::GasCosts::precompileEcrecoverGas);
 }
 
 evmc::result EVMHost::precompileSha256(evmc_message const& _message) noexcept
@@ -384,10 +383,9 @@ evmc::result EVMHost::precompileSha256(evmc_message const& _message) noexcept
 	gas_cost += ((_message.input_size + 31) / 32) * int64_t{evmasm::GasCosts::precompileSha256PerWordGas};
 
 	evmc::result result({});
-	result.gas_left = _message.gas;
 	result.output_data = hash.data();
 	result.output_size = hash.size();
-	return precompileValidateGasUsage(std::move(result), gas_cost);
+	return precompileValidateGasUsage(std::move(result), _message.gas, gas_cost);
 }
 
 evmc::result EVMHost::precompileRipeMD160(evmc_message const& _message) noexcept
@@ -466,10 +464,9 @@ evmc::result EVMHost::precompileIdentity(evmc_message const& _message) noexcept
 	gas_cost += ((_message.input_size + 31) / 32) * int64_t{evmasm::GasCosts::precompileIdentityPerWordGas};
 
 	evmc::result result({});
-	result.gas_left = _message.gas;
 	result.output_data = data.data();
 	result.output_size = data.size();
-	return precompileValidateGasUsage(std::move(result), gas_cost);
+	return precompileValidateGasUsage(std::move(result), _message.gas, gas_cost);
 }
 
 evmc::result EVMHost::precompileModExp(evmc_message const&) noexcept
@@ -773,7 +770,7 @@ evmc::result EVMHost::precompileGeneric(
 	}
 }
 
-evmc::result EVMHost::precompileValidateGasUsage(evmc::result result, int64_t gas) noexcept
+evmc::result EVMHost::precompileValidateGasUsage(evmc::result result, int64_t gas_limit, int64_t gas_required) noexcept
 {
 	// We assume result.gas_left is set to the input message.gas
 	if (result.gas_left < gas)
@@ -782,7 +779,7 @@ evmc::result EVMHost::precompileValidateGasUsage(evmc::result result, int64_t ga
 		result.gas_left = 0;
 	}
 	else
-		result.gas_left -= gas;
+		result.gas_left = gas_limit - gas_required;
 	return result;
 }
 
