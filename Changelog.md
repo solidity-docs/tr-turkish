@@ -5,6 +5,7 @@ Language Features:
 
 Compiler Features:
  * TypeChecker: Support using library constants in initializers of other constants.
+ * Yul EVM Code Transform: Generate more optimal code for user-defined functions that always terminate a transaction. No return labels will be pushed for calls to functions that always terminate.
  * Yul IR Code Generation: Improved copy routines for arrays with packed storage layout.
 
 
