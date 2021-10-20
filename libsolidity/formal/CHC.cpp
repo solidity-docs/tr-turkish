@@ -736,6 +736,19 @@ void CHC::visitAssert(FunctionCall const& _funCall)
 	verificationTargetEncountered(&_funCall, VerificationTargetType::Assert, errorCondition);
 }
 
+void CHC::visitPublicGetter(FunctionCall const& _funCall)
+{
+	createExpr(_funCall);
+	if (encodeExternalCallsAsTrusted())
+	{
+		auto const& access = dynamic_cast<MemberAccess const&>(_funCall.expression());
+		auto const& contractType = dynamic_cast<ContractType const&>(*access.expression().annotation().type);
+		state().writeStateVars(*m_currentContract, state().thisAddress());
+		state().readStateVars(contractType.contractDefinition(), expr(access.expression()));
+	}
+	SMTEncoder::visitPublicGetter(_funCall);
+}
+
 void CHC::visitAddMulMod(FunctionCall const& _funCall)
 {
 	solAssert(_funCall.arguments().at(2), "");
@@ -922,6 +935,9 @@ void CHC::externalFunctionCall(FunctionCall const& _funCall)
 
 void CHC::externalFunctionCallToTrustedCode(FunctionCall const& _funCall)
 {
+	if (publicGetter(_funCall.expression()))
+		visitPublicGetter(_funCall);
+
 	solAssert(m_currentContract, "");
 
 	auto [callExpr, callOptions] = functionCallExpression(_funCall);
