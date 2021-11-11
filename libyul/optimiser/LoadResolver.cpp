@@ -26,6 +26,7 @@
 #include <libyul/backends/evm/EVMMetrics.h>
 #include <libyul/optimiser/Semantics.h>
 #include <libyul/optimiser/CallGraphGenerator.h>
+#include <libyul/optimiser/OptimizerUtilities.h>
 #include <libyul/SideEffects.h>
 #include <libyul/AST.h>
 #include <libyul/Utilities.h>
@@ -64,6 +65,22 @@ void LoadResolver::visit(Expression& _e)
 				tryResolve(_e, location, funCall->arguments);
 				break;
 			}
+		if (
+			!m_containsMSize &&
+			toEVMInstruction(m_dialect, funCall->functionName.name) == evmasm::Instruction::KECCAK256
+		)
+		{
+			Identifier const* start = get_if<Identifier>(&funCall->arguments.at(0));
+			Identifier const* length = get_if<Identifier>(&funCall->arguments.at(1));
+			if (start && length)
+				if (auto const& value = keccakValue(start->name, length->name))
+					if (inScope(*value))
+					{
+						_e = Identifier{debugDataOf(_e), *value};
+						return;
+					}
+		}
+
 
 		if (!m_containsMSize && funCall->functionName.name == m_dialect.hashFunction({}))
 			tryEvaluateKeccak(_e, funCall->arguments);

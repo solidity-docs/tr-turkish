@@ -24,11 +24,14 @@
 
 #include <libyul/optimiser/NameCollector.h>
 #include <libyul/optimiser/Semantics.h>
+#include <libyul/optimiser/OptimizerUtilities.h>
 #include <libyul/optimiser/KnowledgeBase.h>
 #include <libyul/AST.h>
 #include <libyul/Dialect.h>
 #include <libyul/Exceptions.h>
 #include <libyul/Utilities.h>
+
+#include <libevmasm/Instruction.h>
 
 #include <libsolutil/CommonData.h>
 #include <libsolutil/cxx20.h>
@@ -78,6 +81,8 @@ void DataFlowAnalyzer::operator()(ExpressionStatement& _statement)
 		cxx20::erase_if(m_state.memory, mapTuple([&](auto&& key, auto&& /* value */) {
 			return !m_knowledgeBase.knownToBeDifferentByAtLeast32(vars->first, key);
 		}));
+		// TODO erase keccak knowledge, but in a more clever way
+		m_state.keccak = {};
 		m_state.memory[vars->first] = vars->second;
 	}
 	else
@@ -120,7 +125,6 @@ void DataFlowAnalyzer::operator()(If& _if)
 	State preState = m_state;
 
 	ASTModifier::operator()(_if);
-
 	joinKnowledge(preState);
 
 	clearValues(assignedVariableNames(_if.body));
@@ -230,6 +234,14 @@ optional<YulString> DataFlowAnalyzer::memoryValue(YulString _key) const
 		return nullopt;
 }
 
+optional<YulString> DataFlowAnalyzer::keccakValue(YulString _start, YulString _length) const
+{
+	if (YulString const* value = util::valueOrNullptr(m_state.keccak, make_pair(_start, _length)))
+		return *value;
+	else
+		return nullopt;
+}
+
 void DataFlowAnalyzer::handleAssignment(set<YulString> const& _variables, Expression* _value, bool _isDeclaration)
 {
 	if (!_isDeclaration)
@@ -264,6 +276,9 @@ void DataFlowAnalyzer::handleAssignment(set<YulString> const& _variables, Expres
 			// assignment to slot denoted by "name"
 			m_state.memory.erase(name);
 			// assignment to slot contents denoted by "name"
+			cxx20::erase_if(m_state.keccak, [&name](auto&& _item) {
+				return _item.first.first == name || _item.first.second == name || _item.second == name;
+			});
 			cxx20::erase_if(m_state.memory, mapTuple([&name](auto&& /* key */, auto&& value) { return value == name; }));
 		}
 	}
@@ -280,6 +295,8 @@ void DataFlowAnalyzer::handleAssignment(set<YulString> const& _variables, Expres
 				m_state.memory[*key] = variable;
 			else if (auto key = isSimpleLoad(StoreLoadLocation::Storage, *_value))
 				m_state.storage[*key] = variable;
+			else if (auto arguments = isKeccak(*_value))
+				m_state.keccak[*arguments] = variable;
 		}
 	}
 }
@@ -322,6 +339,12 @@ void DataFlowAnalyzer::clearValues(set<YulString> _variables)
 	});
 	cxx20::erase_if(m_state.storage, eraseCondition);
 	cxx20::erase_if(m_state.memory, eraseCondition);
+	cxx20::erase_if(m_state.keccak, [&_variables](auto&& _item) {
+		return
+			_variables.count(_item.first.first) ||
+			_variables.count(_item.first.second) ||
+			_variables.count(_item.second);
+	});
 
 	// Also clear variables that reference variables to be cleared.
 	for (auto const& variableToClear: _variables)
@@ -348,7 +371,10 @@ void DataFlowAnalyzer::clearKnowledgeIfInvalidated(Block const& _block)
 	if (sideEffects.invalidatesStorage())
 		m_state.storage.clear();
 	if (sideEffects.invalidatesMemory())
+	{
 		m_state.memory.clear();
+		m_state.keccak.clear();
+	}
 }
 
 void DataFlowAnalyzer::clearKnowledgeIfInvalidated(Expression const& _expr)
@@ -357,7 +383,10 @@ void DataFlowAnalyzer::clearKnowledgeIfInvalidated(Expression const& _expr)
 	if (sideEffects.invalidatesStorage())
 		m_state.storage.clear();
 	if (sideEffects.invalidatesMemory())
+	{
 		m_state.memory.clear();
+		m_state.keccak.clear();
+	}
 }
 
 bool DataFlowAnalyzer::inScope(YulString _variableName) const
@@ -405,10 +434,25 @@ std::optional<YulString> DataFlowAnalyzer::isSimpleLoad(
 	return {};
 }
 
+optional<pair<YulString, YulString>> DataFlowAnalyzer::isKeccak(Expression const& _expression) const
+{
+	if (FunctionCall const* funCall = get_if<FunctionCall>(&_expression))
+		if (toEVMInstruction(m_dialect, funCall->functionName.name) == evmasm::Instruction::KECCAK256)
+			if (Identifier const* start = std::get_if<Identifier>(&funCall->arguments.at(0)))
+				if (Identifier const* length = std::get_if<Identifier>(&funCall->arguments.at(1)))
+					return make_pair(start->name, length->name);
+	return nullopt;
+}
+
 void DataFlowAnalyzer::joinKnowledge(State const& _olderState)
 {
 	joinKnowledgeHelper(m_state.storage, _olderState.storage);
 	joinKnowledgeHelper(m_state.memory, _olderState.memory);
+	// TODO is this correct?
+	cxx20::erase_if(m_state.keccak, mapTuple([&_olderState](auto&& key, auto&& currentValue){
+		YulString const* oldValue = valueOrNullptr(_olderState.keccak, key);
+		return !oldValue || *oldValue != currentValue;
+	}));
 }
 
 void DataFlowAnalyzer::joinKnowledgeHelper(
