@@ -83,6 +83,7 @@
       "baseContracts": [],
       "contractDependencies": [],
       "contractKind": "contract",
+      "emittedEvents": [],
       "id": 19,
       "name": "C",
       "nameLocation": "49:1:1",
