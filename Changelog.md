@@ -7,8 +7,8 @@ Breaking changes:
  * Inline Assembly: Consider functions, function parameters and return variables for shadowing checks.
  * Commandline Interface: Remapping targets are not automatically added to allowed paths.
  * Commandline Interface: Assembler mode no longer enables all outputs by default.
- * ABI: Include events in the ABI that are emitted by but not defined inside a contract.
- * Natspec-JSON: Event signatures map to an array of event objects instead of a single event object.
+ * ABI: Include events in the ABI that are emitted by a contract but defined outside of it.
+ * NatSpec-JSON: Event signatures map to an array of event objects instead of a single event object.
 
 AST Changes:
  * Add field ``emittedEvents`` to ``ContractDefinition`` which contains the AST IDs of all inherited and emitted events.
