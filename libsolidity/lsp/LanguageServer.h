@@ -59,6 +59,7 @@ public:
 
 	FileRepository& fileRepository() noexcept { return m_fileRepository; }
 	Transport& client() noexcept { return m_client; }
+	frontend::SourceUnit const& ast(std::string const& _sourceUnitName) const { return m_compilerStack.ast(_sourceUnitName); }
 	frontend::ASTNode const* astNodeAtSourceLocation(std::string const& _sourceUnitName, langutil::LineColumn const& _filePos);
 	langutil::CharStreamProvider const& charStreamProvider() const noexcept { return m_compilerStack; }
 

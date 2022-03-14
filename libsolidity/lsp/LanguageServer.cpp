@@ -26,6 +26,8 @@
 
 // LSP feature implementations
 #include <libsolidity/lsp/GotoDefinition.h>
+#include <libsolidity/lsp/References.h>
+#include <libsolidity/lsp/SemanticHighlight.h>
 #include <libsolidity/lsp/SemanticTokensBuilder.h>
 
 #include <liblangutil/SourceReferenceExtractor.h>
@@ -124,8 +126,10 @@ LanguageServer::LanguageServer(Transport& _transport):
 		{"textDocument/didOpen", bind(&LanguageServer::handleTextDocumentDidOpen, this, _2)},
 		{"textDocument/didChange", bind(&LanguageServer::handleTextDocumentDidChange, this, _2)},
 		{"textDocument/didClose", bind(&LanguageServer::handleTextDocumentDidClose, this, _2)},
+		{"textDocument/documentHighlight", SemanticHighlight(*this) },
 		{"textDocument/implementation", GotoDefinition(*this) },
 		{"textDocument/semanticTokens/full", bind(&LanguageServer::semanticTokensFull, this, _1, _2)},
+		{"textDocument/references", References(*this) },
 		{"workspace/didChangeConfiguration", bind(&LanguageServer::handleWorkspaceDidChangeConfiguration, this, _2)},
 	},
 	m_fileRepository("/" /* basePath */),
@@ -309,6 +313,8 @@ void LanguageServer::handleInitialize(MessageID _id, Json::Value const& _args)
 	replyArgs["serverInfo"]["version"] = string(VersionNumber);
 	replyArgs["capabilities"]["definitionProvider"] = true;
 	replyArgs["capabilities"]["implementationProvider"] = true;
+	replyArgs["capabilities"]["documentHighlightProvider"] = true;
+	replyArgs["capabilities"]["referencesProvider"] = true;
 	replyArgs["capabilities"]["textDocumentSync"]["change"] = 2; // 0=none, 1=full, 2=incremental
 	replyArgs["capabilities"]["textDocumentSync"]["openClose"] = true;
 	replyArgs["capabilities"]["semanticTokensProvider"]["legend"] = semanticTokensLegend();
