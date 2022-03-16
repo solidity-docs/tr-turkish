@@ -27,9 +27,6 @@ parameters:
     type: string
     default: london
 
-orbs:
-  win: circleci/windows@2.2.0
-
 commands:
   gitter_notify_unless_pr:
     description: "Posts a notification to the main room on Gitter (if not running on a PR)."
@@ -355,21 +352,15 @@ defaults:
         TERM: xterm
         MAKEFLAGS: -j 5
 
-  - base_win_powershell: &base_win_powershell
-      executor:
-        name: win/default
-        shell: powershell.exe
+  - base_win: &base_win
+      machine:
+        image: 'windows-server-2022-vs2022:edge'
+      resource_class: windows.medium
 
-  - base_win_powershell_large: &base_win_powershell_large
-      executor:
-        name: win/default
-        shell: powershell.exe
-        size: large
-
-  - base_win_cmd: &base_win_cmd
-      executor:
-        name: win/default
-        shell: cmd.exe
+  - base_win_large: &base_win_large
+      machine:
+        image: 'windows-server-2022-vs2022:edge'
+      resource_class: windows.large
 
   - base_osx: &base_osx
       macos:
@@ -731,7 +722,7 @@ jobs:
       - gitter_notify_failure_unless_pr
 
   t_win_pyscripts:
-    <<: *base_win_powershell
+    <<: *base_win
     steps:
       - run: git config --global core.autocrlf false
       - checkout
@@ -1235,7 +1226,7 @@ jobs:
           path: reports/externalTests/summarized-benchmarks.json
 
   b_win: &b_win
-    <<: *base_win_powershell_large
+    <<: *base_win_large
     steps:
       # NOTE: Not disabling git's core.autocrlf here because we want to build using the typical Windows config.
       - checkout
@@ -1247,6 +1238,7 @@ jobs:
       - run:
           name: "Installing dependencies"
           command: .\scripts\install_deps.ps1
+          shell: powershell.exe
       - save_cache:
           key: dependencies-win-{{ arch }}-{{ checksum "scripts/install_deps.ps1" }}
           paths:
@@ -1254,9 +1246,11 @@ jobs:
       - run:
           name: "Building solidity"
           command: .circleci/build_win.ps1
+          shell: powershell.exe
       - run:
           name: "Run solc.exe to make sure build was successful."
           command: .\build\solc\Release\solc.exe --version
+          shell: powershell.exe
       - store_artifacts: *artifact_solc_windows
       - persist_to_workspace:
           root: build
@@ -1271,7 +1265,7 @@ jobs:
       FORCE_RELEASE: ON
 
   t_win_soltest: &t_win_soltest
-    <<: *base_win_powershell
+    <<: *base_win
     steps:
       # NOTE: Git's default core.autocrlf is fine for running soltest. We get additional coverage
       # for files using CRLF that way.
@@ -1281,9 +1275,11 @@ jobs:
       - run:
           name: "Install evmone"
           command: scripts/install_evmone.ps1
+          shell: powershell.exe
       - run:
           name: "Run soltest"
           command: .circleci/soltest.ps1
+          shell: powershell.exe
       - store_test_results: *store_test_results
       - store_artifacts: *artifacts_test_results
       - gitter_notify_failure_unless_pr
@@ -1334,7 +1330,7 @@ jobs:
       - gitter_notify_failure_unless_pr
 
   b_bytecode_win:
-    <<: *base_win_cmd
+    <<: *base_win
     steps:
       # NOTE: For bytecode generation we need the input files to be byte-for-byte identical on all
       # platforms so line ending conversions must absolutely be disabled.
@@ -1342,10 +1338,13 @@ jobs:
       - checkout
       - attach_workspace:
           at: build
-      - run: mkdir test-cases\
-      - run: cd test-cases\ && python ..\scripts\isolate_tests.py ..\test\
-      - run: cd test-cases\ && python ..\scripts\bytecodecompare\prepare_report.py ..\build\solc\Release\solc.exe --interface standard-json --report-file ..\bytecode-report-windows-json.txt
-      - run: cd test-cases\ && python ..\scripts\bytecodecompare\prepare_report.py ..\build\solc\Release\solc.exe --interface cli --report-file ..\bytecode-report-windows-cli.txt
+      - run:
+          command: |
+            mkdir test-cases\
+            cd test-cases\ && python ..\scripts\isolate_tests.py ..\test\
+            cd test-cases\ && python ..\scripts\bytecodecompare\prepare_report.py ..\build\solc\Release\solc.exe --interface standard-json --report-file ..\bytecode-report-windows-json.txt
+            cd test-cases\ && python ..\scripts\bytecodecompare\prepare_report.py ..\build\solc\Release\solc.exe --interface cli --report-file ..\bytecode-report-windows-cli.txt
+          shell: cmd.exe
       - store_artifacts:
           path: bytecode-report-windows-json.txt
       - store_artifacts:
