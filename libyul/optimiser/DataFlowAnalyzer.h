@@ -129,19 +129,6 @@ protected:
 	/// Clears knowledge about storage or memory if they may be modified inside the expression.
 	void clearKnowledgeIfInvalidated(Expression const& _expression);
 
-	/// Joins knowledge about storage and memory with an older point in the control-flow.
-	/// This only works if the current state is a direct successor of the older point,
-	/// i.e. `_otherStorage` and `_otherMemory` cannot have additional changes.
-	void joinKnowledge(
-		std::unordered_map<YulString, YulString> const& _olderStorage,
-		std::unordered_map<YulString, YulString> const& _olderMemory
-	);
-
-	static void joinKnowledgeHelper(
-		std::unordered_map<YulString, YulString>& _thisData,
-		std::unordered_map<YulString, YulString> const& _olderData
-	);
-
 	/// Returns true iff the variable is in scope.
 	bool inScope(YulString _variableName) const;
 
@@ -184,6 +171,17 @@ private:
 		std::unordered_map<YulString, YulString> storage;
 		std::unordered_map<YulString, YulString> memory;
 	};
+
+	/// Joins knowledge about storage and memory with an older point in the control-flow.
+	/// This only works if the current state is a direct successor of the older point,
+	/// i.e. `_olderState.storage` and `_olderState.memory` cannot have additional changes.
+	void joinKnowledge(State const& _olderState);
+
+	static void joinKnowledgeHelper(
+		std::unordered_map<YulString, YulString>& _thisData,
+		std::unordered_map<YulString, YulString> const& _olderData
+	);
+
 	State m_state;
 
 protected:
