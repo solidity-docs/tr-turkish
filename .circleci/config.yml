@@ -86,7 +86,7 @@ commands:
     parameters:
       os_type:
         type: enum
-        enum: ["ubuntu", "osx"] 
+        enum: ["ubuntu", "osx"]
     steps:
       - run: mkdir test-cases/
       - run: cd test-cases && ../scripts/isolate_tests.py ../test/
