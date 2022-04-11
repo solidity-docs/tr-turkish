@@ -81,6 +81,29 @@ commands:
           event: success
           condition: on_success
 
+  run_test_byte_code:
+    description: "Run test byte code on a environment."
+    parameters:
+      os_type:
+        type: enum
+        enum: ["ubuntu", "osx"] 
+    steps:
+      - run: mkdir test-cases/
+      - run: cd test-cases && ../scripts/isolate_tests.py ../test/
+      - run: cd test-cases && ../scripts/bytecodecompare/prepare_report.py ../build/solc/solc --interface standard-json --report-file ../bytecode-report-${<< parameters.os_type >>}-json.txt
+      - run: cd test-cases && ../scripts/bytecodecompare/prepare_report.py ../build/solc/solc --interface cli --report-file ../bytecode-report-${<< parameters.os_type >>}-cli.txt
+      - store_artifacts:
+          path: bytecode-report-${<< parameters.os_type >>}-json.txt
+      - store_artifacts:
+          path: bytecode-report-${<< parameters.os_type >>}-cli.txt
+      - persist_to_workspace:
+          root: .
+          paths:
+            - bytecode-report-${<< parameters.os_type >>}-json.txt
+            - bytecode-report-${<< parameters.os_type >>}-cli.txt
+      - gitter_notify_failure_unless_pr
+
+
 defaults:
 
   # --------------------------------------------------------------------------
@@ -1297,20 +1320,8 @@ jobs:
       - checkout
       - attach_workspace:
           at: build
-      - run: mkdir test-cases/
-      - run: cd test-cases && ../scripts/isolate_tests.py ../test/
-      - run: cd test-cases && ../scripts/bytecodecompare/prepare_report.py ../build/solc/solc --interface standard-json --report-file ../bytecode-report-ubuntu-json.txt
-      - run: cd test-cases && ../scripts/bytecodecompare/prepare_report.py ../build/solc/solc --interface cli --report-file ../bytecode-report-ubuntu-cli.txt
-      - store_artifacts:
-          path: bytecode-report-ubuntu-json.txt
-      - store_artifacts:
-          path: bytecode-report-ubuntu-cli.txt
-      - persist_to_workspace:
-          root: .
-          paths:
-            - bytecode-report-ubuntu-json.txt
-            - bytecode-report-ubuntu-cli.txt
-      - gitter_notify_failure_unless_pr
+      - run_test_byte_code:
+          os_type: "ubuntu"
 
   b_bytecode_osx:
     <<: *base_osx
@@ -1318,20 +1329,8 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run: mkdir test-cases/
-      - run: cd test-cases && ../scripts/isolate_tests.py ../test/
-      - run: cd test-cases && ../scripts/bytecodecompare/prepare_report.py ../build/solc/solc --interface standard-json --report-file ../bytecode-report-osx-json.txt
-      - run: cd test-cases && ../scripts/bytecodecompare/prepare_report.py ../build/solc/solc --interface cli --report-file ../bytecode-report-osx-cli.txt
-      - store_artifacts:
-          path: bytecode-report-osx-json.txt
-      - store_artifacts:
-          path: bytecode-report-osx-cli.txt
-      - persist_to_workspace:
-          root: .
-          paths:
-            - bytecode-report-osx-json.txt
-            - bytecode-report-osx-cli.txt
-      - gitter_notify_failure_unless_pr
+      - run_test_byte_code:
+          os_type: "osx"
 
   b_bytecode_win:
     <<: *base_win_cmd
