@@ -81,26 +81,25 @@ commands:
           event: success
           condition: on_success
 
-  run_test_byte_code:
-    description: "Run test byte code on a environment."
+  prepare_bytecode_report:
+    description: "Generate bytecode report and upload it as an artifact."
     parameters:
-      os_type:
-        type: enum
-        enum: ["ubuntu", "osx"]
+      label:
+        type: string
     steps:
       - run: mkdir test-cases/
       - run: cd test-cases && ../scripts/isolate_tests.py ../test/
-      - run: cd test-cases && ../scripts/bytecodecompare/prepare_report.py ../build/solc/solc --interface standard-json --report-file ../bytecode-report-${<< parameters.os_type >>}-json.txt
-      - run: cd test-cases && ../scripts/bytecodecompare/prepare_report.py ../build/solc/solc --interface cli --report-file ../bytecode-report-${<< parameters.os_type >>}-cli.txt
+      - run: cd test-cases && ../scripts/bytecodecompare/prepare_report.py ../build/solc/solc --interface standard-json --report-file "../bytecode-report-${<< parameters.label >>}-json.txt"
+      - run: cd test-cases && ../scripts/bytecodecompare/prepare_report.py ../build/solc/solc --interface cli --report-file "../bytecode-report-${<< parameters.label >>}-cli.txt"
       - store_artifacts:
-          path: bytecode-report-${<< parameters.os_type >>}-json.txt
+          path: bytecode-report-${<< parameters.label >>}-json.txt
       - store_artifacts:
-          path: bytecode-report-${<< parameters.os_type >>}-cli.txt
+          path: bytecode-report-${<< parameters.label >>}-cli.txt
       - persist_to_workspace:
           root: .
           paths:
-            - bytecode-report-${<< parameters.os_type >>}-json.txt
-            - bytecode-report-${<< parameters.os_type >>}-cli.txt
+            - bytecode-report-${<< parameters.label >>}-json.txt
+            - bytecode-report-${<< parameters.label >>}-cli.txt
       - gitter_notify_failure_unless_pr
 
 
@@ -1320,8 +1319,8 @@ jobs:
       - checkout
       - attach_workspace:
           at: build
-      - run_test_byte_code:
-          os_type: "ubuntu"
+      - prepare_bytecode_report:
+          label: "ubuntu"
 
   b_bytecode_osx:
     <<: *base_osx
@@ -1329,8 +1328,8 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
-      - run_test_byte_code:
-          os_type: "osx"
+      - prepare_bytecode_report:
+          label: "osx"
 
   b_bytecode_win:
     <<: *base_win_cmd
