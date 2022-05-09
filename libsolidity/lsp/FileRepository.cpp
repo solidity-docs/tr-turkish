@@ -34,6 +34,7 @@ using namespace solidity::frontend;
 
 using solidity::util::readFileAsString;
 using solidity::util::joinHumanReadable;
+using solidity::util::Result;
 
 FileRepository::FileRepository(boost::filesystem::path _basePath): m_basePath(std::move(_basePath))
 {
@@ -69,6 +70,49 @@ void FileRepository::setSourceByUri(string const& _uri, string _source)
 	m_sourceCodes[sourceUnitName] = std::move(_source);
 }
 
+Result<boost::filesystem::path> FileRepository::tryResolvePath(std::string const& _strippedSourceUnitName) const
+{
+	if (
+		boost::filesystem::path(_strippedSourceUnitName).has_root_path() &&
+		boost::filesystem::exists(_strippedSourceUnitName)
+	)
+		return boost::filesystem::path(_strippedSourceUnitName);
+
+	vector<boost::filesystem::path> candidates;
+	vector<reference_wrapper<boost::filesystem::path const>> prefixes = {m_basePath};
+	prefixes += (m_includePaths | ranges::to<vector<reference_wrapper<boost::filesystem::path const>>>);
+
+	auto const pathToQuotedString = [](boost::filesystem::path const& _path) { return "\"" + _path.string() + "\""; };
+
+	for (auto const& prefix: prefixes)
+	{
+		boost::filesystem::path canonicalPath = boost::filesystem::path(prefix) / boost::filesystem::path(_strippedSourceUnitName);
+
+		if (boost::filesystem::exists(canonicalPath))
+			candidates.push_back(move(canonicalPath));
+	}
+
+	if (candidates.empty())
+		return Result<boost::filesystem::path>::err(
+			"File not found. Searched the following locations: " +
+			joinHumanReadable(prefixes | ranges::views::transform(pathToQuotedString), ", ") +
+			"."
+		);
+
+	if (candidates.size() >= 2)
+		return Result<boost::filesystem::path>::err(
+			"Ambiguous import. "
+			"Multiple matching files found inside base path and/or include paths: " +
+			joinHumanReadable(candidates | ranges::views::transform(pathToQuotedString), ", ") +
+			"."
+		);
+
+	if (!boost::filesystem::is_regular_file(candidates[0]))
+		return Result<boost::filesystem::path>::err("Not a valid file.");
+
+	return candidates[0];
+}
+
 frontend::ReadCallback::Result FileRepository::readFile(string const& _kind, string const& _sourceUnitName)
 {
 	solAssert(
@@ -83,53 +127,9 @@ frontend::ReadCallback::Result FileRepository::readFile(string const& _kind, str
 			return ReadCallback::Result{true, m_sourceCodes.at(_sourceUnitName)};
 
 		string const strippedSourceUnitName = stripFileUriSchemePrefix(_sourceUnitName);
+		Result<boost::filesystem::path> const resolvedPath = tryResolvePath(strippedSourceUnitName);
 
-		if (
-			boost::filesystem::path(strippedSourceUnitName).has_root_path() &&
-			boost::filesystem::exists(strippedSourceUnitName)
-		)
-		{
-			auto contents = readFileAsString(strippedSourceUnitName);
-			solAssert(m_sourceCodes.count(_sourceUnitName) == 0, "");
-			m_sourceCodes[_sourceUnitName] = contents;
-			return ReadCallback::Result{true, move(contents)};
-		}
-
-		vector<boost::filesystem::path> candidates;
-		vector<reference_wrapper<boost::filesystem::path>> prefixes = {m_basePath};
-		prefixes += (m_includePaths | ranges::to<vector<reference_wrapper<boost::filesystem::path>>>);
-
-		auto const pathToQuotedString = [](boost::filesystem::path const& _path) { return "\"" + _path.string() + "\""; };
-
-		for (auto const& prefix: prefixes)
-		{
-			boost::filesystem::path canonicalPath = boost::filesystem::path(prefix) / boost::filesystem::path(strippedSourceUnitName);
-
-			if (boost::filesystem::exists(canonicalPath))
-				candidates.push_back(move(canonicalPath));
-		}
-
-		if (candidates.empty())
-			return ReadCallback::Result{
-				false,
-				"File not found. Searched the following locations: " +
-				joinHumanReadable(prefixes | ranges::views::transform(pathToQuotedString), ", ") +
-				"."
-			};
-
-		if (candidates.size() >= 2)
-			return ReadCallback::Result{
-				false,
-				"Ambiguous import. "
-				"Multiple matching files found inside base path and/or include paths: " +
-				joinHumanReadable(candidates | ranges::views::transform(pathToQuotedString), ", ") +
-				"."
-			};
-
-		if (!boost::filesystem::is_regular_file(candidates[0]))
-			return ReadCallback::Result{false, "Not a valid file."};
-
-		auto contents = readFileAsString(candidates[0]);
+		auto contents = readFileAsString(resolvedPath.get());
 		solAssert(m_sourceCodes.count(_sourceUnitName) == 0, "");
 		m_sourceCodes[_sourceUnitName] = contents;
 		return ReadCallback::Result{true, move(contents)};

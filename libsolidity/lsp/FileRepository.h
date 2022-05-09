@@ -18,6 +18,7 @@
 #pragma once
 
 #include <libsolidity/interface/FileReader.h>
+#include <libsolutil/Result.h>
 
 #include <string>
 #include <map>
@@ -51,6 +52,8 @@ public:
 	{
 		return [this](std::string const& _kind, std::string const& _path) { return readFile(_kind, _path); };
 	}
+
+	util::Result<boost::filesystem::path> tryResolvePath(std::string const& _sourceUnitName) const;
 
 private:
 	/// Base path without URI scheme.
