@@ -29,7 +29,10 @@ namespace solidity::lsp
 class FileRepository
 {
 public:
-	explicit FileRepository(boost::filesystem::path _basePath);
+	FileRepository(boost::filesystem::path _basePath, std::vector<boost::filesystem::path> _includePaths);
+
+	std::vector<boost::filesystem::path> const& includePaths() const noexcept { return m_includePaths; }
+	void setIncludePaths(std::vector<boost::filesystem::path> _paths);
 
 	boost::filesystem::path const& basePath() const { return m_basePath; }
 

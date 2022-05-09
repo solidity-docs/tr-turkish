@@ -22,6 +22,7 @@
 #include <libsolutil/StringUtils.h>
 #include <libsolutil/CommonIO.h>
 
+#include <range/v3/algorithm/none_of.hpp>
 #include <range/v3/range/conversion.hpp>
 #include <range/v3/view/transform.hpp>
 
@@ -36,8 +37,15 @@ using solidity::util::readFileAsString;
 using solidity::util::joinHumanReadable;
 using solidity::util::Result;
 
-FileRepository::FileRepository(boost::filesystem::path _basePath): m_basePath(std::move(_basePath))
+FileRepository::FileRepository(boost::filesystem::path _basePath, std::vector<boost::filesystem::path> _includePaths):
+	m_basePath(std::move(_basePath)),
+	m_includePaths(std::move(_includePaths))
 {
+}
+
+void FileRepository::setIncludePaths(std::vector<boost::filesystem::path> _paths)
+{
+	m_includePaths = std::move(_paths);
 }
 
 string FileRepository::sourceUnitNameToUri(string const& _sourceUnitName) const
@@ -57,8 +65,11 @@ string FileRepository::sourceUnitNameToUri(string const& _sourceUnitName) const
 		resolvedPath.message().empty()
 	)
 		return "file://" + resolvedPath.get().generic_string();
-	else
+	else if (m_basePath.generic_string() != "/")
 		return "file://" + m_basePath.generic_string() + "/" + _sourceUnitName;
+	else
+		// Avoid double-/ in case base-path itself is simply a UNIX root filesystem root.
+		return "file:///" + _sourceUnitName;
 }
 
 string FileRepository::uriToSourceUnitName(string const& _path) const
@@ -86,6 +97,9 @@ Result<boost::filesystem::path> FileRepository::tryResolvePath(std::string const
 	vector<boost::filesystem::path> candidates;
 	vector<reference_wrapper<boost::filesystem::path const>> prefixes = {m_basePath};
 	prefixes += (m_includePaths | ranges::to<vector<reference_wrapper<boost::filesystem::path const>>>);
+	auto const defaultInclude = m_basePath / "node_modules";
+	if (m_includePaths.empty())
+		prefixes.emplace_back(defaultInclude);
 
 	auto const pathToQuotedString = [](boost::filesystem::path const& _path) { return "\"" + _path.string() + "\""; };
 
@@ -133,6 +147,8 @@ frontend::ReadCallback::Result FileRepository::readFile(string const& _kind, str
 
 		string const strippedSourceUnitName = stripFileUriSchemePrefix(_sourceUnitName);
 		Result<boost::filesystem::path> const resolvedPath = tryResolvePath(strippedSourceUnitName);
+		if (!resolvedPath.message().empty())
+			return ReadCallback::Result{false, resolvedPath.message()};
 
 		auto contents = readFileAsString(resolvedPath.get());
 		solAssert(m_sourceCodes.count(_sourceUnitName) == 0, "");
