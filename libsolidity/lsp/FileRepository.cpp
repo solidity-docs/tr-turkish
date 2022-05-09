@@ -52,6 +52,11 @@ string FileRepository::sourceUnitNameToUri(string const& _sourceUnitName) const
 		return "file:///" + _sourceUnitName;
 	else if (_sourceUnitName.find("/") == 0)
 		return "file://" + _sourceUnitName;
+	else if (
+		auto const resolvedPath = tryResolvePath(_sourceUnitName);
+		resolvedPath.message().empty()
+	)
+		return "file://" + resolvedPath.get().generic_string();
 	else
 		return "file://" + m_basePath.generic_string() + "/" + _sourceUnitName;
 }
