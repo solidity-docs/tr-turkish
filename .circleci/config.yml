@@ -501,11 +501,6 @@ defaults:
       requires:
         - b_ubu_ossfuzz
 
-  - workflow_win: &workflow_win
-      <<: *workflow_trigger_on_tags
-      requires:
-        - b_win
-
   - workflow_win_release: &workflow_win_release
       <<: *workflow_trigger_on_tags
       requires:
@@ -1294,8 +1289,10 @@ jobs:
       - store_artifacts:
           path: reports/externalTests/base-branch/
 
-  b_win: &b_win
+  b_win_release: &b_win_release
     <<: *base_win_powershell_large
+    environment:
+      FORCE_RELEASE: ON
     steps:
       # NOTE: Not disabling git's core.autocrlf here because we want to build using the typical Windows config.
       - checkout
@@ -1324,11 +1321,6 @@ jobs:
             - .\solc\*\solc.exe
             - .\test\*\soltest.exe
       - gitter_notify_failure_unless_pr
-
-  b_win_release:
-    <<: *b_win
-    environment:
-      FORCE_RELEASE: ON
 
   t_win_soltest: &t_win_soltest
     <<: *base_win_powershell
@@ -1610,9 +1602,7 @@ workflows:
             - t_native_test_ext_brink
 
       # Windows build and tests
-      - b_win: *workflow_trigger_on_tags
       - b_win_release: *workflow_trigger_on_tags
-      - t_win_soltest: *workflow_win
       - t_win_release_soltest: *workflow_win_release
 
       # Bytecode comparison:
@@ -1623,7 +1613,7 @@ workflows:
       - b_bytecode_win:
           <<: *workflow_trigger_on_tags
           requires:
-            - b_win
+            - b_win_release
       - b_bytecode_osx:
           <<: *workflow_trigger_on_tags
           requires:
