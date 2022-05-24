@@ -471,10 +471,10 @@ defaults:
       requires:
         - b_ubu_codecov
 
-  - workflow_osx: &workflow_osx
+  - workflow_osx_release: &workflow_osx_release
       <<: *workflow_trigger_on_tags
       requires:
-        - b_osx
+        - b_osx_release
 
   - workflow_ubuntu2004_asan: &workflow_ubuntu2004_asan
       <<: *workflow_trigger_on_tags
@@ -923,7 +923,7 @@ jobs:
       - persist_to_workspace: *artifacts_executables
       - gitter_notify_failure_unless_pr
 
-  b_osx:
+  b_osx_release:
     <<: *base_osx_large
     environment:
       TERM: xterm
@@ -946,7 +946,7 @@ jobs:
             - build/test/tools/solfuzzer
       - gitter_notify_failure_unless_pr
 
-  t_osx_soltest: &t_osx_soltest
+  t_osx_release_soltest: &t_osx_release_soltest
     <<: *base_osx
     environment:
       EVM: << pipeline.parameters.evm-version >>
@@ -964,7 +964,7 @@ jobs:
       - store_artifacts: *artifacts_test_results
       - gitter_notify_failure_unless_pr
 
-  t_osx_cli:
+  t_osx_release_cli:
     <<: *base_osx
     steps:
       - checkout
@@ -1545,9 +1545,9 @@ workflows:
       - b_ubu_ossfuzz: *workflow_trigger_on_tags
 
       # OS/X build and tests
-      - b_osx: *workflow_trigger_on_tags
-      - t_osx_cli: *workflow_osx
-      - t_osx_soltest: *workflow_osx
+      - b_osx_release: *workflow_trigger_on_tags
+      - t_osx_release_cli: *workflow_osx_release
+      - t_osx_release_soltest: *workflow_osx_release
 
       # ArchLinux build and tests
       - b_archlinux: *workflow_trigger_on_tags
@@ -1627,7 +1627,7 @@ workflows:
       - b_bytecode_osx:
           <<: *workflow_trigger_on_tags
           requires:
-            - b_osx
+            - b_osx_release
       - b_bytecode_ems:
           <<: *workflow_trigger_on_tags
           requires:
@@ -1645,7 +1645,7 @@ workflows:
           <<: *workflow_trigger_on_releases
           requires:
             - b_ubu_static
-            - b_osx
+            - b_osx_release
             - b_win_release
             - b_ems
 
