@@ -28,6 +28,8 @@
 
 #include <regex>
 
+#include <boost/algorithm/string/predicate.hpp>
+
 using namespace std;
 using namespace solidity;
 using namespace solidity::lsp;
@@ -53,7 +55,10 @@ string FileRepository::sourceUnitNameToUri(string const& _sourceUnitName) const
 	regex const windowsDriveLetterPath("^[a-zA-Z]:/");
 
 	if (m_sourceUnitNamesToUri.count(_sourceUnitName))
+	{
+		solAssert(boost::starts_with(m_sourceUnitNamesToUri.at(_sourceUnitName), "file://"), "");
 		return m_sourceUnitNamesToUri.at(_sourceUnitName);
+	}
 	else if (_sourceUnitName.find("file://") == 0)
 		return _sourceUnitName;
 	else if (regex_search(_sourceUnitName, windowsDriveLetterPath))
