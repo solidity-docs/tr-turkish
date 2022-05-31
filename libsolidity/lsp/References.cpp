@@ -22,8 +22,6 @@
 
 #include <libsolutil/CommonData.h>
 
-#include <vector>
-
 using namespace std;
 using namespace solidity::langutil;
 using namespace solidity::frontend;
@@ -31,67 +29,17 @@ using namespace solidity::frontend;
 namespace solidity::lsp
 {
 
-namespace
-{
-
-vector<Declaration const*> allAnnotatedDeclarations(Identifier const* _identifier)
-{
-	vector<Declaration const*> output;
-	output.push_back(_identifier->annotation().referencedDeclaration);
-	output += _identifier->annotation().candidateDeclarations;
-	return output;
-}
-
-vector<SourceLocation> findAllReferences(
-	Declaration const* _declaration,
-	string const& _sourceIdentifierName,
-	SourceUnit const& _sourceUnit
-)
-{
-	vector<SourceLocation> output;
-	for (auto& reference: ReferenceCollector::collect(_declaration, _sourceUnit, _sourceIdentifierName))
-		output.emplace_back(move(get<SourceLocation>(reference)));
-	return output;
-}
-
-}
-
 void References::operator()(MessageID _id, Json::Value const& _args)
 {
 	auto const [sourceUnitName, lineColumn] = extractSourceUnitNameAndLineColumn(_args);
 
 	ASTNode const* sourceNode = m_server.astNodeAtSourceLocation(sourceUnitName, lineColumn);
-	if (!sourceNode)
-	{
-		Json::Value emptyResponse = Json::arrayValue;
-		client().reply(_id, emptyResponse); // reply with "No references".
-		return;
-	}
 	SourceUnit const& sourceUnit = m_server.ast(sourceUnitName);
 
-	auto output = vector<SourceLocation>{};
-	if (auto const* identifier = dynamic_cast<Identifier const*>(sourceNode))
-	{
-		for (auto const* declaration: allAnnotatedDeclarations(identifier))
-			output += findAllReferences(declaration, declaration->name(), sourceUnit);
-	}
-	else if (auto const* identifierPath = dynamic_cast<IdentifierPath const*>(sourceNode))
-	{
-		if (auto decl = identifierPath->annotation().referencedDeclaration)
-			output += findAllReferences(decl, decl->name(), sourceUnit);
-	}
-	else if (auto const* memberAccess = dynamic_cast<MemberAccess const*>(sourceNode))
-	{
-		output += findAllReferences(memberAccess->annotation().referencedDeclaration, memberAccess->memberName(), sourceUnit);
-	}
-	else if (auto const* declaration = dynamic_cast<Declaration const*>(sourceNode))
-	{
-		output += findAllReferences(declaration, declaration->name(), sourceUnit);
-	}
-
 	Json::Value jsonReply = Json::arrayValue;
-	for (SourceLocation const& location: output)
-		jsonReply.append(toJson(location));
+	for (auto const& reference: ReferenceCollector::collect(sourceNode, sourceUnit))
+		jsonReply.append(toJson(get<SourceLocation>(reference)));
+
 	client().reply(_id, jsonReply);
 }
 

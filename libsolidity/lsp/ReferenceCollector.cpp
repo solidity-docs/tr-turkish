@@ -16,16 +16,33 @@
 */
 // SPDX-License-Identifier: GPL-3.0
 #include <libsolidity/lsp/ReferenceCollector.h>
+#include <libsolidity/lsp/Utils.h>
 
 #include <libsolidity/ast/AST.h>
 #include <libsolidity/lsp/LanguageServer.h>
 
+#include <fmt/format.h>
+
 using namespace solidity::frontend;
+using namespace solidity::langutil;
 using namespace std::string_literals;
 using namespace std;
 
 namespace solidity::lsp
 {
+
+namespace
+{
+
+vector<Declaration const*> allAnnotatedDeclarations(Identifier const* _identifier)
+{
+	vector<Declaration const*> output;
+	output.push_back(_identifier->annotation().referencedDeclaration);
+	output += _identifier->annotation().candidateDeclarations;
+	return output;
+}
+
+}
 
 ReferenceCollector::ReferenceCollector(
 	frontend::Declaration const& _declaration,
@@ -45,9 +62,47 @@ std::vector<Reference> ReferenceCollector::collect(
 	if (!_declaration)
 		return {};
 
-	ReferenceCollector collector(*_declaration, _sourceIdentifierName);
-	_ast.accept(collector);
-	return move(collector.m_result);
+    ReferenceCollector collector(*_declaration, _sourceIdentifierName);
+    _ast.accept(collector);
+    return move(collector.m_result);
+}
+
+std::vector<Reference> ReferenceCollector::collect(
+	frontend::ASTNode const* _sourceNode,
+	frontend::SourceUnit const& _sourceUnit
+)
+{
+	if (!_sourceNode)
+		return {};
+
+	auto output = vector<Reference>{};
+
+	if (auto const* identifier = dynamic_cast<Identifier const*>(_sourceNode))
+	{
+		for (auto const* declaration: allAnnotatedDeclarations(identifier))
+			output += collect(declaration, _sourceUnit, declaration->name());
+	}
+	else if (auto const* identifierPath = dynamic_cast<IdentifierPath const*>(_sourceNode))
+	{
+		solAssert(identifierPath->path().size() >= 1, "");
+		output += collect(identifierPath->annotation().referencedDeclaration, _sourceUnit, identifierPath->path().back());
+	}
+	else if (auto const* memberAccess = dynamic_cast<MemberAccess const*>(_sourceNode))
+	{
+		output += collect(memberAccess->annotation().referencedDeclaration, _sourceUnit, memberAccess->memberName());
+		// Type const* type = memberAccess->expression().annotation().type;
+		// lspDebug(fmt::format("semanticHighlight: member type is: "s + (type ? typeid(*type).name() : "NULL")));
+	}
+	else if (auto const* declaration = dynamic_cast<Declaration const*>(_sourceNode))
+	{
+		output += collect(declaration, _sourceUnit, declaration->name());
+	}
+	else
+	{
+		lspDebug(fmt::format("semanticHighlight: not handled: {}", typeid(*_sourceNode).name()));
+	}
+
+	return output;
 }
 
 void ReferenceCollector::endVisit(frontend::ImportDirective const& _import)
@@ -60,7 +115,7 @@ void ReferenceCollector::endVisit(frontend::ImportDirective const& _import)
 		}
 }
 
-bool ReferenceCollector::tryAddReference(frontend::Declaration const* _declaration, solidity::langutil::SourceLocation const& _location)
+bool ReferenceCollector::tryAddReference(frontend::Declaration const* _declaration, SourceLocation const& _location)
 {
 	if (&m_declaration != _declaration)
 		return false;

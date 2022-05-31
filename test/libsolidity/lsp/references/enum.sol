@@ -20,6 +20,12 @@ contract MyContract
             result = Color.Green;
         return result;
     }
+
+    function f() public pure returns (uint)
+    {
+        uint result = 42;
+        return result;
+    }
 }
 
 // ----

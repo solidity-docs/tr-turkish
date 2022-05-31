@@ -16,24 +16,12 @@
 */
 // SPDX-License-Identifier: GPL-3.0
 #include <libsolidity/lsp/SemanticHighlight.h>
+#include <libsolidity/lsp/Utils.h>
 
 using namespace std;
 using namespace solidity;
 using namespace solidity::lsp;
 using namespace solidity::frontend;
-
-namespace
-{
-
-vector<Declaration const*> allAnnotatedDeclarations(Identifier const* _identifier)
-{
-	vector<Declaration const*> output;
-	output.push_back(_identifier->annotation().referencedDeclaration);
-	output += _identifier->annotation().candidateDeclarations;
-	return output;
-}
-
-}
 
 void SemanticHighlight::operator()(MessageID _id, Json::Value const& _args)
 {
@@ -59,7 +47,8 @@ vector<Reference> SemanticHighlight::semanticHighlight(ASTNode const* _sourceNod
 
 	SourceUnit const& sourceUnit = m_server.ast(_sourceUnitName);
 
-	vector<Reference> output;
+	return ReferenceCollector::collect(_sourceNode, sourceUnit);
+#if 0
 	if (auto const* declaration = dynamic_cast<Declaration const*>(_sourceNode))
 	{
 		output += ReferenceCollector::collect(declaration, sourceUnit, declaration->name());
@@ -101,9 +90,10 @@ vector<Reference> SemanticHighlight::semanticHighlight(ASTNode const* _sourceNod
 		else
 		{
 			// TODO: EnumType, ...
-			//log("semanticHighlight: member type is: "s + (type ? typeid(*type).name() : "NULL"));
+			lspDebug(fmt::format("semanticHighlight: member type is: "s + (type ? typeid(*type).name() : "NULL")));
 		}
 	}
 	return output;
+#endif
 }
 
