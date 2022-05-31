@@ -42,18 +42,17 @@ public:
 	static std::vector<Reference> collect(
 		frontend::Declaration const* _declaration,
 		frontend::ASTNode const& _ast,
-		std::string const& _sourceIdentifierName = {}
+		std::string const& _sourceIdentifierName
 	);
 
-	static std::vector<Reference> collect(
-		frontend::ASTNode const* _sourceNode,
-		frontend::SourceUnit const& _sourceUnit
-	);
+	static std::vector<Reference> collect(frontend::ASTNode const* _sourceNode, frontend::SourceUnit const& _sourceUnit);
 
 	void endVisit(frontend::ImportDirective const& _import) override;
 	void endVisit(frontend::Identifier const& _identifier) override;
 	void endVisit(frontend::IdentifierPath  const& _identifierPath) override;
 	void endVisit(frontend::MemberAccess const& _memberAccess) override;
+	bool visit(frontend::Assignment const& _node) override;
+	bool visit(frontend::VariableDeclaration const& _node) override;
 	bool visitNode(frontend::ASTNode const& _node) override;
 
 private:
@@ -63,6 +62,7 @@ private:
 	frontend::Declaration const& m_declaration;
 	std::string const& m_sourceIdentifierName;
 	std::vector<Reference> m_result;
+	DocumentHighlightKind m_kind = DocumentHighlightKind::Read;
 };
 
 } // end namespace

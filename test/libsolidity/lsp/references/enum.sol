@@ -34,7 +34,7 @@ contract MyContract
 // }
 // <- [
 //     {
-//         "kind": 1,
+//         "kind": 2,
 //         "range": {
 //             "end": {
 //                 "character": 10,
@@ -47,7 +47,7 @@ contract MyContract
 //         }
 //     },
 //     {
-//         "kind": 1,
+//         "kind": 2,
 //         "range": {
 //             "end": {
 //                 "character": 9,
@@ -60,7 +60,7 @@ contract MyContract
 //         }
 //     },
 //     {
-//         "kind": 1,
+//         "kind": 2,
 //         "range": {
 //             "end": {
 //                 "character": 27,
@@ -73,7 +73,7 @@ contract MyContract
 //         }
 //     },
 //     {
-//         "kind": 1,
+//         "kind": 2,
 //         "range": {
 //             "end": {
 //                 "character": 22,
@@ -86,7 +86,7 @@ contract MyContract
 //         }
 //     },
 //     {
-//         "kind": 1,
+//         "kind": 2,
 //         "range": {
 //             "end": {
 //                 "character": 52,
@@ -99,7 +99,7 @@ contract MyContract
 //         }
 //     },
 //     {
-//         "kind": 1,
+//         "kind": 2,
 //         "range": {
 //             "end": {
 //                 "character": 13,
@@ -112,7 +112,7 @@ contract MyContract
 //         }
 //     },
 //     {
-//         "kind": 1,
+//         "kind": 2,
 //         "range": {
 //             "end": {
 //                 "character": 28,
@@ -125,7 +125,7 @@ contract MyContract
 //         }
 //     },
 //     {
-//         "kind": 1,
+//         "kind": 2,
 //         "range": {
 //             "end": {
 //                 "character": 26,
@@ -143,7 +143,7 @@ contract MyContract
 // }
 // <- [
 //     {
-//         "kind": 1,
+//         "kind": 2,
 //         "range": {
 //             "end": {
 //                 "character": 7,
@@ -156,7 +156,7 @@ contract MyContract
 //         }
 //     },
 //     {
-//         "kind": 1,
+//         "kind": 2,
 //         "range": {
 //             "end": {
 //                 "character": 31,
@@ -174,7 +174,7 @@ contract MyContract
 // }
 // <- [
 //     {
-//         "kind": 1,
+//         "kind": 3,
 //         "range": {
 //             "end": {
 //                 "character": 19,
@@ -187,7 +187,7 @@ contract MyContract
 //         }
 //     },
 //     {
-//         "kind": 1,
+//         "kind": 2,
 //         "range": {
 //             "end": {
 //                 "character": 26,

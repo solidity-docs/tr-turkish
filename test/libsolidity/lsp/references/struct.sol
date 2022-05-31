@@ -12,13 +12,19 @@ contract MyContract
     MyStruct thatStruct;
     //       ^ @thatStructDef
 
-    function f(MyStruct memory _someStruct) public view returns (uint)
+    function f(MyStruct memory _someStruct) public view returns (uint result)
     {
         MyStruct memory local = _someStruct;
         local.value = local.value + thatStruct.value;
         //                    ^ @thatStructUse (TODO)
-        return local.value;
-        //      ^ @localUse
+        result = local.value;
+        //       ^ @localUse
+    }
+
+    function g(uint lhs, uint rhs) public pure returns (uint result)
+    {
+        uint output = lhs + rhs;
+        result = output;
     }
 }
 
@@ -28,7 +34,7 @@ contract MyContract
 // }
 // <- [
 //     {
-//         "kind": 1,
+//         "kind": 2,
 //         "range": {
 //             "end": {
 //                 "character": 15,
@@ -41,7 +47,7 @@ contract MyContract
 //         }
 //     },
 //     {
-//         "kind": 1,
+//         "kind": 2,
 //         "range": {
 //             "end": {
 //                 "character": 12,
@@ -54,7 +60,7 @@ contract MyContract
 //         }
 //     },
 //     {
-//         "kind": 1,
+//         "kind": 2,
 //         "range": {
 //             "end": {
 //                 "character": 23,
@@ -67,7 +73,7 @@ contract MyContract
 //         }
 //     },
 //     {
-//         "kind": 1,
+//         "kind": 2,
 //         "range": {
 //             "end": {
 //                 "character": 16,
@@ -85,7 +91,7 @@ contract MyContract
 // }
 // <- [
 //     {
-//         "kind": 1,
+//         "kind": 3,
 //         "range": {
 //             "end": {
 //                 "character": 23,
@@ -98,7 +104,7 @@ contract MyContract
 //         }
 //     },
 //     {
-//         "kind": 1,
+//         "kind": 2,
 //         "range": {
 //             "end": {
 //                 "character": 46,
@@ -116,7 +122,7 @@ contract MyContract
 // }
 // <- [
 //     {
-//         "kind": 1,
+//         "kind": 3,
 //         "range": {
 //             "end": {
 //                 "character": 29,
@@ -129,7 +135,7 @@ contract MyContract
 //         }
 //     },
 //     {
-//         "kind": 1,
+//         "kind": 3,
 //         "range": {
 //             "end": {
 //                 "character": 13,
@@ -142,7 +148,7 @@ contract MyContract
 //         }
 //     },
 //     {
-//         "kind": 1,
+//         "kind": 2,
 //         "range": {
 //             "end": {
 //                 "character": 27,
@@ -155,14 +161,14 @@ contract MyContract
 //         }
 //     },
 //     {
-//         "kind": 1,
+//         "kind": 2,
 //         "range": {
 //             "end": {
-//                 "character": 20,
+//                 "character": 22,
 //                 "line": 19
 //             },
 //             "start": {
-//                 "character": 15,
+//                 "character": 17,
 //                 "line": 19
 //             }
 //         }
