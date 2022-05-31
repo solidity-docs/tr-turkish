@@ -80,13 +80,17 @@ std::vector<Reference> ReferenceCollector::collect(
 
 	if (auto const* identifier = dynamic_cast<Identifier const*>(_sourceNode))
 	{
-		lspDebug(fmt::format("semanticHighlight: Identifier: {}", typeid(*_sourceNode).name()));
+		lspDebug(fmt::format("semanticHighlight: Identifier: {}", identifier->name()));
 		for (auto const* declaration: allAnnotatedDeclarations(identifier))
-			output += collect(declaration, _sourceUnit, declaration->name());
+		{
+			lspDebug(fmt::format("semanticHighlight: Identifier: adding annotated decl: {} ({})", declaration->name(), typeid(*declaration).name()));
+			//output += collect(declaration, _sourceUnit, declaration->name());
+			output += collect(declaration, _sourceUnit, identifier->name());
+		}
 	}
 	else if (auto const* identifierPath = dynamic_cast<IdentifierPath const*>(_sourceNode))
 	{
-		lspDebug(fmt::format("semanticHighlight: IdentifierPath: {}", typeid(*_sourceNode).name()));
+		lspDebug(fmt::format("semanticHighlight: IdentifierPath: back: {}", identifierPath->path().back()));
 		solAssert(identifierPath->path().size() >= 1, "");
 		output += collect(identifierPath->annotation().referencedDeclaration, _sourceUnit, identifierPath->path().back());
 	}
@@ -109,13 +113,34 @@ std::vector<Reference> ReferenceCollector::collect(
 	return output;
 }
 
+bool ReferenceCollector::visit(ImportDirective const& _import)
+{
+	if (_import.name() == m_sourceIdentifierName)
+		return true;
+	return false;
+}
+
 void ReferenceCollector::endVisit(ImportDirective const& _import)
 {
 	for (auto const& symbolAlias: _import.symbolAliases())
-		if (m_sourceIdentifierName == *symbolAlias.alias)
+		if (
+			m_sourceIdentifierName == *symbolAlias.alias &&
+			symbolAlias.symbol &&
+			symbolAlias.symbol->annotation().referencedDeclaration == &m_declaration
+		)
 		{
+			lspDebug(fmt::format("Found symbol alias: {}", m_sourceIdentifierName));
 			m_result.emplace_back(Reference{symbolAlias.location, DocumentHighlightKind::Read});
 			break;
+		}
+		else if (m_sourceIdentifierName == *symbolAlias.alias)
+		{
+			lspDebug(fmt::format("Found symbol alias by text compare: {}", m_sourceIdentifierName));
+			m_result.emplace_back(Reference{symbolAlias.location, DocumentHighlightKind::Text});
+		}
+		else
+		{
+			lspDebug(fmt::format("SKIPPING symbol alias by text compare: {} != {}", *symbolAlias.alias, m_sourceIdentifierName));
 		}
 }
 

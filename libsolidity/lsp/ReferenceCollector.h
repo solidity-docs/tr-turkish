@@ -47,6 +47,7 @@ public:
 
 	static std::vector<Reference> collect(frontend::ASTNode const* _sourceNode, frontend::SourceUnit const& _sourceUnit);
 
+	bool visit(frontend::ImportDirective const& _import) override;
 	void endVisit(frontend::ImportDirective const& _import) override;
 	void endVisit(frontend::Identifier const& _identifier) override;
 	void endVisit(frontend::IdentifierPath  const& _identifierPath) override;

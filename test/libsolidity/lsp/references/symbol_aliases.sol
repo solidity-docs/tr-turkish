@@ -76,19 +76,6 @@ contract C
 //         "kind": 2,
 //         "range": {
 //             "end": {
-//                 "character": 25,
-//                 "line": 5
-//             },
-//             "start": {
-//                 "character": 16,
-//                 "line": 5
-//             }
-//         }
-//     },
-//     {
-//         "kind": 2,
-//         "range": {
-//             "end": {
 //                 "character": 51,
 //                 "line": 16
 //             },
