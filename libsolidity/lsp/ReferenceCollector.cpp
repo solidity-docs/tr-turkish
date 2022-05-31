@@ -15,14 +15,11 @@
 	along with solidity.  If not, see <http://www.gnu.org/licenses/>.
 */
 // SPDX-License-Identifier: GPL-3.0
-#include "libsolutil/AnsiColorized.h"
 #include <libsolidity/lsp/ReferenceCollector.h>
 #include <libsolidity/lsp/Utils.h>
 
 #include <libsolidity/ast/AST.h>
 #include <libsolidity/lsp/LanguageServer.h>
-
-#include <fmt/format.h>
 
 using namespace solidity::frontend;
 using namespace solidity::langutil;
@@ -63,9 +60,9 @@ std::vector<Reference> ReferenceCollector::collect(
 	if (!_declaration)
 		return {};
 
-    ReferenceCollector collector(*_declaration, _sourceIdentifierName);
-    _ast.accept(collector);
-    return move(collector.m_result);
+	ReferenceCollector collector(*_declaration, _sourceIdentifierName);
+	_ast.accept(collector);
+	return move(collector.m_result);
 }
 
 std::vector<Reference> ReferenceCollector::collect(
@@ -80,34 +77,21 @@ std::vector<Reference> ReferenceCollector::collect(
 
 	if (auto const* identifier = dynamic_cast<Identifier const*>(_sourceNode))
 	{
-		lspDebug(fmt::format("semanticHighlight: Identifier: {}", identifier->name()));
 		for (auto const* declaration: allAnnotatedDeclarations(identifier))
-		{
-			lspDebug(fmt::format("semanticHighlight: Identifier: adding annotated decl: {} ({})", declaration->name(), typeid(*declaration).name()));
-			//output += collect(declaration, _sourceUnit, declaration->name());
 			output += collect(declaration, _sourceUnit, identifier->name());
-		}
 	}
 	else if (auto const* identifierPath = dynamic_cast<IdentifierPath const*>(_sourceNode))
 	{
-		lspDebug(fmt::format("semanticHighlight: IdentifierPath: back: {}", identifierPath->path().back()));
 		solAssert(identifierPath->path().size() >= 1, "");
 		output += collect(identifierPath->annotation().referencedDeclaration, _sourceUnit, identifierPath->path().back());
 	}
 	else if (auto const* memberAccess = dynamic_cast<MemberAccess const*>(_sourceNode))
 	{
-		Type const* type = memberAccess->expression().annotation().type;
-		lspDebug(fmt::format("semanticHighlight: member type is: "s + (type ? typeid(*type).name() : "NULL")));
 		output += collect(memberAccess->annotation().referencedDeclaration, _sourceUnit, memberAccess->memberName());
 	}
 	else if (auto const* declaration = dynamic_cast<Declaration const*>(_sourceNode))
 	{
-		lspDebug(fmt::format("semanticHighlight: Declaration: {}", typeid(*_sourceNode).name()));
 		output += collect(declaration, _sourceUnit, declaration->name());
-	}
-	else
-	{
-		lspDebug(fmt::format("semanticHighlight: not handled: {}", typeid(*_sourceNode).name()));
 	}
 
 	return output;
@@ -123,25 +107,22 @@ bool ReferenceCollector::visit(ImportDirective const& _import)
 void ReferenceCollector::endVisit(ImportDirective const& _import)
 {
 	for (auto const& symbolAlias: _import.symbolAliases())
+	{
 		if (
 			m_sourceIdentifierName == *symbolAlias.alias &&
 			symbolAlias.symbol &&
 			symbolAlias.symbol->annotation().referencedDeclaration == &m_declaration
 		)
 		{
-			lspDebug(fmt::format("Found symbol alias: {}", m_sourceIdentifierName));
 			m_result.emplace_back(Reference{symbolAlias.location, DocumentHighlightKind::Read});
 			break;
 		}
 		else if (m_sourceIdentifierName == *symbolAlias.alias)
 		{
-			lspDebug(fmt::format("Found symbol alias by text compare: {}", m_sourceIdentifierName));
 			m_result.emplace_back(Reference{symbolAlias.location, DocumentHighlightKind::Text});
+			break;
 		}
-		else
-		{
-			lspDebug(fmt::format("SKIPPING symbol alias by text compare: {} != {}", *symbolAlias.alias, m_sourceIdentifierName));
-		}
+	}
 }
 
 bool ReferenceCollector::tryAddReference(Declaration const* _declaration, SourceLocation const& _location)
