@@ -32,11 +32,11 @@ contract C
 //         "kind": 2,
 //         "range": {
 //             "end": {
-//                 "character": 7,
+//                 "character": 17,
 //                 "line": 4
 //             },
 //             "start": {
-//                 "character": 4,
+//                 "character": 11,
 //                 "line": 4
 //             }
 //         }
@@ -63,11 +63,11 @@ contract C
 //         "kind": 2,
 //         "range": {
 //             "end": {
-//                 "character": 12,
+//                 "character": 25,
 //                 "line": 5
 //             },
 //             "start": {
-//                 "character": 4,
+//                 "character": 16,
 //                 "line": 5
 //             }
 //         }

@@ -27,19 +27,6 @@ contract C
 //         "kind": 2,
 //         "range": {
 //             "end": {
-//                 "character": 36,
-//                 "line": 3
-//             },
-//             "start": {
-//                 "character": 28,
-//                 "line": 3
-//             }
-//         }
-//     },
-//     {
-//         "kind": 2,
-//         "range": {
-//             "end": {
 //                 "character": 25,
 //                 "line": 10
 //             },
@@ -67,19 +54,6 @@ contract C
 //     "position": @ImportedUse
 // }
 // <- [
-//     {
-//         "kind": 2,
-//         "range": {
-//             "end": {
-//                 "character": 36,
-//                 "line": 3
-//             },
-//             "start": {
-//                 "character": 28,
-//                 "line": 3
-//             }
-//         }
-//     },
 //     {
 //         "kind": 2,
 //         "range": {
