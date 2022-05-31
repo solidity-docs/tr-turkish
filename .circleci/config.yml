@@ -374,6 +374,11 @@ defaults:
         name: win/default
         shell: cmd.exe
 
+  - base_win_bash: &base_win_bash
+      executor:
+        name: win/default
+        shell: bash.exe
+
   - base_osx: &base_osx
       macos:
         xcode: "13.2.0"
@@ -1401,7 +1406,9 @@ jobs:
       - gitter_notify_failure_unless_pr
 
   b_bytecode_win:
-    <<: *base_win_cmd
+    <<: *base_win_bash
+    environment:
+      LC_ALL: C
     steps:
       # NOTE: For bytecode generation we need the input files to be byte-for-byte identical on all
       # platforms so line ending conversions must absolutely be disabled.
