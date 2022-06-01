@@ -1,6 +1,7 @@
 ### 0.8.16 (unreleased)
 
 Language Features:
+ * Array literals are convertible to both dynamically-sized and statically-sized arrays
 
 
 Compiler Features:
