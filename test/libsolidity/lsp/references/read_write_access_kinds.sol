@@ -6,7 +6,6 @@ import {RGBColor as ThatColor} from "../goto/lib.sol";
 contract C
 {
     function other() public pure returns (ThatColor memory output)
-                                                            // ^ @OutputDef
     {
         output.red = 50;
         // ^ @OutputWrite
@@ -16,6 +15,7 @@ contract C
         //                   ^ @GreenUse
     }
 }
+
 // ----
 // lib: @diagnostics 2072
 // -> textDocument/documentHighlight {
