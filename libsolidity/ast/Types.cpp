@@ -1211,7 +1211,7 @@ FixedPointType const* RationalNumberType::fixedPointType() const
 	return TypeProvider::fixedPoint(
 		totalBits, fractionalDigits,
 		negative ? FixedPointType::Modifier::Signed : FixedPointType::Modifier::Unsigned
-				   );
+	);
 }
 
 pair<RationalNumberType const*, RationalNumberType const*> RationalNumberType::mantissaExponent() const

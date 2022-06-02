@@ -586,7 +586,7 @@ public:
 	/// @returns true if the value is not an integer.
 	bool isFractional() const { return m_value.denominator() != 1; }
 
-	/// TOOD document
+	/// TODO document
 	std::pair<RationalNumberType const*, RationalNumberType const*> mantissaExponent() const;
 
 	/// @returns true if the value is negative.
