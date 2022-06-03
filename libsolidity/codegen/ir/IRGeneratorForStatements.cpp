@@ -2263,7 +2263,8 @@ void IRGeneratorForStatements::endVisit(IndexAccess const& _indexAccess)
 	{
 		InlineArrayType const& inlineArrayType = dynamic_cast<InlineArrayType const&>(baseType);
 
-		ArrayType const* arrayType = TypeProvider::array(DataLocation::Memory, inlineArrayType.componentsCommonMobileType(), inlineArrayType.components().size());
+		ArrayType const* arrayType = dynamic_cast<ArrayType const*>(inlineArrayType.mobileType());
+		solAssert(arrayType);
 
 		IRVariable irArray = convert(IRVariable(_indexAccess.baseExpression()), *arrayType);
 
