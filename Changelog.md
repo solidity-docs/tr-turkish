@@ -6,6 +6,7 @@ Language Features:
 Compiler Features:
  * TypeChecker: Support using library constants in initializers of other constants.
  * Yul IR Code Generation: Improved copy routines for arrays with packed storage layout.
+ * Code Generator: More efficient code for checked addition and subtraction.
 
 
 Bugfixes:
