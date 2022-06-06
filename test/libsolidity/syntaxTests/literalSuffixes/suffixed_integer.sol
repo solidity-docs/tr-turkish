@@ -23,6 +23,7 @@ contract C {
         0x10e76 e;
 
         // Number with separators
+        1_2_3_4_5_6_7_8_9_0 e;
         1_000 e;
         1_000_000 e;
         9999_9999_9999 e;
@@ -43,13 +44,20 @@ contract C {
         1000e-0003 e;
         1200e-2 e;
 
+        // Scientific notation with decimals
+        0.0e0 e;
+        0.0e-0 e;
+        0.0e-1 e;
+        0.0e-10 e;
+        1.0e0 e;
+        1.0e2 e;
+        10.0e0 e;
+        100.0_000e-2 e;
+        1.23e2 e;
+
+        // Scientific notation with separators
         1_0e1_0 e;
         10_000_000_000e1_0 e;
         10_000_000_000e-0_0_0_1_0 e;
-
-        1.23e2 e;
-        1.0e0 e;
-        1.0e2 e;
-        100.0_000e-2 e;
     }
 }
