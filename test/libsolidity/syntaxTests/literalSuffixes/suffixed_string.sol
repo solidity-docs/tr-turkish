@@ -6,8 +6,7 @@ contract C {
         '' suffix;
         "abcd" suffix;
         'abcd' suffix;
-        // hex"abcd" suffix; // TODO
+        //hex"abcd" suffix; // Hex literals are only implicitly convertible to bytes
         unicode"😃" suffix;
     }
 }
-// ----
