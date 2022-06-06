@@ -1,7 +1,8 @@
 ### 0.8.16 (unreleased)
 
 Language Features:
- * Array literals are convertible to both dynamically-sized and statically-sized arrays
+ * Array literals are convertible to both dynamically-sized and statically-sized arrays.
+ * String literals being part of an array literal can be implicitly converted into bytes.
 
 
 Compiler Features:
@@ -11,7 +12,7 @@ Compiler Features:
 
 Bugfixes:
  * Commandline Interface: Disallow the following options outside of the compiler mode: ``--via-ir``,``--metadata-literal``, ``--metadata-hash``, ``--model-checker-show-unproved``, ``--model-checker-div-mod-no-slacks``, ``--model-checker-engine``, ``--model-checker-invariants``, ``--model-checker-solvers``, ``--model-checker-timeout``, ``--model-checker-contracts``, ``--model-checker-targets``.
-
+ * An array literal is validated to contains only UTF-8 valid sequences when converted into array of strings.
 
 ### 0.8.15 (2022-06-15)
 
