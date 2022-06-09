@@ -3022,6 +3022,12 @@ void IRGeneratorForStatements::writeToLValue(IRLValue const& _lvalue, IRVariable
 						m_utils.copyLiteralToMemoryFunction(literalType->value()) + "()" <<
 						")\n";
 				}
+				else if (dynamic_cast<InlineArrayType const*>(&_value.type()))
+				{
+					solAssert(dynamic_cast<ArrayType const*>(&_lvalue.type));
+					IRVariable value = convert(_value, _lvalue.type);
+					writeToLValue(_lvalue, value);
+				}
 				else
 				{
 					solAssert(_lvalue.type.sizeOnStack() == 1);

@@ -75,16 +75,20 @@ Type const* closestType(Type const* _type, Type const* _targetType, bool _isShif
 	}
 	else if (auto const* inlineArrayType = dynamic_cast<InlineArrayType const*>(_type))
 	{
-		Type const& targetBaseType = *dynamic_cast<ArrayType const&>(*_targetType).baseType();
-		Type const* resultBaseType = closestType(
-			inlineArrayType->componentsCommonMobileType(), &targetBaseType, _isShiftOp
-		);
+		auto targetArray = dynamic_cast<ArrayType const*>(_targetType);
+		solAssert(targetArray);
 
-		return TypeProvider::array(
-			DataLocation::Memory,
-			resultBaseType,
-			inlineArrayType->components().size()
-		);
+		if (targetArray->isDynamicallySized())
+			return TypeProvider::array(
+				DataLocation::Memory,
+				targetArray->baseType()
+			);
+		else
+			return TypeProvider::array(
+				DataLocation::Memory,
+				targetArray->baseType(),
+				inlineArrayType->components().size()
+			);
 	}
 	else
 		return _targetType->dataStoredIn(DataLocation::Storage) ? _type->mobileType() : _targetType;
