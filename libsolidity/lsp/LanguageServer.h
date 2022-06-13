@@ -80,6 +80,9 @@ private:
 
 	/// Compile everything until after analysis phase.
 	void compile();
+
+	std::vector<boost::filesystem::path> allSolidityFilesFromProject() const;
+
 	using MessageHandler = std::function<void(MessageID, Json::Value const&)>;
 
 	Json::Value toRange(langutil::SourceLocation const& _location);

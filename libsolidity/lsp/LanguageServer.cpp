@@ -31,6 +31,7 @@
 #include <liblangutil/SourceReferenceExtractor.h>
 #include <liblangutil/CharStream.h>
 
+#include <libsolutil/CommonIO.h>
 #include <libsolutil/Visitor.h>
 #include <libsolutil/JSON.h>
 
@@ -148,6 +149,18 @@ void LanguageServer::changeConfiguration(Json::Value const& _settings)
 	m_settingsObject = _settings;
 }
 
+vector<boost::filesystem::path> LanguageServer::allSolidityFilesFromProject() const
+{
+	// Don't iterate through all .sol files recursively when project root is system root.
+	if (m_fileRepository.basePath() == "/")
+		return {};
+
+	return util::findFilesRecursively(
+		m_fileRepository.basePath(),
+		[&](boost::filesystem::path const& p) { return p.extension() == ".sol"; }
+	);
+}
+
 void LanguageServer::compile()
 {
 	// For files that are not open, we have to take changes on disk into account,
@@ -156,6 +169,14 @@ void LanguageServer::compile()
 	FileRepository oldRepository(m_fileRepository.basePath());
 	swap(oldRepository, m_fileRepository);
 
+	// Load all solidity files from project.
+	for (auto const& projectFile: allSolidityFilesFromProject())
+		m_fileRepository.setSourceByUri(
+			projectFile.generic_string(),
+			util::readFileAsString(projectFile)
+		);
+
+	// Overwrite all files as opened by the client and might potentially have changes.
 	for (string const& fileName: m_openFiles)
 		m_fileRepository.setSourceByUri(
 			fileName,
