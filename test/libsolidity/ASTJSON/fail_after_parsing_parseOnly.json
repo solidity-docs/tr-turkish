@@ -141,6 +141,7 @@
                     "typeDescriptions": {}
                   },
                   "id": 18,
+                  "nameLocations": [],
                   "names": [],
                   "nodeType": "FunctionCall",
                   "src": "117:3:1",
