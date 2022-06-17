@@ -177,6 +177,11 @@ void SourceReferenceFormatter::printExceptionInformation(SourceReferenceExtracto
 {
 	// exception header line
 	optional<Error::Severity> severity = Error::severityFromString(_msg.severity);
+	solAssert(
+		severity == Error::Severity::Error ||
+		severity == Error::Severity::Info ||
+		severity == Error::Severity::Warning
+	);
 	errorColored(severity) << _msg.severity;
 	if (m_withErrorIds && _msg.errorId.has_value())
 		errorColored(severity) << " (" << _msg.errorId.value().error << ")";
