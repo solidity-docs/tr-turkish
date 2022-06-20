@@ -1933,6 +1933,12 @@ string YulUtilFunctions::copyInlineArrayToStorageFunction(InlineArrayType const&
 				<#member>
 					<setMember>
 				</member>
+
+				<?multipleItemsPerSlot>
+					if gt(elementOffset, 0) {
+						<partialClearStorageSlotFunction>(elementSlot, elementOffset)
+					}
+				</multipleItemsPerSlot>
 			}
 		)");
 		if (_fromType.dataStoredIn(DataLocation::Storage))
@@ -1944,6 +1950,8 @@ string YulUtilFunctions::copyInlineArrayToStorageFunction(InlineArrayType const&
 		templ("resizeArray", resizeArrayFunction(_toType));
 		templ("dstDataLocation", arrayDataAreaFunction(_toType));
 		templ("member", move(memberSetValues));
+		templ("multipleItemsPerSlot", _toType.storageStride() <= 16);
+		templ("partialClearStorageSlotFunction", partialClearStorageSlotFunction());
 
 		return templ.render();
 	});
