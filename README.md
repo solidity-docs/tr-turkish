@@ -1,4 +1,5 @@
 # Solidity Türkçe Resmi Dokümantasyonu
+<<<<<<< HEAD
 
 Solidity'nin resmi Türkçe dokümanlarına hoş geldiniz. Projedeki ilerlemeyi [kontrol listesinden](https://github.com/solidity-docs/tr-turkish/issues/1) takip edebilirsiniz. Bu listedeki "Core Pages" kısmı tamamlandıktan sonra çeviri, resmi Solidity websitesine eklenecektir.
 
@@ -25,3 +26,5 @@ Katkıda bulunmak için lütfen [Discord Grubumuz'dan](https://discord.gg/cyN3vr
 
 - [Discord](https://discord.gg/cyN3vrhB)
 - [Twitter](https://twitter.com/TrSolidity)
+=======
+>>>>>>> develop
