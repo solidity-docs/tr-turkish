@@ -1,4 +1,4 @@
-from opcodes import AND, SDIV, SGT, SLT, MUL, ISZERO, XOR, EQ, GT, DIV
+from opcodes import AND, SDIV, SGT, SLT, MUL, GT, DIV
 from rule import Rule
 from util import BVSignedMax, BVSignedMin, BVSignedUpCast
 from z3 import BVMulNoOverflow, BVMulNoUnderflow, BitVec, Not, Or
@@ -31,7 +31,6 @@ while type_bits <= n_bits:
 	# Constants
 	maxValue = BVSignedMax(type_bits, n_bits)
 	minValue = BVSignedMin(type_bits, n_bits)
-	bitMask =  2**(type_bits-1)
 
 	# Overflow and underflow checks in YulUtilFunction::overflowCheckedIntMulFunction
 	if type_bits > n_bits / 2:
@@ -40,8 +39,8 @@ while type_bits <= n_bits:
 		underflow_check_2 = AND(AND(SLT(X, 0), SGT(Y, 0)), SLT(X, SDIV(minValue, Y)))
 		overflow_check_2 = AND(AND(SLT(X, 0), SLT(Y, 0)), SLT(X, SDIV(maxValue, Y)))
 	else:
-		overflow_check_1 = AND(ISZERO(AND(XOR(X, Y),bitMask)), SGT(product, maxValue))
-		underflow_check_1 = AND(EQ(AND(XOR(X, Y), bitMask), bitMask), SLT(product, minValue))
+		overflow_check_1 = SGT(product, maxValue)
+		underflow_check_1 = SLT(product, minValue)
 		underflow_check_2 = underflow_check_1
 		overflow_check_2 = overflow_check_1
 

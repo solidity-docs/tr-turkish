@@ -685,13 +685,9 @@ string YulUtilFunctions::overflowCheckedIntMulFunction(IntegerType const& _type)
 						if and(and(slt(x, 0), slt(y, 0)), slt(x, sdiv(<maxValue>, y))) { <panic>() }
 					<!gt128bit>
 						// overflow, if same signal and product > maxValue
-						if and(
-							iszero(and(xor(x,y), <bitMask>)),
-							sgt(product, <maxValue>)
-						) { <panic>() }
 						// underflow, if different signal and product < minValue
-						if and(
-							eq(and(xor(x,y), <bitMask>), <bitMask>),
+						if or(
+							sgt(product, <maxValue>),
 							slt(product, <minValue>)
 						) { <panic>() }
 					</gt128bit>
@@ -712,7 +708,6 @@ string YulUtilFunctions::overflowCheckedIntMulFunction(IntegerType const& _type)
 			("cleanupFunction", cleanupFunction(_type))
 			("panic", panicFunction(PanicCode::UnderOverflow))
 			("gt128bit", _type.numBits() > 128)
-			("bitMask", toCompactHexWithPrefix(u256(std::pow(2,255))))
 			.render();
 	});
 }
