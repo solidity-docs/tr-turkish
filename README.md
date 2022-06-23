@@ -1,1 +1,1 @@
-# Solidity Türkçe Resmi Dökümantasyonu
+# Solidity Türkçe Resmi Dokümantasyonu
