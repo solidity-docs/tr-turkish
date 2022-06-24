@@ -1,11 +1,11 @@
 Solidity
 ========
 
-Solidity akıllı sözleşmelerin uygulanması için geliştirilen nesne yönelimli, üst düzey
+Solidity akıllı sözleşmelerin (smart contracts) uygulanması için geliştirilen nesne yönelimli, üst düzey
 bir programlama dilidir. Akıllı sözleşmeler Ethereum ağı içindeki hesapların hareketlerini
 ve davranışlarını yöneten programlardır.
 
-Solidity Ethereum Virtual Machine (EVM) hedeflenerek dizayn edilmiş bir `curly-bracket dilidir
+Solidity Ethereum Sanal Makinası (ESM) (Ethereum Virtual Machine) hedeflenerek dizayn edilmiş bir `curly-bracket dilidir
 <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_.
 C++, Python ve JavaScript gibi dillerden ilham alınarak oluşturulmuştur. Solidity'nin başka
 hangi dillerden ilham aldığı hakkındaki detaylı bilgiyi :doc:`language influences
@@ -15,7 +15,7 @@ Solidity statik olarak yazılmış olmasının yanı sıra, kütüphaneleri, kul
 türleri ve kalıtımsallığı destekler.
 
 Solidity'le kullanıcılar için oylama, crowdfunding, blind auctions ve multi-signature cüzdanlar
-gibi kullanımlar için akıllı sözleşmeler oluşturabilirsiniz.
+gibi kullanımlara yönelik akıllı sözleşmeler oluşturabilirsiniz.
 
 Sözleşmelerin dağıtımını yaparken, en son yayınlanan Solidity sürümünü kullanmalısınız. İstisnai
 durumlar dışında, yalnızca son sürüm `güvenlik düzeltmeleri
@@ -26,11 +26,11 @@ kullanıyoruz.
 
 .. Uyarı::
 
-  Solidity kısa bir süre önce birçok yenilik ve önemli değişikler getiren 0.8.x sürümünü yayınladı.
+  Solidity kısa bir süre önce birçok yenilik ve önemli değişiklikler getiren 0.8.x sürümünü yayınladı.
   Değişiklikleri mutlaka okuyun :doc:`the full list <080-breaking-changes>`.
 
   Solidity'yi veya bu dokümantasyonu geliştirmek için fikirlere her zaman açığız,
-  Daha fazla ayrıntı için :doc:`contributors guide <contributing>` sayfamızı okuyun.
+  Daha fazla ayrıntı için :doc:`katkıda bulunanlar rehberi <contributing>` sayfamızı okuyun.
 
 .. İpucu::
 
@@ -46,27 +46,26 @@ Hadi Başlayalım
 Eğer akıllı sözleşmeler kavramında yeniyseniz "Akıllı Sözleşmelere Giriş" bölümünü araştırarak
 başlamanızı öneririz. Bu bölüm aşağıdakileri kapsar:
 
-* :ref:`Basit bir akıllı sözleşme örneği <simple-smart-contract>` Solidity ile yazılmış.
+* Solidity ile yazılmış :ref:`Basit bir akıllı sözleşme örneği <simple-smart-contract>`.
 * :ref:`Blockchain Temelleri <blockchain-basics>`.
-* :ref:`Ethereum Virtual Machine <the-ethereum-virtual-machine>`.
+* :ref:`Ethereum Sanal Makinası (Ethereum Virtual Machine) <the-ethereum-virtual-machine>`.
 
 **2. Solidity ile Tanışın**
 
-Temel bilgilere alıştıktan sonra, :doc:`"Solidity by Example" <solidity-by-example>` bölümünü
-okumanızı öneririz. Ve ayrıca "Dil Tanımı" bölümlerini inceleyerek dilin temel kavramlarını
+Temel bilgilere alıştıktan sonra, :doc:`"Örneklerle Solidity" <solidity-by-example>` bölümünü
+okumanızı öneririz. Ve ayrıca "Dil Tanımları" bölümünü inceleyerek dilin temel kavramlarını
 anlayabilirsiniz..
 
 **3. Solidity Derleyicisini İndirme**
 
 Solidity derleyicisini indirmenin birçok yolu vardır,
-basit bir şekilde tercih edeceğiniz seçenek için ve :ref:`installation page <installing-solidity>`
-de özetlenen adımları izleyin.
+tercih edeceğiniz yola göre :ref:`indirme sayfası <installing-solidity>`
+'da bulunan adımları izleyin.
 
 .. İpucu::
   `Remix IDE <https://remix.ethereum.org>`_ ile birlikte kod örneklerini doğrudan tarayıcınızda
-  deneyebilirsiniz. Remix, Solidity'yi yerel olarak yüklemenize gerek kalmadan Solidity
-  akıllı sözleşmelerini yazmanıza, dağıtmanıza ve yönetmenize olanak tanıyan
-  web tarayıcısı tabanlı bir IDE'dir.
+  deneyebilirsiniz. Remix, Solidity'yi yerel olarak yüklemenize gerek kalmadan Solidity akıllı sözleşmelerini yazmanıza,
+   dağıtmanıza ve yönetmenize olanak tanıyan web tarayıcısı tabanlı bir IDE'dir.
 
 .. Uyarı::
     İnsanlar kodlama yaparken, hataları olabilir. Akıllı sözleşmelerinizi yazarken
@@ -112,7 +111,7 @@ arasında geçiş yapabilirsiniz.
    başlayacağınız veya var olan çevirilere nasıl katkıda bulunacağınız hakkında bilgi için
    lütfen `çeviri kılavuzuna <https://github.com/solidity-docs/translation-guide>`_ bakın.
 
-Contents
+İçindekiler
 ========
 
 :ref:`Anahtar Kelime Dizini <genindex>`, :ref:`Arama Sayfası <search>`
