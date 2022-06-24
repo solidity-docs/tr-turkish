@@ -8,7 +8,7 @@ ve davranışlarını yöneten programlardır.
 Solidity Ethereum Sanal Makinası (ESM) (Ethereum Virtual Machine) hedeflenerek dizayn edilmiş bir `curly-bracket dilidir
 <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_.
 C++, Python ve JavaScript gibi dillerden ilham alınarak oluşturulmuştur. Solidity'nin başka
-hangi dillerden ilham aldığı hakkındaki detaylı bilgiyi :doc:`language influences
+hangi dillerden ilham aldığı hakkındaki detaylı bilgiyi :doc:`ilham alınan diller
 <language-influences>` bölümünde bulabilirsiniz.
 
 Solidity statik olarak yazılmış olmasının yanı sıra, kütüphaneleri, kullanıcı tanımlı karmaşık
@@ -27,7 +27,7 @@ kullanıyoruz.
 .. Uyarı::
 
   Solidity kısa bir süre önce birçok yenilik ve önemli değişiklikler getiren 0.8.x sürümünü yayınladı.
-  Değişiklikleri mutlaka okuyun :doc:`the full list <080-breaking-changes>`.
+  Değişiklikleri mutlaka okuyun :doc:`tam liste <080-breaking-changes>`.
 
   Solidity'yi veya bu dokümantasyonu geliştirmek için fikirlere her zaman açığız,
   Daha fazla ayrıntı için :doc:`katkıda bulunanlar rehberi <contributing>` sayfamızı okuyun.
