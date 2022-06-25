@@ -14,17 +14,17 @@ hangi dillerden ilham aldığı hakkındaki detaylı bilgiyi :doc:`ilham alınan
 Solidity statik olarak yazılmış olmasının yanı sıra, kütüphaneleri, kullanıcı tanımlı karmaşık
 türleri ve kalıtımsallığı destekler.
 
-Solidity'le kullanıcılar için oylama, crowdfunding, blind auctions ve multi-signature cüzdanlar
+Solidity'le kullanıcılar için oylama, crowdfunding, blind auctions ve çoklu-imza cüzdanları
 gibi kullanımlara yönelik akıllı sözleşmeler oluşturabilirsiniz.
 
-Sözleşmelerin dağıtımını yaparken, en son yayınlanan Solidity sürümünü kullanmalısınız. İstisnai
+Sözleşmelerin gönderimini yaparken, en son yayınlanan Solidity sürümünü kullanmalısınız. İstisnai
 durumlar dışında, yalnızca son sürüm `güvenlik düzeltmeleri
 <https://github.com/ethereum/solidity/security/policy#supported-versions>`_ güncellemelerini alır.
 Ayrıca, önemli değişikliklerinin yanı sıra yeni özellikler düzenli olarak tanıtılmaktadır.
 Bu hızlı `değişimleri belirtmek için <https://semver.org/#spec-item-4>`_ bir 0.y.z sürüm numarası
 kullanıyoruz.
 
-.. Uyarı::
+.. hint::
 
   Solidity kısa bir süre önce birçok yenilik ve önemli değişiklikler getiren 0.8.x sürümünü yayınladı.
   Değişiklikleri mutlaka okuyun :doc:`tam liste <080-breaking-changes>`.
@@ -32,7 +32,7 @@ kullanıyoruz.
   Solidity'yi veya bu dokümantasyonu geliştirmek için fikirlere her zaman açığız,
   Daha fazla ayrıntı için :doc:`katkıda bulunanlar rehberi <contributing>` sayfamızı okuyun.
 
-.. İpucu::
+.. warning::
 
   Bu belgeyi, sol alt köşedeki sürümler menüsüne tıklayarak ve tercih edilen indirme biçimini
   seçerek PDF, HTML veya Epub olarak indirebilirsiniz.
@@ -62,12 +62,12 @@ Solidity derleyicisini indirmenin birçok yolu vardır,
 tercih edeceğiniz yola göre :ref:`indirme sayfası <installing-solidity>`
 'da bulunan adımları izleyin.
 
-.. İpucu::
+.. hint::
   `Remix IDE <https://remix.ethereum.org>`_ ile birlikte kod örneklerini doğrudan tarayıcınızda
   deneyebilirsiniz. Remix, Solidity'yi yerel olarak yüklemenize gerek kalmadan Solidity akıllı sözleşmelerini yazmanıza,
    dağıtmanıza ve yönetmenize olanak tanıyan web tarayıcısı tabanlı bir IDE'dir.
 
-.. Uyarı::
+.. warning::
     İnsanlar kodlama yaparken, hataları olabilir. Akıllı sözleşmelerinizi yazarken
     belirlenmiş en iyi yazılım geliştirme uygulamalarını izlemelisiniz. Buna kod incelemesi,
     kodunuzu test etme, denetimler ve correctness proofs dahildir. Akıllı sözleşme kullanıcıları bazen
@@ -85,7 +85,7 @@ araçlar ve framework'ler(Yazılım iskeleti) konusunda yardımcı olabilir.
 Eğer herhangi bir sorunuz varsa, `Ethereum StackExchange <https://ethereum.stackexchange.com/>`_,
 veya `Gitter kanalımıza <https://gitter.im/ethereum/solidity/>`_ sorabilirsiniz.
 
-.. _çeviriler:
+.. _translations:
 
 Çeviriler
 ------------
@@ -104,7 +104,7 @@ arasında geçiş yapabilirsiniz.
 * `Korece <https://github.com/solidity-docs/ko-korean>`_
 * `Çince <https://github.com/solidity-docs/zh-cn-chinese/>`_
 
-.. not::
+.. note::
 
    Kısa süre önce topluluk çalışmalarını kolaylaştırmak ve düzene koymak için yeni bir
    GitHub organizasyonu ve çeviri için bir iş akışı(workflow) kurduk. Yeni bir dile nasıl
