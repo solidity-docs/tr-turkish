@@ -17,9 +17,18 @@ Katkıda bulunmak için lütfen [Discord Grubumuz'dan](https://discord.gg/cyN3vr
 
 ## Çeviri Kuralları
 
+Çeviri yapmaya başlamadan önce lütfen [kavramlar dizinini](https://github.com/solidity-docs/tr-turkish/blob/develop/GLOSSARY.md) kontrol ediniz.
+
 - Bir dosyanın adını ve bulunduğu konumu değiştirmeyin.
 - Teknik terimleri çevirmeye çalışmayın. (Eğer çok yaratıcı değilseniz :) )
 - Örnek kod parçacıklarındaki değişkenlerin, fonksiyonların vb. ismini türkçeye çevirmeyin. Yalnızca yorum satırındaki açıklamaları çevirin.
+
+## .rst(reStructuredText) Uzantısı
+
+Resmi Solidity dokümanları, .rst(reStructuredText) uzantılı dosyalardan oluşur. VS Code'u kullananlar için, aşağıdaki uzantılar faydalı olabilir:
+
+- [reStructuredText - LeXtudio Inc.](https://marketplace.visualstudio.com/items?itemName=lextudio.restructuredtext)
+- [reStructuredText Syntax highlighting - Trond Snekvik](https://marketplace.visualstudio.com/items?itemName=trond-snekvik.simple-rst)
 
 ## Resmi Sosyal Medya Hesapları ve Gruplar
 
