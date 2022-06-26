@@ -17,7 +17,7 @@ Katkıda bulunmak için lütfen [Discord Grubumuz'dan](https://discord.gg/cyN3vr
 
 ## Çeviri Kuralları
 
-Çeviri yapmaya başlamadan önce lütfen [kavramlar dizinini](https://github.com/solidity-docs/tr-turkish/blob/develop/GLOSSARY.md) kontrol ediniz.
+Çeviri yapmaya başlamadan önce lütfen [kavramlar dizinini](/GLOSSARY.md) kontrol ediniz.
 
 - Bir dosyanın adını ve bulunduğu konumu değiştirmeyin.
 - Teknik terimleri çevirmeye çalışmayın. (Eğer çok yaratıcı değilseniz :) )
