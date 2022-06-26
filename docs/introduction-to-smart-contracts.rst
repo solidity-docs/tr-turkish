@@ -1,18 +1,17 @@
 ###############################
-Introduction to Smart Contracts
+Akıllı Sözleşmelere Giriş
 ###############################
 
 .. _simple-smart-contract:
 
 ***********************
-A Simple Smart Contract
+Basit Bir Akıllı Sözleşme
 ***********************
 
-Let us begin with a basic example that sets the value of a variable and exposes
-it for other contracts to access. It is fine if you do not understand
-everything right now, we will go into more details later.
+Bir değişkenin değerini atayan ve bunu diğer sözleşmelerin erişimine sunan temel bir örnekle başlayalım.
+Şu an her şeyi anlamadıysanız sorun değil, birazdan daha fazla ayrıntıya gireceğiz.
 
-Storage Example
+Depolama
 ===============
 
 .. code-block:: solidity
@@ -32,55 +31,53 @@ Storage Example
         }
     }
 
-The first line tells you that the source code is licensed under the
-GPL version 3.0. Machine-readable license specifiers are important
-in a setting where publishing the source code is the default.
+İlk satır size kaynak kodunun GPL 3.0 sürümü altında lisanslanmış
+olduğunu söyler. Kaynak kodu yayınlamanın varsayılan olduğu bir ortamda
+makine tarafından okunabilen lisans belirleyicileri önemlidir.
 
-The next line specifies that the source code is written for
-Solidity version 0.4.16, or a newer version of the language up to, but not including version 0.9.0.
-This is to ensure that the contract is not compilable with a new (breaking) compiler version, where it could behave differently.
-:ref:`Pragmas<pragma>` are common instructions for compilers about how to treat the
-source code (e.g. `pragma once <https://en.wikipedia.org/wiki/Pragma_once>`_).
+Bir sonraki satır, kaynak kodun Solidity 0.4.16 sürümü veya 0.9.0 sürümüne
+kadar olan fakat bu sürümü içermeyen daha yeni bir sürümü için yazıldığını belirtir.
+Bu, sözleşmenin farklı sonuçlar verebileceği yeni bir derleyici sürümü ile derlenemez olmasını sağlamak içindir.
+:ref:`Pragmalar<pragma>`, derleyiciler için kaynak kodun nasıl ele alınacağına ilişkin ortak talimatlardır
+(ör. `pragma once <https://en.wikipedia.org/wiki/Pragma_once>`_).
 
-A contract in the sense of Solidity is a collection of code (its *functions*) and
-data (its *state*) that resides at a specific address on the Ethereum
-blockchain. The line ``uint storedData;`` declares a state variable called ``storedData`` of
-type ``uint`` (*u*\nsigned *int*\eger of *256* bits). You can think of it as a single slot
-in a database that you can query and alter by calling functions of the
-code that manages the database. In this example, the contract defines the
-functions ``set`` and ``get`` that can be used to modify
-or retrieve the value of the variable.
+Solidity kapsamında olan bir sözleşme, Ethereum blockchain ağında belirli bir adreste bulunan kod (*fonksiyonlar*) ve veri (*durum*) koleksiyonudur.
+``uint storeData;`` satırı, ``uint`` türünde (*256* bitlik bir *u*\nsigned (pozitif) *int*\eger ) ``storedData`` adlı bir
+durum değişkeni tanımlar . Bunu, veritabanını yöneten kodun fonksiyonlarını
+çağırarak sorgulayabileceğiniz ve değiştirebileceğiniz, veritabanındaki bir bilgi olarak düşünebilirsiniz.
+Ve bu örnektede, "set" ve “get” fonksiyonları değişkenin değerini değiştirmek veya çağırmak için tanımlanmıştır.
 
-To access a member (like a state variable) of the current contract, you do not typically add the ``this.`` prefix,
-you just access it directly via its name.
-Unlike in some other languages, omitting it is not just a matter of style,
-it results in a completely different way to access the member, but more on this later.
+Mevcut sözleşmenizde bulunan bir durum değişkenine erişmek için genellikle ``this.`` önekini eklemezsiniz, doğrudan adı üzerinden erişirsiniz.
+Diğer bazı dillerin aksine, bu öneki atlamak sadece kodun görünüşünü iyileştirmek için değildir. Bu düzenleme değişkene
+erişmek için de tamamen farklı sonuçlar doğurabilir, fakat bu konuya daha sonra detaylıca değineceğiz.
 
-This contract does not do much yet apart from (due to the infrastructure
-built by Ethereum) allowing anyone to store a single number that is accessible by
-anyone in the world without a (feasible) way to prevent you from publishing
-this number. Anyone could call ``set`` again with a different value
-and overwrite your number, but the number is still stored in the history
-of the blockchain. Later, you will see how you can impose access restrictions
-so that only you can alter the number.
+Bu sözleşme, (Ethereum temel yapısı nedeniyle) herhangi birinin, tanımladığınız bu
+değişkenin (yayınlamanızı engelleyecek (uygulanabilir) bir yol olmadan) dünyadaki herkes
+tarafından erişilebilmesi için saklamaktan başka pek bir işe yaramıyor.
+Herhangi biri ``set`` fonksiyonunu farklı bir değer tanımlamak için tekrar çağırabilir
+ve değişkeninizin üzerine yazdırabilir, fakat bu değiştirilen değişkenin kayıtları blok zincirinin
+geçmişinde saklanmaya devam eder. İlerleyen zamanlarda, değişkeni yalnızca sizin değiştirebilmeniz
+için nasıl erişim kısıtlamalarını koyabileceğinizi göreceksiniz.
 
 .. warning::
-    Be careful with using Unicode text, as similar looking (or even identical) characters can
-    have different code points and as such are encoded as a different byte array.
+    Unicode metni kullanırken dikkatli olunması gerekir, çünkü benzer görünümlü (hatta aynı)
+    karakterler farklı kod işlevlerine sahip olabilir ve farklı bir bayt dizisi olarak kodlanabilirler.
 
 .. note::
-    All identifiers (contract names, function names and variable names) are restricted to
-    the ASCII character set. It is possible to store UTF-8 encoded data in string variables.
+    Sözleşmenizin tüm tanımlayıcı değerleri (sözleşme isimleri, fonksiyon isimleri ve değişken
+    isimleri) ASCII karakter seti ile sınırlıdır. UTF-8 ile kodlanmış verileri string değişkenlerinde
+    saklamak mümkündür.
 
 .. index:: ! subcurrency
 
-Subcurrency Example
+Alt Para Birimi Örneği
 ===================
 
-The following contract implements the simplest form of a
-cryptocurrency. The contract allows only its creator to create new coins (different issuance schemes are possible).
-Anyone can send coins to each other without a need for
-registering with a username and password, all you need is an Ethereum keypair.
+Aşağıdaki sözleşme, bir kripto para biriminin en basit biçiminin bir örneğidir.
+Bu sözleşme, yalnızca sözleşme sahibinin (oluşturucusunun) yeni paralar oluşturmasına
+izin verir (farklı para oluşturma planları ayarlamak mümkündür).
+Herkes kullanıcı adı ve parolayla kayıt olmadan birbirine para gönderebilir.
+Tüm bunlar için tek ihtiyacınız olan şey sadece Ethereum anahtar çiftidir.
 
 .. code-block:: solidity
 
@@ -88,35 +85,35 @@ registering with a username and password, all you need is an Ethereum keypair.
     pragma solidity ^0.8.4;
 
     contract Coin {
-        // The keyword "public" makes variables
-        // accessible from other contracts
+        // "public" anahtar kelimesi, değişkenleri
+        // diğer sözleşmeler tarafından erişilebilir kılar
         address public minter;
         mapping (address => uint) public balances;
 
-        // Events allow clients to react to specific
-        // contract changes you declare
+        // Event'ler müşterilerin sözleşme üzerinde yaptığınız
+        // değişikliklere tepki vermelerini sağlar
         event Sent(address from, address to, uint amount);
 
-        // Constructor code is only run when the contract
-        // is created
+        // Constructor kodu sadece sözleşme
+        // oluşturulduğunda çalışır
         constructor() {
             minter = msg.sender;
         }
 
-        // Sends an amount of newly created coins to an address
-        // Can only be called by the contract creator
+        // Yeni oluşturulan bir miktar parayı adrese gönderir
+        // Yalnızca sözleşme yaratıcısı tarafından çağrılabilir
         function mint(address receiver, uint amount) public {
             require(msg.sender == minter);
             balances[receiver] += amount;
         }
 
-        // Errors allow you to provide information about
-        // why an operation failed. They are returned
-        // to the caller of the function.
+        // Error'ler bir işlemin neden başarısız olduğu hakkında
+        // bilgi almanızı sağlar. Fonksiyonu çağıran kişiye
+        // bilgilendirme amacıyla bir sonuç döndürürler.
         error InsufficientBalance(uint requested, uint available);
 
-        // Sends an amount of existing coins
-        // from any caller to an address
+        // Fonksiyonu çağıran kişinin var olan paralarından
+        // alıcı adrese para gönderir.
         function send(address receiver, uint amount) public {
             if (amount > balances[msg.sender])
                 revert InsufficientBalance({
@@ -130,34 +127,34 @@ registering with a username and password, all you need is an Ethereum keypair.
         }
     }
 
-This contract introduces some new concepts, let us go through them one by one.
+Bu sözleşmede bazı yeni kavramlar tanıtılıyor, hadi hepsini teker teker inceleyelim.
 
-The line ``address public minter;`` declares a state variable of type :ref:`address<address>`.
-The ``address`` type is a 160-bit value that does not allow any arithmetic operations.
-It is suitable for storing addresses of contracts, or a hash of the public half
-of a keypair belonging to :ref:`external accounts<accounts>`.
+``address public minter;`` satırı :ref:`address<address>` türündeki bir durum değişkenini tanımlıyor.
+``address`` değişken türü, herhangi bir aritmetik işlemin uygulanmasına izin vermeyen 160 bitlik bir değerdir.
+Sözleşmelerin adreslerini veya :ref:`harici hesaplar<accounts>`'a ait bir anahtar çiftinin
+teki olan public key hash'ini saklamak için uygundur.
 
-The keyword ``public`` automatically generates a function that allows you to access the current value of the state
-variable from outside of the contract. Without this keyword, other contracts have no way to access the variable.
-The code of the function generated by the compiler is equivalent
-to the following (ignore ``external`` and ``view`` for now):
+``public`` anahtar sözcüğü otomatik olarak durum değişkeninin mevcut değerine sözleşme dışından da erişmenizi sağlayan
+bir fonksiyonu oluşturur. Bu anahtar kelime olmadan, diğer sözleşmelerin bu değişkene erişme yolu yoktur.
+Derleyici tarafından oluşturulan fonksiyonun kodu aşağıdakine eşdeğerdir
+(şimdilik ``external`` ve ``view`` i göz ardı edin):
 
 .. code-block:: solidity
 
     function minter() external view returns (address) { return minter; }
 
-You could add a function like the above yourself, but you would have a function and state variable with the same name.
-You do not need to do this, the compiler figures it out for you.
+Yukarıdaki gibi bir fonksiyonu koda kendiniz de ekleyebilirsiniz, fakat aynı isimde olan bir fonksiyon ve
+durum değişkeniniz olur. Bunu yapmanıza gerek yoktur, bu işi derleyici sizin yerinize halleder.
 
 .. index:: mapping
 
-The next line, ``mapping (address => uint) public balances;`` also
-creates a public state variable, but it is a more complex datatype.
-The :ref:`mapping <mapping-types>` type maps addresses to :ref:`unsigned integers <integers>`.
+Diğer satır olan ``mapping (address => uint) public balances;`` de bir public durum değişkeni oluşturuyor,
+fakat bu değişken biraz daha karmaşık bir veri yapısına sahip.
+ref:`mapping <mapping-types>` türü adresleri :ref:`unsigned integers <integers>` ile eşler.
 
-Mappings can be seen as `hash tables <https://en.wikipedia.org/wiki/Hash_table>`_ which are
-virtually initialised such that every possible key exists from the start and is mapped to a
-value whose byte-representation is all zeros. However, it is neither possible to obtain a list of all keys of
+Mappingler, her olası anahtarın başlangıçtan itibaren var olduğu ve bayt temsilinin tamamı sıfır
+olan bir değerle eşlendiği şekilde sanal bir şekilde başlatılan `hash tabloları <https://en.wikipedia.org/wiki/Hash_table>`_
+olarak görülebilir. However, it is neither possible to obtain a list of all keys of
 a mapping, nor a list of all values. Record what you
 added to the mapping, or use it in a context where this is not needed. Or
 even better, keep a list, or use a more suitable data type.
