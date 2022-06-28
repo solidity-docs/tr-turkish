@@ -404,169 +404,158 @@ Ethereum Sanal Makinesi'nin veri depolayabileceği üç alan vardır:
 storage (depolama), memory (bellek) ve stack (yığın).
 
 Her hesap, fonksiyon çağrıları ve işlemler arasında kalıcı olan **storage**
-adlı bir veri alanına sahiptir. Storage is a key-value store that maps 256-bit words to 256-bit words.
-It is not possible to enumerate storage from within a contract, it is
-comparatively costly to read, and even more to initialise and modify storage. Because of this cost,
-you should minimize what you store in persistent storage to what the contract needs to run.
-Store data like derived calculations, caching, and aggregates outside of the contract.
-A contract can neither read nor write to any storage apart from its own.
+adlı bir veri alanına sahiptir. Depolama, 256 bit kelimeleri 256 bit kelimelerle eşleyen bir anahtar/değer deposudur.
+Bir sözleşmenin içinden depolamayı belirtmek mümkün değildir, depolamayı okumak da maliyetlidir ancak depolamayı
+başlatmak ve değiştirmek daha da maliyetlidir. Bu maliyet nedeniyle, kalıcı depolama alanında depoladığınız verinin
+miktarını sözleşmenin çalışması için gereken en azami miktara indirmelisiniz.
+Ayrıca türetilmiş hesaplamalar, önbelleğe alma ve toplamalar gibi verileri sözleşmenin dışında depolamalısınız.
+Bir sözleşme, kendi depolama alanı dışında herhangi bir depolama alanını ne okuyabilir ne de bu alandaki verileri değiştirebilir.
 
-The second data area is called **memory**, of which a contract obtains
-a freshly cleared instance for each message call. Memory is linear and can be
-addressed at byte level, but reads are limited to a width of 256 bits, while writes
-can be either 8 bits or 256 bits wide. Memory is expanded by a word (256-bit), when
-accessing (either reading or writing) a previously untouched memory word (i.e. any offset
-within a word). At the time of expansion, the cost in gas must be paid. Memory is more
-costly the larger it grows (it scales quadratically).
+İkincisi ise, **memory**(bellek) olarak adlandırılan ve bir sözleşmenin her ileti çağrısı
+için yeniden oluşturulmuş bir örneğini alan bir veri alanıdır. Bellek doğrusaldır ve bayt
+düzeyinde adreslenebilir, ancak okumalar 256 bit genişlikle sınırlıyken, yazmalar 8 bit veya
+256 bit genişliğinde olabilir. Daha önceden dokunulmamış bir bellek kelimesine (yani bir kelime
+içindeki herhangi bir ofsete) erişirken (okurken veya yazarken) bellek bir kelime (256 bit)
+kadar genişletilir. Bu genişletilme sırasında gas maliyeti ödenmelidir. Bellek büyüdükçe
+daha maliyetli olmaya başlıyacaktır (söz konusu artış maliyetin karesi olarak artmaya devam
+edecektir).
 
-The EVM is not a register machine but a stack machine, so all
-computations are performed on a data area called the **stack**. It has a maximum size of
-1024 elements and contains words of 256 bits. Access to the stack is
-limited to the top end in the following way:
-It is possible to copy one of
-the topmost 16 elements to the top of the stack or swap the
-topmost element with one of the 16 elements below it.
-All other operations take the topmost two (or one, or more, depending on
-the operation) elements from the stack and push the result onto the stack.
-Of course it is possible to move stack elements to storage or memory
-in order to get deeper access to the stack,
-but it is not possible to just access arbitrary elements deeper in the stack
-without first removing the top of the stack.
+ESM, kayıt makinesi değil yığın makinesi olduğundan tüm hesaplamalar
+**stack** (yığın) adı verilen bir veri alanında gerçekleştirilir.
+Bu alan maksimum 1024 eleman boyutuna sahiptir ve 256 bitlik kelimeler içerir.
+Yığına erişim aşağıdaki şekilde üst uçla sınırlıdır: En üstteki 16 elemandan
+birini yığının en üstüne kopyalamak veya en üstteki elemanı altındaki 16 elemandan
+biriyle değiştirmek mümkündür. Diğer tüm işlemler yığından en üstteki iki
+(veya işleme bağlı olarak bir veya daha fazla) elemanı alır ve sonucu yığının üzerine iter.
+Elbette yığına daha derin erişim sağlamak için yığın elemanlarını depolama alanına veya
+belleğe taşımak mümkündür, ancak önce yığının üst kısmını çıkarmadan yığının daha derinlerindeki
+rastgele elemanlara erişmek mümkün değildir.
 
 .. index:: ! instruction
 
-Instruction Set
+Yönerge Seti
 ===============
 
-The instruction set of the EVM is kept minimal in order to avoid
-incorrect or inconsistent implementations which could cause consensus problems.
-All instructions operate on the basic data type, 256-bit words or on slices of memory
-(or other byte arrays).
-The usual arithmetic, bit, logical and comparison operations are present.
-Conditional and unconditional jumps are possible. Furthermore,
-contracts can access relevant properties of the current block
-like its number and timestamp.
+ESM'nin komut seti, uzlaşma sorunlarına neden olabilecek yanlış veya tutarsız
+uygulamalardan kaçınmak için minimum düzeyde tutulmuştur. Tüm komutlar temel
+veri tipi olan 256 bitlik kelimeler veya bellek dilimleri (veya diğer bayt dizileri)
+üzerinde çalışır. Her zamanki aritmetik, bit, mantıksal ve karşılaştırma işlemleri mevcuttur.
+Koşullu ve koşulsuz atlamalar mümkündür. Ayrıca, sözleşmeler mevcut bloğun numarası ve zaman bilgisi gibi ilgili özelliklerine erişebilir.
 
-For a complete list, please see the :ref:`list of opcodes <opcodes>` as part of the inline
-assembly documentation.
+Tam bir liste için lütfen satır içi montaj belgelerinin bir parçası olarak :ref:`işlem kodu (opcode) listeleri <opcodes>` belgesine bakın.
 
 .. index:: ! message call, function;call
 
-Message Calls
+Mesaj Çağırıları
 =============
 
-Contracts can call other contracts or send Ether to non-contract
-accounts by the means of message calls. Message calls are similar
-to transactions, in that they have a source, a target, data payload,
-Ether, gas and return data. In fact, every transaction consists of
-a top-level message call which in turn can create further message calls.
+Sözleşmeler, mesaj çağrıları aracılığıyla diğer sözleşmeleri çağırabilir
+veya sözleşme dışı hesaplara Ether gönderebilir. Mesaj çağrıları, bir kaynak,
+bir hedef, veri yükü, Ether, gas ve geri dönüş verilerine sahip olmaları bakımından
+işlemlere benzerler. Aslında, her işlem üst düzey bir mesaj çağrısından oluşur
+ve bu da başka mesaj çağrıları oluşturabilir.
 
-A contract can decide how much of its remaining **gas** should be sent
-with the inner message call and how much it wants to retain.
-If an out-of-gas exception happens in the inner call (or any
-other exception), this will be signaled by an error value put onto the stack.
-In this case, only the gas sent together with the call is used up.
-In Solidity, the calling contract causes a manual exception by default in
-such situations, so that exceptions "bubble up" the call stack.
+Bir sözleşme, kalan **gas'ın** ne kadarının iç mesaj çağrısı ile gönderilmesi
+gerektiğine ve ne kadarını tutmak istediğine karar verebilir.
+İç çağrıda yetersiz-gas dışında bir istisna meydana gelirse (veya başka bir istisna),
+bu durum yığına yerleştirilen bir hata değeri ile bildirilir. Bu durumda,
+sadece çağrı ile birlikte gönderilen gas miktarı kullanılır.
+Solidity dilinde, bu gibi istisnaların oluşması varsayılan olarak manuel
+başka zincirleme istisnalar da yaratmaya meyilli olduğundan totalde yığınını
+“kabarcıklandıran” durum olarak nitelendirilir.
 
-As already said, the called contract (which can be the same as the caller)
-will receive a freshly cleared instance of memory and has access to the
-call payload - which will be provided in a separate area called the **calldata**.
-After it has finished execution, it can return data which will be stored at
-a location in the caller's memory preallocated by the caller.
-All such calls are fully synchronous.
+Daha önce de belirtildiği gibi, çağrılan sözleşme (arayan ile aynı olabilir)
+belleğin yeni temizlenmiş bir örneğini alır ve **calldata** adı verilen ayrı
+bir alanda sağlanacak olan çağrı yüküne (payload) erişebilir. Yürütmeyi tamamladıktan
+sonra, arayanın belleğinde arayan tarafından önceden ayrılmış bir konumda saklanacak
+olan verileri döndürebilir. Tüm bu çağrılar tamamen eşzamanlıdır.
 
-Calls are **limited** to a depth of 1024, which means that for more complex
-operations, loops should be preferred over recursive calls. Furthermore,
-only 63/64th of the gas can be forwarded in a message call, which causes a
-depth limit of a little less than 1000 in practice.
+Çağrılar, 1024 bitlik alanla ile sınırlıdır; bu, daha karmaşık işlemler için
+tekrarlamalı çağrılar yerine döngüler tercih edileceği anlamına gelir. Ayrıca,
+bir mesaj çağrısında gazın sadece 63 / 64'ü iletilebilir; bu, pratikte 1000 bit'ten
+daha az bir alan sınırlamasına neden olur.
 
 .. index:: delegatecall, callcode, library
 
-Delegatecall / Callcode and Libraries
+Delegatecall / Çağrı Kodu ve Kütüphaneler
 =====================================
 
-There exists a special variant of a message call, named **delegatecall**
-which is identical to a message call apart from the fact that
-the code at the target address is executed in the context (i.e. at the address) of the calling
-contract and ``msg.sender`` and ``msg.value`` do not change their values.
+Bir mesaj çağrısı ile temelde aynı anlama gelen **delegatecall**, hedef
+adresteki kodun arama sözleşmesi bağlamında (yani adresinde) yürütülmesi ve
+``msg.sender`` ve ``msg.value`` değerlerinin değiştirilememesi gibi özellikleri
+ile mesaj çağrısının özel bir çeşidi olarak kabul edilir.
 
-This means that a contract can dynamically load code from a different
-address at runtime. Storage, current address and balance still
-refer to the calling contract, only the code is taken from the called address.
+Bu, bir sözleşmenin çalışma zamanında farklı bir adresten dinamik olarak
+kod yükleyebileceği anlamına gelir. Depolama, geçerli adres ve bakiye hala
+çağıran sözleşmeye atıfta bulunurken, yalnızca kod çağrılan adresten aktarılır.
 
-This makes it possible to implement the "library" feature in Solidity:
-Reusable library code that can be applied to a contract's storage, e.g. in
-order to implement a complex data structure.
+Karmaşık bir veri yapısını uygulamak için bir sözleşmenin depolama alanına
+uygulanabilen ve yeniden kullanılabilen bir kütüphane kodu örnek olarak verilebilir.
 
 .. index:: log
 
-Logs
+Kayıtlar (Logs)
 ====
 
-It is possible to store data in a specially indexed data structure
-that maps all the way up to the block level. This feature called **logs**
-is used by Solidity in order to implement :ref:`events <events>`.
-Contracts cannot access log data after it has been created, but they
-can be efficiently accessed from outside the blockchain.
-Since some part of the log data is stored in `bloom filters <https://en.wikipedia.org/wiki/Bloom_filter>`_, it is
-possible to search for this data in an efficient and cryptographically
-secure way, so network peers that do not download the whole blockchain
-(so-called "light clients") can still find these logs.
+Verileri, tamamen blok seviyesine kadar haritalayan özel olarak indekslenmiş bir veri
+yapısında depolamak mümkündür. **Kayıtlar** (log) olarak adlandırılan bu özellik, Solidity
+tarafından :ref:`event'lerin <events>` uygulanmasını için kullanılır. Sözleşmeler, oluşturulduktan
+sonra kayıt verilerine erişemez, ancak bunlara blockchain'in dışından etkin bir şekilde
+erişilebilir. Kayıt edilen verilerinin bir kısmı `bloom filtrelerinde
+<https://en.wikipedia.org/wiki/Bloom_filter>`_ depolandığından, bu verileri verimli ve
+kriptografik olarak güvenli bir şekilde aramak mümkündür,  böylece tüm zinciri indirmek zorunda
+kalmayan ağ elemanları(peer) ("hafif istemciler" olarak adlandırılır) yine de bu günlükleri
+bulabilir.
 
 .. index:: contract creation
 
 Create
 ======
 
-Contracts can even create other contracts using a special opcode (i.e.
-they do not simply call the zero address as a transaction would). The only difference between
-these **create calls** and normal message calls is that the payload data is
-executed and the result stored as code and the caller / creator
-receives the address of the new contract on the stack.
+Sözleşmeler, özel bir opcode kullanarak başka sözleşmeler bile oluşturabilir
+(bunu, hedef adresi boş bırakarak yaparlar). Bu arama çağrıları ve normal mesaj
+çağrıları arasındaki tek fark, açığa çıkan veri yükünün yürütülmesi ve sonucun kod
+olarak saklanarak arayan tarafın(yaratıcının) yığındaki yeni sözleşmenin adresini almasıdır.
 
 .. index:: ! selfdestruct, deactivate
 
-Deactivate and Self-destruct
+Devre Dışı Bırakma ve Kendini İmha
 ============================
 
-The only way to remove code from the blockchain is when a contract at that
-address performs the ``selfdestruct`` operation. The remaining Ether stored
-at that address is sent to a designated target and then the storage and code
-is removed from the state. Removing the contract in theory sounds like a good
-idea, but it is potentially dangerous, as if someone sends Ether to removed
-contracts, the Ether is forever lost.
+Blockchain'den bir kodu kaldırmanın tek yolu, söz konusu adresteki bir sözleşmenin
+selfdestruct işlemini gerçekleştirmesidir. Bu adreste depolanan kalan Ether belirlenen
+bir hedefe gönderilir ve ardından depolama ve kod durumdan kaldırılır. Teoride sözleşmeyi
+kaldırmak iyi bir fikir gibi görünse de, birisi kaldırılan sözleşmelere Ether gönderirse,
+Ether sonsuza dek kaybolacağından potansiyel olarak tehlikelidir.
 
 .. warning::
-    Even if a contract is removed by ``selfdestruct``, it is still part of the
-    history of the blockchain and probably retained by most Ethereum nodes.
-    So using ``selfdestruct`` is not the same as deleting data from a hard disk.
+    Bir sözleşme ``selfdestruct`` ile kaldırılsa bile, hala blockchain
+    geçmişinin bir parçasıdır ve muhtemelen çoğu Ethereum node`u tarafından
+    saklanmaktadır. Yani ``selfdestruct`` kullanmak sabit diskten veri silmekle
+    aynı şey değildir.
 
 .. note::
-    Even if a contract's code does not contain a call to ``selfdestruct``,
-    it can still perform that operation using ``delegatecall`` or ``callcode``.
+    Bir sözleşmenin kodu ``selfdestruct`` çağrısı içermese bile, ``delegatecall``
+    veya ``callcode`` kullanarak bu işlemi gerçekleştirebilir.
 
-If you want to deactivate your contracts, you should instead **disable** them
-by changing some internal state which causes all functions to revert. This
-makes it impossible to use the contract, as it returns Ether immediately.
-
+Sözleşmelerinizi devre dışı bırakmak istiyorsanız, bunun yerine tüm fonksiyonların
+geri alınmasına neden olan bazı iç durumları değiştirerek bunları devre dışı bırakmalısınız.
+Bu, Ether'i derhal iade ettiğinden sözleşmeyi kullanmayı imkansız kılar.
 
 .. index:: ! precompiled contracts, ! precompiles, ! contract;precompiled
 
 .. _precompiledContracts:
 
-Precompiled Contracts
+Önceden Derlenmiş Sözleşmeler (Precompiled Contracts)
 =====================
 
-There is a small set of contract addresses that are special:
-The address range between ``1`` and (including) ``8`` contains
-"precompiled contracts" that can be called as any other contract
-but their behaviour (and their gas consumption) is not defined
-by EVM code stored at that address (they do not contain code)
-but instead is implemented in the EVM execution environment itself.
+Özel olan bir dizi küçük sözleşme adresi vardır: ``1`` ile (``8`` dahil)
+``8`` arasındaki adres aralığı, diğer sözleşmeler gibi çağrılabilen "önceden
+derlenmiş sözleşmeler" içerir, ancak davranışları (ve gaz tüketimleri) bu adreste
+saklanan ESM kodu tarafından tanımlanmaz (kod içermezler), bunun yerine ESM kendi
+yürütme ortamında yürütülür.
 
-Different EVM-compatible chains might use a different set of
-precompiled contracts. It might also be possible that new
-precompiled contracts are added to the Ethereum main chain in the future,
-but you can reasonably expect them to always be in the range between
-``1`` and ``0xffff`` (inclusive).
+Farklı ESM uyumlu zincirler, önceden derlenmiş farklı bir sözleşme seti kullanabilir.
+Gelecekte Ethereum ana zincirine önceden derlenmiş yeni sözleşmelerin eklenmesi de
+mümkün olabilir, ancak mantıklı olarak bunların her zaman ``1`` ile ``0xffff``
+(dahil) aralığında olmasını beklemelisiniz.
