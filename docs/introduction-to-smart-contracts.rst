@@ -1,17 +1,18 @@
 ###############################
-Akıllı Sözleşmelere Giriş
+Introduction to Smart Contracts
 ###############################
 
 .. _simple-smart-contract:
 
 ***********************
-Basit Bir Akıllı Sözleşme
+A Simple Smart Contract
 ***********************
 
-Bir değişkenin değerini atayan ve bunu diğer sözleşmelerin erişimine sunan temel bir örnekle başlayalım.
-Şu an her şeyi anlamadıysanız sorun değil, birazdan daha fazla ayrıntıya gireceğiz.
+Let us begin with a basic example that sets the value of a variable and exposes
+it for other contracts to access. It is fine if you do not understand
+everything right now, we will go into more detail later.
 
-Depolama
+Storage Example
 ===============
 
 .. code-block:: solidity
@@ -31,53 +32,55 @@ Depolama
         }
     }
 
-İlk satır size kaynak kodunun GPL 3.0 sürümü altında lisanslanmış
-olduğunu söyler. Kaynak kodu yayınlamanın varsayılan olduğu bir ortamda
-makine tarafından okunabilen lisans belirleyicileri önemlidir.
+The first line tells you that the source code is licensed under the
+GPL version 3.0. Machine-readable license specifiers are important
+in a setting where publishing the source code is the default.
 
-Bir sonraki satır, kaynak kodun Solidity 0.4.16 sürümü veya 0.9.0 sürümüne
-kadar olan fakat bu sürümü içermeyen daha yeni bir sürümü için yazıldığını belirtir.
-Bu, sözleşmenin farklı sonuçlar verebileceği yeni bir derleyici sürümü ile derlenemez olmasını sağlamak içindir.
-:ref:`Pragmalar<pragma>`, derleyiciler için kaynak kodun nasıl ele alınacağına ilişkin ortak talimatlardır
-(ör. `pragma once <https://en.wikipedia.org/wiki/Pragma_once>`_).
+The next line specifies that the source code is written for
+Solidity version 0.4.16, or a newer version of the language up to, but not including version 0.9.0.
+This is to ensure that the contract is not compilable with a new (breaking) compiler version, where it could behave differently.
+:ref:`Pragmas<pragma>` are common instructions for compilers about how to treat the
+source code (e.g. `pragma once <https://en.wikipedia.org/wiki/Pragma_once>`_).
 
-Solidity kapsamında olan bir sözleşme, Ethereum blockchain ağında belirli bir adreste bulunan kod (*fonksiyonlar*) ve veri (*durum*) koleksiyonudur.
-``uint storeData;`` satırı, ``uint`` türünde (*256* bitlik bir *u*\nsigned (pozitif) *int*\eger ) ``storedData`` adlı bir
-durum değişkeni tanımlar . Bunu, veritabanını yöneten kodun fonksiyonlarını
-çağırarak sorgulayabileceğiniz ve değiştirebileceğiniz, veritabanındaki bir bilgi olarak düşünebilirsiniz.
-Ve bu örnektede, "set" ve “get” fonksiyonları değişkenin değerini değiştirmek veya çağırmak için tanımlanmıştır.
+A contract in the sense of Solidity is a collection of code (its *functions*) and
+data (its *state*) that resides at a specific address on the Ethereum
+blockchain. The line ``uint storedData;`` declares a state variable called ``storedData`` of
+type ``uint`` (*u*\nsigned *int*\eger of *256* bits). You can think of it as a single slot
+in a database that you can query and alter by calling functions of the
+code that manages the database. In this example, the contract defines the
+functions ``set`` and ``get`` that can be used to modify
+or retrieve the value of the variable.
 
-Mevcut sözleşmenizde bulunan bir durum değişkenine erişmek için genellikle ``this.`` önekini eklemezsiniz, doğrudan adı üzerinden erişirsiniz.
-Diğer bazı dillerin aksine, bu öneki atlamak sadece kodun görünüşünü iyileştirmek için değildir. Bu düzenleme değişkene
-erişmek için de tamamen farklı sonuçlar doğurabilir, fakat bu konuya daha sonra detaylıca değineceğiz.
+To access a member (like a state variable) of the current contract, you do not typically add the ``this.`` prefix,
+you just access it directly via its name.
+Unlike in some other languages, omitting it is not just a matter of style,
+it results in a completely different way to access the member, but more on this later.
 
-Bu sözleşme, (Ethereum temel yapısı nedeniyle) herhangi birinin, tanımladığınız bu
-değişkenin (yayınlamanızı engelleyecek (uygulanabilir) bir yol olmadan) dünyadaki herkes
-tarafından erişilebilmesi için saklamaktan başka pek bir işe yaramıyor.
-Herhangi biri ``set`` fonksiyonunu farklı bir değer tanımlamak için tekrar çağırabilir
-ve değişkeninizin üzerine yazdırabilir, fakat bu değiştirilen değişkenin kayıtları blok zincirinin
-geçmişinde saklanmaya devam eder. İlerleyen zamanlarda, değişkeni yalnızca sizin değiştirebilmeniz
-için nasıl erişim kısıtlamalarını koyabileceğinizi göreceksiniz.
+This contract does not do much yet apart from (due to the infrastructure
+built by Ethereum) allowing anyone to store a single number that is accessible by
+anyone in the world without a (feasible) way to prevent you from publishing
+this number. Anyone could call ``set`` again with a different value
+and overwrite your number, but the number is still stored in the history
+of the blockchain. Later, you will see how you can impose access restrictions
+so that only you can alter the number.
 
 .. warning::
-    Unicode metni kullanırken dikkatli olunması gerekir, çünkü benzer görünümlü (hatta aynı)
-    karakterler farklı kod işlevlerine sahip olabilir ve farklı bir bayt dizisi olarak kodlanabilirler.
+    Be careful with using Unicode text, as similar looking (or even identical) characters can
+    have different code points and as such are encoded as a different byte array.
 
 .. note::
-    Sözleşmenizin tüm tanımlayıcı değerleri (sözleşme isimleri, fonksiyon isimleri ve değişken
-    isimleri) ASCII karakter seti ile sınırlıdır. UTF-8 ile kodlanmış verileri string değişkenlerinde
-    saklamak mümkündür.
+    All identifiers (contract names, function names and variable names) are restricted to
+    the ASCII character set. It is possible to store UTF-8 encoded data in string variables.
 
 .. index:: ! subcurrency
 
-Alt Para Birimi Örneği
+Subcurrency Example
 ===================
 
-Aşağıdaki sözleşme, bir kripto para biriminin en basit biçiminin bir örneğidir.
-Bu sözleşme, yalnızca sözleşme sahibinin (oluşturucusunun) yeni paralar oluşturmasına
-izin verir (farklı para oluşturma planları ayarlamak mümkündür).
-Herkes kullanıcı adı ve parolayla kayıt olmadan birbirine para gönderebilir.
-Tüm bunlar için tek ihtiyacınız olan şey sadece Ethereum anahtar çiftidir.
+The following contract implements the simplest form of a
+cryptocurrency. The contract allows only its creator to create new coins (different issuance schemes are possible).
+Anyone can send coins to each other without a need for
+registering with a username and password, all you need is an Ethereum keypair.
 
 .. code-block:: solidity
 
@@ -85,35 +88,35 @@ Tüm bunlar için tek ihtiyacınız olan şey sadece Ethereum anahtar çiftidir.
     pragma solidity ^0.8.4;
 
     contract Coin {
-        // "public" anahtar kelimesi, değişkenleri
-        // diğer sözleşmeler tarafından erişilebilir kılar
+        // The keyword "public" makes variables
+        // accessible from other contracts
         address public minter;
         mapping (address => uint) public balances;
 
-        // Event'ler müşterilerin sözleşme üzerinde yaptığınız
-        // değişikliklere tepki vermelerini sağlar
+        // Events allow clients to react to specific
+        // contract changes you declare
         event Sent(address from, address to, uint amount);
 
-        // Constructor kodu sadece sözleşme
-        // oluşturulduğunda çalışır
+        // Constructor code is only run when the contract
+        // is created
         constructor() {
             minter = msg.sender;
         }
 
-        // Yeni oluşturulan bir miktar parayı adrese gönderir
-        // Yalnızca sözleşme yaratıcısı tarafından çağrılabilir
+        // Sends an amount of newly created coins to an address
+        // Can only be called by the contract creator
         function mint(address receiver, uint amount) public {
             require(msg.sender == minter);
             balances[receiver] += amount;
         }
 
-        // Error'ler bir işlemin neden başarısız olduğu hakkında
-        // bilgi almanızı sağlar. Fonksiyonu çağıran kişiye
-        // bilgilendirme amacıyla bir sonuç döndürürler.
+        // Errors allow you to provide information about
+        // why an operation failed. They are returned
+        // to the caller of the function.
         error InsufficientBalance(uint requested, uint available);
 
-        // Fonksiyonu çağıran kişinin var olan paralarından
-        // alıcı adrese para gönderir.
+        // Sends an amount of existing coins
+        // from any caller to an address
         function send(address receiver, uint amount) public {
             if (amount > balances[msg.sender])
                 revert InsufficientBalance({
@@ -127,59 +130,63 @@ Tüm bunlar için tek ihtiyacınız olan şey sadece Ethereum anahtar çiftidir.
         }
     }
 
-Bu sözleşmede bazı yeni kavramlar tanıtılıyor, hadi hepsini teker teker inceleyelim.
+This contract introduces some new concepts, let us go through them one by one.
 
-``address public minter;`` satırı :ref:`address<address>` türündeki bir durum değişkenini tanımlıyor.
-``address`` değişken türü, herhangi bir aritmetik işlemin uygulanmasına izin vermeyen 160 bitlik bir değerdir.
-Sözleşmelerin adreslerini veya :ref:`harici hesaplar<accounts>`'a ait bir anahtar çiftinin
-teki olan public key hash'ini saklamak için uygundur.
+The line ``address public minter;`` declares a state variable of type :ref:`address<address>`.
+The ``address`` type is a 160-bit value that does not allow any arithmetic operations.
+It is suitable for storing addresses of contracts, or a hash of the public half
+of a keypair belonging to :ref:`external accounts<accounts>`.
 
-``public`` anahtar sözcüğü otomatik olarak durum değişkeninin mevcut değerine sözleşme dışından da erişmenizi sağlayan
-bir fonksiyonu oluşturur. Bu anahtar kelime olmadan, diğer sözleşmelerin bu değişkene erişme yolu yoktur.
-Derleyici tarafından oluşturulan fonksiyonun kodu aşağıdakine eşdeğerdir
-(şimdilik ``external`` ve ``view`` i göz ardı edin):
+The keyword ``public`` automatically generates a function that allows you to access the current value of the state
+variable from outside of the contract. Without this keyword, other contracts have no way to access the variable.
+The code of the function generated by the compiler is equivalent
+to the following (ignore ``external`` and ``view`` for now):
 
 .. code-block:: solidity
 
     function minter() external view returns (address) { return minter; }
 
-Yukarıdaki gibi bir fonksiyonu koda kendiniz de ekleyebilirsiniz, fakat aynı isimde olan bir fonksiyon ve
-durum değişkeniniz olur. Bunu yapmanıza gerek yoktur, bu işi derleyici sizin yerinize halleder.
+You could add a function like the above yourself, but you would have a function and state variable with the same name.
+You do not need to do this, the compiler figures it out for you.
 
 .. index:: mapping
 
-Diğer satır olan ``mapping (address => uint) public balances;`` de bir public durum değişkeni oluşturuyor,
-fakat bu değişken biraz daha karmaşık bir veri yapısına sahip. Burada bulunan
-ref:`mapping <mapping-types>` türü adresleri :ref:`unsigned integers <integers>` ile eşliyor.
+The next line, ``mapping (address => uint) public balances;`` also
+creates a public state variable, but it is a more complex datatype.
+The :ref:`mapping <mapping-types>` type maps addresses to :ref:`unsigned integers <integers>`.
 
-Mappingler, her olası anahtarın başlangıçtan itibaren var olduğu ve bayt temsilinin tamamı sıfır
-olan bir değerle eşlendiği şekilde sanal bir şekilde başlatılan `hash tabloları <https://en.wikipedia.org/wiki/Hash_table>`_
-olarak görülebilir. Ancak, bir mapping’in ne tüm anahtarlarının ne de tüm değerlerinin bir listesini
-elde etmek mümkün değildir. Bunun için mapping'e eklediğiniz değerleri kaydedin veya buna gerek duyulmayacak
-bir durumda kullanın. Hatta daha da iyisi bir liste tutun ya da daha uygun bir veri türünü kullanmayı deneyin.
+Mappings can be seen as `hash tables <https://en.wikipedia.org/wiki/Hash_table>`_ which are
+virtually initialised such that every possible key exists from the start and is mapped to a
+value whose byte-representation is all zeros. However, it is neither possible to obtain a list of all keys of
+a mapping, nor a list of all values. Record what you
+added to the mapping, or use it in a context where this is not needed. Or
+even better, keep a list, or use a more suitable data type.
 
-``public`` anahtar kelimesi ile oluşturulmuş aşağıda bulunan :ref:`çağırıcı fonksiyon<getter-functions>`, mapping örneğine
-göre biraz daha karmaşık bir yapıya sahiptir:
+The :ref:`getter function<getter-functions>` created by the ``public`` keyword
+is more complex in the case of a mapping. It looks like the
+following:
 
 .. code-block:: solidity
 
-    function balances(address account) external view returns (uint) {
-        return balances[account];
+    function balances(address _account) external view returns (uint) {
+        return balances[_account];
     }
 
-Bu fonksiyonu tek bir hesabın bakiyesini sorgulamak için kullanabilirsiniz.
+You can use this function to query the balance of a single account.
 
 .. index:: event
 
-``event Sent(address from, address to, uint amount);`` satırı ``send`` fonksiyonunun son
-satırında yayınlanan (emit) bir :ref:`”olay (event)" <events>` bildirir.
-Web uygulamaları gibi Ethereum istemcileri, blockchainde yayılan (emit) bu olaylardan (event) fazla maliyet olmadan veri alabilir.
-Event yayınlanır yayınlanmaz, veri alıcısı ``from``, ``to`` ve ``amount`` argümanlarını alır,
-bu da alım satım işlemlerinin takip edilmesini mümkün kılar.
+The line ``event Sent(address from, address to, uint amount);`` declares
+an :ref:`"event" <events>`, which is emitted in the last line of the function
+``send``. Ethereum clients such as web applications can
+listen for these events emitted on the blockchain without much
+cost. As soon as it is emitted, the listener receives the
+arguments ``from``, ``to`` and ``amount``, which makes it possible to track
+transactions.
 
-Bu olayı(event) dinlemek amacıyla, ``Coin`` sözleşme nesnesini oluşturmak için `web3.js <https://github.com/ethereum/web3.js/>`_
-kütüphanesini kullanan aşağıdaki JavaScript kodunu kullanabilirsiniz. Ve herhangi bir kullanıcı arayüzü (user interface),
-otomatik olarak oluşturulan ``balances`` fonksiyonunu yukarıdan sizin için çağırır::
+To listen for this event, you could use the following
+JavaScript code, which uses `web3.js <https://github.com/ethereum/web3.js/>`_ to create the ``Coin`` contract object,
+and any user interface calls the automatically generated ``balances`` function from above::
 
     Coin.Sent().watch({}, '', function(error, result) {
         if (!error) {
@@ -194,217 +201,226 @@ otomatik olarak oluşturulan ``balances`` fonksiyonunu yukarıdan sizin için ç
 
 .. index:: coin
 
-:ref:`constructor<constructor>` fonksiyonu, sözleşmenin oluşturulması sırasında çalıştırılan
-ve daha sonra çağırılamayan özel bir fonksiyondur. Bu örnekte ise constructor fonksiyonu sözleşmeyi oluşturan kişinin adresini kalıcı olarak depoluyor.
-``msg`` değişkeni (``tx`` ve ``block`` ile birlikte), blockchain'e erişim izini veren özellikleri olan :ref:`özel bir global değişken <special-variables-functions>`dir.
-``msg.sender`` her zaman varsayılan fonksiyonu (external) çağıran kişinin adresini döndürür.
+The :ref:`constructor<constructor>` is a special function that is executed during the creation of the contract and
+cannot be called afterwards. In this case, it permanently stores the address of the person creating the
+contract. The ``msg`` variable (together with ``tx`` and ``block``) is a
+:ref:`special global variable <special-variables-functions>` that
+contains properties which allow access to the blockchain. ``msg.sender`` is
+always the address where the current (external) function call came from.
 
-Sözleşmeyi oluşturan ve hem kullanıcıların hemde sözleşmelerin çağırabileceği fonksiyonlar ``mint`` ve ``send``dir.
+The functions that make up the contract, and that users and contracts can call are ``mint`` and ``send``.
 
-``mint`` fonksiyonu yeni oluşturulan bir miktar parayı başka bir adrese gönderir. ref:`require <assert-and-require>`
-fonksiyon çağrısı, karşılanmadığı takdirde tüm değişiklikleri geri döndüren koşulları tanımlar.
-Bu örnekte, ``require(msg.sender == minter);`` yalnızca sözleşme yaratıcısının ``mint`` fonksiyonunu çağırabilmesini sağlar.
-Genel olarak, sözleşme yaratıcısı istediği kadar para basabilir, fakat belirili bir noktadan sonra bu durum "owerflow" adı verilen bir olaya yol açacaktır.
-Varsayılan :ref:`Checked arithmetic <unchecked>` nedeniyle, ``balances[receiver] += amount;`` ifadesi
-taşarsa, yani  ``balances[receiver] + amount`` ifadesi ``uint`` maksimum değerinden (``2**256 - 1``)
-büyükse işlemin geri döndürüleceğini unutmayın. Bu, ``send`` fonksiyonundaki
-``balances[receiver] += amount;`` ifadesi için de geçerlidir.
+The ``mint`` function sends an amount of newly created coins to another address. The :ref:`require
+<assert-and-require>` function call defines conditions that reverts all changes if not met. In this
+example, ``require(msg.sender == minter);`` ensures that only the creator of the contract can call
+``mint``. In general, the creator can mint as many tokens as they like, but at some point, this will
+lead to a phenomenon called "overflow". Note that because of the default :ref:`Checked arithmetic
+<unchecked>`, the transaction would revert if the expression ``balances[receiver] += amount;``
+overflows, i.e., when ``balances[receiver] + amount`` in arbitrary precision arithmetic is larger
+than the maximum value of ``uint`` (``2**256 - 1``). This is also true for the statement
+``balances[receiver] += amount;`` in the function ``send``.
 
-:ref:`Hatalar <hatalar>`, bir koşulun veya işlemin neden başarısız olduğu hakkında
-fonksiyonu çağıran kişiye daha fazla bilgi sağlamanıza olanak tanır. Hatalar
-:ref:`revert ifadesi <revert-statement>` ile birlikte kullanılır. ``revert`` ifadesi,
-``require`` fonksiyonuna benzer bir şekilde tüm değişiklikleri koşulsuz olarak iptal eder
-ve geri alır, ancak aynı zamanda bir hatanın daha kolay hata ayıklanabilmesi veya tepki
-verilebilmesi için hatanın adını ve çağıran kişiye (ve nihayetinde ön uç uygulamaya veya
-blok gezginine) sağlanacak ek verileri sağlamanıza olanak tanır.
+:ref:`Errors <errors>` allow you to provide more information to the caller about
+why a condition or operation failed. Errors are used together with the
+:ref:`revert statement <revert-statement>`. The revert statement unconditionally
+aborts and reverts all changes similar to the ``require`` function, but it also
+allows you to provide the name of an error and additional data which will be supplied to the caller
+(and eventually to the front-end application or block explorer) so that
+a failure can more easily be debugged or reacted upon.
 
-‘'send'' fonksiyonu, herhangi biri tarafından (hali hazırda bir miktar paraya sahip olan)
-başka birine para göndermek için kullanılabilir. Gönderen kişinin göndermek için yeterli
-bakiyesi yoksa, ``if`` koşulu doğru (true) olarak değerlendirilir. Sonuç olarak ``revert``
-fonksiyonu, ``InsufficientBalance``(Yetersiz bakiye) hatasını kullanarak göndericiye hata
-ayrıntılarını sağlarken işlemin başarısız olmasına neden olacaktır.
+The ``send`` function can be used by anyone (who already
+has some of these coins) to send coins to anyone else. If the sender does not have
+enough coins to send, the ``if`` condition evaluates to true. As a result, the ``revert`` will cause the operation to fail
+while providing the sender with error details using the ``InsufficientBalance`` error.
 
 .. note::
-    Bu sözleşmeyi bir adrese para (coin) göndermek için kullanırsanız, bir blockchain
-    gezgininde (explorer) o adrese baktığınızda hiçbir şey göremezsiniz, çünkü para (coin)
-    gönderdiğiniz kayıt ve değişen bakiyeler yalnızca bu coin sözleşmesinin veri deposunda
-    saklanır. Event’leri kullanarak, yeni coin'inizin işlemlerini ve bakiyelerini izleyen
-    bir "blockchain gezgini (explorer)" oluşturabilirsiniz, ancak coin sahiplerinin adreslerini
-    değil, coin'in sözleşme adresini incelemeniz gerekir.
+    If you use
+    this contract to send coins to an address, you will not see anything when you
+    look at that address on a blockchain explorer, because the record that you sent
+    coins and the changed balances are only stored in the data storage of this
+    particular coin contract. By using events, you can create
+    a "blockchain explorer" that tracks transactions and balances of your new coin,
+    but you have to inspect the coin contract address and not the addresses of the
+    coin owners.
 
 .. _blockchain-basics:
 
 *****************
-Blockchain Temelleri
+Blockchain Basics
 *****************
 
-Bir kavram olarak Blockchain'leri anlamak programcılar için çok zor değildir. Bunun nedeni,
-komplikasyonların (madencilik (mining), `hashing <https://en.wikipedia.org/wiki/Cryptographic_hash_function>`_,
+Blockchains as a concept are not too hard to understand for programmers. The reason is that
+most of the complications (mining, `hashing <https://en.wikipedia.org/wiki/Cryptographic_hash_function>`_,
 `elliptic-curve cryptography <https://en.wikipedia.org/wiki/Elliptic_curve_cryptography>`_,
-`peer-to-peer networks <https://en.wikipedia.org/wiki/Peer-to-peer>`_, etc.) çoğunun sadece platform
-için belirli bir dizi özellik ve vaat sağlamak için orada olmasıdır. Bu özellikleri olduğu gibi
-kabul ettiğinizde, altta yatan teknoloji hakkında endişelenmenize gerek kalmaz - yoksa  Amazon'un
-AWS'sini kullanmak için dahili olarak nasıl çalıştığını bilmek zorunda mısınız?
+`peer-to-peer networks <https://en.wikipedia.org/wiki/Peer-to-peer>`_, etc.)
+are just there to provide a certain set of features and promises for the platform. Once you accept these
+features as given, you do not have to worry about the underlying technology - or do you have
+to know how Amazon's AWS works internally in order to use it?
 
 .. index:: transaction
 
-İşlemler (Transactions)
+Transactions
 ============
 
-Blockchain, küresel olarak paylaşılan, işlemsel bir veritabanıdır.
-Bu, herkesin yalnızca ağa katılarak veritabanındaki girdileri okuyabileceği anlamına gelir.
-Veritabanındaki bir şeyi değiştirmek istiyorsanız, diğerleri tarafından kabul edilmesi gereken
-sözde bir işlem oluşturmanız gerekir.
-İşlem kelimesi, yapmak istediğiniz değişikliğin (aynı anda iki değeri değiştirmek istediğinizi
-varsayın) ya hiç yapılmadığını ya da tamamen uygulanmasını ifade eder. Ayrıca, işleminiz
-veritabanına uygulanırken başka hiçbir işlem onu değiştiremez.
+A blockchain is a globally shared, transactional database.
+This means that everyone can read entries in the database just by participating in the network.
+If you want to change something in the database, you have to create a so-called transaction
+which has to be accepted by all others.
+The word transaction implies that the change you want to make (assume you want to change
+two values at the same time) is either not done at all or completely applied. Furthermore,
+while your transaction is being applied to the database, no other transaction can alter it.
 
-Örnek olarak, elektronik para birimindeki tüm hesapların bakiyelerini
-listeleyen bir tablo hayal düşünün. Bir hesaptan diğerine transfer talep edilirse,
-veri tabanının işlemsel yapısı, tutar bir hesaptan çıkarılırsa, her zaman diğer hesaba
-eklenmesini sağlar. Herhangi bir nedenden dolayı tutarın hedef hesaba eklenmesi mümkün değilse,
-kaynak hesaptaki bakiye de değiştirilmez.
+As an example, imagine a table that lists the balances of all accounts in an
+electronic currency. If a transfer from one account to another is requested,
+the transactional nature of the database ensures that if the amount is
+subtracted from one account, it is always added to the other account. If due
+to whatever reason, adding the amount to the target account is not possible,
+the source account is also not modified.
 
-Ayrıca, bir işlem her zaman gönderen (yaratıcı) tarafından şifreli olarak imzalanır. Bu,
-veritabanındaki belirli değişikliklere erişimi korumayı kolaylaştırır. Kripto para birimi
-örneğinde, basit bir kontrol, yalnızca anahtarları hesaba katan bir kişinin hesaptan para
-aktarabilmesini sağlar.
+Furthermore, a transaction is always cryptographically signed by the sender (creator).
+This makes it straightforward to guard access to specific modifications of the
+database. In the example of the electronic currency, a simple check ensures that
+only the person holding the keys to the account can transfer money from it.
 
 .. index:: ! block
 
-Bloklar
+Blocks
 ======
 
-Üstesinden gelinmesi gereken en büyük engellerden biri (Bitcoin açısından) "çifte harcama
-saldırısı" olarak adlandırılan bir olaydır: Ağda bir cüzdanı boşaltmak isteyen eşzamanlı iki
-işlem varsa ne olur? İşlemlerden sadece biri geçerli olabilir, tipik olarak önce kabul edilmiş
-olanı. Sorun, “ilk” in eşler arası ağda (peer-to-peer network) nesnel bir terim olmamasıdır.
+One major obstacle to overcome is what (in Bitcoin terms) is called a "double-spend attack":
+What happens if two transactions exist in the network that both want to empty an account?
+Only one of the transactions can be valid, typically the one that is accepted first.
+The problem is that "first" is not an objective term in a peer-to-peer network.
 
-Özetle tüm bunları düşünmenize gerk yoktur. İşlemlerin global olarak kabul edilen bir sırası
-sizin için seçilecek ve çatışma çözülecektir. İşlemler "blok" adı verilen bir yapıda bir araya
-getirilecek ve daha sonra yürütülerek tüm katılımcı düğümler arasında dağıtılacaktır. Eğer iki
-işlem birbiriyle çelişirse, ikinci olan işlem reddedilecek ve bloğun bir parçası olmayacaktır.
+The abstract answer to this is that you do not have to care. A globally accepted order of the transactions
+will be selected for you, solving the conflict. The transactions will be bundled into what is called a "block"
+and then they will be executed and distributed among all participating nodes.
+If two transactions contradict each other, the one that ends up being second will
+be rejected and not become part of the block.
 
-Bu bloklar zaman içinde doğrusal bir dizi oluşturur ve “blockchain" kelimesi de zaten buradan
-türemiştir. Bloklar zincire oldukça düzenli aralıklarla eklenir - Ethereum için bu süre kabaca
-her 17 saniye birdir.
+These blocks form a linear sequence in time and that is where the word "blockchain"
+derives from. Blocks are added to the chain in rather regular intervals - for
+Ethereum this is roughly every 17 seconds.
 
-"Sıra seçim mekanizmasının" ("madencilik" olarak adlandırılır) bir parçası olarak zaman zaman
-bloklar geri alınabilir, ancak bu sadece zincirin en "ucunda" gerçekleşir. Belirli bir bloğun üzerine
-ne kadar çok blok eklenirse, bu bloğun geri döndürülme olasılığı o kadar azalır. Yani işlemleriniz
-geri alınabilir ve hatta blockchain'den kaldırılabilir, ancak ne kadar uzun süre beklerseniz, bu
-olasılık o kadar azalacaktır.
+As part of the "order selection mechanism" (which is called "mining") it may happen that
+blocks are reverted from time to time, but only at the "tip" of the chain. The more
+blocks are added on top of a particular block, the less likely this block will be reverted. So it might be that your transactions
+are reverted and even removed from the blockchain, but the longer you wait, the less
+likely it will be.
 
 .. note::
+    Transactions are not guaranteed to be included in the next block or any specific future block,
+    since it is not up to the submitter of a transaction, but up to the miners to determine in which block the transaction is included.
 
-    İşlemlerin bir sonraki bloğa veya gelecekteki herhangi bir bloğa dahil
-    edileceği garanti edilmez, çünkü işlemin hangi bloğa dahil edileceğini belirlemek,
-    işlemi gönderen kişiye değil madencilere bağlıdır.
-
-    Sözleşmenizin gelecekteki çağrılarını planlamak istiyorsanız, bir akıllı sözleşme
-    otomasyon aracı veya bir oracle hizmeti kullanabilirsiniz.
+    If you want to schedule future calls of your contract, you can use
+    a smart contract automation tool or an oracle service.
 
 .. _the-ethereum-virtual-machine:
 
 .. index:: !evm, ! ethereum virtual machine
 
 ****************************
-Ethereum Sanal Makinası
+The Ethereum Virtual Machine
 ****************************
 
-Genel Bakış
+Overview
 ========
 
-Ethereum Sanal Makinesi veya ESM, Ethereum'daki akıllı sözleşmeler
-için çalışma ortamıdır. Bu alan yalnızca korumalı bir alan değil, aynı
-zamanda tamamen yalıtılmış bir alandır; yani ESM içinde çalışan kodun ağa,
-dosya sistemine ya da diğer süreçlere erişimi yoktur. Akıllı sözleşmelerin
-diğer akıllı sözleşmelere erişimi bile sınırlıdır.
+The Ethereum Virtual Machine or EVM is the runtime environment
+for smart contracts in Ethereum. It is not only sandboxed but
+actually completely isolated, which means that code running
+inside the EVM has no access to network, filesystem or other processes.
+Smart contracts even have limited access to other smart contracts.
 
 .. index:: ! account, address, storage, balance
 
 .. _accounts:
 
-Hesaplar
+Accounts
 ========
 
-Ethereum'da aynı adres alanını paylaşan iki tür hesap vardır:
-Public anahtar çiftleri (yani insanlar) tarafından kontrol edilen
-**harici hesaplar** ve hesapla birlikte depolanan kod tarafından kontrol
-edilen **sözleşme hesapları**.
+There are two kinds of accounts in Ethereum which share the same
+address space: **External accounts** that are controlled by
+public-private key pairs (i.e. humans) and **contract accounts** which are
+controlled by the code stored together with the account.
 
-Harici bir hesabın adresi açık (public) anahtardan belirlenirken, bir sözleşmenin
-adresi sözleşmenin oluşturulduğu anda belirlenir ("nonce" olarak adlandırılan yaratıcı
-adres ve bu adresten gönderilen işlem sayısından türetilir).
+The address of an external account is determined from
+the public key while the address of a contract is
+determined at the time the contract is created
+(it is derived from the creator address and the number
+of transactions sent from that address, the so-called "nonce").
 
-Hesabın kod depolayıp depolamadığına bakılmaksızın, iki tür ESM tarafından
-eşit olarak değerlendirilir.
+Regardless of whether or not the account stores code, the two types are
+treated equally by the EVM.
 
-Her hesabın, 256-bit sözcükleri **storage** adı verilen 256-bit sözcüklere e
-şleyen kalıcı bir anahtar-değer deposu vardır.
+Every account has a persistent key-value store mapping 256-bit words to 256-bit
+words called **storage**.
 
-Ayrıca, her hesabın Ether cinsinden bir **bakiyesi** vardır (tam olarak "Wei"
-cinsinden, ``1 ether`` ``10**18 wei``dir) ve bu Ether içeren işlemler gönderilerek
-değiştirilebilir.
+Furthermore, every account has a **balance** in
+Ether (in "Wei" to be exact, ``1 ether`` is ``10**18 wei``) which can be modified by sending transactions that
+include Ether.
 
 .. index:: ! transaction
 
-İşlemler
+Transactions
 ============
 
-İşlem, bir hesaptan diğerine gönderilen bir mesajdır (aynı veya boş olabilir, aşağıya bakınız).
-İkili verileri ("yük" olarak adlandırılır) ve Ether içerebilir.
+A transaction is a message that is sent from one account to another
+account (which might be the same or empty, see below).
+It can include binary data (which is called "payload") and Ether.
 
-Hedef hesap kod içeriyorsa, bu kod çalıştırılır ve sonucunda elde erilen veri yükü girdi olarak
-kabul edilir.
+If the target account contains code, that code is executed and
+the payload is provided as input data.
 
-Hedef hesap ayarlanmamışsa (işlemin alıcısı yoksa veya alıcı ``null``
-olarak ayarlanmışsa), işlem **yeni bir sözleşme** oluşturur.
-Daha önce de belirtildiği gibi, bu sözleşmenin adresi sıfır adres değil,
-göndericiden ve gönderilen işlem sayısından ("nonce") türetilen bir adrestir.
-Böyle bir sözleşme oluşturma işleminin yükü ESM bytecode'u olarak alınır ve çalıştırılır.
-Bu uygulamanın çıktı verileri kalıcı olarak sözleşmenin kodu olarak saklanır.
-Bu, bir sözleşme oluşturmak için sözleşmenin gerçek kodunu değil, aslında yürütüldüğünde
-bu kodu döndüren kodu gönderdiğiniz anlamına gelir.
+If the target account is not set (the transaction does not have
+a recipient or the recipient is set to ``null``), the transaction
+creates a **new contract**.
+As already mentioned, the address of that contract is not
+the zero address but an address derived from the sender and
+its number of transactions sent (the "nonce"). The payload
+of such a contract creation transaction is taken to be
+EVM bytecode and executed. The output data of this execution is
+permanently stored as the code of the contract.
+This means that in order to create a contract, you do not
+send the actual code of the contract, but in fact code that
+returns that code when executed.
 
 .. note::
-  Bir sözleşme oluşturulurken, kodu hala boştur.
-  Bu nedenle, constructor fonksiyonu çalışmayı bitirene
-  kadar yapım aşamasındaki sözleşmeyi geri çağırmamalısınız.
+  While a contract is being created, its code is still empty.
+  Because of that, you should not call back into the
+  contract under construction until its constructor has
+  finished executing.
 
 .. index:: ! gas, ! gas price
 
 Gas
 ===
 
-Oluşturulduktan sonra, her işlem, işlemin kaynağı (``tx.origin``) tarafından
-ödenmesi gereken belirli bir **gas** miktarı ile ücretlendirilir.
-ESM işlemi gerçekleştirirken, gas belirli kurallara göre kademeli olarak tüketilir.
-Gas herhangi bir noktada tükenirse (yani negatif olursa), yürütmeyi sona erdiren ve
-mevcut çağrı çerçevesinde durumunda yapılan tüm değişiklikleri geri alan bir out-of-gas
-(gas bitti) istisnası tetiklenir.
+Upon creation, each transaction is charged with a certain amount of **gas**,
+whose purpose is to limit the amount of work that is needed to execute
+the transaction and to pay for this execution at the same time. While the EVM executes the
+transaction, the gas is gradually depleted according to specific rules.
 
-Bu mekanizma, ESM'in çalışma süresinin tasarruflu bir şekilde kullanılmasını teşvik eder
-ve aynı zamanda ESM yürütücülerinin (yani madencilerin / stakerların) çalışmalarını telafi eder.
-Her blok maksimum miktarda gaza sahip olduğundan, bir bloğu doğrulamak için gereken iş miktarını da sınırlanmış olur.
+The **gas price** is a value set by the creator of the transaction, who
+has to pay ``gas_price * gas`` up front from the sending account.
+If some gas is left after the execution, it is refunded to the creator in the same way.
 
-**Gas ücreti**, işlemin yaratıcısı tarafından yani gönderen hesabından ``gaz_ücreti * gaz`` miktarında ödemek zorunda olduğu bir değerdir.
-Uygulamadan sonra bir miktar gaz kalırsa, bu miktar işlemi çalıştıran kişiye iade edilir.
-Değişikliği geri döndüren bir istisna olması durumunda, kullanılmış gas'ın iadesi yapılmaz.
-
-ESM yürütücüleri bir işlemi ağa dahil edip etmemeyi seçebildiğinden, işlem gönderenler
-düşük bir gas fiyatı belirleyerek sistemi kötüye kullanamazlar.
+If the gas is used up at any point (i.e. it would be negative),
+an out-of-gas exception is triggered, which reverts all modifications
+made to the state in the current call frame.
 
 .. index:: ! storage, ! memory, ! stack
 
-Depolama, Bellek ve Yığın
+Storage, Memory and the Stack
 =============================
 
-Ethereum Sanal Makinesi'nin veri depolayabileceği üç alan vardır:
-storage (depolama), memory (bellek) ve stack (yığın).
+The Ethereum Virtual Machine has three areas where it can store data-
+storage, memory and the stack, which are explained in the following
+paragraphs.
 
-Her hesap, fonksiyon çağrıları ve işlemler arasında kalıcı olan **storage**
-adlı bir veri alanına sahiptir. Storage is a key-value store that maps 256-bit words to 256-bit words.
+Each account has a data area called **storage**, which is persistent between function calls
+and transactions.
+Storage is a key-value store that maps 256-bit words to 256-bit words.
 It is not possible to enumerate storage from within a contract, it is
 comparatively costly to read, and even more to initialise and modify storage. Because of this cost,
 you should minimize what you store in persistent storage to what the contract needs to run.
@@ -488,7 +504,7 @@ Delegatecall / Callcode and Libraries
 
 There exists a special variant of a message call, named **delegatecall**
 which is identical to a message call apart from the fact that
-the code at the target address is executed in the context (i.e. at the address) of the calling
+the code at the target address is executed in the context of the calling
 contract and ``msg.sender`` and ``msg.value`` do not change their values.
 
 This means that a contract can dynamically load code from a different
@@ -525,7 +541,7 @@ these **create calls** and normal message calls is that the payload data is
 executed and the result stored as code and the caller / creator
 receives the address of the new contract on the stack.
 
-.. index:: ! selfdestruct, deactivate
+.. index:: selfdestruct, self-destruct, deactivate
 
 Deactivate and Self-destruct
 ============================
