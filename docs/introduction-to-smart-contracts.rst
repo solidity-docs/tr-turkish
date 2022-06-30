@@ -32,16 +32,15 @@ Depolama
     }
 
 İlk satır size kaynak kodunun GPL 3.0 sürümü altında lisanslanmış
-olduğunu söyler. Kaynak kodu yayınlamanın varsayılan olduğu bir ortamda
+olduğunu söyler. Kaynak kodu yayınlamanın standart olduğu bir ortamda
 makine tarafından okunabilen lisans belirleyicileri önemlidir.
 
-Bir sonraki satır, kaynak kodun Solidity 0.4.16 sürümü veya 0.9.0 sürümüne
-kadar olan fakat bu sürümü içermeyen daha yeni bir sürümü için yazıldığını belirtir.
+Bir sonraki satır, kaynak kodun Solidity 0.4.16'dan başlayarak 0.9.0'a kadar (0.9.0 hariç) olan sürümler için yazıldığını belirtir.
 Bu, sözleşmenin farklı sonuçlar verebileceği yeni bir derleyici sürümü ile derlenemez olmasını sağlamak içindir.
 :ref:`Pragmalar<pragma>`, derleyiciler için kaynak kodun nasıl ele alınacağına ilişkin ortak talimatlardır
 (ör. `pragma once <https://en.wikipedia.org/wiki/Pragma_once>`_).
 
-Solidity kapsamında olan bir sözleşme, Ethereum blockchain ağında belirli bir adreste bulunan kod (*fonksiyonlar*) ve veri (*durum*) koleksiyonudur.
+Solidity kapsamında olan bir sözleşme, Ethereum blockchain ağında belirli bir adreste bulunan kod (*fonksiyonlar*) ve veri (*durum*) bütünüdür.
 ``uint storeData;`` satırı, ``uint`` türünde (*256* bitlik bir *u*\nsigned (pozitif) *int*\eger ) ``storedData`` adlı bir
 durum değişkeni tanımlar . Bunu, veritabanını yöneten kodun fonksiyonlarını
 çağırarak sorgulayabileceğiniz ve değiştirebileceğiniz, veritabanındaki bir bilgi olarak düşünebilirsiniz.
@@ -90,7 +89,7 @@ Tüm bunlar için tek ihtiyacınız olan şey sadece Ethereum anahtar çiftidir.
         address public minter;
         mapping (address => uint) public balances;
 
-        // Event'ler müşterilerin sözleşme üzerinde yaptığınız
+        // Event'ler istemcilerin sözleşme üzerinde yaptığınız
         // değişikliklere tepki vermelerini sağlar
         event Sent(address from, address to, uint amount);
 
@@ -152,9 +151,9 @@ Diğer satır olan ``mapping (address => uint) public balances;`` de bir public 
 fakat bu değişken biraz daha karmaşık bir veri yapısına sahip. Burada bulunan
 ref:`mapping <mapping-types>` türü adresleri :ref:`unsigned integers <integers>` ile eşliyor.
 
-Mappingler, her olası anahtarın başlangıçtan itibaren var olduğu ve bayt temsilinin tamamı sıfır
-olan bir değerle eşlendiği şekilde sanal bir şekilde başlatılan `hash tabloları <https://en.wikipedia.org/wiki/Hash_table>`_
-olarak görülebilir. Ancak, bir mapping’in ne tüm anahtarlarının ne de tüm değerlerinin bir listesini
+Mapping'ler, sanal bir şekilde tanımlanıp değer atanan `hash tabloları <https://en.wikipedia.org/wiki/Hash_table>`_
+olarak görülebilir. Bu yapıda mümkün olan her anahtar değeri tanımlandığı andan itibaren bulunur ve bu anahtarların
+eşlendiği değer (byte gösterminde) sıfırdır.  Ancak, bir mapping’in ne tüm anahtarlarının ne de tüm değerlerinin bir listesini
 elde etmek mümkün değildir. Bunun için mapping'e eklediğiniz değerleri kaydedin veya buna gerek duyulmayacak
 bir durumda kullanın. Hatta daha da iyisi bir liste tutun ya da daha uygun bir veri türünü kullanmayı deneyin.
 
@@ -163,8 +162,8 @@ göre biraz daha karmaşık bir yapıya sahiptir:
 
 .. code-block:: solidity
 
-    function balances(address account) external view returns (uint) {
-        return balances[account];
+    function balances(address _account) external view returns (uint) {
+        return balances[_account];
     }
 
 Bu fonksiyonu tek bir hesabın bakiyesini sorgulamak için kullanabilirsiniz.
@@ -172,7 +171,7 @@ Bu fonksiyonu tek bir hesabın bakiyesini sorgulamak için kullanabilirsiniz.
 .. index:: event
 
 ``event Sent(address from, address to, uint amount);`` satırı ``send`` fonksiyonunun son
-satırında yayınlanan (emit) bir :ref:`”olay (event)" <events>` bildirir.
+satırında yayılan (emit) bir :ref:`”olay (event)" <events>` bildirir.
 Web uygulamaları gibi Ethereum istemcileri, blockchainde yayılan (emit) bu olaylardan (event) fazla maliyet olmadan veri alabilir.
 Event yayınlanır yayınlanmaz, veri alıcısı ``from``, ``to`` ve ``amount`` argümanlarını alır,
 bu da alım satım işlemlerinin takip edilmesini mümkün kılar.
@@ -253,8 +252,7 @@ AWS'sini kullanmak için dahili olarak nasıl çalıştığını bilmek zorunda 
 
 Blockchain, küresel olarak paylaşılan, işlemsel bir veritabanıdır.
 Bu, herkesin yalnızca ağa katılarak veritabanındaki girdileri okuyabileceği anlamına gelir.
-Veritabanındaki bir şeyi değiştirmek istiyorsanız, diğerleri tarafından kabul edilmesi gereken
-sözde bir işlem oluşturmanız gerekir.
+Veritabanındaki bir şeyi değiştirmek istiyorsanız, diğerleri tarafından kabul edilmesi gereken bir "işlem" oluşturmanız gerekir.
 İşlem kelimesi, yapmak istediğiniz değişikliğin (aynı anda iki değeri değiştirmek istediğinizi
 varsayın) ya hiç yapılmadığını ya da tamamen uygulanmasını ifade eder. Ayrıca, işleminiz
 veritabanına uygulanırken başka hiçbir işlem onu değiştiremez.
@@ -340,8 +338,8 @@ adres ve bu adresten gönderilen işlem sayısından türetilir).
 Hesabın kod depolayıp depolamadığına bakılmaksızın, iki tür ESM tarafından
 eşit olarak değerlendirilir.
 
-Her hesabın, 256-bit sözcükleri **storage** adı verilen 256-bit sözcüklere e
-şleyen kalıcı bir anahtar-değer deposu vardır.
+Her hesabın, 256-bit sözcükleri **storage** adı verilen 256-bit sözcüklere eşleyen
+kalıcı bir anahtar-değer deposu vardır.
 
 Ayrıca, her hesabın Ether cinsinden bir **bakiyesi** vardır (tam olarak "Wei"
 cinsinden, ``1 ether`` ``10**18 wei``dir) ve bu Ether içeren işlemler gönderilerek
@@ -517,7 +515,7 @@ Sözleşmeler, özel bir opcode kullanarak başka sözleşmeler bile oluşturabi
 çağrıları arasındaki tek fark, açığa çıkan veri yükünün yürütülmesi ve sonucun kod
 olarak saklanarak arayan tarafın(yaratıcının) yığındaki yeni sözleşmenin adresini almasıdır.
 
-.. index:: ! selfdestruct, deactivate
+.. index:: selfdestruct, self-destruct, deactivate
 
 Devre Dışı Bırakma ve Kendini İmha
 ============================
