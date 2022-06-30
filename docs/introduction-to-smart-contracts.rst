@@ -40,7 +40,7 @@ Bu, sözleşmenin farklı sonuçlar verebileceği yeni bir derleyici sürümü i
 :ref:`Pragmalar<pragma>`, derleyiciler için kaynak kodun nasıl ele alınacağına ilişkin ortak talimatlardır
 (ör. `pragma once <https://en.wikipedia.org/wiki/Pragma_once>`_).
 
-Solidity kapsamında olan bir sözleşme, Ethereum blockchain ağında belirli bir adreste bulunan kod (*fonksiyonlar*) ve veri (*durum*) bütünüdür.
+Solidity kapsamında olan bir sözleşme, Ethereum blok zinciri ağında belirli bir adreste bulunan kod (*fonksiyonlar*) ve veri (*durum*) bütünüdür.
 ``uint storeData;`` satırı, ``uint`` türünde (*256* bitlik bir *u*\nsigned (pozitif) *int*\eger ) ``storedData`` adlı bir
 durum değişkeni tanımlar . Bunu, veritabanını yöneten kodun fonksiyonlarını
 çağırarak sorgulayabileceğiniz ve değiştirebileceğiniz, veritabanındaki bir bilgi olarak düşünebilirsiniz.
@@ -172,7 +172,7 @@ Bu fonksiyonu tek bir hesabın bakiyesini sorgulamak için kullanabilirsiniz.
 
 ``event Sent(address from, address to, uint amount);`` satırı ``send`` fonksiyonunun son
 satırında yayılan (emit) bir :ref:`”olay (event)" <events>` bildirir.
-Web uygulamaları gibi Ethereum istemcileri, blockchainde yayılan (emit) bu olaylardan (event) fazla maliyet olmadan veri alabilir.
+Web uygulamaları gibi Ethereum istemcileri, blok zincirinde yayılan (emit) bu olaylardan (event) fazla maliyet olmadan veri alabilir.
 Event yayınlanır yayınlanmaz, veri alıcısı ``from``, ``to`` ve ``amount`` argümanlarını alır,
 bu da alım satım işlemlerinin takip edilmesini mümkün kılar.
 
@@ -195,7 +195,7 @@ otomatik olarak oluşturulan ``balances`` fonksiyonunu yukarıdan sizin için ç
 
 :ref:`constructor<constructor>` fonksiyonu, sözleşmenin oluşturulması sırasında çalıştırılan
 ve daha sonra çağırılamayan özel bir fonksiyondur. Bu örnekte ise constructor fonksiyonu sözleşmeyi oluşturan kişinin adresini kalıcı olarak depoluyor.
-``msg`` değişkeni (``tx`` ve ``block`` ile birlikte), blockchain'e erişim izini veren özellikleri olan :ref:`özel bir global değişken <special-variables-functions>`dir.
+``msg`` değişkeni (``tx`` ve ``block`` ile birlikte), blok zincirine erişim izini veren özellikleri olan :ref:`özel bir global değişken <special-variables-functions>`dir.
 ``msg.sender`` her zaman varsayılan fonksiyonu (external) çağıran kişinin adresini döndürür.
 
 Sözleşmeyi oluşturan ve hem kullanıcıların hemde sözleşmelerin çağırabileceği fonksiyonlar ``mint`` ve ``send``dir.
@@ -224,20 +224,20 @@ fonksiyonu, ``InsufficientBalance``(Yetersiz bakiye) hatasını kullanarak gönd
 ayrıntılarını sağlarken işlemin başarısız olmasına neden olacaktır.
 
 .. note::
-    Bu sözleşmeyi bir adrese para (coin) göndermek için kullanırsanız, bir blockchain
+    Bu sözleşmeyi bir adrese para (coin) göndermek için kullanırsanız, bir blok zinciri
     gezgininde (explorer) o adrese baktığınızda hiçbir şey göremezsiniz, çünkü para (coin)
     gönderdiğiniz kayıt ve değişen bakiyeler yalnızca bu coin sözleşmesinin veri deposunda
     saklanır. Event’leri kullanarak, yeni coin'inizin işlemlerini ve bakiyelerini izleyen
-    bir "blockchain gezgini (explorer)" oluşturabilirsiniz, ancak coin sahiplerinin adreslerini
+    bir "blok zinciri gezgini (explorer)" oluşturabilirsiniz, ancak coin sahiplerinin adreslerini
     değil, coin'in sözleşme adresini incelemeniz gerekir.
 
 .. _blockchain-basics:
 
 *****************
-Blockchain Temelleri
+Blok Zinciri Temelleri
 *****************
 
-Bir kavram olarak Blockchain'leri anlamak programcılar için çok zor değildir. Bunun nedeni,
+Bir kavram olarak blok zincirleri anlamak programcılar için çok zor değildir. Bunun nedeni,
 komplikasyonların (madencilik (mining), `hashing <https://en.wikipedia.org/wiki/Cryptographic_hash_function>`_,
 `elliptic-curve cryptography <https://en.wikipedia.org/wiki/Elliptic_curve_cryptography>`_,
 `peer-to-peer networks <https://en.wikipedia.org/wiki/Peer-to-peer>`_, etc.) çoğunun sadece platform
@@ -250,7 +250,7 @@ AWS'sini kullanmak için dahili olarak nasıl çalıştığını bilmek zorunda 
 İşlemler (Transactions)
 ============
 
-Blockchain, küresel olarak paylaşılan, işlemsel bir veritabanıdır.
+Blok zinciri, küresel olarak paylaşılan, işlemsel bir veritabanıdır.
 Bu, herkesin yalnızca ağa katılarak veritabanındaki girdileri okuyabileceği anlamına gelir.
 Veritabanındaki bir şeyi değiştirmek istiyorsanız, diğerleri tarafından kabul edilmesi gereken bir "işlem" oluşturmanız gerekir.
 İşlem kelimesi, yapmak istediğiniz değişikliğin (aynı anda iki değeri değiştirmek istediğinizi
@@ -283,14 +283,14 @@ sizin için seçilecek ve çatışma çözülecektir. İşlemler "blok" adı ver
 getirilecek ve daha sonra yürütülerek tüm katılımcı düğümler arasında dağıtılacaktır. Eğer iki
 işlem birbiriyle çelişirse, ikinci olan işlem reddedilecek ve bloğun bir parçası olmayacaktır.
 
-Bu bloklar zaman içinde doğrusal bir dizi oluşturur ve “blockchain" kelimesi de zaten buradan
+Bu bloklar zaman içinde doğrusal bir dizi oluşturur ve “blok zinciri" kelimesi de zaten buradan
 türemiştir. Bloklar zincire oldukça düzenli aralıklarla eklenir - Ethereum için bu süre kabaca
 her 17 saniye birdir.
 
 "Sıra seçim mekanizmasının" ("madencilik" olarak adlandırılır) bir parçası olarak zaman zaman
 bloklar geri alınabilir, ancak bu sadece zincirin en "ucunda" gerçekleşir. Belirli bir bloğun üzerine
 ne kadar çok blok eklenirse, bu bloğun geri döndürülme olasılığı o kadar azalır. Yani işlemleriniz
-geri alınabilir ve hatta blockchain'den kaldırılabilir, ancak ne kadar uzun süre beklerseniz, bu
+geri alınabilir ve hatta blok zincirinden kaldırılabilir, ancak ne kadar uzun süre beklerseniz, bu
 olasılık o kadar azalacaktır.
 
 .. note::
@@ -498,7 +498,7 @@ Kayıtlar (Logs)
 Verileri, tamamen blok seviyesine kadar haritalayan özel olarak indekslenmiş bir veri
 yapısında depolamak mümkündür. **Kayıtlar** (log) olarak adlandırılan bu özellik, Solidity
 tarafından :ref:`event'lerin <events>` uygulanmasını için kullanılır. Sözleşmeler, oluşturulduktan
-sonra kayıt verilerine erişemez, ancak bunlara blockchain'in dışından etkin bir şekilde
+sonra kayıt verilerine erişemez, ancak bunlara blok zincirinin dışından etkin bir şekilde
 erişilebilir. Kayıt edilen verilerinin bir kısmı `bloom filtrelerinde
 <https://en.wikipedia.org/wiki/Bloom_filter>`_ depolandığından, bu verileri verimli ve
 kriptografik olarak güvenli bir şekilde aramak mümkündür,  böylece tüm zinciri indirmek zorunda
@@ -520,14 +520,14 @@ olarak saklanarak arayan tarafın(yaratıcının) yığındaki yeni sözleşmeni
 Devre Dışı Bırakma ve Kendini İmha
 ============================
 
-Blockchain'den bir kodu kaldırmanın tek yolu, söz konusu adresteki bir sözleşmenin
+Blok zincirinden bir kodu kaldırmanın tek yolu, söz konusu adresteki bir sözleşmenin
 selfdestruct işlemini gerçekleştirmesidir. Bu adreste depolanan kalan Ether belirlenen
 bir hedefe gönderilir ve ardından depolama ve kod durumdan kaldırılır. Teoride sözleşmeyi
 kaldırmak iyi bir fikir gibi görünse de, birisi kaldırılan sözleşmelere Ether gönderirse,
 Ether sonsuza dek kaybolacağından potansiyel olarak tehlikelidir.
 
 .. warning::
-    Bir sözleşme ``selfdestruct`` ile kaldırılsa bile, hala blockchain
+    Bir sözleşme ``selfdestruct`` ile kaldırılsa bile, hala blok zinciri
     geçmişinin bir parçasıdır ve muhtemelen çoğu Ethereum node`u tarafından
     saklanmaktadır. Yani ``selfdestruct`` kullanmak sabit diskten veri silmekle
     aynı şey değildir.
