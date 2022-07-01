@@ -173,7 +173,7 @@ Bu fonksiyonu tek bir hesabın bakiyesini sorgulamak için kullanabilirsiniz.
 ``event Sent(address from, address to, uint amount);`` satırı ``send`` fonksiyonunun son
 satırında yayılan (emit) bir :ref:`”olay (event)" <events>` bildirir.
 Web uygulamaları gibi Ethereum istemcileri, blok zincirinde yayılan (emit) bu olaylardan (event) fazla maliyet olmadan veri alabilir.
-Event yayınlanır yayınlanmaz, veri alıcısı ``from``, ``to`` ve ``amount`` argümanlarını alır,
+Event yayılır yayılmaz, veri alıcısı ``from``, ``to`` ve ``amount`` argümanlarını alır,
 bu da alım satım işlemlerinin takip edilmesini mümkün kılar.
 
 Bu olayı(event) dinlemek amacıyla, ``Coin`` sözleşme nesnesini oluşturmak için `web3.js <https://github.com/ethereum/web3.js/>`_
