@@ -5,10 +5,6 @@ ref: #_size verilen issue numarası_
 - _satır: 55_
 - _satır: 68_
 
-## Serbest Çeviri Yaptığım Satırlar (Opsiyonel)
-- _satır: 55_
-- _satır: 68_
-
 ## Kavram Dizinine Eklenmesini İstediğim Kavramlar (Opsiyonel)
 - Kelime = _Bulduğum Kavram_  "[Referans Linki](https://sozluk.gov.tr/)"
 
