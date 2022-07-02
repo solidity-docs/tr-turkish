@@ -3,60 +3,61 @@
 .. _installing-solidity:
 
 ################################
-Installing the Solidity Compiler
+Solidity Derleyicisini İndirme
 ################################
 
-Versioning
+Sürüm
 ==========
 
-Solidity versions follow `Semantic Versioning <https://semver.org>`_. In
-addition, patch level releases with major release 0 (i.e. 0.x.y) will not
-contain breaking changes. That means code that compiles with version 0.x.y
-can be expected to compile with 0.x.z where z > y.
+Solidity versiyonları `Semantic Versiyonlamayı <https://semver.org>`_ takip eder. Ek
+olarak, ana sürüm 0'a (yani 0.x.y) sahip yama düzeyindeki sürümler, kırılma değişiklikleri(breaking changes)
+içermeyecektir. Bu, 0.x.y sürümü ile derlenen kodun z > y olduğu durumlarda 0.x.z ile derlenmesinin umulabileceği anlamına gelir.
 
-In addition to releases, we provide **nightly development builds** with the
-intention of making it easy for developers to try out upcoming features and
-provide early feedback. Note, however, that while the nightly builds are usually
-very stable, they contain bleeding-edge code from the development branch and are
-not guaranteed to be always working. Despite our best efforts, they might
-contain undocumented and/or broken changes that will not become a part of an
-actual release. They are not meant for production use.
+Sürümlere ek olarak, geliştiricilerin gelecek özellikleri denemelerini ve erken
+geri bildirim sağlamalarını kolaylaştırmak amacıyla **gece geliştirme yapıları**
+(Nightly Development Builds diye de bilinir) sağlıyoruz. Bununla birlikte, gecelik
+yapılar genellikle çok kararlı olsalar da, geliştirme kolundaki (branch) en yeni
+kodları içerdiklerini ve her zaman çalışacaklarının garanti edilmediğini unutmayın.
+Tüm emeklerimize karşın, hala gerçek sürümün bir parçası olmayacak belgelenmemiş
+ve/veya arızalı değişiklikler içerebilirler. Bunlar üretim amaçlı kullanım için uygun değillerdir.
 
-When deploying contracts, you should use the latest released version of Solidity. This
-is because breaking changes, as well as new features and bug fixes are introduced regularly.
-We currently use a 0.x version number `to indicate this fast pace of change <https://semver.org/#spec-item-4>`_.
+Sözleşmelerin gönderimini yaparken Solidity'nin yayınlanan en son sürümünü kullanmalısınız. Bunun nedeni,
+kırılma değişikliklerinin yanı sıra yeni özelliklerin tanıtılması ve eski sürümlerdeki hataların düzenli
+olarak düzeltilmesinden kaynaklanmaktadır. Bu `hızlı versiyon değişiklilerini belirtmek için <https://semver.org/#spec-item-4>`_
+şu anda 0.x sürüm numarası kullanıyoruz.
 
 Remix
 =====
 
-*We recommend Remix for small contracts and for quickly learning Solidity.*
+*Solidity'i hızlı bir şekilde öğrenmeniz ve küçük akıllı sözleşmeleriniz için Remix'i kullanmanızı tavsiye ediyoruz.*
 
-`Access Remix online <https://remix.ethereum.org/>`_, you do not need to install anything.
-If you want to use it without connection to the Internet, go to
-https://github.com/ethereum/remix-live/tree/gh-pages and download the ``.zip`` file as
-explained on that page. Remix is also a convenient option for testing nightly builds
-without installing multiple Solidity versions.
+`Remix'i online bir şekilde kullanabilirsiniz <https://remix.ethereum.org/>`_, bunun için herhangi bir şey indirmenize gerek yoktur.
+Remix’i internet bağlantısı olmadan da kullanmak istiyorsanız, https://github.com/ethereum/remix-live/tree/gh-pages adresine gidip
+sayfada açıklandığı gibi ``.zip`` dosyasını indirebilirsiniz. Remix, birden fazla Solidity sürümü yüklemenize gerek kalmadan gece
+yapılarını da test etmek için uygun bir seçenektir.
 
-Further options on this page detail installing commandline Solidity compiler software
-on your computer. Choose a commandline compiler if you are working on a larger contract
-or if you require more compilation options.
+Bu sayfada bulunan diğer seçenekler de komut satırı için Solidity derleyicisini bilgisayarınıza
+nasıl kuracağınızı detaylı bir şekilde anlatmaktadır. Eğer daha büyük bir sözleşme üzerinde
+çalışıyorsanız veya daha fazla derleme seçeneğine ihtiyacınız varsa lütfen bir komut satırı
+derleyicisi seçin.
 
 .. _solcjs:
 
 npm / Node.js
 =============
 
-Use ``npm`` for a convenient and portable way to install ``solcjs``, a Solidity compiler. The
-`solcjs` program has fewer features than the ways to access the compiler described
-further down this page. The
+Solidity derleyicisi olan ``solcjs`` programını kurmanın kullanışlı ve taşınabilir bir yolu
+için ``npm`` programını kullanabilirsiniz. `solcjs` programı, bu sayfanın ilerleyen kısımlarında
+açıklanacak olan derleyiciye erişim yollarından daha az özelliğe sahiptir. The
 :ref:`commandline-compiler` documentation assumes you are using
-the full-featured compiler, ``solc``. The usage of ``solcjs`` is documented inside its own
-`repository <https://github.com/ethereum/solc-js>`_.
+the full-featured compiler, ``solc``.ref:`commandline-compiler`(komut satırı derleyicisi) belgeleri
+tam özellikli derleyici olan ``solc`` kullandığınızı varsayar. ``solcjs`` kullanımı için oluşturulan
+belgeler kendi `deposu <https://github.com/ethereum/solc-js>`_ içinde bulunmaktadır.
 
-Note: The solc-js project is derived from the C++
-`solc` by using Emscripten which means that both use the same compiler source code.
-`solc-js` can be used in JavaScript projects directly (such as Remix).
-Please refer to the solc-js repository for instructions.
+Not: solc-js projesi, Emscripten kullanılarak oluşturulan C++ `solc`
+projesinden türetilmiştir, bu da her ikisinin de aynı derleyici kaynak
+kodunu kullandığı anlamına gelir. Aynı zamanda `solc-js` doğrudan JavaScript
+projelerinde (Remix gibi) kullanılabilmektedir. Talimatlar için lütfen solc-js deposuna göz atın.
 
 .. code-block:: bash
 
@@ -64,42 +65,43 @@ Please refer to the solc-js repository for instructions.
 
 .. note::
 
-    The commandline executable is named ``solcjs``.
+    Komut satırında çalışabilen kod``solcjs`` olarak adlandırılmıştır (Komut satırına “solcjs" yazarak çalıştırabilirsiniz).
 
-    The commandline options of ``solcjs`` are not compatible with ``solc`` and tools (such as ``geth``)
-    expecting the behaviour of ``solc`` will not work with ``solcjs``.
+    ``solcjs`` komut satırı seçenekleri ``solc`` ile uyumlu değildir. Ve aynı zamanda çalışmak için ``solc``’un davranışını
+    bekleyen araçlar (örneğin ``geth`` gibi) ``solcjs`` ile çalışmayacaktır.
 
 Docker
 ======
 
-Docker images of Solidity builds are available using the ``solc`` image from the ``ethereum`` organisation.
-Use the ``stable`` tag for the latest released version, and ``nightly`` for potentially unstable changes in the develop branch.
+Solidity yapılarında bulunan Docker imajları, ``ethereum`` kuruluşundaki ``solc`` imajlarını da kullanarak elde edilebilir.
+Yayınlanan en son sürüm için ``stable`` etiketini ve geliştirme kolundaki (branch) potansiyel olarak kararsız değişiklikler
+için ``nightly`` etiketini kullanabilirsiniz.
 
-The Docker image runs the compiler executable, so you can pass all compiler arguments to it.
-For example, the command below pulls the stable version of the ``solc`` image (if you do not have it already),
-and runs it in a new container, passing the ``--help`` argument.
+Docker imajı derleyicinin yürütülebilir dosyasını çalıştırır, bu sayede tüm derleyici bağımsız değişkenlerini ona iletebilirsiniz.
+Örneğin, aşağıdaki komut ``solc`` imajının kararlı bir sürümünü çeker (zaten sahip değilseniz) ve ``--help`` parametresini ileterek
+yeni bir konteynerde çalıştırır.
 
 .. code-block:: bash
 
     docker run ethereum/solc:stable --help
 
-You can also specify release build versions in the tag, for example, for the 0.5.4 release.
+Etikette, örneğin 0.5.4 sürümü için oluşturulmuş derleme sürümlerini de belirtebilirsiniz.
 
 .. code-block:: bash
 
     docker run ethereum/solc:0.5.4 --help
 
-To use the Docker image to compile Solidity files on the host machine mount a
-local folder for input and output, and specify the contract to compile. For example.
+Docker imajını kullanarak Solidity dosyalarını ana makinede derlemek istiyorsanız,
+girdi ve çıktı için yerel bir klasör bağladıktan sonra derlenecek olan sözleşmeyi belirtin. Örnek vermek gerekirse:
 
 .. code-block:: bash
 
     docker run -v /local/path:/sources ethereum/solc:stable -o /sources/output --abi --bin /sources/Contract.sol
 
-You can also use the standard JSON interface (which is recommended when using the compiler with tooling).
-When using this interface it is not necessary to mount any directories as long as the JSON input is
-self-contained (i.e. it does not refer to any external files that would have to be
-:ref:`loaded by the import callback <initial-vfs-content-standard-json-with-import-callback>`).
+Ayrıca standart bir JSON arayüzünü de kullanabilirsiniz (derleyiciyi araçlarıyla birlikte kullanırken tavsiye edilir).
+Bu arayüzü kullanırken, JSON girdisi bağımsız olduğu sürece herhangi bir dizini bağlamak gerekli değildir
+(yani :ref:`içeri aktarılan(import) geri çağrısı (callback) <initial-vfs-content-standard-json-with-import-callback>`
+tarafından yüklenmesi gereken herhangi bir harici dosyaya referans göstermez).
 
 .. code-block:: bash
 
@@ -108,11 +110,9 @@ self-contained (i.e. it does not refer to any external files that would have to 
 Linux Packages
 ==============
 
-Binary packages of Solidity are available at
-`solidity/releases <https://github.com/ethereum/solidity/releases>`_.
+Solidity'nin ikili sayı sistemi (binary) paketleri `solidity/releases <https://github.com/ethereum/solidity/releases>`_ adresinde mevcuttur.
 
-We also have PPAs for Ubuntu, you can get the latest stable
-version using the following commands:
+Ayrıca Ubuntu için PPA'larımız da bulunmaktadır, aşağıdaki komutları kullanarak en son kararlı sürümü edinebilirsiniz:
 
 .. code-block:: bash
 
@@ -120,7 +120,7 @@ version using the following commands:
     sudo apt-get update
     sudo apt-get install solc
 
-The nightly version can be installed using these commands:
+Gece sürümü de bu komutlar kullanılarak kurulabilir:
 
 .. code-block:: bash
 
@@ -129,25 +129,25 @@ The nightly version can be installed using these commands:
     sudo apt-get update
     sudo apt-get install solc
 
-Furthermore, some Linux distributions provide their own packages. These packages are not directly
-maintained by us, but usually kept up-to-date by the respective package maintainers.
+Ayrıca, bazı Linux dağıtımları kendi paketlerini sağlamaktadırlar. Fakat bu paketlerin
+bakımını doğrudan bizim tarafımızdan yapılmamaktadır. Ama bu konuda endişelenmenize gerek
+yoktur, çünkü bu paketler genellikle ilgili paket sorumluları tarafından güncel tutulmaktadır.
 
-For example, Arch Linux has packages for the latest development version:
+Örnek vermek gerekirse, Arch Linux en son geliştirme sürümü için paketlere sahiptir:
 
 .. code-block:: bash
 
     pacman -S solidity
 
-There is also a `snap package <https://snapcraft.io/solc>`_, however, it is **currently unmaintained**.
-It is installable in all the `supported Linux distros <https://snapcraft.io/docs/core/install>`_. To
-install the latest stable version of solc:
+Ayrıca bir `snap paketi <https://snapcraft.io/solc>`_ vardır, ancak **şu anda bakımı yapılmamaktadır**.
+Bu paket `desteklenen tüm Linux dağıtımlarına <https://snapcraft.io/docs/core/install>`_ yüklenebilir.
+Solc'un en son çıkan kararlı sürümünü yüklemek için:
 
 .. code-block:: bash
 
     sudo snap install solc
 
-If you want to help testing the latest development version of Solidity
-with the most recent changes, please use the following:
+Solidity'nin en son değişiklikleri içeren son çıkan geliştirme sürümünün test edilmesine yardımcı olmak istiyorsanız, lütfen aşağıdaki komutları kullanın:
 
 .. code-block:: bash
 
@@ -155,17 +155,18 @@ with the most recent changes, please use the following:
 
 .. note::
 
-    The ``solc`` snap uses strict confinement. This is the most secure mode for snap packages
-    but it comes with limitations, like accessing only the files in your ``/home`` and ``/media`` directories.
-    For more information, go to `Demystifying Snap Confinement <https://snapcraft.io/blog/demystifying-snap-confinement>`_.
+    ``solc`` snap`i katı bir sınırlama sistemine sahiptir. Bu snap paketleri için uygulanabilecek
+    en güvenli moddur, tabi bu modda yalnızca ``/home`` ve ``/media`` dizinlerinizdeki dosyalara
+    erişmek gibi sınırlamalarla birlikte gelmektedir. Daha fazla bilgi için lütfen `Sıkı Snap Sınırlaması
+    Sistemini Açıklamak <https://snapcraft.io/blog/demystifying-snap-confinement>`_ bölümüne gidin.
 
 
-macOS Packages
+macOS Paketleri
 ==============
 
-We distribute the Solidity compiler through Homebrew
-as a build-from-source version. Pre-built bottles are
-currently not supported.
+Solidity derleyicisini, kaynaktan oluşturulmuş bir sürüm olarak Homebrew aracılığıyla
+dağıtıyoruz. Önceden oluşturulmuş olan “bottles"lar(ikili sayı sistemi(binary) paketleri)
+şu anda desteklenmemektedir.
 
 .. code-block:: bash
 
@@ -174,16 +175,15 @@ currently not supported.
     brew tap ethereum/ethereum
     brew install solidity
 
-To install the most recent 0.4.x / 0.5.x version of Solidity you can also use ``brew install solidity@4``
-and ``brew install solidity@5``, respectively.
+Solidity'nin en son 0.4.x / 0.5.x sürümünü yüklemek için sırasıyla ``brew install solidity@4``
+ve ``brew install solidity@5`` de kullanabilirsiniz.
 
-If you need a specific version of Solidity you can install a
-Homebrew formula directly from Github.
+Solidity'nin belirli bir sürümüne ihtiyacınız varsa, doğrudan Github'dan bir Homebrew “formula”sını
+(Formula, paket tanımı için kullanılan bir ifadedir) yükleyebilirsiniz.
 
-View
-`solidity.rb commits on Github <https://github.com/ethereum/homebrew-ethereum/commits/master/solidity.rb>`_.
+Github'daki `solidity.rb "commit"lerini görüntüleyin <https://github.com/ethereum/homebrew-ethereum/commits/master/solidity.rb>`_.
 
-Copy the commit hash of the version you want and check it out on your machine.
+İstediğiniz bir sürümün commit hash'ini kopyalayıp ve kendi makinenizde kontrol edebilirsiniz.
 
 .. code-block:: bash
 
@@ -191,7 +191,7 @@ Copy the commit hash of the version you want and check it out on your machine.
     cd homebrew-ethereum
     git checkout <your-hash-goes-here>
 
-Install it using ``brew``:
+Bunu ``brew`` kullanarak yükleyin:
 
 .. code-block:: bash
 
@@ -199,17 +199,17 @@ Install it using ``brew``:
     # eg. Install 0.4.8
     brew install solidity.rb
 
-Static Binaries
-===============
+Statik İkili Sayı Sistemleri
+============================
 
-We maintain a repository containing static builds of past and current compiler versions for all
-supported platforms at `solc-bin`_. This is also the location where you can find the nightly builds.
+Desteklenen tüm platformlar için geçmiş ve güncel derleyici sürümlerinin statik yapılarını içeren
+bir depoyu `solc-bin`_ adresinde tutuyoruz. Bu adreste aynı zamanda gecelik yapıları da bulabilirsiniz.
 
-The repository is not only a quick and easy way for end users to get binaries ready to be used
-out-of-the-box but it is also meant to be friendly to third-party tools:
+Bu depo, son kullanıcıların ikili dosya sistemlerini kullanıma hazır hale getirmeleri için hızlı ve kolay bir yol
+olmasının yanı sıra üçüncü taraf araçlarla da dost olmayı (kolay bir şekilde etkileşimde bulunmayı) amaçlamaktadır:
 
-- The content is mirrored to https://binaries.soliditylang.org where it can be easily downloaded over
-  HTTPS without any authentication, rate limiting or the need to use git.
+- https://binaries.soliditylang.org adresine yansıtılan bu içerik herhangi bir kimlik doğrulama, hız
+  sınırlaması veya git kullanma ihtiyacı olmadan HTTPS üzerinden kolayca indirilebilir.
 - Content is served with correct `Content-Type` headers and lenient CORS configuration so that it
   can be directly loaded by tools running in the browser.
 - Binaries do not require installation or unpacking (with the exception of older Windows builds
