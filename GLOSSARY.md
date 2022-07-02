@@ -2,7 +2,7 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 ==============================================
 
 - Blockchain = blok zinciri
-- breaking = önemli
+- breaking changes = önemli değişikliker, kırılan değişiklikler 
 - state = durum
 - keypair = anahtar çifti
 - stack = yığın
@@ -14,6 +14,8 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - EVM (Ethereum Virtual Machine) = ESM (Ethereum Sanal Makinası)
 - client = istemci
 - publish = yayılan
+- repository = depo
+- image = imaj (Docker için)
 
 Kavram Dizini İçin Yararlanabileceğiniz Faydalı Linkler
 =======================================================
