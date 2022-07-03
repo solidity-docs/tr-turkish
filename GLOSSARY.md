@@ -16,6 +16,7 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - publish = yayılan
 - repository = depo
 - image = imaj (Docker için)
+- function = fonksiyon
 
 Kavram Dizini İçin Yararlanabileceğiniz Faydalı Linkler
 =======================================================
