@@ -1,91 +1,63 @@
 .. index:: ! operator
 
-Operators
+Operatörler
 =========
 
-Arithmetic and bit operators can be applied even if the two operands do not have the same type.
-For example, you can compute ``y = x + z``, where ``x`` is a ``uint8`` and ``z`` has
-the type ``int32``. In these cases, the following mechanism will be used to determine
-the type in which the operation is computed (this is important in case of overflow)
-and the type of the operator's result:
+Aritmetik operatörler ve bit operatörleri, iki işlenen aynı türe sahip olmasa bile uygulanabilir. Örneğin, ``y = x + z``yi hesaplayabilirsiniz, burada ``x`` bir ``uint8``dir ve ``z``nin türü ``int32``dir. Bu durumlarda, işlemin hesaplandığı türü (taşma durumunda bu önemlidir) ve operatörün sonucunun türünü belirlemek için aşağıdaki mekanizma kullanılacaktır:
 
-1. If the type of the right operand can be implicitly converted to the type of the left
-   operand, use the type of the left operand,
-2. if the type of the left operand can be implicitly converted to the type of the right
-   operand, use the type of the right operand,
-3. otherwise, the operation is not allowed.
+1. Sağ işlenenin türü dolaylı olarak sol işlenenin türüne dönüştürülebiliyorsa, 
+    sol işlenenin türünü kullanın.
+2. Sol işlenenin türü dolaylı olarak sağ işlenenin türüne dönüştürülebiliyorsa, 
+    sağ işlenenin türünü kullanın,
+3. İki seçenek de uygulanamıyorsa işleme izin verilmez.
 
-In case one of the operands is a :ref:`literal number <rational_literals>` it is first converted to its
-"mobile type", which is the smallest type that can hold the value
-(unsigned types of the same bit-width are considered "smaller" than the signed types).
-If both are literal numbers, the operation is computed with arbitrary precision.
+İşlenenlerden birinin :ref:`gerçek sayı <rational_literals>` olması durumunda, ilk önce değeri tutabilen en küçük tür olan "mobil türe" dönüştürülür (aynı bit genişliğindeki işaretsiz türler, işaretli türlerden "daha küçük" olarak kabul edilir) .
 
-The operator's result type is the same as the type the operation is performed in,
-except for comparison operators where the result is always ``bool``.
+Her ikisi de gerçek sayıysa, işlem keyfi bir kesinlikle hesaplanır.
 
-The operators ``**`` (exponentiation), ``<<``  and ``>>`` use the type of the
-left operand for the operation and the result.
+Operatörün sonuç türü, sonucun her zaman ``bool`` olduğu karşılaştırma operatörleri dışında, işlemin gerçekleştirildiği türle aynıdır.
 
-Ternary Operator
+``**`` (üs alma), ``<<`` ve ``>>`` operatörleri, işlem ve sonuç için sol işlenenin türünü kullanır.
+
+
+Üçlü Operatör
 ----------------
-The ternary operator is used in expressions of the form ``<expression> ? <trueExpression> : <falseExpression>``.
-It evaluates one of the latter two given expressions depending upon the result of the evaluation of the main ``<expression>``.
-If ``<expression>`` evaluates to ``true``, then ``<trueExpression>`` will be evaluated, otherwise ``<falseExpression>`` is evaluated.
 
-The result of the ternary operator does not have a rational number type, even if all of its operands are rational number literals.
-The result type is determined from the types of the two operands in the same way as above, converting to their mobile type first if required.
+Üçlü operatör, ``<expression> ? <trueExpression> : <falseExpression>`` formunda bulunan ifadelerin açıklanmasında kullanılır. Ana ``<expression>`` değerlendirmesinin sonucuna bağlı olarak verilen son iki ifadeden birini değerlendirir. ``<expression>`` "doğru" olarak değerlendirilirse, ``<trueExpression>`` olarak sayılır, aksi takdirde ``<falseExpression>`` olarak sayılır.
 
-As a consequence, ``255 + (true ? 1 : 0)`` will revert due to arithmetic overflow.
-The reason is that ``(true ? 1 : 0)`` is of ``uint8`` type, which forces the addition to be performed in ``uint8`` as well,
-and 256 exceeds the range allowed for this type.
+Üçlü operatörün sonucu, tüm işlenenleri rasyonel sayı değişmezleri olsa bile, bir rasyonel sayı türüne sahip değildir. Sonuç türü, iki işlenenin türlerinden yukarıdakiyle aynı şekilde belirlenir, gerekirse ilk önce mobil türlerine dönüştürülür.
 
-Another consequence is that an expression like ``1.5 + 1.5`` is valid but ``1.5 + (true ? 1.5 : 2.5)`` is not.
-This is because the former is a rational expression evaluated in unlimited precision and only its final value matters.
-The latter involves a conversion of a fractional rational number to an integer, which is currently disallowed.
+Sonuç olarak, ``255 + (true ? 1 : 0)`` işlemi, aritmetik taşma nedeniyle geri döndürülecektir (revert edilecektir). Bunun nedeni, ``(true ? 1 : 0)`` ifadesinin ``uint8`` türünde olmasıdır.Bu, eklemenin ``uint8`` içinde gerçekleştirilmesini zorunlu kılıyor ve 256'nın bu tür için izin verilen aralığı aşıyor.
+
+Diğer bir sonuç da, ``1.5 + 1.5`` gibi bir ifadenin geçerli olduğu, ancak ``1.5 + (true ? 1.5 : 2.5)`` olmadığıdır. Bunun nedeni, birincisinin sınırsız kesinlikle değerlendirilen rasyonel bir ifade olması ve yalnızca nihai değerinin önemli olmasıdır. İkincisi, şu anda izin verilmeyen bir kesirli rasyonel sayının bir tam sayıya dönüştürülmesini içerir.
 
 .. index:: assignment, lvalue, ! compound operators
 
-Compound and Increment/Decrement Operators
+Bileşik Operatörler ve Artırma/Azaltma Operatörleri
 ------------------------------------------
 
-If ``a`` is an LValue (i.e. a variable or something that can be assigned to), the
-following operators are available as shorthands:
+``a`` bir LValue ise (yani bir değişken veya atanabilecek bir şey), aşağıdaki operatörler kısayol olarak kullanılabilir:
 
-``a += e`` is equivalent to ``a = a + e``. The operators ``-=``, ``*=``, ``/=``, ``%=``,
-``|=``, ``&=``, ``^=``, ``<<=`` and ``>>=`` are defined accordingly. ``a++`` and ``a--`` are equivalent
-to ``a += 1`` / ``a -= 1`` but the expression itself still has the previous value
-of ``a``. In contrast, ``--a`` and ``++a`` have the same effect on ``a`` but
-return the value after the change.
+``a += e``, ``a = a + e`` ile eşdeğerdir. ``-=``, ``*=``, ``/=``, ``%=``, ``|=``, ``&=``, ``^=``, ``<<=`` ve ``>>=`` buna göre tanımlanır. ``a++`` ve ``a--``, ``a += 1`` / ``a -= 1`` ile eşdeğerdir, ancak ifadenin kendisi hala önceki ``a`` değerine sahiptir. Buna karşılık, ``--a`` ve ``++a``, ``a`` üzerinde aynı etkiye sahiptir ancak değişiklikten sonra değeri döndürür.
+
 
 .. index:: !delete
 
 .. _delete:
 
-delete
+silmek
 ------
 
-``delete a`` assigns the initial value for the type to ``a``. I.e. for integers it is
-equivalent to ``a = 0``, but it can also be used on arrays, where it assigns a dynamic
-array of length zero or a static array of the same length with all elements set to their
-initial value. ``delete a[x]`` deletes the item at index ``x`` of the array and leaves
-all other elements and the length of the array untouched. This especially means that it leaves
-a gap in the array. If you plan to remove items, a :ref:`mapping <mapping-types>` is probably a better choice.
+``delete a``, türün başlangıç değerini ``a``ya atar. Yani, tamsayılar için ``a = 0`` ile eşdeğerdir, ancak sıfır uzunlukta dinamik bir dizi veya tüm öğeleri başlangıç değerlerine ayarlanmış aynı uzunlukta statik bir dizi atadığı dizilerde de kullanılabilir.
 
-For structs, it assigns a struct with all members reset. In other words,
-the value of ``a`` after ``delete a`` is the same as if ``a`` would be declared
-without assignment, with the following caveat:
+``delete a[x]``, dizinin ``x`` dizinindeki öğeyi siler ve diğer tüm öğelere ve dizinin uzunluğuna dokunmadan bırakır. Bu özellikle dizide bir boşluk bırakıldığı anlamına gelir. Öğeleri kaldırmayı planlıyorsanız, :ref:`eşleme <mapping-types>` yapmak muhtemelen daha iyi bir seçimdir.
 
-``delete`` has no effect on mappings (as the keys of mappings may be arbitrary and
-are generally unknown). So if you delete a struct, it will reset all members that
-are not mappings and also recurse into the members unless they are mappings.
-However, individual keys and what they map to can be deleted: If ``a`` is a
-mapping, then ``delete a[x]`` will delete the value stored at ``x``.
+Yapılar (structs) için, tüm üyelerin sıfırlandığı bir yapı atar. Başka bir deyişle, ``a``nın ``delete a``dan sonraki değeri, ``a``nın atama olmadan bildirilmesiyle aynıdır:
 
-It is important to note that ``delete a`` really behaves like an
-assignment to ``a``, i.e. it stores a new object in ``a``.
-This distinction is visible when ``a`` is reference variable: It
-will only reset ``a`` itself, not the
-value it referred to previously.
+``delete`` işlevinin eşlemeler üzerinde hiçbir etkisi yoktur (çünkü eşlemelerin anahtarları rastgele olabilir ve genellikle bilinmez). Bu nedenle, bir yapıyı silerseniz, eşleme olmayan tüm üyeleri sıfırlar ve eşleme olmadıkça üyelere geri döner. Ancak, bireysel anahtarlar ve eşledikleri şey silinebilir: ``a`` bir eşleme ise, ``delete a[x]``, ``x``de depolanan değeri siler.
+
+``delete a``nın gerçekten ``a``ya atanmış gibi davrandığını, yani ``a``da yeni bir nesne depoladığını unutmamak önemlidir. Bu ayrım, ``a`` referans değişkeni olduğunda görünür:
+Daha önce atıfta bulunduğu değeri değil, yalnızca ``a``nın kendisini sıfırlayacaktır.
 
 .. code-block:: solidity
 
@@ -98,13 +70,12 @@ value it referred to previously.
 
         function f() public {
             uint x = data;
-            delete x; // sets x to 0, does not affect data
-            delete data; // sets data to 0, does not affect x
+            delete x; // x'i 0'a ayarlar, verileri etkilemez
+            delete data; // verileri 0'a ayarlar, x'i etkilemez
             uint[] storage y = dataArray;
-            delete dataArray; // this sets dataArray.length to zero, but as uint[] is a complex object, also
-            // y is affected which is an alias to the storage object
-            // On the other hand: "delete y" is not valid, as assignments to local variables
-            // referencing storage objects can only be made from existing storage objects.
+            delete dataArray; // bu, dataArray.length değerini sıfıra ayarlar, ancak uint[] karmaşık bir nesne olduğundan,
+            // depolama nesnesinin diğer adı olan y da etkilenir.
+            // Öte yandan: "delete y" geçerli değildir, çünkü depolama nesnelerine başvuran yerel değişkenlere atamalar yalnızca mevcut depolama nesnelerinden yapılabilir.
             assert(y.length == 0);
         }
     }
@@ -112,7 +83,7 @@ value it referred to previously.
 .. index:: ! operator; precedence
 .. _order:
 
-Order of Precedence of Operators
+Operatörlerin Öncelik Sırası
 --------------------------------
 
 .. include:: types/operator-precedence-table.rst
