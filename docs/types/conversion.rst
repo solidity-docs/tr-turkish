@@ -8,13 +8,13 @@ Temel Türler Arası Dönüşümler
 Örtülü Dönüşümler
 --------------------
 
-Örtülü tür dönüşümü, argümanları fonksiyonlara iletmek ya da operatörleri kullanmak gibi görevler sırasında, derleyici tarafından
+Örtülü tür dönüşümü, argümanları fonksiyonlara iletmek ya da operatör atamaları sırasında, derleyici tarafından
 otomatik olarak uygulanır. Genel olarak, bilgi kaybı yoksa ve anlamsal açıdan bir sorun yoksa, değer türleri arasında bir örtülü dönüşüm mümkündür. 
 
 Örnek vermek, ``uint8`` türü,
 ``uint16`` türüne ve ``int128`` türü, ``int256`` türüne dönüştürülebilirken, ``int8`` türü ``uint256`` türüne dönüştürülemez çünkü  ``uint256``, ``-1`` gibi değerleri tutamaz.
 
-Bir operatör diğer türlere uygulanırsa, derleyici işlenenlerden birini örtük olarak diğerinin türüne dönüştürmeye çalışır (aynısı görevler için de geçerlidir).
+Bir operatör diğer türlere uygulanırsa, derleyici işlenenlerden birini örtük olarak diğerinin türüne dönüştürmeye çalışır (aynısı atamalar için de geçerlidir).
 Bu, işlemlerin her zaman işlenenlerden birinin türünde gerçekleştirildiği anlamına gelir.
 
 Hangi örtük dönüşümlerin mümkün olduğu hakkında daha fazla ayrıntı için, lütfen türlerle ilgili bölümlere bakın.
