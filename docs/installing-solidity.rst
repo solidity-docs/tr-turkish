@@ -210,26 +210,26 @@ olmasının yanı sıra üçüncü taraf araçlarla da dost olmayı (kolay bir �
 
 - https://binaries.soliditylang.org adresine yansıtılan bu içerik herhangi bir kimlik doğrulama, hız
   sınırlaması veya git kullanma ihtiyacı olmadan HTTPS üzerinden kolayca indirilebilir.
-- Content is served with correct `Content-Type` headers and lenient CORS configuration so that it
-  can be directly loaded by tools running in the browser.
-- Binaries do not require installation or unpacking (with the exception of older Windows builds
-  bundled with necessary DLLs).
-- We strive for a high level of backwards-compatibility. Files, once added, are not removed or moved
-  without providing a symlink/redirect at the old location. They are also never modified
-  in place and should always match the original checksum. The only exception would be broken or
-  unusable files with a potential to cause more harm than good if left as is.
-- Files are served over both HTTP and HTTPS. As long as you obtain the file list in a secure way
-  (via git, HTTPS, IPFS or just have it cached locally) and verify hashes of the binaries
-  after downloading them, you do not have to use HTTPS for the binaries themselves.
+- İçerik, tarayıcıda çalışan araçlar tarafından doğrudan yüklenebilmesi için doğru `Content-Type`
+  başlıklarıyla ve hoşgörülü CORS yapılandırmasıyla sunulur.
+- İkili sayı sistemleri için herhangi bir kurulum veya paketten çıkarma işlemi gerekmez (gerekli DLL'lerle
+  birlikte gelen eski Windows yapıları hariç).
+- Biz yüksek düzeyde geriye dönük uyumluluk için çabalamaktayız. Dosyalar eklendikten sonra, eski konumunda
+  bulunan bir kısayol bağlantısı veya yönlendirme sağlanmadan kaldırılamaz veya taşınamaz. Ayrıca bu dosyalar
+  hiçbir zaman değiştirilemez ve her zaman orijinal  sağlama toplamı ile eşleşmelidirler. Buradaki tek istisna,
+  olduğu gibi bırakıldığında yarardan çok zarar verme potansiyeli olan bozuk veya kullanılamaz dosyalar için geçerlidir.
+- Dosyalar hem HTTP hem de HTTPS protokolleri üzerinden sunulur. Dosya listesini güvenli bir şekilde aldığınız (git, HTTPS,
+  IPFS aracılığıyla veya yerel olarak önbelleğe aldığınız) ve indirdikten sonra ikili sayı sistemi dosyaların hash'lerini
+  doğruladığınız sürece, ikili dosyaların için HTTPS protokolünü kullanmanız gerekmez.
 
-The same binaries are in most cases available on the `Solidity release page on Github`_. The
-difference is that we do not generally update old releases on the Github release page. This means
-that we do not rename them if the naming convention changes and we do not add builds for platforms
-that were not supported at the time of release. This only happens in ``solc-bin``.
+Aynı ikili sayı sistemi dosyaları genellikle `Github üzerindeki Solidity sürüm sayfasında`_ bulunmaktadır.
+Aradaki fark, Github sürüm sayfasındaki eski sürümleri genellikle güncellemiyor olmamızdır. Bu, adlandırma
+kuralı değişirse onları yeniden adlandırmadığımız ve yayınlandığı sırada desteklenmeyen platformlar için
+derlemeler eklemediğimiz anlamına gelir. Bu sadece ``solc-bin`` içinde gerçekleşir.
 
-The ``solc-bin`` repository contains several top-level directories, each representing a single platform.
-Each one contains a ``list.json`` file listing the available binaries. For example in
-``emscripten-wasm32/list.json`` you will find the following information about version 0.7.4:
+``solc-bin`` deposu, her biri tek bir platformu temsil eden birkaç üst düzey dizin içerir. Her biri mevcut
+ikili sayı sistemi dosyalarını listeleyen bir ``list.json`` dosyası içerir. Örneğin ``emscripten-wasm32/list.json``
+dosyasında bulunan 0.7.4 sürümü hakkındaki bilgileri aşağıda bulabilirsiniz:
 
 .. code-block:: json
 
@@ -246,55 +246,55 @@ Each one contains a ``list.json`` file listing the available binaries. For examp
       ]
     }
 
-This means that:
+Bu şu anlama gelmektedir:
 
-- You can find the binary in the same directory under the name
-  `solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js <https://github.com/ethereum/solc-bin/blob/gh-pages/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js>`_.
-  Note that the file might be a symlink, and you will need to resolve it yourself if you are not using
-  git to download it or your file system does not support symlinks.
-- The binary is also mirrored at https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js.
-  In this case git is not necessary and symlinks are resolved transparently, either by serving a copy
-  of the file or returning a HTTP redirect.
-- The file is also available on IPFS at `QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS`_.
-- The file might in future be available on Swarm at `16c5f09109c793db99fe35f037c6092b061bd39260ee7a677c8a97f18c955ab1`_.
-- You can verify the integrity of the binary by comparing its keccak256 hash to
-  ``0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3``.  The hash can be computed
-  on the command line using ``keccak256sum`` utility provided by `sha3sum`_ or `keccak256() function
-  from ethereumjs-util`_ in JavaScript.
-- You can also verify the integrity of the binary by comparing its sha256 hash to
-  ``0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2``.
-
-.. warning::
-
-   Due to the strong backwards compatibility requirement the repository contains some legacy elements
-   but you should avoid using them when writing new tools:
-
-   - Use ``emscripten-wasm32/`` (with a fallback to ``emscripten-asmjs/``) instead of ``bin/`` if
-     you want the best performance. Until version 0.6.1 we only provided asm.js binaries.
-     Starting with 0.6.2 we switched to `WebAssembly builds`_ with much better performance. We have
-     rebuilt the older versions for wasm but the original asm.js files remain in ``bin/``.
-     The new ones had to be placed in a separate directory to avoid name clashes.
-   - Use ``emscripten-asmjs/`` and ``emscripten-wasm32/`` instead of ``bin/`` and ``wasm/`` directories
-     if you want to be sure whether you are downloading a wasm or an asm.js binary.
-   - Use ``list.json`` instead of ``list.js`` and ``list.txt``. The JSON list format contains all
-     the information from the old ones and more.
-   - Use https://binaries.soliditylang.org instead of https://solc-bin.ethereum.org. To keep things
-     simple we moved almost everything related to the compiler under the new ``soliditylang.org``
-     domain and this applies to ``solc-bin`` too. While the new domain is recommended, the old one
-     is still fully supported and guaranteed to point at the same location.
+- İkili sayı sistemini aynı dizinde `solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js <https://github.com/ethereum/solc-bin/blob/gh-pages/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js>`_
+  adı altında bulabilirsiniz.  Dosyanın bir kısayol bağlantısı olabileceğini ve dosyayı indirmek için
+  eğer git kullanmıyorsanız veya dosya sisteminiz kısayol bağlantılarını desteklemiyorsa bu dosyayı
+  kendiniz çözmeniz gerekebileceğini unutmayın.
+- İkili sayı sistemi dosyası ayrıca https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js
+  adresine de yansıtılır. Bu durumda git kullanımı gerekli değildir ve kısayol bağlantıları
+  ya dosyanın bir kopyasını sunarak ya da bir HTTP yönlendirmesi döndürerek dosyanın şeffaf
+  bir şekilde çözümlenmesini sağlar.
+- Dosya ayrıca IPFS üzerinde `QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS`_ adresinde de mevcuttur.
+- Dosya, gelecekte Swarm’da bulunan `16c5f09109c793db99fe35f037c6092b061bd39260ee7a677c8a97f18c955ab1`_ adresinde mevcut olabilir.
+- İkili sayı sisteminin bütünlüğünü keccak256 hash değerini ``0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3``
+  ile karşılaştırarak da doğrulayabilirsiniz.  Hash, komut satırında `sha3sum`_ tarafından sağlanan
+  ``keccak256sum`` yardımcı programı veya JavaScript’te `ethereumjs-util'de bulunan keccak256()`_ fonksiyonu
+  kullanılarak da hesaplanabilir.
+- İkili sayı sisteminin bütünlüğünü sha256 hash değerini ``0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2`` ile karşılaştırarak da doğrulayabilirsiniz.
 
 .. warning::
 
-    The binaries are also available at https://ethereum.github.io/solc-bin/ but this page
-    stopped being updated just after the release of version 0.7.2, will not receive any new releases
-    or nightly builds for any platform and does not serve the new directory structure, including
-    non-emscripten builds.
+   Güçlü bir şekilde geriye dönük uyumluluk gereksinimi sebebiyle depo bazı eski öğeler içerir, ancak
+   yeni araçlar yazarken bunları kullanmaktan kaçınmalısınız:
 
-    If you are using it, please switch to https://binaries.soliditylang.org, which is a drop-in
-    replacement. This allows us to make changes to the underlying hosting in a transparent way and
-    minimize disruption. Unlike the ``ethereum.github.io`` domain, which we do not have any control
-    over, ``binaries.soliditylang.org`` is guaranteed to work and maintain the same URL structure
-    in the long-term.
+   - En iyi performansı istiyorsanız ``bin/`` yerine ``emscripten-wasm32/`` (``emscripten-asmjs/`` geri
+     dönüşü ile) kullanın. Biz 0.6.1 sürümüne kadar sadece asm.js ikili sayı sistemi dosyalarını sağlamıştık.
+     0.6.2`den itibaren çok daha iyi performans sağlayan `WebAssembly derlemelerine`_ geçtik. Eski sürümleri
+     wasm için yeniden oluşturduk ancak orijinal asm.js dosyaları ``bin/`` içinde kaldı. Çünkü isim çakışmalarını
+     önlemek amacıyla yenilerinin ayrı bir dizine yerleştirilmesi gerekiyordu.
+   - Bir wasm veya asm.js ikili sayı sistemi dosyasını indirdiğinizden emin olmak istiyorsanız ``bin/``
+     ve ``wasm/`` dizinleri yerine ``emscripten-asmjs/`` ve ``emscripten-wasm32/`` dizinlerini kullanın.
+   - ``list.js`` ve ``list.txt`` yerine ``list.json`` kullanın. JSON liste formatı eskilerde bulunan
+     tüm bilgileri ve daha fazlasını içerir.
+   - https://solc-bin.ethereum.org yerine https://binaries.soliditylang.org kullanın. İşleri basit tutmak
+     için derleyiciyle ilgili neredeyse her şeyi yeni ``soliditylang.org`` alan adı altına taşıdık ve bu durum
+     ``solc-bin`` için de geçerlidir. Yeni alan adı önerisinde bulunulsa da, eski alan adı hala tam olarak
+     desteklenmekte ve aynı konuma işaret etmesi garanti edilmektedir.
+
+.. warning::
+
+    İkili sayı sistemi dosyaları https://ethereum.github.io/solc-bin/ adresinde de mevcuttur, fakat
+    bu sayfanın güncellenmesi 0.7.2 sürümünün yayınlanmasından hemen sonra durdurulmuştur. Aynı
+    zamanda bu adres herhangi bir platform için yeni sürümler veya gecelik yapılar almayacak ve
+    emscripten olmayan yapılar da dahil olmak üzere yeni dizin yapısını sunmayacaktır.
+
+    Eğer hala bu adresi kullanıyorsanız, lütfen bunun yerine  https://binaries.soliditylang.org
+    adresine kullanmaya devam edin. Bu, temeldeki barındırma hizmeti üzerinde şeffaf bir şekilde
+    değişiklik yapmamıza ve kesintiyi en aza indirmemize olanak tanır. Herhangi bir kontrole sahip
+    olmadığımız ``ethereum.github.io`` alan adının aksine, ``binaries.soliditylang.org`` alan adının
+    uzun vadede aynı URL yapısını koruyacağını ve çalışacağını garanti ediyoruz.
 
 .. _IPFS: https://ipfs.io
 .. _Swarm: https://swarm-gateways.net/bzz:/swarm.eth
@@ -308,27 +308,27 @@ This means that:
 
 .. _building-from-source:
 
-Building from Source
+Kaynağından Kurulum
 ====================
 
-Prerequisites - All Operating Systems
+Ön Koşullar - Tüm İşletim Sistemleri
 -------------------------------------
 
-The following are dependencies for all builds of Solidity:
+Aşağıda Solidity'nin tüm yapıları için bağımlılıklar verilmiştir:
 
 +-----------------------------------+-------------------------------------------------------+
-| Software                          | Notes                                                 |
+| Yazılım                           | Notlar                                                |
 +===================================+=======================================================+
-| `CMake`_ (version 3.13+)          | Cross-platform build file generator.                  |
+| `CMake`_ (versiyon 3.13+)         | Platformlar arası derleme dosyası oluşturucusu.       |
 +-----------------------------------+-------------------------------------------------------+
-| `Boost`_ (version 1.77+ on        | C++ libraries.                                        |
-| Windows, 1.65+ otherwise)         |                                                       |
+| `Boost`_ (Windows 'ta 1.77+       | C++ kütüphaneleri.                                    |
+| versiyonu, aksi takdirde 1.65+)   |                                                       |
 +-----------------------------------+-------------------------------------------------------+
-| `Git`_                            | Command-line tool for retrieving source code.         |
+| `Git`_                            | Kaynak kodu almak için komut satırı aracı.            |
 +-----------------------------------+-------------------------------------------------------+
-| `z3`_ (version 4.8+, Optional)    | For use with SMT checker.                             |
+| `z3`_ (versiyon 4.8+, Opsiyonel)  | SMT denetleyicisi ile kullanım için.                  |
 +-----------------------------------+-------------------------------------------------------+
-| `cvc4`_ (Optional)                | For use with SMT checker.                             |
+| `cvc4`_ (Opsiyonel)               | SMT denetleyicisi ile kullanım için.                  |
 +-----------------------------------+-------------------------------------------------------+
 
 .. _cvc4: https://cvc4.cs.stanford.edu/web/
@@ -338,77 +338,73 @@ The following are dependencies for all builds of Solidity:
 .. _z3: https://github.com/Z3Prover/z3
 
 .. note::
-    Solidity versions prior to 0.5.10 can fail to correctly link against Boost versions 1.70+.
-    A possible workaround is to temporarily rename ``<Boost install path>/lib/cmake/Boost-1.70.0``
-    prior to running the cmake command to configure solidity.
+    Solidity'nin 0.5.10'dan önceki sürümleri Boost'un 1.70+ olan sürümlerine doğru bir şekilde
+    bağlanamayabilir. Olası bir geçici çözüm, solidity'yi yapılandırmak için cmake komutunu çalıştırmadan
+    önce ``<Boost yükleme yolu>/lib/cmake/Boost-1.70.0`` adını geçici olarak yeniden adlandırmaktır.
 
-    Starting from 0.5.10 linking against Boost 1.70+ should work without manual intervention.
+    0.5.10'dan başlayarak Boost 1.70+ kadar olan sürümlerle bağlantı kurmak manuel müdahale olmadan çalışmalıdır.
 
 .. note::
-    The default build configuration requires a specific Z3 version (the latest one at the time the
-    code was last updated). Changes introduced between Z3 releases often result in slightly different
-    (but still valid) results being returned. Our SMT tests do not account for these differences and
-    will likely fail with a different version than the one they were written for. This does not mean
-    that a build using a different version is faulty. If you pass ``-DSTRICT_Z3_VERSION=OFF`` option
-    to CMake, you can build with any version that satisfies the requirement given in the table above.
-    If you do this, however, please remember to pass the ``--no-smt`` option to ``scripts/tests.sh``
-    to skip the SMT tests.
+    Varsayılan derleme yapılandırması belirli bir Z3 sürümü (kodun en son güncellendiği zamandaki en son sürüm)
+    gerektirir. Z3 sürümleri arasında yapılan değişiklikler genellikle biraz farklı (ancak yine de geçerli olan)
+    sonuçların döndürülmesine neden olur. SMT testlerimiz bu farklılıkları hesaba katmaz ve muhtemelen yazıldıkları
+    sürümden farklı olan bir sürümde başarısız olacaklardır. Bu, farklı bir sürüm kullanan bir derlemenin hatalı
+    olduğu anlamına gelmez. CMake'e ``-DSTRICT_Z3_VERSION=OFF`` seçeneğini iletirseniz, yukarıdaki tabloda verilen
+    gereksinimi karşılayan herhangi bir sürümle derleme yapabilirsiniz. Ancak bunu yaparsanız, SMT testlerini atlamak
+    için lütfen ``scripts/tests.sh`` dosyasına ``--no-smt`` seçeneğini de eklemeyi unutmayın.
 
-Minimum Compiler Versions
+Minimum Derleyici Versiyonları
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following C++ compilers and their minimum versions can build the Solidity codebase:
+Aşağıdaki C++ derleyicileri ve minimum versiyonları Solidity kod tabanını oluşturabilir:
 
 - `GCC <https://gcc.gnu.org>`_, version 8+
 - `Clang <https://clang.llvm.org/>`_, version 7+
 - `MSVC <https://visualstudio.microsoft.com/vs/>`_, version 2019+
 
-Prerequisites - macOS
+Ön Koşullar - macOS
 ---------------------
 
-For macOS builds, ensure that you have the latest version of
-`Xcode installed <https://developer.apple.com/xcode/download/>`_.
-This contains the `Clang C++ compiler <https://en.wikipedia.org/wiki/Clang>`_, the
-`Xcode IDE <https://en.wikipedia.org/wiki/Xcode>`_ and other Apple development
-tools that are required for building C++ applications on OS X.
-If you are installing Xcode for the first time, or have just installed a new
-version then you will need to agree to the license before you can do
-command-line builds:
+macOS derlemeleri için, `Xcode`un en son sürümünün <https://developer.apple.com/xcode/download/>`_
+yüklü olduğundan emin olun. Bu, `Clang C++ derleyicisi <https://en.wikipedia.org/wiki/Clang>`_,
+`Xcode IDE <https://en.wikipedia.org/wiki/Xcode>`_ ve OS X üzerinde C++ uygulamaları oluşturmak
+için gerekli olan diğer Apple geliştirme araçlarını içerir.
+Xcode'u ilk kez yüklüyorsanız veya yeni bir sürüm yüklediyseniz, komut satırı derlemeleri yapmadan
+önce lisansı kabul etmeniz gerekecektir:
 
 .. code-block:: bash
 
     sudo xcodebuild -license accept
 
-Our OS X build script uses `the Homebrew <https://brew.sh>`_
-package manager for installing external dependencies.
-Here's how to `uninstall Homebrew
-<https://docs.brew.sh/FAQ#how-do-i-uninstall-homebrew>`_,
-if you ever want to start again from scratch.
+OS X derleme betiğimiz, harici bağımlılıkları yüklemek için `Homebrew
+<https://brew.sh>`_ paket yöneticisini kullanır. Eğer sıfırdan başlamak
+isterseniz, Homebrew <https://docs.brew.sh/FAQ#how-do-i-uninstall-homebrew>`_'i
+nasıl kaldıracağınız aşağıda açıklanmıştır.
 
-Prerequisites - Windows
+Ön Koşullar - Windows
 -----------------------
 
-You need to install the following dependencies for Windows builds of Solidity:
+Solidity'nin Windows derlemeleri için aşağıdaki bağımlılıkları yüklemeniz gerekir:
 
 +-----------------------------------+-------------------------------------------------------+
-| Software                          | Notes                                                 |
+| Yazılım                           | Notlar                                                |
 +===================================+=======================================================+
-| `Visual Studio 2019 Build Tools`_ | C++ compiler                                          |
+| `Visual Studio 2019 Build Tools`_ | C++ derleyicisi                                       |
 +-----------------------------------+-------------------------------------------------------+
-| `Visual Studio 2019`_  (Optional) | C++ compiler and dev environment.                     |
+| `Visual Studio 2019`_ (Opsiyonel) | C++ derleyicisi ve geliştirme ortamı                  |
 +-----------------------------------+-------------------------------------------------------+
-| `Boost`_ (version 1.77+)          | C++ libraries.                                        |
+| `Boost`_ (versiyon 1.77+)         | C++ kütüphaneleri.                                    |
 +-----------------------------------+-------------------------------------------------------+
 
-If you already have one IDE and only need the compiler and libraries,
-you could install Visual Studio 2019 Build Tools.
+Eğer zaten bir IDE'niz varsa ve yalnızca derleyici ve kütüphanelere ihtiyaç duyuyorsanız,
+Visual Studio 2019 Build Tools'u yükleyebilirsiniz.
 
-Visual Studio 2019 provides both IDE and necessary compiler and libraries.
-So if you have not got an IDE and prefer to develop Solidity, Visual Studio 2019
-may be a choice for you to get everything setup easily.
+Visual Studio 2019 hem IDE hem de gerekli derleyici ve kütüphaneleri sağlar.
+Dolayısıyla, bir IDE'niz yoksa ve Solidity geliştirmeyi tercih ediyorsanız,
+Visual Studio 2019 her şeyi kolayca kurmanız için iyi bir tercih olabilir.
 
-Here is the list of components that should be installed
-in Visual Studio 2019 Build Tools or Visual Studio 2019:
+Visual Studio 2019 Build Tools veya Visual Studio 2019'da yüklenmesi
+gereken bileşenlerin listesi aşağıda verilmiştir:
 
 * Visual Studio C++ core features
 * VC++ 2019 v141 toolset (x86,x64)
@@ -419,50 +415,49 @@ in Visual Studio 2019 Build Tools or Visual Studio 2019:
 .. _Visual Studio 2019: https://www.visualstudio.com/vs/
 .. _Visual Studio 2019 Build Tools: https://www.visualstudio.com/downloads/#build-tools-for-visual-studio-2019
 
-We have a helper script which you can use to install all required external dependencies:
+Gerekli tüm harici bağımlılıkları yüklemek için kullanabileceğiniz bir yardımcı betiğimiz var:
 
 .. code-block:: bat
 
     scripts\install_deps.ps1
 
-This will install ``boost`` and ``cmake`` to the ``deps`` subdirectory.
+Bu ``boost`` ve ``cmake``'i ``deps`` alt dizinine yükleyecektir.
 
-Clone the Repository
+Depoyu Klonlamak
 --------------------
 
-To clone the source code, execute the following command:
+Kaynak kodunu klonlamak aşağıdaki komutu çalıştırın:
 
 .. code-block:: bash
 
     git clone --recursive https://github.com/ethereum/solidity.git
     cd solidity
 
-If you want to help developing Solidity,
-you should fork Solidity and add your personal fork as a second remote:
+Solidity'nin geliştirilmesine yardımcı olmak istiyorsanız,
+Solidity'yi çatallamalı(fork) ve kişisel çatalınızı(fork) ikinci bir remote olarak eklemelisiniz:
 
 .. code-block:: bash
 
     git remote add personal git@github.com:[username]/solidity.git
 
 .. note::
-    This method will result in a prerelease build leading to e.g. a flag
-    being set in each bytecode produced by such a compiler.
-    If you want to re-build a released Solidity compiler, then
-    please use the source tarball on the github release page:
+    Bu yöntem, örneğin böyle bir derleyici tarafından üretilen her bayt kodunda bir bayrağın
+    ayarlanmasına yol açan bir ön sürüm derlemesiyle sonuçlanacaktır. Yayınlanmış bir Solidity
+    derleyicisini yeniden derlemek istiyorsanız, lütfen github versiyon sayfasındaki kaynak tarball'u kullanın:
 
     https://github.com/ethereum/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz
 
-    (not the "Source code" provided by github).
+    (github tarafından sağlanan "Kaynak kodu" değil).
 
-Command-Line Build
+Komut Satırı Derlemek
 ------------------
 
-**Be sure to install External Dependencies (see above) before build.**
+**Derlemeden önce Harici Bağımlılıkları(yukarıda bulunan) yüklediğinizden emin olun.**
 
-Solidity project uses CMake to configure the build.
-You might want to install `ccache`_ to speed up repeated builds.
-CMake will pick it up automatically.
-Building Solidity is quite similar on Linux, macOS and other Unices:
+Solidity projesi derlemeyi yapılandırmak için CMake kullanır.
+Tekrarlanan derlemeleri hızlandırmak için `ccache`_ yüklemek isteyebilirsiniz.
+CMake bunu otomatik olarak alacaktır. Solidity'yi derlemek Linux,
+macOS ve diğer Unice'lerde de oldukça benzerdir:
 
 .. _ccache: https://ccache.dev/
 
@@ -472,7 +467,7 @@ Building Solidity is quite similar on Linux, macOS and other Unices:
     cd build
     cmake .. && make
 
-or even easier on Linux and macOS, you can run:
+veya Linux ve macOS'ta daha da kolay çalıştırabilirsiniz:
 
 .. code-block:: bash
 
@@ -481,9 +476,9 @@ or even easier on Linux and macOS, you can run:
 
 .. warning::
 
-    BSD builds should work, but are untested by the Solidity team.
+    BSD derlemeleri çalışmalıdır, fakat Solidity ekibi tarafından test edilmemiştir.
 
-And for Windows:
+Ve Windows İçin:
 
 .. code-block:: bash
 
@@ -491,36 +486,36 @@ And for Windows:
     cd build
     cmake -G "Visual Studio 16 2019" ..
 
-In case you want to use the version of boost installed by ``scripts\install_deps.ps1``, you will
-additionally need to pass ``-DBoost_DIR="deps\boost\lib\cmake\Boost-*"`` and ``-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded``
-as arguments to the call to ``cmake``.
+Eğer ``scripts\install_deps.ps1`` tarafından yüklenen boost sürümünü kullanmak isterseniz,
+``-DBoost_DIR="deps\boost\lib\cmake\Boost-*"`` ve ``-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded``
+seçeneklerini ``cmake`` çağrısına argüman olarak iletmeniz gerekecektir.
 
-This should result in the creation of **solidity.sln** in that build directory.
-Double-clicking on that file should result in Visual Studio firing up.  We suggest building
-**Release** configuration, but all others work.
+Bunun sonucunda bu yapı dizininde **solidity.sln** dosyası oluşturulmalıdır. Ayrıca
+bu dosyaya çift tıklamak da Visual Studio'nun açılmasına neden olmalıdır.  Biz **Yayın**
+yapılandırmasını oluşturmanızı öneririz, ancak diğerleri de çalışır.
 
-Alternatively, you can build for Windows on the command-line, like so:
+Alternatif olarak, Windows için komut satırında aşağıdaki gibi bir derleme de yapabilirsiniz:
 
 .. code-block:: bash
 
     cmake --build . --config Release
 
-CMake Options
+CMake Ayarları
 =============
 
-If you are interested what CMake options are available run ``cmake .. -LH``.
+CMake ayarlarının ne olduğunu merak ediyorsanız ``cmake .. -LH`` komutunu çalıştırın.
 
 .. _smt_solvers_build:
 
-SMT Solvers
+SMT Çözücüleri
 -----------
-Solidity can be built against SMT solvers and will do so by default if
-they are found in the system. Each solver can be disabled by a `cmake` option.
+Solidity, SMT çözücülerine karşı derlenebilir ve sistemde bulunurlarsa standart
+olarak bunu yapacaklardır. Her çözücü bir `cmake` seçeneği ile devre dışı bırakılabilir.
 
-*Note: In some cases, this can also be a potential workaround for build failures.*
+*Not: Bazı durumlarda bu, derleme hataları için potansiyel olarak geçici bir çözüm de olabilir.*
 
 
-Inside the build folder you can disable them, since they are enabled by default:
+Yapı klasörünün içinde bunları devre dışı bırakabilirsiniz, çünkü varsayılan olarak etkin durumdadırlar:
 
 .. code-block:: bash
 
@@ -533,39 +528,40 @@ Inside the build folder you can disable them, since they are enabled by default:
     # disables both Z3 and CVC4
     cmake .. -DUSE_CVC4=OFF -DUSE_Z3=OFF
 
-The Version String in Detail
+Sürüm Dizgisi Detayları
 ============================
 
-The Solidity version string contains four parts:
+Solidity sürüm dizgisi dört bölümden oluşur:
 
-- the version number
-- pre-release tag, usually set to ``develop.YYYY.MM.DD`` or ``nightly.YYYY.MM.DD``
-- commit in the format of ``commit.GITHASH``
-- platform, which has an arbitrary number of items, containing details about the platform and compiler
+- Sürüm numarası
+- Sürüm öncesi etiketi (genellikle develop.YYYY.MM.DD veya night..YYYY.MM.DD olarak ayarlanır)
+- İşlem biçiminde ``commit.GITHASH``
+- Platform ve derleyici ile ilgili ayrıntıları içeren, rasgele sayıda öğeye sahip platform
 
-If there are local modifications, the commit will be postfixed with ``.mod``.
+Yerel değişiklikler varsa işleme ``.mod`` diye eklenir.
 
-These parts are combined as required by SemVer, where the Solidity pre-release tag equals to the SemVer pre-release
-and the Solidity commit and platform combined make up the SemVer build metadata.
+Tüm değişiklikler, Semver'in gerektirdiği şekilde, Solidity yayınlanma öncesi sürümün Semver yayınlanma
+öncesi sürümüne eşit olduğu ve Solidity'de bir işlem yapıldığında Semver'deki meta verilerinin de değiştiği
+bir şekilde gerçekleşir.
 
-A release example: ``0.4.8+commit.60cc1668.Emscripten.clang``.
+Bir yayın örneği: ``0.4.8+commit.60cc1668.Emscripten.clang``.
 
-A pre-release example: ``0.4.9-nightly.2017.1.17+commit.6ecb4aa3.Emscripten.clang``
+Bir ön yayın örneği: ``0.4.9-nightly.2017.1.17+commit.6ecb4aa3.Emscripten.clang``
 
-Important Information About Versioning
+Versiyonlama Hakkında Önemli Bilgi
 ======================================
 
-After a release is made, the patch version level is bumped, because we assume that only
-patch level changes follow. When changes are merged, the version should be bumped according
-to SemVer and the severity of the change. Finally, a release is always made with the version
-of the current nightly build, but without the ``prerelease`` specifier.
+Bir sürüm yapıldıktan sonra, yama sürüm seviyesi yükseltilir, çünkü sadece yama
+seviyesindeki değişikliklerin takip edildiğini varsayıyoruz. Değişiklikler birleştirildiğinde
+(merge) , sürüm SemVer'e ve değişikliğin ciddiyetine göre yükseltilmelidir. Son olarak, bir
+sürüm her zaman mevcut gecelik derlemenin sürümüyle, ancak ``prerelease`` belirteci olmadan yapılır.
 
-Example:
+Örnek:
 
-1. The 0.4.0 release is made.
-2. The nightly build has a version of 0.4.1 from now on.
-3. Non-breaking changes are introduced --> no change in version.
-4. A breaking change is introduced --> version is bumped to 0.5.0.
-5. The 0.5.0 release is made.
+1. 0.4.0 sürümü çıktı.
+2. Gecelik yapı şu andan itibaren 0.4.1 sürümüne sahiptir.
+3. İşleyişi bozmayan değişikliler tanıtıldı --> sürümde değişiklik yok.
+4. İşleyişi bozan değişiklikler tanıtıldı --> version 0.5.0'a yükseltildi.
+5. 0.5.0 sürümü çıktı.
 
-This behaviour works well with the  :ref:`version pragma <version_pragma>`.
+Bu davranış :ref:`version pragma <version_pragma>` ile iyi çalışır.
