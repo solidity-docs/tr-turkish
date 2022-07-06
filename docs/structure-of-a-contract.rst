@@ -3,26 +3,25 @@
 .. _contract_structure:
 
 ***********************
-Structure of a Contract
+Bir Sözleşmenin Yapısı
 ***********************
 
-Contracts in Solidity are similar to classes in object-oriented languages.
-Each contract can contain declarations of :ref:`structure-state-variables`, :ref:`structure-functions`,
-:ref:`structure-function-modifiers`, :ref:`structure-events`, :ref:`structure-errors`, :ref:`structure-struct-types` and :ref:`structure-enum-types`.
-Furthermore, contracts can inherit from other contracts.
+Solidity'deki sözleşmeler, nesne yönelimli dillerdeki sınıflara benzer.
+Her kontrat içerisinde şu beyanları bulundurabilir: :ref:`structure-state-variables`, :ref:`structure-functions`,
+:ref:`structure-function-modifiers`, :ref:`structure-events`, :ref:`structure-errors`, :ref:`structure-struct-types` ve :ref:`structure-enum-types`.
+Ayrıca, sözleşmeler bilgileri diğer sözleşmelerden miras alabilir.
 
-There are also special kinds of contracts called :ref:`libraries<libraries>` and :ref:`interfaces<interfaces>`.
+Aynı zamanda :ref:`libraries<libraries>` ve :ref:`interfaces<interfaces>` adı verilen özel sözleşme türleri de vardır.
 
-The section about :ref:`contracts<contracts>` contains more details than this section,
-which serves to provide a quick overview.
+:ref:`contracts<contracts>` ile ilgili bölüm, bu bölümden daha fazla ayrıntı içerdiğinden
+hızlı bir bakış açısı elde etmek adına faydalıdır.
 
 .. _structure-state-variables:
 
-State Variables
+Durum Değişkenleri
 ===============
 
-State variables are variables whose values are permanently stored in contract
-storage.
+Durum değişkenleri, değerleri sözleşmenin deposunda kalıcı olarak saklanan değişkenlerdir.
 
 .. code-block:: solidity
 
@@ -30,22 +29,20 @@ storage.
     pragma solidity >=0.4.0 <0.9.0;
 
     contract SimpleStorage {
-        uint storedData; // State variable
+        uint storedData; // Durum değişkeni
         // ...
     }
 
-See the :ref:`types` section for valid state variable types and
-:ref:`visibility-and-getters` for possible choices for
-visibility.
+Geçerli durum değişkeni tiplerini görmek için :ref:`types` bölümüne ve 
+görünürlük hakkındaki olası seçenekler için :ref:`visibility-and-getters` bölümüne bakabilirsiniz.
 
 .. _structure-functions:
 
-Functions
+Fonksiyonlar
 =========
 
-Functions are the executable units of code. Functions are usually
-defined inside a contract, but they can also be defined outside of
-contracts.
+Fonksiyonlar, yürütülebilir kod birimleridir. Fonksiyonlar genellikle 
+bir sözleşme içinde tanımlanırlar, ancak sözleşmelerin dışında da tanımlanabilirler.
 
 .. code-block:: solidity
 
@@ -53,33 +50,33 @@ contracts.
     pragma solidity >=0.7.1 <0.9.0;
 
     contract SimpleAuction {
-        function bid() public payable { // Function
+        function bid() public payable { // Fonksiyon
             // ...
         }
     }
 
-    // Helper function defined outside of a contract
+    // Helper fonksiyonu sözleşmenin dışında tanımlı 
     function helper(uint x) pure returns (uint) {
         return x * 2;
     }
 
-:ref:`function-calls` can happen internally or externally
-and have different levels of :ref:`visibility<visibility-and-getters>`
-towards other contracts. :ref:`Functions<functions>` accept :ref:`parameters and return variables<function-parameters-return-variables>` to pass parameters
-and values between them.
+:ref:`function-calls` dahili veya harici olarak gerçekleşebilir ve diğer sözleşmelere göre farklı :ref:`visibility<visibility-and-getters>`
+seviyelerine sahiptir. :ref:`Functions<functions>` parametre ve değişkenleri birbiri arasında geçirmek için
+:ref:`parameters and return variables<function-parameters-return-variables>` kabul eder.
 
 .. _structure-function-modifiers:
 
-Function Modifiers
+Fonksiyon Değiştiriciler
 ==================
 
-Function modifiers can be used to amend the semantics of functions in a declarative way
-(see :ref:`modifiers` in the contracts section).
+Fonksiyon değiştiriciler fonksiyonların semantiğini bildirimsel bir şekilde değiştirmek için kullanılabilir.
+(sözleşmeler bölümündeki :ref:`modifiers` kısmına bakın).
 
-Overloading, that is, having the same modifier name with different parameters,
-is not possible.
+Aşırı yükleme (Overloading), yani aynı değiştirici adını farklı parametrelerle kullanma durumu 
+mümkün değildir.
 
-Like functions, modifiers can be :ref:`overridden <modifier-overriding>`.
+
+Fonksiyonlar gibi, değiştiriciler de :ref:`overridden <modifier-overriding>` olabilir.
 
 .. code-block:: solidity
 
@@ -89,7 +86,7 @@ Like functions, modifiers can be :ref:`overridden <modifier-overriding>`.
     contract Purchase {
         address public seller;
 
-        modifier onlySeller() { // Modifier
+        modifier onlySeller() { // Değiştirici
             require(
                 msg.sender == seller,
                 "Only seller can call this."
@@ -97,17 +94,17 @@ Like functions, modifiers can be :ref:`overridden <modifier-overriding>`.
             _;
         }
 
-        function abort() public view onlySeller { // Modifier usage
+        function abort() public view onlySeller { // Değiştirici kullanımı
             // ...
         }
     }
 
 .. _structure-events:
 
-Events
+Olaylar
 ======
 
-Events are convenience interfaces with the EVM logging facilities.
+Olaylar, EVM için yapılacak olan kayıt işlemlerine kolaylık sağlayan arayüzlerdir.
 
 .. code-block:: solidity
 
@@ -115,35 +112,35 @@ Events are convenience interfaces with the EVM logging facilities.
     pragma solidity >=0.4.21 <0.9.0;
 
     contract SimpleAuction {
-        event HighestBidIncreased(address bidder, uint amount); // Event
+        event HighestBidIncreased(address bidder, uint amount); // Olay
 
         function bid() public payable {
             // ...
-            emit HighestBidIncreased(msg.sender, msg.value); // Triggering event
+            emit HighestBidIncreased(msg.sender, msg.value); // Tetikleyici olay
         }
     }
 
-See :ref:`events` in contracts section for information on how events are declared
-and can be used from within a dapp.
+Olayların nasıl bildirildiği ve bir dapp içinden nasıl kullanılabileceği hakkında bilgi almak için 
+sözleşmeler bölümündeki :ref:`events`e bakabilirsiniz.
 
 .. _structure-errors:
 
-Errors
+Hatalar
 ======
 
-Errors allow you to define descriptive names and data for failure situations.
-Errors can be used in :ref:`revert statements <revert-statement>`.
-In comparison to string descriptions, errors are much cheaper and allow you
-to encode additional data. You can use NatSpec to describe the error to
-the user.
+Hatalar, kodunuzdaki hatalı durumlar için açıklayıcı adlar ve veriler tanımlamanıza olanak sunar.
+Hatalar :ref:`revert statements <revert-statement>` içerisinde kullanılabilir.
+String tanımlamaları ile karşılaştırıldığında, hatalar çok daha zahmetsizdir 
+ve ek verileri kodlamanıza olanak tanır. Hatayı kullanıcıya 
+açıklamak için NatSpec'i kullanabilirsiniz.
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity ^0.8.4;
 
-    /// Not enough funds for transfer. Requested `requested`,
-    /// but only `available` available.
+    /// Transfer için yeterli para yok. `requested` kadar miktar istendi,
+    /// ancak sadece `available` miktarda var.
     error NotEnoughFunds(uint requested, uint available);
 
     contract Token {
@@ -158,15 +155,15 @@ the user.
         }
     }
 
-See :ref:`errors` in the contracts section for more information.
+Daha fazla bilgi için sözleşmeler bölümündeki :ref:`errors`a bakın.
 
 .. _structure-struct-types:
 
-Struct Types
+Yapı Tipleri
 =============
 
-Structs are custom defined types that can group several variables (see
-:ref:`structs` in types section).
+Yapılar, birkaç değişkeni grup halinde bir arada bulunduran özel tanımlı türlerdir (tipler
+bölümündeki :ref:`structs` kısmına bakın).
 
 .. code-block:: solidity
 
@@ -174,7 +171,7 @@ Structs are custom defined types that can group several variables (see
     pragma solidity >=0.4.0 <0.9.0;
 
     contract Ballot {
-        struct Voter { // Struct
+        struct Voter { // Yapı
             uint weight;
             bool voted;
             address delegate;
@@ -184,11 +181,12 @@ Structs are custom defined types that can group several variables (see
 
 .. _structure-enum-types:
 
-Enum Types
+Enum Tipleri
 ==========
 
-Enums can be used to create custom types with a finite set of 'constant values' (see
-:ref:`enums` in types section).
+Enum'lar 'sabit değerlerden' oluşan ve sınırlı sayıda setler halinde 
+oluşturabileceğiniz özel tipler oluşturmanızı sağlar (tipler bölümündeki
+:ref:`enums` kısmına bakın).
 
 .. code-block:: solidity
 
