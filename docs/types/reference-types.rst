@@ -448,69 +448,51 @@ Bir bayt dizisindeki bir ``.push()``, :ref:`depolamada kısa düzenden uzun düz
 
 Burada, ilk ``x.push()`` değerlendirildiğinde, ``x`` hala kısa düzende saklanır, bu nedenle ``x.push()``, ``x``in ilk depolama yuvasındaki bir öğeye bir referans döndürür. Ancak, ikinci ``x.push()`` bayt dizisini büyük düzene geçirir. Şimdi ``x.push()`` öğesinin atıfta bulunduğu öğe dizinin veri alanındayken, başvuru hala uzunluk alanının bir parçası olan orijinal konumunu işaret eder ve atama, ``x`` dizisinin uzunluğunu etkin bir şekilde bozar.
 
-To be safe, only enlarge bytes arrays by at most one element during a single
-assignment and do not simultaneously index-access the array in the same statement.
+Güvende olmak için, tek bir atama sırasında bayt dizilerini yalnızca en fazla bir öğeyle büyütün ve aynı ifadede diziye aynı anda dizin erişimi yapmayın.
 
-While the above describes the behaviour of dangling storage references in the
-current version of the compiler, any code with dangling references should be
-considered to have *undefined behaviour*. In particular, this means that
-any future version of the compiler may change the behaviour of code that
-involves dangling references.
+Yukarıda, derleyicinin geçerli sürümündeki sarkan depolama referanslarının davranışı açıklanırken, sarkan referanslara sahip herhangi bir kodun *tanımsız davranışa* sahip olduğu düşünülmelidir. Özellikle bu, derleyicinin gelecekteki herhangi bir sürümünün, sarkan referanslar içeren kodun davranışını değiştirebileceği anlamına gelir.
 
-Be sure to avoid dangling references in your code!
+Kodunuzda sarkan referanslardan kaçındığınızdan emin olun!
 
 .. index:: ! array;slice
 
 .. _array-slices:
 
-Array Slices
+Dizi Dilimleri
 ------------
 
+Dizi dilimleri, bir dizinin bitişik kısmındaki bir görünümdür. ``x[start:end]`` olarak yazılırlar, burada ``start`` ve
+``end``, uint256 türüyle sonuçlanan (veya dolaylı olarak ona dönüştürülebilir) ifadelerdir. Dilimin ilk öğesi ``x[start]`` ve son öğesi ``x[end - 1]``dir.
 
-Array slices are a view on a contiguous portion of an array.
-They are written as ``x[start:end]``, where ``start`` and
-``end`` are expressions resulting in a uint256 type (or
-implicitly convertible to it). The first element of the
-slice is ``x[start]`` and the last element is ``x[end - 1]``.
+``start``, ``end``den büyükse veya ``end``, dizinin uzunluğundan büyükse, bir istisna atılır.
 
-If ``start`` is greater than ``end`` or if ``end`` is greater
-than the length of the array, an exception is thrown.
+Hem ``start`` hem de ``end`` isteğe bağlıdır: ``start`` varsayılanları  ``0`` ve ``end`` varsayılanları dizinin uzunluğudur.
 
-Both ``start`` and ``end`` are optional: ``start`` defaults
-to ``0`` and ``end`` defaults to the length of the array.
+Dizi dilimlerinin herhangi bir üyesi yoktur. Altta yatan türdeki dizilere örtük olarak dönüştürülebilirler ve dizin erişimini desteklerler. Dizin erişimi, temel alınan dizide mutlak değil, dilimin başlangıcına göredir.
 
-Array slices do not have any members. They are implicitly
-convertible to arrays of their underlying type
-and support index access. Index access is not absolute
-in the underlying array, but relative to the start of
-the slice.
+Dizi dilimlerinin bir tür adı yoktur, yani hiçbir değişken tür olarak dizi dilimlerine sahip olamaz, yalnızca ara ifadelerde bulunurlar.
 
-Array slices do not have a type name which means
-no variable can have an array slices as type,
-they only exist in intermediate expressions.
+.. not::
+    Şu anda dizi dilimleri yalnızca çağrı verisi dizileri için uygulanmaktadır.
 
-.. note::
-    As of now, array slices are only implemented for calldata arrays.
-
-Array slices are useful to ABI-decode secondary data passed in function parameters:
+Dizi dilimleri, işlev parametrelerinde iletilen ikincil verilerin ABI kodunu çözmek için kullanışlıdır:
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.5 <0.9.0;
     contract Proxy {
-        /// @dev Address of the client contract managed by proxy i.e., this contract
+        /// @dev, proxy (vekil) tarafından yönetilen alıcı (client) sözleşmesinin adresi, yani bu sözleşme
         address client;
 
         constructor(address client_) {
             client = client_;
         }
 
-        /// Forward call to "setOwner(address)" that is implemented by client
-        /// after doing basic validation on the address argument.
+        /// Adres bağımsız değişkeninde temel doğrulama yaptıktan sonra istemci tarafından uygulanan "setOwner(address)" çağrısını yönlendirin.
         function forward(bytes calldata payload) external {
             bytes4 sig = bytes4(payload[:4]);
-            // Due to truncating behaviour, bytes4(payload) performs identically.
+            // Kesme davranışı nedeniyle, bytes4(payload) aynı şekilde çalışır.
             // bytes4 sig = bytes4(payload);
             if (sig == bytes4(keccak256("setOwner(address)"))) {
                 address owner = abi.decode(payload[4:], (address));
@@ -527,29 +509,26 @@ Array slices are useful to ABI-decode secondary data passed in function paramete
 
 .. _structs:
 
-Structs
+Yapılar
 -------
 
-Solidity provides a way to define new types in the form of structs, which is
-shown in the following example:
+Solidity, aşağıdaki örnekte gösterildiği gibi, yapılar biçiminde yeni türleri tanımlamanın bir yolunu sağlar:
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.6.0 <0.9.0;
 
-    // Defines a new type with two fields.
-    // Declaring a struct outside of a contract allows
-    // it to be shared by multiple contracts.
-    // Here, this is not really needed.
+    // İki alanlı yeni bir tür tanımlar.
+    // Bir sözleşmenin dışında bir yapı bildirmek, birden fazla sözleşme tarafından paylaşılmasına izin verir.
+    // Burada, bu gerçekten gerekli değil.
     struct Funder {
         address addr;
         uint amount;
     }
 
     contract CrowdFunding {
-        // Structs can also be defined inside contracts, which makes them
-        // visible only there and in derived contracts.
+        // Yapılar, sözleşmelerin içinde de tanımlanabilir, bu da onları yalnızca orada ve türetilmiş sözleşmelerde görünür kılar.
         struct Campaign {
             address payable beneficiary;
             uint fundingGoal;
@@ -563,8 +542,7 @@ shown in the following example:
 
         function newCampaign(address payable beneficiary, uint goal) public returns (uint campaignID) {
             campaignID = numCampaigns++; // campaignID is return variable
-            // We cannot use "campaigns[campaignID] = Campaign(beneficiary, goal, 0, 0)"
-            // because the right hand side creates a memory-struct "Campaign" that contains a mapping.
+            // "campaigns[campaignID] = Campaign(beneficiary, goal, 0, 0)" kullanamayız çünkü sağ taraf bir eşleme içeren bir bellek yapısı "Campaign" oluşturur.
             Campaign storage c = campaigns[campaignID];
             c.beneficiary = beneficiary;
             c.fundingGoal = goal;
@@ -572,9 +550,8 @@ shown in the following example:
 
         function contribute(uint campaignID) public payable {
             Campaign storage c = campaigns[campaignID];
-            // Creates a new temporary memory struct, initialised with the given values
-            // and copies it over to storage.
-            // Note that you can also use Funder(msg.sender, msg.value) to initialise.
+            // Verilen değerlerle başlatılan yeni bir geçici bellek yapısı oluşturur ve bunu depoya kopyalar.
+            // Başlatmak için Funder(msg.sender, msg.value) öğesini de kullanabileceğinizi unutmayın.
             c.funders[c.numFunders++] = Funder({addr: msg.sender, amount: msg.value});
             c.amount += msg.value;
         }
@@ -590,26 +567,14 @@ shown in the following example:
         }
     }
 
-The contract does not provide the full functionality of a crowdfunding
-contract, but it contains the basic concepts necessary to understand structs.
-Struct types can be used inside mappings and arrays and they can themselves
-contain mappings and arrays.
 
-It is not possible for a struct to contain a member of its own type,
-although the struct itself can be the value type of a mapping member
-or it can contain a dynamically-sized array of its type.
-This restriction is necessary, as the size of the struct has to be finite.
+Sözleşme, bir kitle fonlaması sözleşmesinin tam işlevselliğini sağlamaz, ancak yapıları anlamak için gerekli temel kavramları içerir. Yapı türleri eşlemeler ve diziler içinde kullanılabilir ve kendileri eşlemeler ve diziler içerebilir.
 
-Note how in all the functions, a struct type is assigned to a local variable
-with data location ``storage``.
-This does not copy the struct but only stores a reference so that assignments to
-members of the local variable actually write to the state.
+Bir yapının kendi türünden bir üye içermesi mümkün değildir, ancak yapının kendisi bir eşleme üyesinin değer türü olabilir veya kendi türünde dinamik olarak boyutlandırılmış bir dizi içerebilir. Yapının boyutunun sonlu olması gerektiğinden bu kısıtlama gereklidir.
 
-Of course, you can also directly access the members of the struct without
-assigning it to a local variable, as in
-``campaigns[campaignID].amount = 0``.
 
-.. note::
-    Until Solidity 0.7.0, memory-structs containing members of storage-only types (e.g. mappings)
-    were allowed and assignments like ``campaigns[campaignID] = Campaign(beneficiary, goal, 0, 0)``
-    in the example above would work and just silently skip those members.
+
+Tüm işlevlerde, veri konumu ``storage`` olan yerel bir değişkene bir yapı türünün nasıl atandığına dikkat edin. Bu, yapıyı kopyalamaz, ancak yalnızca bir referansı saklar, böylece yerel değişkenin üyelerine yapılan atamalar aslında duruma yazılır.
+
+.. not::
+    Solidity 0.7.0'a kadar, yalnızca depolama türlerinin üyelerini (ör. eşlemeler) içeren bellek yapılarına izin veriliyordu ve ``campaigns[campaignID] = Campaign(beneficiary, goal, 0, 0)`` gibi atamalar işe yarıyordu ve bunları sessizce atlıyordu.
