@@ -11,6 +11,11 @@ Bu dokümanların çevirisi tamamlanırken, çevrilmiş bir sürümünü bu adre
 - @AliErcanOzgokce
 - @kuzdogan
 
+## Denetleyiciler
+- @muratartan
+- @cemdemircioglu
+- @sevvalmutlu
+
 Katkıda bulunmak için lütfen [Discord Grubumuz'dan](https://discord.gg/cyN3vrhB) bilgi alın.
 
 Çeviri görevini aldığınız sayfaları lütfen başlangıçta belirlenen zamana göre teslim edin.
