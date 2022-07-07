@@ -151,14 +151,9 @@ Benzer şekilde, ``bytes.concat`` fonksiyonu, rastgele sayıda ``bytes`` veya ``
 Bellek Dizilerini Ayırma
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Memory arrays with dynamic length can be created using the ``new`` operator.
-As opposed to storage arrays, it is **not** possible to resize memory arrays (e.g.
-the ``.push`` member functions are not available).
-You either have to calculate the required size in advance
-or create a new memory array and copy every element.
+Dinamik uzunluktaki bellek dizileri ``new`` operatörü kullanılarak oluşturulabilir. Depolama dizilerinin aksine, bellek dizilerini yeniden boyutlandırmak **değildir** (ör. ``.push`` üye fonksiyonları kullanılamaz). Gereken boyutu önceden hesaplamanız veya yeni bir bellek dizisi oluşturmanız ve her öğeyi kopyalamanız gerekir.
 
-As all variables in Solidity, the elements of newly allocated arrays are always initialized
-with the :ref:`default value<default-value>`.
+Solidity'deki tüm değişkenler gibi, yeni tahsis edilen dizilerin öğeleri her zaman :ref:`varsayılan değer<varsayılan-değer>` ile başlatılır.
 
 .. code-block:: solidity
 
@@ -177,27 +172,18 @@ with the :ref:`default value<default-value>`.
 
 .. index:: ! array;literals, ! inline;arrays
 
-Array Literals
+Dizi Değişmezleri
 ^^^^^^^^^^^^^^
 
-An array literal is a comma-separated list of one or more expressions, enclosed
-in square brackets (``[...]``). For example ``[1, a, f(3)]``. The type of the
-array literal is determined as follows:
+Bir dizi değişmezi, köşeli parantezler (``[...]``) içine alınmış bir veya daha fazla ifadenin virgülle ayrılmış bir listesidir. Örneğin ``[1, a, f(3)]``. Dizi değişmezinin türü şu şekilde belirlenir:
 
-It is always a statically-sized memory array whose length is the
-number of expressions.
+Her zaman uzunluğu ifade sayısı olan statik olarak boyutlandırılmış bir bellek dizisidir.
 
-The base type of the array is the type of the first expression on the list such that all
-other expressions can be implicitly converted to it. It is a type error
-if this is not possible.
+Dizinin temel türü, diğer tüm ifadelerin dolaylı olarak kendisine dönüştürülebileceği şekilde listedeki ilk ifadenin türüdür. Bu mümkün değilse bir tür hatasıdır.
 
-It is not enough that there is a type all the elements can be converted to. One of the elements
-has to be of that type.
+Tüm öğelerin dönüştürülebileceği bir türün olması yeterli değildir. Öğelerden birinin bu türden olması gerekir.
 
-In the example below, the type of ``[1, 2, 3]`` is
-``uint8[3] memory``, because the type of each of these constants is ``uint8``. If
-you want the result to be a ``uint[3] memory`` type, you need to convert
-the first element to ``uint``.
+Aşağıdaki örnekte, ``[1, 2, 3]`` türü ``uint8[3] memory``dir, çünkü bu sabitlerin her birinin türü ``uint8``dir. Sonucun ``uint[3] memory`` türünde olmasını istiyorsanız, ilk öğeyi ``uint``e dönüştürmeniz gerekir.
 
 .. code-block:: solidity
 
@@ -213,13 +199,9 @@ the first element to ``uint``.
         }
     }
 
-The array literal ``[1, -1]`` is invalid because the type of the first expression
-is ``uint8`` while the type of the second is ``int8`` and they cannot be implicitly
-converted to each other. To make it work, you can use ``[int8(1), -1]``, for example.
+Birinci ifadenin türü ``uint8`` iken ikincinin türü ``int8`` olduğundan ve bunlar örtük olarak birbirine dönüştürülemediğinden ``[1, -1]`` dizisi değişmezi geçersizdir. Çalışması için örneğin ``[int8(1), -1]`` kullanabilirsiniz.
 
-Since fixed-size memory arrays of different type cannot be converted into each other
-(even if the base types can), you always have to specify a common base type explicitly
-if you want to use two-dimensional array literals:
+Farklı türdeki sabit boyutlu bellek dizileri birbirine dönüştürülemediğinden (temel türler yapabilse bile), iki boyutlu dizi değişmezlerini kullanmak istiyorsanız, her zaman ortak bir temel türü açıkça belirtmeniz gerekir:
 
 .. code-block:: solidity
 
@@ -229,34 +211,30 @@ if you want to use two-dimensional array literals:
     contract C {
         function f() public pure returns (uint24[2][4] memory) {
             uint24[2][4] memory x = [[uint24(0x1), 1], [0xffffff, 2], [uint24(0xff), 3], [uint24(0xffff), 4]];
-            // The following does not work, because some of the inner arrays are not of the right type.
+            // Aşağıdakiler çalışmaz, çünkü bazı iç diziler doğru tipte değildir.
             // uint[2][4] memory x = [[0x1, 1], [0xffffff, 2], [0xff, 3], [0xffff, 4]];
             return x;
         }
     }
 
-Fixed size memory arrays cannot be assigned to dynamically-sized
-memory arrays, i.e. the following is not possible:
+Sabit boyutlu bellek dizileri, dinamik olarak boyutlandırılmış bellek dizilerine atanamaz, yani aşağıdakiler mümkün değildir:
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.4.0 <0.9.0;
 
-    // This will not compile.
+    // Bu derleme gerçekleşmeyecek.
     contract C {
         function f() public {
-            // The next line creates a type error because uint[3] memory
-            // cannot be converted to uint[] memory.
+            // Sonraki satır bir tür hatası oluşturur çünkü uint[3] belleği, uint[] belleğine dönüştürülemez.
             uint[] memory x = [uint(1), 3, 4];
         }
     }
 
-It is planned to remove this restriction in the future, but it creates some
-complications because of how arrays are passed in the ABI.
+İleride bu kısıtlamanın kaldırılması planlanıyor ancak dizilerin ABI'dan geçirilme şekli nedeniyle bazı komplikasyonlar yaratıyor.
 
-If you want to initialize dynamically-sized arrays, you have to assign the
-individual elements:
+Dinamik olarak boyutlandırılmış dizileri başlatmak istiyorsanız, tek tek öğeleri atamanız gerekir:
 
 .. code-block:: solidity
 
@@ -276,45 +254,27 @@ individual elements:
 
 .. _array-members:
 
-Array Members
+Dizi Üyeleri
 ^^^^^^^^^^^^^
 
 **length**:
-    Arrays have a ``length`` member that contains their number of elements.
-    The length of memory arrays is fixed (but dynamic, i.e. it can depend on
-    runtime parameters) once they are created.
+    Diziler, eleman sayısını içeren bir ``length`` (uzunluk) üyesine sahiptir.Bellek dizilerinin uzunluğu, oluşturulduktan sonra sabittir (ancak dinamiktir, yani çalışma zamanı parametrelerine bağlı olabilir).
 **push()**:
-     Dynamic storage arrays and ``bytes`` (not ``string``) have a member function
-     called ``push()`` that you can use to append a zero-initialised element at the end of the array.
-     It returns a reference to the element, so that it can be used like
-     ``x.push().t = 2`` or ``x.push() = b``.
+    Dinamik depolama dizileri ve ``bytes`` (``string`` değil), dizinin sonuna sıfır başlatılmış bir öğe eklemek için kullanabileceğiniz ``push()`` adlı üye fonksiyonuna sahiptir.
+    Öğeye bir başvuru döndürür, böylece ``x.push().t = 2`` veya ``x.push() = b`` gibi kullanılabilir.
 **push(x)**:
-     Dynamic storage arrays and ``bytes`` (not ``string``) have a member function
-     called ``push(x)`` that you can use to append a given element at the end of the array.
-     The function returns nothing.
+    Dinamik depolama dizileri ve ``bytes`` (``string`` değil), dizinin sonuna belirli bir öğeyi eklemek için kullanabileceğiniz ``push(x)`` adlı bir üye fonksiyonuna sahiptir. Fonksiyon hiçbir şey döndürmez.
 **pop()**:
-     Dynamic storage arrays and ``bytes`` (not ``string``) have a member
-     function called ``pop()`` that you can use to remove an element from the
-     end of the array. This also implicitly calls :ref:`delete<delete>` on the removed element. The function returns nothing.
+    Dinamik depolama dizileri ve ``bytes`` (``string`` değil), dizinin sonundan bir öğeyi kaldırmak için kullanabileceğiniz ``pop()`` adlı bir üye fonksiyonuna sahiptir. Bu ayrıca kaldırılan öğede örtük olarak :ref:`delete<delete>` öğesini çağırır. Fonksiyon hiçbir şey döndürmez.
 
-.. note::
-    Increasing the length of a storage array by calling ``push()``
-    has constant gas costs because storage is zero-initialised,
-    while decreasing the length by calling ``pop()`` has a
-    cost that depends on the "size" of the element being removed.
-    If that element is an array, it can be very costly, because
-    it includes explicitly clearing the removed
-    elements similar to calling :ref:`delete<delete>` on them.
+.. not::
+    ``pop()`` kullanarak uzunluk azaltılırken kaldırılan öğenin "boyutuna" bağlı olarak bir ücreti varken, bir depolama dizisinin uzunluğunu ``push()`` çağırarak artırmanın sabit gaz maliyetleri vardır çünkü başlarken depolama sıfırdır. Kaldırılan öğe bir diziyse, çok maliyetli olabilir, çünkü :ref:`delete<delete>` çağrılmasına benzer şekilde kaldırılan öğelerin açıkça temizlenmesini içerir.
 
-.. note::
-    To use arrays of arrays in external (instead of public) functions, you need to
-    activate ABI coder v2.
+.. not::
+    Dizi dizilerini harici (genel yerine) fonksiyonlarda kullanmak için ABI kodlayıcı v2'yi etkinleştirmeniz gerekir.
 
-.. note::
-    In EVM versions before Byzantium, it was not possible to access
-    dynamic arrays return from function calls. If you call functions
-    that return dynamic arrays, make sure to use an EVM that is set to
-    Byzantium mode.
+.. not::
+    "Byzantium" öncesi EVM sürümlerinde fonksiyon çağrılarından dönen dinamik dizilere erişim mümkün değildi. Dinamik diziler döndüren işlevleri çağırırsanız, Byzantium moduna ayarlanmış bir EVM kullandığınızdan emin olun.
 
 .. code-block:: solidity
 
@@ -323,18 +283,15 @@ Array Members
 
     contract ArrayContract {
         uint[2**20] aLotOfIntegers;
-        // Note that the following is not a pair of dynamic arrays but a
-        // dynamic array of pairs (i.e. of fixed size arrays of length two).
-        // Because of that, T[] is always a dynamic array of T, even if T
-        // itself is an array.
-        // Data location for all state variables is storage.
+        // Aşağıdakilerin bir çift dinamik dizi değil, dinamik bir çift dizisi (yani, iki uzunluktaki sabit boyutlu diziler) olduğuna dikkat edin.
+        // Bu nedenle, T[], T'nin kendisi bir dizi olsa bile, her zaman dinamik bir T dizisidir.
+        // Tüm durum değişkenleri için veri konumu depolamadır.
         bool[2][] pairsOfFlags;
 
-        // newPairs is stored in memory - the only possibility
-        // for public contract function arguments
+        // newPairs bellekte saklanır - tek olasılık
+        // açık (public) sözleşme fonksiyonları argümanları için
         function setAllFlagPairs(bool[2][] memory newPairs) public {
-            // assignment to a storage array performs a copy of ``newPairs`` and
-            // replaces the complete array ``pairsOfFlags``.
+            // bir depolama dizisine atama, "``newPairs``in bir kopyasını gerçekleştirir ve ``pairsOfFlags`` dizisinin tamamının yerini alır.
             pairsOfFlags = newPairs;
         }
 
@@ -345,25 +302,22 @@ Array Members
         StructType s;
 
         function f(uint[] memory c) public {
-            // stores a reference to ``s`` in ``g``
+            // ``g`` içindeki ``s`` referansını saklar
             StructType storage g = s;
-            // also changes ``s.moreInfo``.
+            // ayrıca ``s.moreInfo``yu da değiştirir.
             g.moreInfo = 2;
-            // assigns a copy because ``g.contents``
-            // is not a local variable, but a member of
-            // a local variable.
+            // ``g.contents`` yerel bir değişken değil, yerel bir değişkenin üyesi olduğu için bir kopya atar.
             g.contents = c;
         }
 
         function setFlagPair(uint index, bool flagA, bool flagB) public {
-            // access to a non-existing index will throw an exception
+            // var olmayan bir dizine erişim bir istisna atar
             pairsOfFlags[index][0] = flagA;
             pairsOfFlags[index][1] = flagB;
         }
 
         function changeFlagArraySize(uint newSize) public {
-            // using push and pop is the only way to change the
-            // length of an array
+            // bir dizinin uzunluğunu değiştirmenin tek yolu push ve pop kullanmaktır
             if (newSize < pairsOfFlags.length) {
                 while (pairsOfFlags.length > newSize)
                     pairsOfFlags.pop();
@@ -374,7 +328,7 @@ Array Members
         }
 
         function clear() public {
-            // these clear the arrays completely
+            // bunlar dizileri tamamen temizler
             delete pairsOfFlags;
             delete aLotOfIntegers;
             // identical effect here
@@ -384,8 +338,7 @@ Array Members
         bytes byteData;
 
         function byteArrays(bytes memory data) public {
-            // byte arrays ("bytes") are different as they are stored without padding,
-            // but can be treated identical to "uint8[]"
+            // bayt dizileri ("bayts"), dolgu olmadan depolandıkları için farklıdır, ancak "uint8[]" ile aynı şekilde ele alınabilirler.
             byteData = data;
             for (uint i = 0; i < 7; i++)
                 byteData.push();
@@ -399,14 +352,13 @@ Array Members
         }
 
         function createMemoryArray(uint size) public pure returns (bytes memory) {
-            // Dynamic memory arrays are created using `new`:
+            // Dinamik bellek dizileri `new` kullanılarak oluşturulur:
             uint[2][] memory arrayOfPairs = new uint[2][](size);
 
-            // Inline arrays are always statically-sized and if you only
-            // use literals, you have to provide at least one type.
+            // Satır içi diziler her zaman statik olarak boyutlandırılmıştır ve yalnızca değişmez değerler kullanıyorsanız, en az bir tür sağlamanız gerekir.
             arrayOfPairs[0] = [uint(1), 2];
 
-            // Create a dynamic byte array:
+            // Dinamik bir bayt dizisi oluşturun:
             bytes memory b = new bytes(200);
             for (uint i = 0; i < b.length; i++)
                 b[i] = bytes1(uint8(i));
@@ -416,13 +368,9 @@ Array Members
 
 .. index:: ! array;dangling storage references
 
-Dangling References to Storage Array Elements
+Depolama Dizisi Öğelerine Sarkan Referanslar
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-When working with storage arrays, you need to take care to avoid dangling references.
-A dangling reference is a reference that points to something that no longer exists or has been
-moved without updating the reference. A dangling reference can for example occur, if you store a
-reference to an array element in a local variable and then ``.pop()`` from the containing array:
+Depolama dizileriyle çalışırken, sarkan referanslardan kaçınmaya özen göstermeniz gerekir. Sarkan referans, artık var olmayan veya referans güncellenmeden taşınmış bir şeye işaret eden bir referanstır. Örneğin, bir dizi öğesine bir başvuruyu yerel bir değişkende saklarsanız ve ardından içeren diziden ``.pop()`` depolarsanız, sarkan bir başvuru oluşabilir:
 
 .. code-block:: solidity
 
@@ -433,14 +381,13 @@ reference to an array element in a local variable and then ``.pop()`` from the c
         uint[][] s;
 
         function f() public {
-            // Stores a pointer to the last array element of s.
+            // s öğesinin son dizi öğesine bir işaretçi depolar.
             uint[] storage ptr = s[s.length - 1];
-            // Removes the last array element of s.
+            // s öğesinin son dizi öğesini kaldırır.
             s.pop();
-            // Writes to the array element that is no longer within the array.
+            // Artık dizi içinde olmayan dizi öğesine yazar.
             ptr.push(0x42);
-            // Adding a new element to ``s`` now will not add an empty array, but
-            // will result in an array of length 1 with ``0x42`` as element.
+            // Şimdi ``s`` öğesine yeni bir öğe eklemek boş bir dizi eklemez, ancak öğe olarak ``0x42`` olan 1 uzunluğunda bir diziyle sonuçlanır.
             s.push();
             assert(s[s.length - 1][0] == 0x42);
         }
