@@ -393,15 +393,9 @@ Depolama dizileriyle çalışırken, sarkan referanslardan kaçınmaya özen gö
         }
     }
 
-The write in ``ptr.push(0x42)`` will **not** revert, despite the fact that ``ptr`` no
-longer refers to a valid element of ``s``. Since the compiler assumes that unused storage
-is always zeroed, a subsequent ``s.push()`` will not explicitly write zeroes to storage,
-so the last element of ``s`` after that ``push()`` will have length ``1`` and contain
-``0x42`` as its first element.
+``ptr.push(0x42)`` içindeki yazma, ``ptr``nin artık geçerli bir ``s`` öğesini ifade etmemesine rağmen **dönmeyecek**. Derleyici kullanılmayan depolamanın her zaman sıfırlandığını varsaydığından, sonraki bir ``s.push()``, depolamaya açıkça sıfır yazmaz, bu nedenle ``push()``dan sonraki ``s``nin son öğesi ``1`` uzunluğa sahip ve ilk öğesi olarak ``0x42`` içeriyor.
 
-Note that Solidity does not allow to declare references to value types in storage. These kinds
-of explicit dangling references are restricted to nested reference types. However, dangling references
-can also occur temporarily when using complex expressions in tuple assignments:
+Solidity'nin, depolamadaki değer türlerine referansların bildirilmesine izin vermediğini unutmayın. Bu tür açık sarkan başvurular, iç içe geçmiş başvuru türleriyle sınırlıdır. Ancak, tanımlama grubu atamalarında karmaşık ifadeler kullanılırken geçici olarak sarkan referanslar da oluşabilir:
 
 .. code-block:: solidity
 
@@ -412,7 +406,7 @@ can also occur temporarily when using complex expressions in tuple assignments:
         uint[] s;
         uint[] t;
         constructor() {
-            // Push some initial values to the storage arrays.
+            // Bazı başlangıç değerlerini depolama dizilerine aktarın.
             s.push(0x07);
             t.push(0x03);
         }
@@ -423,32 +417,26 @@ can also occur temporarily when using complex expressions in tuple assignments:
         }
 
         function f() public returns (uint[] memory) {
-            // The following will first evaluate ``s.push()`` to a reference to a new element
-            // at index 1. Afterwards, the call to ``g`` pops this new element, resulting in
-            // the left-most tuple element to become a dangling reference. The assignment still
-            // takes place and will write outside the data area of ``s``.
+            // Aşağıdakiler ilk önce ``s.push()`` öğesini dizin 1'deki yeni bir öğeye yapılan bir başvuruya göre değerlendirecektir.
+            // Daha sonra, ``g`` çağrısı bu yeni öğeyi açar ve en soldaki demet öğesinin sarkan bir referans haline gelmesine neden olur.
+            // Atama hala devam ediyor ve ``s`` veri alanının dışına yazacak.
             (s.push(), g()[0]) = (0x42, 0x17);
-            // A subsequent push to ``s`` will reveal the value written by the previous
-            // statement, i.e. the last element of ``s`` at the end of this function will have
-            // the value ``0x42``.
+            // Daha sonra ``s``ye basılması (push edilmesi/pushlanması), önceki ifade tarafından yazılan değeri ortaya çıkaracaktır, yani bu fonksiyonun sonunda "s"nin son elemanı "0x42" değerine sahip olacaktır.
             s.push();
             return s;
         }
     }
 
-It is always safer to only assign to storage once per statement and to avoid
-complex expressions on the left-hand-side of an assignment.
+Her ifade için depolamaya yalnızca bir kez atama yapmak ve atamanın sol tarafında karmaşık ifadelerden kaçınmak her zaman daha güvenlidir.
 
-You need to take particular care when dealing with references to elements of
-``bytes`` arrays, since a ``.push()`` on a bytes array may switch :ref:`from short
-to long layout in storage<bytes-and-string>`.
+Bir bayt dizisindeki bir ``.push()``, :ref:`depolamada kısa düzenden uzun düzene <bytes-and-string>` geçebileceğinden, ``bytes`` dizilerinin öğelerine yapılan başvurularla uğraşırken özellikle dikkatli olmanız gerekir.
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.0 <0.9.0;
 
-    // This will report a warning
+    // Bu bir uyarı bildirir
     contract C {
         bytes x = "012345678901234567890123456789";
 
@@ -458,12 +446,8 @@ to long layout in storage<bytes-and-string>`.
         }
     }
 
-Here, when the first ``x.push()`` is evaluated, ``x`` is still stored in short
-layout, thereby ``x.push()`` returns a reference to an element in the first storage slot of
-``x``. However, the second ``x.push()`` switches the bytes array to large layout.
-Now the element that ``x.push()`` referred to is in the data area of the array while
-the reference still points at its original location, which is now a part of the length field
-and the assignment will effectively garble the length of ``x``.
+Burada, ilk ``x.push()`` değerlendirildiğinde, ``x`` hala kısa düzende saklanır, bu nedenle ``x.push()``, ``x``in ilk depolama yuvasındaki bir öğeye bir referans döndürür. Ancak, ikinci ``x.push()`` bayt dizisini büyük düzene geçirir. Şimdi ``x.push()`` öğesinin atıfta bulunduğu öğe dizinin veri alanındayken, başvuru hala uzunluk alanının bir parçası olan orijinal konumunu işaret eder ve atama, ``x`` dizisinin uzunluğunu etkin bir şekilde bozar.
+
 To be safe, only enlarge bytes arrays by at most one element during a single
 assignment and do not simultaneously index-access the array in the same statement.
 
