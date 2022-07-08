@@ -5,7 +5,7 @@
 Referans Türleri
 ===============
 
-Referans türünün değerleri, birden çok farklı adla değiştirilebilir. Bunu, bir değer türü değişkeni kullanıldığında bağımsız bir kopya aldığınız değer türleriyle karşılaştırın. Bu nedenle referans türleri, değer türlerinden daha dikkatli ele alınmalıdır. Şu anda referans türleri yapılar, diziler ve eşlemelerden oluşmaktadır. Bir referans türü kullanıyorsanız, her zaman türün depolandığı veri alanını açıkça sağlamanız gerekir: ``memory`` (ömrü, harici bir işlev çağrısıyla sınırlıdır), ``storage`` (durum değişkenlerinin ömrünün, bir sözleşmenin ömrüyle sınırlı olduğu durumlarda saklanır) veya ``calldata`` (işlev argümanlarını içeren özel veri konumu).
+Referans türünün değerleri, birden çok farklı adla değiştirilebilir. Bunu, bir değer türü değişkeni kullanıldığında bağımsız bir kopya aldığınız değer türleriyle karşılaştırın. Bu nedenle referans türleri, değer türlerinden daha dikkatli ele alınmalıdır. Şu anda referans türleri yapılar, diziler ve eşlemelerden oluşmaktadır. Bir referans türü kullanıyorsanız, her zaman türün depolandığı veri alanını açıkça sağlamanız gerekir: ``memory`` (ömrü, harici bir fonksiyon çağrısıyla sınırlıdır), ``storage`` (durum değişkenlerinin ömrünün, bir sözleşmenin ömrüyle sınırlı olduğu durumlarda saklanır) veya ``calldata`` (fonksiyon argümanlarını içeren özel veri konumu).
 
 Veri konumunu değiştiren bir atama veya tür dönüştürme işlemi her zaman otomatik bir kopyalama işlemine neden olurken, aynı veri konumu içindeki atamalar yalnızca bazı durumlarda depolama türleri için kopyalanır.
 
@@ -14,17 +14,17 @@ Veri konumunu değiştiren bir atama veya tür dönüştürme işlemi her zaman 
 Veri Konumu
 -------------
 
-Her referans türünün, nerede depolandığı hakkında "veri konumu" olan ek bir açıklaması vardır. Üç veri konumu vardır: ``memory``, ``storage`` ve ``calldata``. Çağrı verileri (calldata), işlev bağımsız değişkenlerinin depolandığı ve çoğunlukla bellek gibi davrandığı, değiştirilemeyen, kalıcı olmayan bir alandır.
+Her referans türünün, nerede depolandığı hakkında "veri konumu" olan ek bir açıklaması vardır. Üç veri konumu vardır: ``memory``, ``storage`` ve ``calldata``. Çağrı verileri (calldata), fonksiyon bağımsız değişkenlerinin depolandığı ve çoğunlukla bellek gibi davrandığı, değiştirilemeyen, kalıcı olmayan bir alandır.
 
 
 .. not::
     Yapabiliyorsanız, veri konumu olarak ``calldata`` kullanmayı deneyin, çünkü bu kopyaları önler ve ayrıca verilerin değiştirilememesini sağlar. "calldata" veri konumuna sahip diziler ve yapılar da fonksiyonlarla döndürülebilir, ancak bu türlerin atanması mümkün değildir.
 
 .. not::
-    0.6.9 sürümünden önce, referans türü argümanlar için veri konumu, harici işlevlerde ``calldata``, genel işlevlerde ``memory`` ve dahili ve özel işlevlerde ``memory`` veya ``storage`` ile sınırlıydı. . Artık ``memory``e ve ``calldata``ya, görünürlüklerinden bağımsız olarak tüm işlevlerde izin verilir.
+    0.6.9 sürümünden önce, referans türü argümanlar için veri konumu, harici fonksiyonlarda ``calldata``, genel fonksiyonlarda ``memory`` ve dahili ve özel fonksiyonlarda ``memory`` veya ``storage`` ile sınırlıydı. . Artık ``memory``e ve ``calldata``ya, görünürlüklerinden bağımsız olarak tüm fonksiyonlarda izin verilir.
    
 .. not::
-    0.5.0 sürümünden önce, veri konumu atlanabilir ve değişkenin türüne, işlev türüne vb. bağlı olarak varsayılan olarak farklı konumlara atanırdı, ancak tüm karmaşık türler şimdi açık bir veri konumu vermelidir.
+    0.5.0 sürümünden önce, veri konumu atlanabilir ve değişkenin türüne, fonksiyon türüne vb. bağlı olarak varsayılan olarak farklı konumlara atanırdı, ancak tüm karmaşık türler şimdi açık bir veri konumu vermelidir.
 
 .. _data-location-assignment:
 
@@ -86,7 +86,7 @@ Endeksler sıfır tabanlıdır ve erişim bildirimin tersi yönündedir.
 
 Örneğin, bir ``uint[][5] memory x`` değişkeniniz varsa, ``x[2][6]`` kullanarak üçüncü dinamik dizi içerisindeki yedinci ``uint``'e erişirsiniz ve üçüncü dinamik diziye erişmek için ``x[2]`` kullanırsınız. Yine, aynı zamanda bir dizi de olabilen bir ``T`` türü için bir ``T[5] a`` diziniz varsa, o zaman ``a[2]`` her zaman ``T`` tipine sahiptir.
 
-Dizi öğeleri, eşleme veya yapı dahil olmak üzere herhangi bir türde olabilir. Türler için genel kısıtlamalar geçerlidir, çünkü eşlemeler yalnızca "depolama" veri konumunda depolanabilir ve genel olarak görülebilen işlevler :ref:`ABI types <ABI>` olan parametrelere ihtiyaç duyar.
+Dizi öğeleri, eşleme veya yapı dahil olmak üzere herhangi bir türde olabilir. Türler için genel kısıtlamalar geçerlidir, çünkü eşlemeler yalnızca "depolama" veri konumunda depolanabilir ve genel olarak görülebilen fonksiyonlar :ref:`ABI types <ABI>` olan parametrelere ihtiyaç duyar.
 
 Durum değişkeni dizilerini ``public`` olarak işaretlemek ve Solidity'nin bir :ref:`alıcı <visibility-and-getters>` oluşturmasını sağlamak mümkündür. Sayısal dizin, alıcı için gerekli bir parametre haline gelir.
 
@@ -104,7 +104,7 @@ Diziler olarak ``bytes`` ve ``string``
 
 ``bytes`` ve ``string`` türündeki değişkenler özel dizilerdir. ``bytes`` türü ``bytes1[]`` ile benzerdir, ancak çağrı verileri ve bellekte sıkıca paketlenmiştir. ``string``, ``bytes`` değerine eşittir ancak uzunluk veya dizin erişimine izin vermez.
 
-Solidity'nin dize (string) işleme işlevleri yoktur, ancak üçüncü taraf dize (string) kitaplıkları vardır. Ayrıca,
+Solidity'nin dize (string) işleme fonksiyonları yoktur, ancak üçüncü taraf dize (string) kitaplıkları vardır. Ayrıca,
 ``keccak256(abi.encodePacked(s1)) == keccak256(abi.encodePacked(s2))`` 
 kullanarak iki dizgiyi keccak256-hash ile karşılaştırabilir ve ``string.concat(s1, s2)`` kullanarak iki dizgiyi birleştirebilirsiniz.
 
@@ -274,7 +274,7 @@ Dizi Üyeleri
     Dizi dizilerini harici (genel yerine) fonksiyonlarda kullanmak için ABI kodlayıcı v2'yi etkinleştirmeniz gerekir.
 
 .. not::
-    "Byzantium" öncesi EVM sürümlerinde fonksiyon çağrılarından dönen dinamik dizilere erişim mümkün değildi. Dinamik diziler döndüren işlevleri çağırırsanız, Byzantium moduna ayarlanmış bir EVM kullandığınızdan emin olun.
+    "Byzantium" öncesi EVM sürümlerinde fonksiyon çağrılarından dönen dinamik dizilere erişim mümkün değildi. Dinamik diziler döndüren fonksiyonları çağırırsanız, Byzantium moduna ayarlanmış bir EVM kullandığınızdan emin olun.
 
 .. code-block:: solidity
 
@@ -475,7 +475,7 @@ Dizi dilimlerinin bir tür adı yoktur, yani hiçbir değişken tür olarak dizi
 .. not::
     Şu anda dizi dilimleri yalnızca çağrı verisi dizileri için uygulanmaktadır.
 
-Dizi dilimleri, işlev parametrelerinde iletilen ikincil verilerin ABI kodunu çözmek için kullanışlıdır:
+Dizi dilimleri, fonksiyon parametrelerinde iletilen ikincil verilerin ABI kodunu çözmek için kullanışlıdır:
 
 .. code-block:: solidity
 
@@ -574,7 +574,7 @@ Bir yapının kendi türünden bir üye içermesi mümkün değildir, ancak yap�
 
 
 
-Tüm işlevlerde, veri konumu ``storage`` olan yerel bir değişkene bir yapı türünün nasıl atandığına dikkat edin. Bu, yapıyı kopyalamaz, ancak yalnızca bir referansı saklar, böylece yerel değişkenin üyelerine yapılan atamalar aslında duruma yazılır.
+Tüm fonksiyonlarda, veri konumu ``storage`` olan yerel bir değişkene bir yapı türünün nasıl atandığına dikkat edin. Bu, yapıyı kopyalamaz, ancak yalnızca bir referansı saklar, böylece yerel değişkenin üyelerine yapılan atamalar aslında duruma yazılır.
 
 .. not::
     Solidity 0.7.0'a kadar, yalnızca depolama türlerinin üyelerini (ör. eşlemeler) içeren bellek yapılarına izin veriliyordu ve ``campaigns[campaignID] = Campaign(beneficiary, goal, 0, 0)`` gibi atamalar işe yarıyordu ve bunları sessizce atlıyordu.
