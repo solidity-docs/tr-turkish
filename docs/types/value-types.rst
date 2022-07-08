@@ -1,243 +1,209 @@
 .. index:: ! value type, ! type;value
 .. _value-types:
 
-Value Types
+Değer Türleri
 ===========
 
-The following types are also called value types because variables of these
-types will always be passed by value, i.e. they are always copied when they
-are used as function arguments or in assignments.
+Aşağıdaki türlere de değer türleri denir, çünkü bu türlerin değişkenleri her zaman değere göre iletilir, yani fonksiyon argümanları olarak veya atamalarda kullanıldıklarında her zaman kopyalanırlar.
 
 .. index:: ! bool, ! true, ! false
 
 Booleans
 --------
 
-``bool``: The possible values are constants ``true`` and ``false``.
+``bool``: Olası değerler ``true`` ve ``false`` sabitleridir.
 
-Operators:
+Operatörler:
 
-*  ``!`` (logical negation)
-*  ``&&`` (logical conjunction, "and")
-*  ``||`` (logical disjunction, "or")
-*  ``==`` (equality)
-*  ``!=`` (inequality)
+*  ``!`` (Mantıksal olumsuzlama)
+*  ``&&`` (Mantıksal bağlaç, "ve")
+*  ``||`` (Mantıksal ayrılma, "veya")
+*  ``==`` (Eşitlik)
+*  ``!=`` (Eşitsizlik)
 
-The operators ``||`` and ``&&`` apply the common short-circuiting rules. This means that in the expression ``f(x) || g(y)``, if ``f(x)`` evaluates to ``true``, ``g(y)`` will not be evaluated even if it may have side-effects.
+``||`` ve ``&&`` operatörleri ortak kısa devre kurallarını uygular. Bunun anlamı ``f(x) || g(y)``, eğer ``f(x)`` ``true`` (doğru) olarak değerlendirilirse, ``g(y)`` yan etkileri olsa bile değerlendirilmeyecektir.
 
 .. index:: ! uint, ! int, ! integer
 .. _integers:
 
-Integers
+Tamsayılar
 --------
 
-``int`` / ``uint``: Signed and unsigned integers of various sizes. Keywords ``uint8`` to ``uint256`` in steps of ``8`` (unsigned of 8 up to 256 bits) and ``int8`` to ``int256``. ``uint`` and ``int`` are aliases for ``uint256`` and ``int256``, respectively.
+``int`` / ``uint``: Çeşitli boyutlarda işaretli ve işaretsiz tam sayılar.
+``8`` (8'den 256 bit'e kadar işaretsiz) ve ``uint8`` ila ``uint256`` adımlarında ``uint8`` ile ``uint256`` arasındaki anahtar kelimeler. ``uint`` ve ``int`` sırasıyla ``uint256`` ve ``int256`` için takma adlardır.
 
-Operators:
+Operatörler:
 
-* Comparisons: ``<=``, ``<``, ``==``, ``!=``, ``>=``, ``>`` (evaluate to ``bool``)
-* Bit operators: ``&``, ``|``, ``^`` (bitwise exclusive or), ``~`` (bitwise negation)
-* Shift operators: ``<<`` (left shift), ``>>`` (right shift)
-* Arithmetic operators: ``+``, ``-``, unary ``-`` (only for signed integers), ``*``, ``/``, ``%`` (modulo), ``**`` (exponentiation)
+* Karşılaştırmalar: ``<=``, ``<``, ``==``, ``!=``, ``>=``, ``>`` (``bool`` olarak değerlendir)
+* Bit operatörleri: ``&``, ``|``, ``^`` (bit düzeyinde özel veya), ``~`` (bitsel olumsuzlama)
+* Değiştirme (Shift) operatörleri: ``<<`` (sol shift), ``>>`` (sağ shift)
+* Aritmetik operatörler: ``+``, ``-``, tekli ``-`` (sadece imzalı tamsayılar için), ``*``, ``/``, ``%`` (mod alma operatörü), ``**`` (ül alma operatörü)
 
-For an integer type ``X``, you can use ``type(X).min`` and ``type(X).max`` to
-access the minimum and maximum value representable by the type.
+Bir tamsayı türü olan ``X`` için, tür tarafından gösterilebilen minimum ve maksimum değere erişmek için ``type(X).min`` ve ``type(X).max``ı kullanabilirsiniz.
 
-.. warning::
 
-  Integers in Solidity are restricted to a certain range. For example, with ``uint32``, this is ``0`` up to ``2**32 - 1``.
-  There are two modes in which arithmetic is performed on these types: The "wrapping" or "unchecked" mode and the "checked" mode.
-  By default, arithmetic is always "checked", which mean that if the result of an operation falls outside the value range
-  of the type, the call is reverted through a :ref:`failing assertion<assert-and-require>`. You can switch to "unchecked" mode
-  using ``unchecked { ... }``. More details can be found in the section about :ref:`unchecked <unchecked>`.
+.. uyarı::
 
-Comparisons
+ Solidity'deki tamsayılar belirli bir aralıkla sınırlıdır. Örneğin, ``uint32`` ile bu ``0``dan ``2**32 - 1``e kadardır. Bu türlerde aritmetiğin gerçekleştirildiği iki mod vardır: "wrapping" veya "unchecked" mod ve "checked" mod. Varsayılan olarak, aritmetik her zaman "checked" durumundadır, yani bir işlemin sonucu türün değer aralığının dışına çıkarsa, çağrı bir :ref:`başarısız onaylama<asset-and-require>` aracılığıyla geri döndürülür. ``unchecked { ... }`` kullanarak "unchecked" moda geçebilirsiniz. Daha fazla ayrıntı :ref:`unchecked <unchecked>` ile ilgili bölümde bulunabilir.
+
+
+Karşılaştırmalar
 ^^^^^^^^^^^
 
-The value of a comparison is the one obtained by comparing the integer value.
+Bir karşılaştırmanın değeri, tamsayı değeri karşılaştırılarak elde edilen değerdir.
 
-Bit operations
+Bit işlemleri
 ^^^^^^^^^^^^^^
 
-Bit operations are performed on the two's complement representation of the number.
-This means that, for example ``~int256(0) == int256(-1)``.
+Bit işlemleri, sayının ikisinin tümleyen gösterimi üzerinde gerçekleştirilir.
+Bu, örneğin ``~int256(0) == int256(-1)`` anlamına gelir.
+
 
 Shifts
 ^^^^^^
 
-The result of a shift operation has the type of the left operand, truncating the result to match the type.
-The right operand must be of unsigned type, trying to shift by a signed type will produce a compilation error.
+Bir kaydırma işleminin sonucu, sol işlenenin türüne sahiptir ve sonucu türle eşleşecek şekilde kısaltır.
+Doğru işlenen imzasız türde olmalıdır, imzalı bir türle kaydırmaya çalışmak derleme hatası üretecektir.
 
-Shifts can be "simulated" using multiplication by powers of two in the following way. Note that the truncation
-to the type of the left operand is always performed at the end, but not mentioned explicitly.
+Vardiyalar, aşağıdaki şekilde ikinin kuvvetleriyle çarpma kullanılarak "simüle edilebilir". Sol işlenenin türünün kesilmesinin her zaman sonunda gerçekleştirildiğini, ancak açıkça belirtilmediğini unutmayın.
 
-- ``x << y`` is equivalent to the mathematical expression ``x * 2**y``.
-- ``x >> y`` is equivalent to the mathematical expression ``x / 2**y``, rounded towards negative infinity.
+- ``x << y``, ``x * 2**y`` matematiksel ifadesine eşdeğerdir.
+- ``x >> y``, ``x / 2**y`` matematiksel ifadesine eşdeğerdir, negatif sonsuza yuvarlanır.
 
-.. warning::
-    Before version ``0.5.0`` a right shift ``x >> y`` for negative ``x`` was equivalent to
-    the mathematical expression ``x / 2**y`` rounded towards zero,
-    i.e., right shifts used rounding up (towards zero) instead of rounding down (towards negative infinity).
+.. uyarı::
 
-.. note::
-    Overflow checks are never performed for shift operations as they are done for arithmetic operations.
-    Instead, the result is always truncated.
+    ``0.5.0`` sürümünden önce, negatif ``x`` için bir sağa kaydırma ``x >> y`` sıfıra yuvarlanmış ``x / 2**y`` matematiksel ifadesine eşdeğerdi, yani sağa kaydırmalar, aşağı yuvarlama (negatif sonsuza doğru) yerine yukarı (sıfıra doğru) yuvarlama olarak kullanılır.
 
-Addition, Subtraction and Multiplication
+.. not::
+    Aritmetik işlemlerde olduğu gibi kaydırma işlemleri için de taşma kontrolleri yapılmaz. Bunun yerine, sonuç her zaman kesilir.
+
+Toplama, Çıkarma ve Çarpma
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Addition, subtraction and multiplication have the usual semantics, with two different
-modes in regard to over- and underflow:
+Toplama, çıkarma ve çarpma, taşma ve alttan akışa ilişkin iki farklı mod ile olağan semantiklere sahiptir:
 
-By default, all arithmetic is checked for under- or overflow, but this can be disabled
-using the :ref:`unchecked block<unchecked>`, resulting in wrapping arithmetic. More details
-can be found in that section.
+Varsayılan olarak, tüm aritmetik yetersiz veya taşma açısından kontrol edilir, ancak bu, :ref:`unchecked blok<unchecked>` kullanılarak devre dışı bırakılabilir, bu da sarma aritmetiğiyle sonuçlanır. Daha fazla ayrıntı o bölümde bulunabilir.
 
-The expression ``-x`` is equivalent to ``(T(0) - x)`` where
-``T`` is the type of ``x``. It can only be applied to signed types.
-The value of ``-x`` can be
-positive if ``x`` is negative. There is another caveat also resulting
-from two's complement representation:
+``-x`` ifadesi, ``(T(0) - x)`` ile eşdeğerdir; burada ``T``, ``x``in türüdür. Yalnızca imzalı türlere uygulanabilir. ``x`` negatifse ``-x``in değeri pozitif olabilir. İkisinin tamamlayıcı temsilinden kaynaklanan başka bir uyarı daha var:
 
-If you have ``int x = type(int).min;``, then ``-x`` does not fit the positive range.
-This means that ``unchecked { assert(-x == x); }`` works, and the expression ``-x``
-when used in checked mode will result in a failing assertion.
+``int x = type(int).min;`` varsa, ``-x`` pozitif aralığa uymaz. ``unchecked { assert(-x == x); }`` çalışır ve işaretli modda kullanıldığında ``-x`` ifadesi başarısız bir onaylamaya neden olur.
 
-Division
+
+Bölme
 ^^^^^^^^
 
-Since the type of the result of an operation is always the type of one of
-the operands, division on integers always results in an integer.
-In Solidity, division rounds towards zero. This means that ``int256(-5) / int256(2) == int256(-2)``.
+Bir işlemin sonucunun türü her zaman işlenenlerden birinin türü olduğundan, tamsayılarda bölme her zaman bir tamsayı ile sonuçlanır. Solidity'de bölme sıfıra doğru yuvarlanır. Bu, ``int256(-5) / int256(2) == int256(-2)`` anlamına gelir.
 
-Note that in contrast, division on :ref:`literals<rational_literals>` results in fractional values
-of arbitrary precision.
 
-.. note::
-  Division by zero causes a :ref:`Panic error<assert-and-require>`. This check can **not** be disabled through ``unchecked { ... }``.
+Buna karşılık, :ref:`değişmezler (literals) <rational_literals>` üzerinde bölmenin keyfi kesinliğin kesirli değerleriyle sonuçlandığını unutmayın.
 
-.. note::
-  The expression ``type(int).min / (-1)`` is the only case where division causes an overflow.
-  In checked arithmetic mode, this will cause a failing assertion, while in wrapping
-  mode, the value will be ``type(int).min``.
+.. not::
+    Sıfıra bölme bir :ref:`panik hatasına<assert-and-require>` neden olur. Bu kontrol, ``unckecked { ... }`` ile devre dışı **bırakılamaz**.
 
-Modulo
+.. not::
+  ``type(int).min / (-1)`` ifadesi, bölmenin taşmaya neden olduğu tek durumdur. Kontrollü aritmetik modda, bu başarısız bir onaylamaya neden olurken, sarma modunda değer ``type(int).min`` olacaktır.
+
+Mod Alma
 ^^^^^^
 
-The modulo operation ``a % n`` yields the remainder ``r`` after the division of the operand ``a``
-by the operand ``n``, where ``q = int(a / n)`` and ``r = a - (n * q)``. This means that modulo
-results in the same sign as its left operand (or zero) and ``a % n == -(-a % n)`` holds for negative ``a``:
+Mod alma işlemi ``a % n``, ``a`` işleneninin ``n`` işlenenine bölünmesinden sonra kalan ``r``yi verir, burada ``q = int(a / n)`` ve ``r = a - (n * q)``. Bu, mod alma işleminin sol işleneni (veya sıfır) ile aynı işaretle sonuçlandığı ve ``a % n == -(-a % n)``nin negatif ``a`` için geçerli olduğu anlamına gelir:
+
 
 * ``int256(5) % int256(2) == int256(1)``
 * ``int256(5) % int256(-2) == int256(1)``
 * ``int256(-5) % int256(2) == int256(-1)``
 * ``int256(-5) % int256(-2) == int256(-1)``
 
-.. note::
-  Modulo with zero causes a :ref:`Panic error<assert-and-require>`. This check can **not** be disabled through ``unchecked { ... }``.
+.. not::
+  Sıfırlı mod alma işlemi :ref:`Panik hatasına<assert-and-require>` neden oluyor. Bu kontrol, ``unckecked { ... }`` ile devre dışı **bırakılamaz**.
 
-Exponentiation
+Üs Alma
 ^^^^^^^^^^^^^^
 
-Exponentiation is only available for unsigned types in the exponent. The resulting type
-of an exponentiation is always equal to the type of the base. Please take care that it is
-large enough to hold the result and prepare for potential assertion failures or wrapping behaviour.
+Üs, yalnızca üsteki işaretsiz türler için kullanılabilir. Elde edilen bir üs türü her zaman tabanın türüne eşittir. Lütfen sonucu tutacak ve olası onaylama hatalarına veya sarma davranışına hazırlanacak kadar büyük olmasına dikkat edin.
 
-.. note::
-  In checked mode, exponentiation only uses the comparatively cheap ``exp`` opcode for small bases.
-  For the cases of ``x**3``, the expression ``x*x*x`` might be cheaper.
-  In any case, gas cost tests and the use of the optimizer are advisable.
 
-.. note::
-  Note that ``0**0`` is defined by the EVM as ``1``.
+.. not::
+  İşaretli (checked) modda, üs alma yalnızca küçük tabanlar için nispeten ucuz ``exp`` işlem kodunu kullanır.
+   ``x**3`` durumları için ``x*x*x`` ifadesi daha ucuz olabilir.
+   Her durumda, gaz maliyeti testleri ve optimize edicinin kullanılması tavsiye edilir.
+
+
+.. not::
+  ``0**0``ın EVM tarafından ``1`` olarak tanımlandığını unutmayın.
 
 .. index:: ! ufixed, ! fixed, ! fixed point number
 
-Fixed Point Numbers
+Sabit Nokta Sayıları
 -------------------
 
-.. warning::
-    Fixed point numbers are not fully supported by Solidity yet. They can be declared, but
-    cannot be assigned to or from.
+.. uyarı::
+    Sabit nokta sayıları henüz Solidity tarafından tam olarak desteklenmemektedir. Bildirilebilirler, ancak atanamazlar veya atanamazlar.
 
-``fixed`` / ``ufixed``: Signed and unsigned fixed point number of various sizes. Keywords ``ufixedMxN`` and ``fixedMxN``, where ``M`` represents the number of bits taken by
-the type and ``N`` represents how many decimal points are available. ``M`` must be divisible by 8 and goes from 8 to 256 bits. ``N`` must be between 0 and 80, inclusive.
-``ufixed`` and ``fixed`` are aliases for ``ufixed128x18`` and ``fixed128x18``, respectively.
+``fixed`` / ``ufixed``: Çeşitli boyutlarda imzalı ve imzasız sabit nokta sayısı. 
+Anahtar sözcükler ``ufixedMxN`` ve ``fixedMxN``, burada ``M`` türün aldığı bit sayısını ve ``N`` kaç ondalık noktanın mevcut olduğunu gösterir. ``M`` 8'e bölünebilir olmalı ve 8'den 256 bit'e kadar gider. ``N`` 0 ile 80 arasında olmalıdır. ``ufixed`` ve ``fixed`` sırasıyla ``ufixed128x18`` ve ``fixed128x18`` için takma adlardır.
 
-Operators:
 
-* Comparisons: ``<=``, ``<``, ``==``, ``!=``, ``>=``, ``>`` (evaluate to ``bool``)
-* Arithmetic operators: ``+``, ``-``, unary ``-``, ``*``, ``/``, ``%`` (modulo)
+Operatörler:
 
-.. note::
-    The main difference between floating point (``float`` and ``double`` in many languages, more precisely IEEE 754 numbers) and fixed point numbers is
-    that the number of bits used for the integer and the fractional part (the part after the decimal dot) is flexible in the former, while it is strictly
-    defined in the latter. Generally, in floating point almost the entire space is used to represent the number, while only a small number of bits define
-    where the decimal point is.
+* Karşılaştırma: ``<=``, ``<``, ``==``, ``!=``, ``>=``, ``>`` (``bool`` olarak değerlendir)
+* Aritmetik operatörler: ``+``, ``-``, tekil ``-``, ``*``, ``/``, ``%`` (mod alma)
+
+.. not::
+    Kayan nokta (birçok dilde ``float`` ve ``double``, daha doğrusu IEEE 754 sayıları) ile sabit nokta sayıları arasındaki temel fark, tamsayı ve kesirli kısım için kullanılan bit sayısının (birçok dilde ondalık nokta) birincisinde esnektir, ikincisinde ise kesin olarak tanımlanmıştır. Genel olarak, kayan noktada neredeyse tüm alan sayıyı temsil etmek için kullanılırken, ondalık noktanın nerede olduğunu yalnızca az sayıda bit tanımlar.
+
 
 .. index:: address, balance, send, call, delegatecall, staticcall, transfer
 
 .. _address:
 
-Address
+Adresler
 -------
 
-The address type comes in two flavours, which are largely identical:
+Adres türü, büyük ölçüde aynı olan iki şekilde gelir:
 
-- ``address``: Holds a 20 byte value (size of an Ethereum address).
-- ``address payable``: Same as ``address``, but with the additional members ``transfer`` and ``send``.
+- ``address``: 20 baytlık bir değer tutar (bir Ethereum adresinin boyutu).
+- ``address payable``: ``address`` ile aynıdır, ek olarak ``transfer`` ve ``send`` bulundurur.
 
-The idea behind this distinction is that ``address payable`` is an address you can send Ether to,
-while you are not supposed to send Ether to a plain ``address``, for example because it might be a smart contract
-that was not built to accept Ether.
+Bu ayrımın arkasındaki fikir, ``address payable``in, Ether gönderebileceğiniz bir adres olduğu, ancak Ether'i düz bir ``address``e göndermemeniz gerektiğidir, örneğin akıllı bir sözleşme olabileceği için. Ether'i kabul etmek için oluşturulmamıştır.
 
-Type conversions:
 
-Implicit conversions from ``address payable`` to ``address`` are allowed, whereas conversions from ``address`` to ``address payable``
-must be explicit via ``payable(<address>)``.
+Tür dönüşümleri:
 
-Explicit conversions to and from ``address`` are allowed for ``uint160``, integer literals,
-``bytes20`` and contract types.
+``address payable``den ``address``e örtülü dönüşümlere izin verilirken, ``address``den ``address payable``a dönüşümler ``payable(<address>)`` üzerinden açık olmalıdır.
 
-Only expressions of type ``address`` and contract-type can be converted to the type ``address
-payable`` via the explicit conversion ``payable(...)``. For contract-type, this conversion is only
-allowed if the contract can receive Ether, i.e., the contract either has a :ref:`receive
-<receive-ether-function>` or a payable fallback function. Note that ``payable(0)`` is valid and is
-an exception to this rule.
+``uint160``, tamsayı değişmezleri, ``bytes20`` ve sözleşme türleri için ``address``e ve adresten açık dönüşümlere izin verilir.
 
-.. note::
-    If you need a variable of type ``address`` and plan to send Ether to it, then
-    declare its type as ``address payable`` to make this requirement visible. Also,
-    try to make this distinction or conversion as early as possible.
+Yalnızca ``address`` ve sözleşme türündeki ifadeler, açık dönüştürme ``payable(...)`` aracılığıyla ``address
+payable`` türüne dönüştürülebilir. Sözleşme türü için, bu dönüştürmeye yalnızca sözleşme Ether alabiliyorsa, yani sözleşmenin bir :ref:`alma <receive-ether-function>` veya ödenebilir yedek fonksiyonu varsa izin verilir. ``payable(0)``ın geçerli olduğunu ve bu kuralın bir istisnası olduğunu unutmayın.
 
-Operators:
+.. not::
+    ``address`` türünde bir değişkene ihtiyacınız varsa ve buna Ether göndermeyi planlıyorsanız, bu gereksinimi görünür kılmak için türünü ``address payable`` olarak bildirin. Ayrıca, bu ayrımı veya dönüşümü mümkün olduğunca erken yapmaya çalışın.
 
-* ``<=``, ``<``, ``==``, ``!=``, ``>=`` and ``>``
+Operatörler:
 
-.. warning::
-    If you convert a type that uses a larger byte size to an ``address``, for example ``bytes32``, then the ``address`` is truncated.
-    To reduce conversion ambiguity version 0.4.24 and higher of the compiler force you make the truncation explicit in the conversion.
-    Take for example the 32-byte value ``0x111122223333444455556666777788889999AAAABBBBCCCCDDDDEEEEFFFFCCCC``.
+* ``<=``, ``<``, ``==``, ``!=``, ``>=`` ve ``>``
 
-    You can use ``address(uint160(bytes20(b)))``, which results in ``0x111122223333444455556666777788889999aAaa``,
-    or you can use ``address(uint160(uint256(b)))``, which results in ``0x777788889999AaAAbBbbCcccddDdeeeEfFFfCcCc``.
+.. uyarı::
+    Daha büyük bir bayt boyutu kullanan bir türü bir ``address``e, örneğin ``bytes32``ye dönüştürürseniz, ``address`` kısaltılır. Dönüştürme belirsizliğini azaltmak için sürüm 0.4.24 ve derleyici kuvvetinin daha yüksek sürümü, dönüştürmede kesmeyi açık hale getirirsiniz.
+     Örneğin, ``0x111122223333444455556666777788889999AAAABBBBCCCCDDDDEEEEFFFFCCC`` 32 bayt değerini alın.
 
-.. note::
-    The distinction between ``address`` and ``address payable`` was introduced with version 0.5.0.
-    Also starting from that version, contracts do not derive from the address type, but can still be explicitly converted to
-    ``address`` or to ``address payable``, if they have a receive or payable fallback function.
+    ``address(uint160(bytes20(b)))`` kullanabilirsiniz, bu da ``0x111122223333444455556666777788889999aAaa`` ile sonuçlanır,
+     veya ``0x777788889999AaAAbBbbCccccddDdeeeEfFFfCcCc`` ile sonuçlanan ``address(uint160(uint256(b)))``i kullanabilirsiniz.
+
+.. not::
+    ``address`` ve ``address payable`` arasındaki ayrım, 0.5.0 sürümüyle tanıtıldı. Ayrıca bu versiyondan başlayarak, sözleşmeler adres türünden türetilmez, ancak yine de bir alma veya ödeme geri dönüş işlevi varsa, açıkça ``address``e veya ``address payable``a dönüştürülebilir.
 
 .. _members-of-addresses:
 
-Members of Addresses
+Adres Üyeleri
 ^^^^^^^^^^^^^^^^^^^^
 
-For a quick reference of all members of address, see :ref:`address_related`.
+Adreslerin tüm üyelerine hızlıca göz atmak için, bkz.:ref:`address_related`.
 
 * ``balance`` and ``transfer``
 
-It is possible to query the balance of an address using the property ``balance``
-and to send Ether (in units of wei) to a payable address using the ``transfer`` function:
+Bir adresin bakiyesini ``balance`` özelliğini kullanarak sorgulamak ve ``transfer`` işlevini kullanarak Ether'i (wei birimi cinsinden) bir ödenecek adrese göndermek mümkündür:
 
 .. code-block:: solidity
     :force:
@@ -246,11 +212,10 @@ and to send Ether (in units of wei) to a payable address using the ``transfer`` 
     address myAddress = address(this);
     if (x.balance < 10 && myAddress.balance >= 10) x.transfer(10);
 
-The ``transfer`` function fails if the balance of the current contract is not large enough
-or if the Ether transfer is rejected by the receiving account. The ``transfer`` function
-reverts on failure.
+Mevcut sözleşmenin bakiyesi yeterince büyük değilse veya Ether transferi alıcı hesap tarafından reddedilirse ``transfer`` fonksiyonu başarısız olur. ``transfer`` fonksiyonu başarısızlık üzerine geri döner.
 
-.. note::
+
+.. not::
     If ``x`` is a contract address, its code (more specifically: its :ref:`receive-ether-function`, if present, or otherwise its :ref:`fallback-function`, if present) will be executed together with the ``transfer`` call (this is a feature of the EVM and cannot be prevented). If that execution runs out of gas or fails in any way, the Ether transfer will be reverted and the current contract will stop with an exception.
 
 * ``send``
