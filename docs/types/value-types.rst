@@ -630,27 +630,23 @@ Bir fonksiyon türü değişkeni başlatılmazsa, onu çağırmak bir :ref:`Pani
 
 Harici fonksiyon türleri, Solidity bağlamı dışında kullanılırsa, adres ve ardından fonksiyon tanımlayıcısını birlikte tek bir ``bytes24`` türünde kodlayan ``function`` türü olarak kabul edilirler.
 
-Mevcut sözleşmenin public fonksiyonlarının hem dahili hem de harici bir fonksiyon olarak kullanılabileceğini unutmayın. ``f``yi dahili bir fonksiyon olarak kullanmak için ``f``yi kullanın, dış biçimini kullanmak istiyorsanız ``this.f``yi kullanın.
+Mevcut sözleşmenin genel (public) fonksiyonlarının hem dahili hem de harici (external) bir fonksiyon olarak kullanılabileceğini unutmayın. ``f``yi dahili bir fonksiyon olarak kullanmak için ``f``yi kullanın, harici biçimini kullanmak istiyorsanız ``this.f``yi kullanın.
 
-Dahili tipte bir fonksiyon, nerede tanımlandığına bakılmaksızın dahili fonksiyon tipindeki bir değişkene atanabilir. Bu, hem sözleşmelerin hem de kütüphanelerin özel, dahili ve genel fonksiyonlarını ve ayrıca ücretsiz fonksiyonlarını içerir. Dış fonksiyon türleri ise yalnızca public ve external sözleşme fonksiyonlarıyla uyumludur. Kitaplıklar, bir ``delegatecall`` gerektirdikleri ve :ref:`seçicileri için farklı bir ABI kuralı <library-selectors>` kullandıkları için hariç tutulur. Arayüzlerde bildirilen fonksiyonların tanımları yoktur, bu nedenle onlara işaret etmek de bir anlam ifade etmez.
+Dahili tipte bir fonksiyon, nerede tanımlandığına bakılmaksızın dahili fonksiyon tipindeki bir değişkene atanabilir. Bu, hem sözleşmelerin hem de kütüphanelerin özel, dahili ve genel fonksiyonlarını ve ayrıca ücretsiz fonksiyonlarını içerir. harici fonksiyon türleri ise yalnızca genel (public) ve harici (external) sözleşme fonksiyonlarıyla uyumludur. Kitaplıklar, bir ``delegatecall`` gerektirdikleri ve :ref:`seçicileri için farklı bir ABI kuralı <library-selectors>` kullandıkları için hariç tutulur. Arayüzlerde bildirilen fonksiyonların tanımları yoktur, bu nedenle onlara işaret etmek de bir anlam ifade etmez.
 
 
-Members:
+Üyeler:
 
-External (or public) functions have the following members:
+Harici (veya genel) fonksiyonlar aşağıdaki üyelere sahiptir:
 
-* ``.address`` returns the address of the contract of the function.
-* ``.selector`` returns the :ref:`ABI function selector <abi_function_selector>`
+* ``.address`` fonksiyonun sözleşmesinin adresini döndürür.
+* ``.selector``, :ref:`BI işlev seçicisini <abi_function_selector>` döndürür
 
-.. note::
-  External (or public) functions used to have the additional members
-  ``.gas(uint)`` and ``.value(uint)``. These were deprecated in Solidity 0.6.2
-  and removed in Solidity 0.7.0. Instead use ``{gas: ...}`` and ``{value: ...}``
-  to specify the amount of gas or the amount of wei sent to a function,
-  respectively. See :ref:`External Function Calls <external-function-calls>` for
-  more information.
+.. not::
+Harici (veya genel) fonksiyonlar, ``.gas(uint)`` ve ``.value(uint)`` ek üyelerine sahiptiler. Bunlar Solidity 0.6.2'de tartışmaya açıldı ve Solidity 0.7.0'da kaldırıldı. Bunun yerine, bir fonksiyona gönderilen gaz miktarını veya wei miktarını belirtmek için sırasıyla ``{gas: ...}`` ve ``{value: ...}`` kullanın. Daha fazla bilgi için bkz. :ref:`Harici İşlev Çağrıları <external-function-calls>``.
 
-Example that shows how to use the members:
+
+Üyelerin nasıl kullanılacağını gösteren örnek:
 
 .. code-block:: solidity
 
@@ -668,7 +664,7 @@ Example that shows how to use the members:
         }
     }
 
-Example that shows how to use internal function types:
+Dahili fonksiyon türlerinin nasıl kullanılacağını gösteren örnek:
 
 .. code-block:: solidity
 
@@ -676,8 +672,7 @@ Example that shows how to use internal function types:
     pragma solidity >=0.4.16 <0.9.0;
 
     library ArrayUtils {
-        // internal functions can be used in internal library functions because
-        // they will be part of the same code context
+        // aynı kod bağlamının parçası olacakları için dahili fonksiyonlar dahili kütüphane fonksiyonlarında kullanılabilir
         function map(uint[] memory self, function (uint) pure returns (uint) f)
             internal
             pure
@@ -728,7 +723,7 @@ Example that shows how to use internal function types:
         }
     }
 
-Another example that uses external function types:
+Harici işlev türlerini kullanan başka bir örnek:
 
 .. code-block:: solidity
 
@@ -751,7 +746,7 @@ Another example that uses external function types:
         }
 
         function reply(uint requestID, uint response) public {
-            // Here goes the check that the reply comes from a trusted source
+            // Cevabın güvenilir bir kaynaktan gelip gelmediği kontrol edilir
             requests[requestID].callback(response);
         }
     }
@@ -774,5 +769,5 @@ Another example that uses external function types:
         }
     }
 
-.. note::
-    Lambda or inline functions are planned but not yet supported.
+.. not::
+    Lambda veya satır içi işlevler planlanmıştır ancak henüz desteklenmemektedir.
