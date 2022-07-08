@@ -54,7 +54,7 @@ silmek
 
 Yapılar (structs) için, tüm üyelerin sıfırlandığı bir yapı atar. Başka bir deyişle, ``a``nın ``delete a``dan sonraki değeri, ``a``nın atama olmadan bildirilmesiyle aynıdır:
 
-``delete`` işlevinin eşlemeler üzerinde hiçbir etkisi yoktur (çünkü eşlemelerin anahtarları rastgele olabilir ve genellikle bilinmez). Bu nedenle, bir yapıyı silerseniz, eşleme olmayan tüm üyeleri sıfırlar ve eşleme olmadıkça üyelere geri döner. Ancak, bireysel anahtarlar ve eşledikleri şey silinebilir: ``a`` bir eşleme ise, ``delete a[x]``, ``x``de depolanan değeri siler.
+``delete`` fonksiyonunun eşlemeler üzerinde hiçbir etkisi yoktur (çünkü eşlemelerin anahtarları rastgele olabilir ve genellikle bilinmez). Bu nedenle, bir yapıyı silerseniz, eşleme olmayan tüm üyeleri sıfırlar ve eşleme olmadıkça üyelere geri döner. Ancak, bireysel anahtarlar ve eşledikleri şey silinebilir: ``a`` bir eşleme ise, ``delete a[x]``, ``x``de depolanan değeri siler.
 
 ``delete a``nın gerçekten ``a``ya atanmış gibi davrandığını, yani ``a``da yeni bir nesne depoladığını unutmamak önemlidir. Bu ayrım, ``a`` referans değişkeni olduğunda görünür:
 Daha önce atıfta bulunduğu değeri değil, yalnızca ``a``nın kendisini sıfırlayacaktır.
