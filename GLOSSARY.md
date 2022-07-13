@@ -2,7 +2,7 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 ==============================================
 
 - Blockchain = Blok Zinciri
-- Breaking Changes = İşleyişi Bozan Değişiklikler, Kırılan Değişiklikler veya Önemli değişikliker 
+- Breaking Changes = İşleyişi Bozan Değişiklikler, Kırılan Değişiklikler veya Önemli Değişikliker 
 - State = Durum
 - Keypair = Anahtar Çifti
 - Stack = Yığın
@@ -24,6 +24,10 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - Components = Bileşen
 - Fork = Çatallamak
 - Nightly Development Builds = Gecelik Geliştirme Yapıları/Derlemeleri
+
+Dipnotlar ve Kavram Açıklamaları
+=================================
+- Breaking Changes = "Bir yazılım sisteminin bir bölümünde, potansiyel olarak diğer bileşenlerin başarısız olmasına neden olan bir değişiklikler"
 
 Kavram Dizini İçin Yararlanabileceğiniz Faydalı Linkler
 =======================================================
