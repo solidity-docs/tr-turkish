@@ -3,13 +3,13 @@
 .. _installing-solidity:
 
 ################################
-Solidity Derleyicisini İndirme
+Solidity Derleyicisini Yükleme
 ################################
 
 Sürüm
 ==========
 
-Solidity versiyonları `Semantic Versiyonlamayı <https://semver.org>`_ takip eder. Ek
+Solidity sürümleri `Semantic Sürümlemeyi <https://semver.org>`_ takip eder. Ek
 olarak, ana sürüm 0'a (yani 0.x.y) sahip yama düzeyindeki sürümler, kırılma değişiklikleri(breaking changes)
 içermeyecektir. Bu, 0.x.y sürümü ile derlenen kodun z > y olduğu durumlarda 0.x.z ile derlenmesinin umulabileceği anlamına gelir.
 
@@ -21,17 +21,17 @@ kodları içerdiklerini ve her zaman çalışacaklarının garanti edilmediğini
 Tüm emeklerimize karşın, hala gerçek sürümün bir parçası olmayacak belgelenmemiş
 ve/veya arızalı değişiklikler içerebilirler. Bunlar üretim amaçlı kullanım için uygun değillerdir.
 
-Sözleşmelerin gönderimini yaparken Solidity'nin yayınlanan en son sürümünü kullanmalısınız. Bunun nedeni,
+Sözleşmelerin sözleşmeler ESM'ye gönderilirken Solidity'nin yayınlanan en son sürümünü kullanmalısınız. Bunun nedeni,
 kırılma değişikliklerinin yanı sıra yeni özelliklerin tanıtılması ve eski sürümlerdeki hataların düzenli
-olarak düzeltilmesinden kaynaklanmaktadır. Bu `hızlı versiyon değişiklilerini belirtmek için <https://semver.org/#spec-item-4>`_
+olarak düzeltilmesinden kaynaklanmaktadır. Bu `hızlı sürüm değişikliklerini belirtmek için <https://semver.org/#spec-item-4>`_
 şu anda 0.x sürüm numarası kullanıyoruz.
 
 Remix
 =====
 
-*Solidity'i hızlı bir şekilde öğrenmeniz ve küçük akıllı sözleşmeleriniz için Remix'i kullanmanızı tavsiye ediyoruz.*
+*Solidity'i hızlı bir şekilde öğrenmeniz ve küçük akıllı sözleşmeler geliştirmek için Remix'i kullanmanızı tavsiye ediyoruz.*
 
-`Remix'i online bir şekilde kullanabilirsiniz <https://remix.ethereum.org/>`_, bunun için herhangi bir şey indirmenize gerek yoktur.
+`Remix'i online bir şekilde kullanabilirsiniz <https://remix.ethereum.org/>`_, bunun için herhangi bir şey indirip kurmanıza gerek yoktur.
 Remix’i internet bağlantısı olmadan da kullanmak istiyorsanız, https://github.com/ethereum/remix-live/tree/gh-pages adresine gidip
 sayfada açıklandığı gibi ``.zip`` dosyasını indirebilirsiniz. Remix, birden fazla Solidity sürümü yüklemenize gerek kalmadan gece
 yapılarını da test etmek için uygun bir seçenektir.
@@ -48,9 +48,7 @@ npm / Node.js
 
 Solidity derleyicisi olan ``solcjs`` programını kurmanın kullanışlı ve taşınabilir bir yolu
 için ``npm`` programını kullanabilirsiniz. `solcjs` programı, bu sayfanın ilerleyen kısımlarında
-açıklanacak olan derleyiciye erişim yollarından daha az özelliğe sahiptir. The
-:ref:`commandline-compiler` documentation assumes you are using
-the full-featured compiler, ``solc``.ref:`commandline-compiler`(komut satırı derleyicisi) belgeleri
+açıklanacak olan derleyiciye erişim yollarından daha az özelliğe sahiptir. ``solc``.ref:`commandline-compiler`(komut satırı derleyicisi) belgeleri
 tam özellikli derleyici olan ``solc`` kullandığınızı varsayar. ``solcjs`` kullanımı için oluşturulan
 belgeler kendi `deposu <https://github.com/ethereum/solc-js>`_ içinde bulunmaktadır.
 
@@ -74,10 +72,10 @@ Docker
 ======
 
 Solidity yapılarında bulunan Docker imajları, ``ethereum`` kuruluşundaki ``solc`` imajlarını da kullanarak elde edilebilir.
-Yayınlanan en son sürüm için ``stable`` etiketini ve geliştirme kolundaki (branch) potansiyel olarak kararsız değişiklikler
+Yayınlanan en son sürüm için ``stable`` etiketini ve geliştirme kolundaki (branch) sağlam olmayabilecek stabil olmayan değişiklikler
 için ``nightly`` etiketini kullanabilirsiniz.
 
-Docker imajı derleyicinin yürütülebilir dosyasını çalıştırır, bu sayede tüm derleyici bağımsız değişkenlerini ona iletebilirsiniz.
+Docker imajı derleyicinin yürütülebilir dosyasını çalıştırır, bu sayede tüm değişkenleri derleyiciye iletebilirsiniz.
 Örneğin, aşağıdaki komut ``solc`` imajının kararlı bir sürümünü çeker (zaten sahip değilseniz) ve ``--help`` parametresini ileterek
 yeni bir konteynerde çalıştırır.
 
@@ -98,7 +96,7 @@ girdi ve çıktı için yerel bir klasör bağladıktan sonra derlenecek olan s�
 
     docker run -v /local/path:/sources ethereum/solc:stable -o /sources/output --abi --bin /sources/Contract.sol
 
-Ayrıca standart bir JSON arayüzünü de kullanabilirsiniz (derleyiciyi araçlarıyla birlikte kullanırken tavsiye edilir).
+Ayrıca spesifik bir JSON arayüzünü de kullanabilirsiniz (Hardhat,Truffle gibi derleyiciyi araçlarıyla birlikte kullanırken tavsiye edilir).
 Bu arayüzü kullanırken, JSON girdisi bağımsız olduğu sürece herhangi bir dizini bağlamak gerekli değildir
 (yani :ref:`içeri aktarılan(import) geri çağrısı (callback) <initial-vfs-content-standard-json-with-import-callback>`
 tarafından yüklenmesi gereken herhangi bir harici dosyaya referans göstermez).
@@ -130,7 +128,7 @@ Gece sürümü de bu komutlar kullanılarak kurulabilir:
     sudo apt-get install solc
 
 Ayrıca, bazı Linux dağıtımları kendi paketlerini sağlamaktadırlar. Fakat bu paketlerin
-bakımını doğrudan bizim tarafımızdan yapılmamaktadır. Ama bu konuda endişelenmenize gerek
+bakımı doğrudan bizim tarafımızdan yapılmamaktadır. Ama bu konuda endişelenmenize gerek
 yoktur, çünkü bu paketler genellikle ilgili paket sorumluları tarafından güncel tutulmaktadır.
 
 Örnek vermek gerekirse, Arch Linux en son geliştirme sürümü için paketlere sahiptir:
@@ -183,7 +181,7 @@ Solidity'nin belirli bir sürümüne ihtiyacınız varsa, doğrudan Github'dan b
 
 Github'daki `solidity.rb "commit"lerini görüntüleyin <https://github.com/ethereum/homebrew-ethereum/commits/master/solidity.rb>`_.
 
-İstediğiniz bir sürümün commit hash'ini kopyalayıp ve kendi makinenizde kontrol edebilirsiniz.
+İstediğiniz bir sürümün commit hash'ini kopyalayabilir ve kendi makinenizde kontrol edebilirsiniz.
 
 .. code-block:: bash
 
@@ -211,7 +209,7 @@ olmasının yanı sıra üçüncü taraf araçlarla da dost olmayı (kolay bir �
 - https://binaries.soliditylang.org adresine yansıtılan bu içerik herhangi bir kimlik doğrulama, hız
   sınırlaması veya git kullanma ihtiyacı olmadan HTTPS üzerinden kolayca indirilebilir.
 - İçerik, tarayıcıda çalışan araçlar tarafından doğrudan yüklenebilmesi için doğru `Content-Type`
-  başlıklarıyla ve hoşgörülü CORS yapılandırmasıyla sunulur.
+  başlıklarıyla ve serbest CORS yapılandırmasıyla sunulur.
 - İkili sayı sistemleri için herhangi bir kurulum veya paketten çıkarma işlemi gerekmez (gerekli DLL'lerle
   birlikte gelen eski Windows yapıları hariç).
 - Biz yüksek düzeyde geriye dönük uyumluluk için çabalamaktayız. Dosyalar eklendikten sonra, eski konumunda
@@ -219,8 +217,8 @@ olmasının yanı sıra üçüncü taraf araçlarla da dost olmayı (kolay bir �
   hiçbir zaman değiştirilemez ve her zaman orijinal  sağlama toplamı ile eşleşmelidirler. Buradaki tek istisna,
   olduğu gibi bırakıldığında yarardan çok zarar verme potansiyeli olan bozuk veya kullanılamaz dosyalar için geçerlidir.
 - Dosyalar hem HTTP hem de HTTPS protokolleri üzerinden sunulur. Dosya listesini güvenli bir şekilde aldığınız (git, HTTPS,
-  IPFS aracılığıyla veya yerel olarak önbelleğe aldığınız) ve indirdikten sonra ikili sayı sistemi dosyaların hash'lerini
-  doğruladığınız sürece, ikili dosyaların için HTTPS protokolünü kullanmanız gerekmez.
+  IPFS aracılığıyla veya yerel olarak önbelleğe aldığınız) ve indirdikten sonra ikili sayı sistemi dosyalarının hash'lerini
+  doğruladığınız sürece, ikili dosyalar için HTTPS protokolünü kullanmanız gerekmez.
 
 Aynı ikili sayı sistemi dosyaları genellikle `Github üzerindeki Solidity sürüm sayfasında`_ bulunmaktadır.
 Aradaki fark, Github sürüm sayfasındaki eski sürümleri genellikle güncellemiyor olmamızdır. Bu, adlandırma
@@ -251,7 +249,7 @@ Bu şu anlama gelmektedir:
 - İkili sayı sistemini aynı dizinde `solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js <https://github.com/ethereum/solc-bin/blob/gh-pages/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js>`_
   adı altında bulabilirsiniz.  Dosyanın bir kısayol bağlantısı olabileceğini ve dosyayı indirmek için
   eğer git kullanmıyorsanız veya dosya sisteminiz kısayol bağlantılarını desteklemiyorsa bu dosyayı
-  kendiniz çözmeniz gerekebileceğini unutmayın.
+  kendiniz çözümlemeniz gerekebileceğini unutmayın.
 - İkili sayı sistemi dosyası ayrıca https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js
   adresine de yansıtılır. Bu durumda git kullanımı gerekli değildir ve kısayol bağlantıları
   ya dosyanın bir kopyasını sunarak ya da bir HTTP yönlendirmesi döndürerek dosyanın şeffaf
@@ -291,7 +289,7 @@ Bu şu anlama gelmektedir:
     emscripten olmayan yapılar da dahil olmak üzere yeni dizin yapısını sunmayacaktır.
 
     Eğer hala bu adresi kullanıyorsanız, lütfen bunun yerine  https://binaries.soliditylang.org
-    adresine kullanmaya devam edin. Bu, temeldeki barındırma hizmeti üzerinde şeffaf bir şekilde
+    adresine kullanmaya devam edin. Bu, temeldeki barındırma hizmeti(hosting) üzerinde şeffaf bir şekilde
     değişiklik yapmamıza ve kesintiyi en aza indirmemize olanak tanır. Herhangi bir kontrole sahip
     olmadığımız ``ethereum.github.io`` alan adının aksine, ``binaries.soliditylang.org`` alan adının
     uzun vadede aynı URL yapısını koruyacağını ve çalışacağını garanti ediyoruz.
@@ -314,19 +312,19 @@ Kaynağından Kurulum
 Ön Koşullar - Tüm İşletim Sistemleri
 -------------------------------------
 
-Aşağıda Solidity'nin tüm yapıları için bağımlılıklar verilmiştir:
+Aşağıda Solidity'nin tüm geliştirmeleri için bağımlılıklar verilmiştir:
 
 +-----------------------------------+-------------------------------------------------------+
 | Yazılım                           | Notlar                                                |
 +===================================+=======================================================+
-| `CMake`_ (versiyon 3.13+)         | Platformlar arası derleme dosyası oluşturucusu.       |
+| `CMake`_ (sürüm 3.13+)            | Platformlar arası derleme dosyası oluşturucusu.       |
 +-----------------------------------+-------------------------------------------------------+
 | `Boost`_ (Windows 'ta 1.77+       | C++ kütüphaneleri.                                    |
-| versiyonu, aksi takdirde 1.65+)   |                                                       |
+| sürümü, aksi takdirde 1.65+)      |                                                       |
 +-----------------------------------+-------------------------------------------------------+
 | `Git`_                            | Kaynak kodu almak için komut satırı aracı.            |
 +-----------------------------------+-------------------------------------------------------+
-| `z3`_ (versiyon 4.8+, Opsiyonel)  | SMT denetleyicisi ile kullanım için.                  |
+| `z3`_ (sürüm 4.8+, Opsiyonel)     | SMT denetleyicisi ile kullanım için.                  |
 +-----------------------------------+-------------------------------------------------------+
 | `cvc4`_ (Opsiyonel)               | SMT denetleyicisi ile kullanım için.                  |
 +-----------------------------------+-------------------------------------------------------+
@@ -342,7 +340,7 @@ Aşağıda Solidity'nin tüm yapıları için bağımlılıklar verilmiştir:
     bağlanamayabilir. Olası bir geçici çözüm, solidity'yi yapılandırmak için cmake komutunu çalıştırmadan
     önce ``<Boost yükleme yolu>/lib/cmake/Boost-1.70.0`` adını geçici olarak yeniden adlandırmaktır.
 
-    0.5.10'dan başlayarak Boost 1.70+ kadar olan sürümlerle bağlantı kurmak manuel müdahale olmadan çalışmalıdır.
+    0.5.10'dan başlayarak Boost 1.70+ kadar olan sürümlerle bağlantı kurmak(linking) manuel müdahale olmadan çalışmalıdır.
 
 .. note::
     Varsayılan derleme yapılandırması belirli bir Z3 sürümü (kodun en son güncellendiği zamandaki en son sürüm)
@@ -353,10 +351,10 @@ Aşağıda Solidity'nin tüm yapıları için bağımlılıklar verilmiştir:
     gereksinimi karşılayan herhangi bir sürümle derleme yapabilirsiniz. Ancak bunu yaparsanız, SMT testlerini atlamak
     için lütfen ``scripts/tests.sh`` dosyasına ``--no-smt`` seçeneğini de eklemeyi unutmayın.
 
-Minimum Derleyici Versiyonları
+Minimum Derleyici Sürümleri
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Aşağıdaki C++ derleyicileri ve minimum versiyonları Solidity kod tabanını oluşturabilir:
+Aşağıdaki C++ derleyicileri ve minimum sürümleri Solidity kod tabanını oluşturabilir:
 
 - `GCC <https://gcc.gnu.org>`_, version 8+
 - `Clang <https://clang.llvm.org/>`_, version 7+
@@ -393,7 +391,7 @@ Solidity'nin Windows derlemeleri için aşağıdaki bağımlılıkları yükleme
 +-----------------------------------+-------------------------------------------------------+
 | `Visual Studio 2019`_ (Opsiyonel) | C++ derleyicisi ve geliştirme ortamı                  |
 +-----------------------------------+-------------------------------------------------------+
-| `Boost`_ (versiyon 1.77+)         | C++ kütüphaneleri.                                    |
+| `Boost`_ (sürüm 1.77+)            | C++ kütüphaneleri.                                    |
 +-----------------------------------+-------------------------------------------------------+
 
 Eğer zaten bir IDE'niz varsa ve yalnızca derleyici ve kütüphanelere ihtiyaç duyuyorsanız,
@@ -426,7 +424,7 @@ Bu ``boost`` ve ``cmake``'i ``deps`` alt dizinine yükleyecektir.
 Depoyu Klonlamak
 --------------------
 
-Kaynak kodunu klonlamak aşağıdaki komutu çalıştırın:
+Kaynak kodunu klonlamak için aşağıdaki komutu çalıştırın:
 
 .. code-block:: bash
 
@@ -443,13 +441,13 @@ Solidity'yi çatallamalı(fork) ve kişisel çatalınızı(fork) ikinci bir remo
 .. note::
     Bu yöntem, örneğin böyle bir derleyici tarafından üretilen her bayt kodunda bir bayrağın
     ayarlanmasına yol açan bir ön sürüm derlemesiyle sonuçlanacaktır. Yayınlanmış bir Solidity
-    derleyicisini yeniden derlemek istiyorsanız, lütfen github versiyon sayfasındaki kaynak tarball'u kullanın:
+    derleyicisini yeniden derlemek istiyorsanız, lütfen github sürüm sayfasındaki kaynak tarball'u kullanın:
 
     https://github.com/ethereum/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz
 
     (github tarafından sağlanan "Kaynak kodu" değil).
 
-Komut Satırı Derlemek
+Komut Satırı Kullanarak Derlemek
 ------------------
 
 **Derlemeden önce Harici Bağımlılıkları(yukarıda bulunan) yüklediğinizden emin olun.**
@@ -491,7 +489,7 @@ Eğer ``scripts\install_deps.ps1`` tarafından yüklenen boost sürümünü kull
 seçeneklerini ``cmake`` çağrısına argüman olarak iletmeniz gerekecektir.
 
 Bunun sonucunda bu yapı dizininde **solidity.sln** dosyası oluşturulmalıdır. Ayrıca
-bu dosyaya çift tıklamak da Visual Studio'nun açılmasına neden olmalıdır.  Biz **Yayın**
+bu dosyaya çift tıklandığında Visual Studio nun açılması gerekir. Biz **Yayın**
 yapılandırmasını oluşturmanızı öneririz, ancak diğerleri de çalışır.
 
 Alternatif olarak, Windows için komut satırında aşağıdaki gibi bir derleme de yapabilirsiniz:
@@ -509,7 +507,7 @@ CMake ayarlarının ne olduğunu merak ediyorsanız ``cmake .. -LH`` komutunu ç
 
 SMT Çözücüleri
 -----------
-Solidity, SMT çözücülerine karşı derlenebilir ve sistemde bulunurlarsa standart
+Solidity, SMT çözücülerine karşı derlenebilir ve sistemde bulunurlarsa default(varsayılan)
 olarak bunu yapacaklardır. Her çözücü bir `cmake` seçeneği ile devre dışı bırakılabilir.
 
 *Not: Bazı durumlarda bu, derleme hataları için potansiyel olarak geçici bir çözüm de olabilir.*
@@ -535,7 +533,7 @@ Solidity sürüm dizgisi dört bölümden oluşur:
 
 - Sürüm numarası
 - Sürüm öncesi etiketi (genellikle develop.YYYY.MM.DD veya night..YYYY.MM.DD olarak ayarlanır)
-- İşlem biçiminde ``commit.GITHASH``
+- Commit biçiminde ``commit.GITHASH``
 - Platform ve derleyici ile ilgili ayrıntıları içeren, rasgele sayıda öğeye sahip platform
 
 Yerel değişiklikler varsa işleme ``.mod`` diye eklenir.
@@ -548,12 +546,12 @@ Bir yayın örneği: ``0.4.8+commit.60cc1668.Emscripten.clang``.
 
 Bir ön yayın örneği: ``0.4.9-nightly.2017.1.17+commit.6ecb4aa3.Emscripten.clang``
 
-Versiyonlama Hakkında Önemli Bilgi
+Sürümleme Hakkında Önemli Bilgi
 ======================================
 
 Bir sürüm yapıldıktan sonra, yama sürüm seviyesi yükseltilir, çünkü sadece yama
 seviyesindeki değişikliklerin takip edildiğini varsayıyoruz. Değişiklikler birleştirildiğinde
-(merge) , sürüm SemVer'e ve değişikliğin ciddiyetine göre yükseltilmelidir. Son olarak, bir
+(merge) , SemVer'e ve değişikliğin ciddiyetine göre sürüm yükseltilmelidir. Son olarak, bir
 sürüm her zaman mevcut gecelik derlemenin sürümüyle, ancak ``prerelease`` belirteci olmadan yapılır.
 
 Örnek:
