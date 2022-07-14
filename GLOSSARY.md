@@ -24,6 +24,8 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - Components = Bileşen
 - Fork = Çatallamak
 - Nightly Development Builds = Gecelik Geliştirme Yapıları/Derlemeleri
+- Encode = Şifreleme
+- Decode = Şifreyi Çözme
 
 Dipnotlar ve Kavram Açıklamaları
 =================================
