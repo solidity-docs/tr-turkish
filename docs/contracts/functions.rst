@@ -3,14 +3,14 @@
 .. _functions:
 
 *********
-Functions
+Fonksiyonlar
 *********
 
-Functions can be defined inside and outside of contracts.
+Fonksiyonlar contractların içerisinde veya dışarısında tanımlanabilir.
 
-Functions outside of a contract, also called "free functions", always have implicit ``internal``
-:ref:`visibility<visibility-and-getters>`. Their code is included in all contracts
-that call them, similar to internal library functions.
+Contractların dışarısında tanımlanan fonksiyonlara "özgür fonksiyonlar" denir ve her zaman
+``internal`` :ref:`görünürlüktedirler<visibility-and-getters>`. Kodları, o fonksiyonları
+kullanan her bir contracta eklenir, tıpkı internal kütüphane fonksiyonları gibi.
 
 .. code-block:: solidity
 
@@ -25,8 +25,8 @@ that call them, similar to internal library functions.
     contract ArrayExample {
         bool found;
         function f(uint[] memory arr) public {
-            // This calls the free function internally.
-            // The compiler will add its code to the contract.
+            // Burada özgür bir fonksiyon internal olarak çağrılıyor.
+            // Derleyici `sum` fonksiyonunu bu contractın kodları arasına ekleyecek.
             uint s = sum(arr);
             require(s >= 10);
             found = true;
@@ -34,29 +34,29 @@ that call them, similar to internal library functions.
     }
 
 .. note::
-    Functions defined outside a contract are still always executed
-    in the context of a contract. They still have access to the variable ``this``,
-    can call other contracts, send them Ether and destroy the contract that called them,
-    among other things. The main difference to functions defined inside a contract
-    is that free functions do not have direct access to storage variables and functions
-    not in their scope.
+    Contract dışında tanımlanan bir fonksiyon her zaman o contractın içeriği ile birlikte
+    çalıştırılırlar. Hâlâ ``this`` değişkenini kullanabilir,
+    diğer contractları çağırabilir, onlara Ether gönderebilir ve kendilerini çağıran contractları
+    yok edebilirler. Contract içerisinde tanımlanan bir fonksiyon ile özgür bir fonksiyonun arasındaki
+    en temel fark; özgür fonksiyonlar kendi alanlarında (scope) bulunmayan storage değişkenlerine ve
+    fonksiyonlara direkt erişime sahip değillerdir.
 
 .. _function-parameters-return-variables:
 
-Function Parameters and Return Variables
+Fonksiyon Parametreleri ve Return Parametreleri
 ========================================
 
-Functions take typed parameters as input and may, unlike in many other
-languages, also return an arbitrary number of values as output.
+Fonksiyonlar tipi belirtilmiş parametreler alabilir ve diğer birçok programlama
+dilinin aksine keyfi sayıda değişkeni return edebilirler.
 
-Function Parameters
+Fonksiyon Parametreleri
 -------------------
 
-Function parameters are declared the same way as variables, and the name of
-unused parameters can be omitted.
+Fonksiyon parametreleri değişkenlerle aynı şekilde tanımlanırlar.
+Ayrıca kullanılmayan parametreler gözardı edilebilirler.
 
-For example, if you want your contract to accept one kind of external call
-with two integers, you would use something like the following:
+Örneğin, eğer contractınızdaki bir fonksiyonun iki adet integer değişkeni
+parametre olarak almasını isterseniz, aşağıdaki gibi bir yapı kullanabilirsiniz:
 
 .. code-block:: solidity
 
@@ -70,28 +70,28 @@ with two integers, you would use something like the following:
         }
     }
 
-Function parameters can be used as any other local variable and they can also be assigned to.
+Fonksiyon parametreleri herhangi bir lokal değişken olarak kullanılaiblir ve ayrıca lokal
+değişkenlere atanabilirler.
 
 .. note::
 
-  An :ref:`external function<external-function-calls>` cannot accept a
-  multi-dimensional array as an input
-  parameter. This functionality is possible if you enable the ABI coder v2
-  by adding ``pragma abicoder v2;`` to your source file.
+  Bir :ref:`external fonksiyon<external-function-calls>` çok boyutlu bir
+  diziyi parametre olarak alamazlar. Bu özelliği eğer ABI coder v2'yi
+  kaynak kodunuzda ``pragma abicoder v2;`` bu şekilde aktifleştirdiyseniz
+  kullanabilirsiniz.
 
-  An :ref:`internal function<external-function-calls>` can accept a
-  multi-dimensional array without enabling the feature.
+  Bir :ref:`internal fonksiyon<external-function-calls>` o özelliği aktifleştirmeden
+  de çok boyutlu bir diziyi parametre olarak alabilir.
 
 .. index:: return array, return string, array, string, array of strings, dynamic array, variably sized array, return struct, struct
 
-Return Variables
+Return Değişkenleri
 ----------------
 
-Function return variables are declared with the same syntax after the
-``returns`` keyword.
+Fonksiyon return değişkenleri aynı şekilde ``returns`` sözcüğünden sonra tanımlanır.
 
-For example, suppose you want to return two results: the sum and the product of
-two integers passed as function parameters, then you use something like:
+Örneğin, iki adet sonucu return etmek istediğinizi düşünün: fonksiyon parametresi olarak
+verilmiş iki adet integer'ın toplamı ve çarpımı. Şu şekilde bir kod işinizi görecektir:
 
 .. code-block:: solidity
 
@@ -109,16 +109,14 @@ two integers passed as function parameters, then you use something like:
         }
     }
 
-The names of return variables can be omitted.
-Return variables can be used as any other local variable and they
-are initialized with their :ref:`default value <default-value>` and have that
-value until they are (re-)assigned.
+Return değişkenlerinin tipleri gözardı edilebilirler. Return değişkenleri
+herhangi bir lokal değişken olarak kullanılabilirler. Bu değişkenler direkt
+olarak :ref:`default değerine <default-value>` eşitlenir ve değiştirilene
+kadar bu değere eşit olurlar.
 
-You can either explicitly assign to return variables and
-then leave the function as above,
-or you can provide return values
-(either a single or :ref:`multiple ones<multi-return>`) directly with the ``return``
-statement:
+İsterseniz yukarıdaki gibi açık bir şekilde return değişkenlerinin değerlerini
+verebilir veya aşağıdaki gibi direkt olarak ``return`` ifadesini kullanabilirsiniz
+(ister tek, isterseniz de :ref:`çoklu return<multi-return>`):
 
 .. code-block:: solidity
 
@@ -135,59 +133,60 @@ statement:
         }
     }
 
-If you use an early ``return`` to leave a function that has return variables,
-you must provide return values together with the return statement.
+Eğer fonksiyondan çıkmak için erkenden ``return`` kullanmanak istiyorsanız,
+bütün return değişkenlerini vermeniz gerekir.
 
 .. note::
-    You cannot return some types from non-internal functions, notably
-    multi-dimensional dynamic arrays and structs. If you enable the
-    ABI coder v2 by adding ``pragma abicoder v2;``
-    to your source file then more types are available, but
-    ``mapping`` types are still limited to inside a single contract and you
-    cannot transfer them.
+    Bazı tipleri internal olmayan fonksiyonlardan return edemezsiniz,
+    örneğin, çok boyutlu dinamik boyutlu diziler ve structlar. Eğer
+    ABI coder v2'yi ``pragma abicoder v2;`` şeklinde kodunuza eklerseniz
+    daha fazla tip kullanılabilir olacaktır, ancak ``mapping`` tipi
+    hâlâ bir contract içerisinde sınırlıdır ve onları transfer edemezsiniz.
 
 .. _multi-return:
 
-Returning Multiple Values
+Çoklu Değer Return Etme
 -------------------------
 
-When a function has multiple return types, the statement ``return (v0, v1, ..., vn)`` can be used to return multiple values.
-The number of components must be the same as the number of return variables
-and their types have to match, potentially after an :ref:`implicit conversion <types-conversion-elementary-types>`.
+Bir fonksiyonda birden fazla değişkeni return etmek istiyorsanız ``return (v0, v1, ..., vn)`` şeklinde
+bir ifade kullanabilirsiniz. Return değişkeni sayısı ve tipleri, bir
+:ref:`implicit dönüşümden <types-conversion-elementary-types>` sonra belirtilen değerlerle eşleşmelidir.
 
 .. _state-mutability:
 
-State Mutability
+State Değişkenliği
 ================
 
 .. index:: ! view function, function;view
 
 .. _view-functions:
 
-View Functions
+View Fonksiyonlar
 --------------
 
-Functions can be declared ``view`` in which case they promise not to modify the state.
+``view`` ile tanımlanan fonksiyonlar state'te herhangi bir değişikliği yapamaz, sadece
+state'deki değerleri okuyabilirler.
 
 .. note::
-  If the compiler's EVM target is Byzantium or newer (default) the opcode
-  ``STATICCALL`` is used when ``view`` functions are called, which enforces the state
-  to stay unmodified as part of the EVM execution. For library ``view`` functions
-  ``DELEGATECALL`` is used, because there is no combined ``DELEGATECALL`` and ``STATICCALL``.
-  This means library ``view`` functions do not have run-time checks that prevent state
-  modifications. This should not impact security negatively because library code is
-  usually known at compile-time and the static checker performs compile-time checks.
+  Eğer derleyicinin EVM target kısmı Byzantium veya daha yenisi (default) ise ``view``
+  fonksiyonlar çağrıldığında ``STATICCALL`` opcode'u kullanılır ve bu opcode state'i
+  değişmemeye zorlar. Kütüphanelerdeki ``view`` fonksiyonlarında ise ``DELEGATECALL``
+  kullanılır. Çünkü ``DELEGATECALL`` ve ``STATICCALL`` opcode'larından kombine edilmiş
+  bir opcode bulunmamaktadır. Bu demek oluyor ki ``view`` fonksiyonlar state değişikliğini
+  önlemek için run-time kontrollerine sahip değildirler. Bunun kötü bir güvenlik etkisi
+  olmamalıdır. Çünkü kütüphane kodu genellikle derlenirken bilinir ve statik kontrol edici
+  (static checker) compile-time kontrollerini gerçekleştirir.
 
-The following statements are considered modifying the state:
+Aşağıdaki ifadeler state değişikliğini temsil eder:
 
-#. Writing to state variables.
-#. :ref:`Emitting events <events>`.
-#. :ref:`Creating other contracts <creating-contracts>`.
-#. Using ``selfdestruct``.
-#. Sending Ether via calls.
-#. Calling any function not marked ``view`` or ``pure``.
-#. Using low-level calls.
-#. Using inline assembly that contains certain opcodes.
+#. State değişkenlerine yazmak.
+#. :ref:`Event yayınlama <events>`.
+#. :ref:`Başka contractlar oluşturma <creating-contracts>`.
+#. ``selfdestruct`` kullanmak.
+#. Ether göndermek.
+#. ``view`` veya ``pure`` olarak belirtilmeyen bir fonksiyon çağırmak.
+#. Low-level çağrılar kullanmak.
+#. Belirli opcode'ları kullanan inline assembly kullanmak.
 
 .. code-block:: solidity
 
@@ -201,42 +200,40 @@ The following statements are considered modifying the state:
     }
 
 .. note::
-  ``constant`` on functions used to be an alias to ``view``, but this was dropped in version 0.5.0.
+  Versiyon 0.5.0 öncesinde fonksiyonlarda ``constant`` sözcüğü şu anki ``view`` için kullanılırdı, ancak artık kullanılmıyor.
 
 .. note::
-  Getter methods are automatically marked ``view``.
+  Getter fonksiyonlar otomatik olarak ``view`` görünürlüğüne sahip olur.
 
 .. note::
-  Prior to version 0.5.0, the compiler did not use the ``STATICCALL`` opcode
-  for ``view`` functions.
-  This enabled state modifications in ``view`` functions through the use of
-  invalid explicit type conversions.
-  By using  ``STATICCALL`` for ``view`` functions, modifications to the
-  state are prevented on the level of the EVM.
-
+  Versiyon 0.5.0 öncesinde derleyici ``view`` için ``STATICCALL`` opcode'unu
+  kullanmazdı. Bu, ``view`` fonksiyonlarda yanlış explicit tip dönüşümlerini
+  kullanarak state değişikliği yapılmasına izin verdi. ``STATICCALL`` opcode'unu
+  ``view`` fonksiyonlar için kullanarak EVM seviyesinde state değişikliklerinin
+  yapılmasının önüne geçildi.
+  
 .. index:: ! pure function, function;pure
 
 .. _pure-functions:
 
-Pure Functions
+Pure Fonksiyonlar
 --------------
 
-Functions can be declared ``pure`` in which case they promise not to read from or modify the state.
-In particular, it should be possible to evaluate a ``pure`` function at compile-time given
-only its inputs and ``msg.data``, but without any knowledge of the current blockchain state.
-This means that reading from ``immutable`` variables can be a non-pure operation.
+Fonksiyonlar ``pure`` olarak tanımlanabilir ve bu şekilde tanımlanan fonksiyonlar state'i okuyamaz ve
+değişiklik yapamaz. Pure fonksiyonlar içerisinde ``immutable`` değişkenler okuyabilir durumdadır.
 
 .. note::
-  If the compiler's EVM target is Byzantium or newer (default) the opcode ``STATICCALL`` is used,
-  which does not guarantee that the state is not read, but at least that it is not modified.
+  Eğer derleyicinin EVM target kısmı Byzantium veya daha yeni (default) ise, ``STATICCALL``
+  opcode'u kullanılır. Bu opcode state'in okunmadığına dair garanti vermez ama en azından
+  değiştirilmediğine dair bir garanti verir.
+    
+Yukarıda state'i değiştiren ifadeleri açıklamışken, state'i okuduğu düşünülen ifadeleri de aşağıda bulabilirsiniz:
 
-In addition to the list of state modifying statements explained above, the following are considered reading from the state:
-
-#. Reading from state variables.
-#. Accessing ``address(this).balance`` or ``<address>.balance``.
-#. Accessing any of the members of ``block``, ``tx``, ``msg`` (with the exception of ``msg.sig`` and ``msg.data``).
-#. Calling any function not marked ``pure``.
-#. Using inline assembly that contains certain opcodes.
+#. State değişkenlerini okumak.
+#. ``address(this).balance`` veya ``<address>.balance`` değişkenlerine erişmek.
+#. ``block``, ``tx`` veya ``msg`` değişkenlerinin herhangi bir üyesine erişmek (``msg.sig`` ve ``msg.data`` istisnadır).
+#. ``pure`` olmayan herhangi bir fonksiyonu çağırmak.
+#.  Belirli opcode'ları kullanan inline assembly kullanmak.
 
 .. code-block:: solidity
 
@@ -249,105 +246,101 @@ In addition to the list of state modifying statements explained above, the follo
         }
     }
 
-Pure functions are able to use the ``revert()`` and ``require()`` functions to revert
-potential state changes when an :ref:`error occurs <assert-and-require>`.
+Pure fonksiyonlar ``revert()`` ve ``require()`` ifadelerini kullanarak :ref:`hata oluşması <assert-and-require>`
+durumunda potansiyel state değişikliğini engelleyebilirler.
 
-Reverting a state change is not considered a "state modification", as only changes to the
-state made previously in code that did not have the ``view`` or ``pure`` restriction
-are reverted and that code has the option to catch the ``revert`` and not pass it on.
+State değişikliğini revert etmek bir "state değişikliği" olarak düşünülmez. 
 
-This behaviour is also in line with the ``STATICCALL`` opcode.
+Bir state değişikliğini revert etmek bir "state değişikliği" olarak kabul edilmez, çünkü yalnızca 
+daha önce kodda ``view`` veya ``pure`` kısıtlamaya sahip olmayan state'de yapılan değişiklikler
+revert edilir ve bu kodun ``revert``'i yakalama ve aktarmama seçeneği vardır.
+
+Bu davranış ``STATICCALL`` için de geçerlidir.
 
 .. warning::
-  It is not possible to prevent functions from reading the state at the level
-  of the EVM, it is only possible to prevent them from writing to the state
-  (i.e. only ``view`` can be enforced at the EVM level, ``pure`` can not).
+  EVM seviyesinde fonksiyonların state'den okuma yapmasını engellemek mümkün değildir,
+  sadece yazma engellenebilir (yani, EVM seviyesinde sadece ``view`` zorunlu kılınabilir, ``pure`` kılınamaz).
 
 .. note::
-  Prior to version 0.5.0, the compiler did not use the ``STATICCALL`` opcode
-  for ``pure`` functions.
-  This enabled state modifications in ``pure`` functions through the use of
-  invalid explicit type conversions.
-  By using  ``STATICCALL`` for ``pure`` functions, modifications to the
-  state are prevented on the level of the EVM.
+  Versiyon 0.5.0 öncesinde derleyici ``pure`` için ``STATICCALL`` opcode'unu
+  kullanmazdı. Bu, ``pure`` fonksiyonlarda yanlış explicit tip dönüşümlerini
+  kullanarak state değişikliği yapılmasına izin verdi. ``STATICCALL`` opcode'unu
+  ``pure`` fonksiyonlar için kullanarak EVM seviyesinde state değişikliklerinin
+  yapılmasının önüne geçildi.
 
 .. note::
-  Prior to version 0.4.17 the compiler did not enforce that ``pure`` is not reading the state.
-  It is a compile-time type check, which can be circumvented doing invalid explicit conversions
-  between contract types, because the compiler can verify that the type of the contract does
-  not do state-changing operations, but it cannot check that the contract that will be called
-  at runtime is actually of that type.
+  Versiyon 0.4.17 öncesinde derleyici ``pure`` fonksiyonların state'i okuması durumunda
+  hata vermezdi. Bu, sözleşme türleri arasında geçersiz açık dönüşümler yaparak atlatılabilen ve bir 
+  tür denetim olan derleme zamanı yüzünden kaynaklanmaktaydı. Çünkü derleyici, sözleşme 
+  türünün durum değiştirme işlemleri yapmadığını doğrulayabilir, fakat çalışma zamanında
+  çağrılacak olan sözleşmenin gerçekten bu türden olup olmadığını kontrol edemez.
 
 .. _special-functions:
 
-Special Functions
+Özel Fonksiyonlar
 =================
 
 .. index:: ! receive ether function, function;receive ! receive
 
 .. _receive-ether-function:
 
-Receive Ether Function
+Receive Ether Fonksiyonu
 ----------------------
 
-A contract can have at most one ``receive`` function, declared using
-``receive() external payable { ... }``
-(without the ``function`` keyword).
-This function cannot have arguments, cannot return anything and must have
-``external`` visibility and ``payable`` state mutability.
-It can be virtual, can override and can have modifiers.
+Bİr contract sadece bir adet ``receive`` fonksiyonuna sahip olabilir. Bu fonksiyon
+şu şekilde tanımlanır: ``receive() external payable { ... }`` (function sözcüğü olmadan).
+Bu fonksiyon parametre alamaz, hiçbir şey return edemez, görünürlüğü ``external``
+olmalı ve ayrıca ``payable`` olarak tanımlanmalıdır. Bir receive fonksiyonu virtual olabilir, override edilebilir
+ve modifier'lara sahip olabilir.
 
-The receive function is executed on a
-call to the contract with empty calldata. This is the function that is executed
-on plain Ether transfers (e.g. via ``.send()`` or ``.transfer()``). If no such
-function exists, but a payable :ref:`fallback function <fallback-function>`
-exists, the fallback function will be called on a plain Ether transfer. If
-neither a receive Ether nor a payable fallback function is present, the
-contract cannot receive Ether through regular transactions and throws an
-exception.
+Receive fonksiyonu contractımıza gelen boş bir calldata'sı bulunan çağrılarda çalıştırılır.
+Bu fonksiyon, contractımıza direkt Ether transferi gerçekleştirildiğinde (``.send()`` veya ``.transfer()``
+kullanılarak) çalıştırılır. Eğer bu fonksiyon tanımlı değil ama payable bir :ref:`fallback fonksiyon <fallback-function>`
+tanımlı ise, direkt Ether transferlerinde bu fallback fonksiyonu çalıştırılır. Eğer contract ne bir receive
+fonksiyonu, ne de bir payable fallback fonksiyonu tanımlamamışsa, contractımız direkt Ether transflerlerini
+kabul edemez, kendisine ether gönderildiğinde bir hata verir.
 
-In the worst case, the ``receive`` function can only rely on 2300 gas being
-available (for example when ``send`` or ``transfer`` is used), leaving little
-room to perform other operations except basic logging. The following operations
-will consume more gas than the 2300 gas stipend:
+En kötü durumda ``receive`` fonksiyonu 2300 adet gazın mevcut olduğunu varsayabilir 
+(örneğin ``send`` veya ``transfer`` kullanımında), geriye ise sadece log işlemleri gibi basit işlemler için gaz kalır.
+Aşağıdaki işlemler 2300 gazdan daha fazlasını harcar:
 
-- Writing to storage
-- Creating a contract
-- Calling an external function which consumes a large amount of gas
-- Sending Ether
+- Storage'e yazmak
+- Contract oluşturmak
+- Yüksek miktarda gaz harcayan bir external fonksiyonun çağrılması
+- Ether gönderimi
 
 .. warning::
-    When Ether is sent directly to a contract (without a function call, i.e. sender uses ``send`` or ``transfer``)
-    but the receiving contract does not define a receive Ether function or a payable fallback function,
-    an exception will be thrown, sending back the Ether (this was different
-    before Solidity v0.4.0). If you want your contract to receive Ether,
-    you have to implement a receive Ether function (using payable fallback functions for receiving Ether is
-    not recommended, since the fallback is invoked and would not fail for interface confusions
-    on the part of the sender).
-
-
+    Bir contracta direkt olarak Ether gönderirken (bir fonksiyon çağrısı olmadan, yani gönderenin
+    ``send`` veya ``transfer`` kullandığı durumda) eğer contract bir receive fonksiyonu veya
+    bir payable fallback fonksiyonu tanımlamamışsa, bir hata oluşur ve Etherler gönderene iade edilir
+    (bu durum Solidity 0.4.0 öncesinde farklıydı). Eğer contractınızın direkt Ether transferlerini kabul
+    etmesini istiyorsanız, bir receive fonksiyonu tanımlayın (Ether kabulu için payable fallback fonksiyonunun
+    kullanımını tavsiye etmiyoruz, çünkü fallback fonksiyonu interface karışıklığı yaşandığında kullanıcıya
+    hata vermeyecektir).
+  
 .. warning::
-    A contract without a receive Ether function can receive Ether as a
-    recipient of a *coinbase transaction* (aka *miner block reward*)
-    or as a destination of a ``selfdestruct``.
+    Bir contract receive fonksiyonu olmadan da Ether kabul edebilir; 
+    *coinbase transaction* (diğer adıyla *miner block reward*)
+    veya ``selfdestruct`` kullanılırken hedef adres olarak verilmesi halinde
+    contract Etherleri kabul etmek zorundadır.
 
-    A contract cannot react to such Ether transfers and thus also
-    cannot reject them. This is a design choice of the EVM and
-    Solidity cannot work around it.
+    Bir contract bu gibi durumlardaki Ether transferlerine herhangi bir tepki
+    veremez ve dolayısıyla bunları reddedemez. Bu EVM'in tasarım tercihlerinden
+    birisidir ve Solidity bunu es geçemez.
 
-    It also means that ``address(this).balance`` can be higher
-    than the sum of some manual accounting implemented in a
-    contract (i.e. having a counter updated in the receive Ether function).
+    Bu ayrıca demek oluyor ki ``address(this).balance`` değişkenindeki değer
+    sizin kendi hesaplamanızla (örneğin, receive fonksiyonunda her gelen miktarı
+    hesaplamanız halinde) farklı olabilir.
 
-Below you can see an example of a Sink contract that uses function ``receive``.
+Aşağıdaki Sink contractı ``receive`` kullanımına bir örnektir.
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.6.0 <0.9.0;
 
-    // This contract keeps all Ether sent to it with no way
-    // to get it back.
+    // Bu contracta gönderilen Etherleri geri almanın hiçbir
+    // yolu yoktur.
     contract Sink {
         event Received(address, uint);
         receive() external payable {
@@ -359,49 +352,45 @@ Below you can see an example of a Sink contract that uses function ``receive``.
 
 .. _fallback-function:
 
-Fallback Function
+Fallback Fonksiyonu
 -----------------
 
-A contract can have at most one ``fallback`` function, declared using either ``fallback () external [payable]``
-or ``fallback (bytes calldata input) external [payable] returns (bytes memory output)``
-(both without the ``function`` keyword).
-This function must have ``external`` visibility. A fallback function can be virtual, can override
-and can have modifiers.
+Bir contract sadece bir adet ``fallback`` fonksiyonuna sahip olabilir. Bu fonksiyon
+şu iki şekilde tanımlanabilir: ``fallback () external [payable]`` veya 
+``fallback (bytes calldata input) external [payable] returns (bytes memory output)``
+(ikisi de ``function`` sözcüğü olmadan kullanılıyor). Bu fonksiyon ``external``
+görünürlüğe sahip olmalıdır. Bir fallback fonksiyonu virtual olabilir, override edilebilir
+ve modifier'lara sahip olabilir.
 
-The fallback function is executed on a call to the contract if none of the other
-functions match the given function signature, or if no data was supplied at
-all and there is no :ref:`receive Ether function <receive-ether-function>`.
-The fallback function always receives data, but in order to also receive Ether
-it must be marked ``payable``.
+Fallback fonksiyonu bir çağrıda gönderilen fonksiyon imzasının (function signature) contracttaki
+herhangi bir fonksiyon ile eşleşmediği durumda çalıştırılır, yani, eğer kullanıcının çalıştırmak
+istediği fonksiyon contractta yoksa, fallback fonksiyonu çalıştırılır. Bir diğer kullanım alanı ise
+direkt Ether gönderimlerinde eğer contractta :ref:`receive Ether fonksiyonu <receive-ether-function>`
+yoksa ve fallback fonksiyonumuz ``payable`` ise, fallback fonksiyonu çalıştırılır.
 
-If the version with parameters is used, ``input`` will contain the full data sent to the contract
-(equal to ``msg.data``) and can return data in ``output``. The returned data will not be
-ABI-encoded. Instead it will be returned without modifications (not even padding).
+Eğer yukarıda gösterdiğimiz iki kullanım şeklinden ``input`` kullanılanı kullanmak isterseniz,
+``input`` contracta gönderilen tüm data, ``msg.data``, olacaktır. Ayrıca ``output`` ile de
+data return edebilir. Return edilen data ABI-encoded olmayacaktır, onun yerine herhangi bir
+düzenleme olmadan (hatta padding bile olmadan) return edilecektir.
 
-In the worst case, if a payable fallback function is also used in
-place of a receive function, it can only rely on 2300 gas being
-available (see :ref:`receive Ether function <receive-ether-function>`
-for a brief description of the implications of this).
+En kötü durumda, eğer bir payable fallback fonksiyonu receive fonksiyonun da yerine kullanıldıysa,
+sadece 2300 adet gaz ile işlemini tamamlayabilir (:ref:`receive Ether fonksiyonu <receive-ether-function>`).
 
-Like any function, the fallback function can execute complex
-operations as long as there is enough gas passed on to it.
+Diğer herhangi bir fonksiyon gibi fallback fonksiyonu da yeterli gaza sahip olduğu sürece
+çok karmaşık işlemleri yürütebilir.
 
 .. warning::
-    A ``payable`` fallback function is also executed for
-    plain Ether transfers, if no :ref:`receive Ether function <receive-ether-function>`
-    is present. It is recommended to always define a receive Ether
-    function as well, if you define a payable fallback function
-    to distinguish Ether transfers from interface confusions.
+    Bir ``payable`` fallback fonksiyonu ayrıca direkt Ether transferlerinde
+    de, eğer :ref:`receive Ether fonksiyonu <receive-ether-function>` kullanılmadıysa,
+    çalıştırılabilir. Eğer payable fallback fonksiyonuna spesifik bir kullanım için
+    ihtiyacınız yoksa, receive fonksiyonunu kullanmanızı tavsiye ederiz.
 
 .. note::
-    If you want to decode the input data, you can check the first four bytes
-    for the function selector and then
-    you can use ``abi.decode`` together with the array slice syntax to
-    decode ABI-encoded data:
-    ``(c, d) = abi.decode(input[4:], (uint256, uint256));``
-    Note that this should only be used as a last resort and
-    proper functions should be used instead.
-
+    Eğer input verisini decode etmek istiyorsanız, ilk dört byte'ı fonksiyon
+    imzası için kullanabilir ve kalan kısmı ``abi.decode`` kullanarak ABI-encoded
+    veriyi decode edebilirsiniz: ``(c, d) = abi.decode(input[4:], (uint256, uint256));``
+    Şunu unutmayın ki, bu bir son çaredir. Eğer yapabiliyorsanız daha uygun bir fonksiyon
+    kullanmaya çalışın.
 
 .. code-block:: solidity
 
@@ -410,26 +399,25 @@ operations as long as there is enough gas passed on to it.
 
     contract Test {
         uint x;
-        // This function is called for all messages sent to
-        // this contract (there is no other function).
-        // Sending Ether to this contract will cause an exception,
-        // because the fallback function does not have the `payable`
-        // modifier.
+        // Bu contracta gelen bütün mesaj çağrılarını
+        // bu fonksiyon karşılar (contractta başka bir
+        // fonksiyon bulunmadığı için).
+        // Fonksiyon payable olarak belirtilmediği için 
+        // Ether gönderimlerinde hata alınacaktır.
         fallback() external { x = 1; }
     }
 
     contract TestPayable {
         uint x;
         uint y;
-        // This function is called for all messages sent to
-        // this contract, except plain Ether transfers
-        // (there is no other function except the receive function).
-        // Any call with non-empty calldata to this contract will execute
-        // the fallback function (even if Ether is sent along with the call).
+        // Bu contracta gelen direkt Ether gönderimleri dışındaki bütün mesajları
+        // bu fonksiyon karşılayacaktır (receive dışında başka bir fonksiyon
+        // bulunmamakta). Calldatası boş olmayan bütün çağrıları bu fonksiyon
+        // karşılar (çağrı ile birlikte Ether gönderilse bile).
         fallback() external payable { x = 1; y = msg.value; }
 
-        // This function is called for plain Ether transfers, i.e.
-        // for every call with empty calldata.
+        // Bu fonksiyon sadece direkt Ether gönderimleri için kullanılır, yani,
+        // boş bir calldata ve Ether gönderilen çağrıları bu fonksiyon karşılar.
         receive() external payable { x = 2; y = msg.value; }
     }
 
@@ -437,32 +425,34 @@ operations as long as there is enough gas passed on to it.
         function callTest(Test test) public returns (bool) {
             (bool success,) = address(test).call(abi.encodeWithSignature("nonExistingFunction()"));
             require(success);
-            // results in test.x becoming == 1.
+            // test.x'in == 1 olmasına neden olur.
 
-            // address(test) will not allow to call ``send`` directly, since ``test`` has no payable
-            // fallback function.
-            // It has to be converted to the ``address payable`` type to even allow calling ``send`` on it.
+            // address(test) direkt olarak ``send`` kullanımına izin vermez.
+            // ``send`` fonksiyonunu çağırabilmek için bile ``address payable``
+            // tipine dönüştürme gerekmektedir.
             address payable testPayable = payable(address(test));
 
-            // If someone sends Ether to that contract,
-            // the transfer will fail, i.e. this returns false here.
+            // Eğer birisi burada da olduğu gibi payable fallback fonksiyonu olmayan bir
+            // contracta ether göndermeye çalışırsa, hata alacaktır.
+            // Dolayısıyla burada ``false`` return edilir.
             return testPayable.send(2 ether);
         }
 
         function callTestPayable(TestPayable test) public returns (bool) {
             (bool success,) = address(test).call(abi.encodeWithSignature("nonExistingFunction()"));
             require(success);
-            // results in test.x becoming == 1 and test.y becoming 0.
+            // test.x == 1 olur ve test.y 0 olur.
             (success,) = address(test).call{value: 1}(abi.encodeWithSignature("nonExistingFunction()"));
             require(success);
-            // results in test.x becoming == 1 and test.y becoming 1.
+            // test.x == 1 olur ve test.y 1 olur.
 
-            // If someone sends Ether to that contract, the receive function in TestPayable will be called.
-            // Since that function writes to storage, it takes more gas than is available with a
-            // simple ``send`` or ``transfer``. Because of that, we have to use a low-level call.
+            // Eğer birisi aşağıdaki gibi TestPayable contractına Ether gönderirse, receive fonksiyonu çalışır.
+            // Yukarıda tanımladığımız receive fonksiyonu storage'e yazdığı için 2300'den daha fazla
+            // gaz harcanmasına sebep olur. O yüzden ``send`` ve ``transfer`` kullanılamaz.
+            // Onların yerine low-level call kullanmalıyız.
             (success,) = address(test).call{value: 2 ether}("");
             require(success);
-            // results in test.x becoming == 2 and test.y becoming 2 ether.
+            // test.x'in == 2 ve test.y'nin 2 Ether olmasıyla sonuçlanır.
 
             return true;
         }
@@ -472,14 +462,12 @@ operations as long as there is enough gas passed on to it.
 
 .. _overload-function:
 
-Function Overloading
+Fonksiyon Overloading
 ====================
 
-A contract can have multiple functions of the same name but with different parameter
-types.
-This process is called "overloading" and also applies to inherited functions.
-The following example shows overloading of the function
-``f`` in the scope of contract ``A``.
+Bir contract aynı isimde fakat farklı parametre tiplerine sahip fonksiyonlara sahip olabilir.
+Bu işlem "overloading" olarak adlandırılır ve ayrıca türetilen fonksiyonlar için de geçerlidir.
+Aşağıdaki örnek ``A`` contractındaki ``f`` fonksiyonları ile overloading'i gösterir.
 
 .. code-block:: solidity
 
@@ -497,15 +485,18 @@ The following example shows overloading of the function
         }
     }
 
-Overloaded functions are also present in the external interface. It is an error if two
-externally visible functions differ by their Solidity types but not by their external types.
+Overload edilmiş fonksiyonlar external interface'de de göründüğü için iki fonksiyonun
+aldığı parametreler external tiplerine göre karşılaştırılır. Yani, örneğin aşağıdaki
+fonksiyonlardan birisi parametre olarak contract aldığını belirtmiş. Ancak external
+interface'de bu, bir contract değil, adres olarak görünür. O yüzden bu contract 
+compile edilemez.
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.4.16 <0.9.0;
 
-    // This will not compile
+    // Compile edilemez
     contract A {
         function f(B value) public pure returns (B out) {
             out = value;
@@ -519,20 +510,19 @@ externally visible functions differ by their Solidity types but not by their ext
     contract B {
     }
 
+Yukarıdaki iki ``f`` fonksiyonu da ABI'leri aracılığı ile address tipinden bir parametre
+kabul ediyor, her ne kadar Solidity içerisinde farklı tipler kabul etseler de.
 
-Both ``f`` function overloads above end up accepting the address type for the ABI although
-they are considered different inside Solidity.
-
-Overload resolution and Argument matching
+Overload Ayrıştırma ve Parametre Eşleştirme
 -----------------------------------------
 
-Overloaded functions are selected by matching the function declarations in the current scope
-to the arguments supplied in the function call. Functions are selected as overload candidates
-if all arguments can be implicitly converted to the expected types. If there is not exactly one
-candidate, resolution fails.
+Overload edilmiş fonksiyonlar, geçerli kapsamdaki fonksiyon tanımlamalarını fonksiyon çağrısında
+sağlanan parametrelerle eşleştirerek seçilir. Tüm parametreler implicit olarak beklenen türlere
+dönüştürülebiliyorsa, fonksiyon overload adayı olarak seçilir. Tam olarak bir aday yoksa,
+çözümleme başarısız olur.
 
 .. note::
-    Return parameters are not taken into account for overload resolution.
+    Overload ayrıştırma için return parametreleri dikkate alınmaz.
 
 .. code-block:: solidity
 
@@ -549,6 +539,7 @@ candidate, resolution fails.
         }
     }
 
-Calling ``f(50)`` would create a type error since ``50`` can be implicitly converted both to ``uint8``
-and ``uint256`` types. On another hand ``f(256)`` would resolve to ``f(uint256)`` overload as ``256`` cannot be implicitly
-converted to ``uint8``.
+``f(50)`` çağrısını yaptığımızda bir hata alırız. Bunun sebebi ``50`` sayısının hem ``uint8``
+hem de ``uint256`` tipinde de kullanılabilmesidir. Ama eğer ``f(256)`` çağrısını gerçekleştirirsek
+``256`` sayısı direkt olarak ``f(uint256)`` bu şekilde tanımlanan fonksiyona gönderilir. Çünkü 
+``256`` ``uint8`` olarak gösterilemez.
