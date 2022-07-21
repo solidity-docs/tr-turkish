@@ -6,38 +6,31 @@ Inline Assembly
 
 .. index:: ! assembly, ! asm, ! evmasm
 
+Inline assembly ile Solidity ifadelerini Ethereum Sanal Makine'sinin dillerinden birine yakın dile çevirebilirsiniz.
+Bu size özellikle dili kütüphaneler yazarak geliştiriyorsanız daha detaylı bir kontrol sağlar.
 
-You can interleave Solidity statements with inline assembly in a language close
-to the one of the Ethereum virtual machine. This gives you more fine-grained control,
-which is especially useful when you are enhancing the language by writing libraries.
+Inline assembly için kullanılan Solidity diline :ref:`Yul <yul>` deniyor ve dosyalarını kendi bölümünde bulabilirsiniz.
+BU bölüm sadece inline assembly kodunun etrafındaki Solidity kodları ile nasıl bağlandığını anlatacak.
 
-The language used for inline assembly in Solidity is called :ref:`Yul <yul>`
-and it is documented in its own section. This section will only cover
-how the inline assembly code can interface with the surrounding Solidity code.
+.. Uyarı::
+    Inline assembly Ethereum Sanal Makinesi'ne düşük seviyede erişişmin bir yoludur.
+    Bu, Solidity'nin birçok güvenlik özelliklerini ve kontrollerini yok sayar.
+    Yani inline assembly'i sadece gereken yerlerde ve nasıl kullanacağınızdan eminseniz kullanmalısınız.
 
+Bir inline assembly bloğu ``assembly { ... }`` ile işaretlidir. 
+Süslü parantez içerisindeki kod :ref:`Yul <yul>` dili içerisinde yer alır.
 
-.. warning::
-    Inline assembly is a way to access the Ethereum Virtual Machine
-    at a low level. This bypasses several important safety
-    features and checks of Solidity. You should only use it for
-    tasks that need it, and only if you are confident with using it.
+Bir inline assembly kodu yerel Solidity değişkenlerine aşağıda açıklandığı gibi erişebilir.
 
+Farklı inline assembly blokları aynı yer adlarını paylaşmazlar. Yani farklı bir inline assembly 
+bloğunda tanımlanmış olan bir Yul fonksiyonunu çağırmak ya da bir Yul değişkenine erişmek mümkün değldir.
 
-An inline assembly block is marked by ``assembly { ... }``, where the code inside
-the curly braces is code in the :ref:`Yul <yul>` language.
-
-The inline assembly code can access local Solidity variables as explained below.
-
-Different inline assembly blocks share no namespace, i.e. it is not possible
-to call a Yul function or access a Yul variable defined in a different inline assembly block.
-
-Example
+Örnek
 -------
 
-The following example provides library code to access the code of another contract and
-load it into a ``bytes`` variable. This is possible with "plain Solidity" too, by using
-``<address>.code``. But the point here is that reusable assembly libraries can enhance the
-Solidity language without a compiler change.
+Aşağıdaki örnek başka bir kontrat üzerindeki koda erişimi ve bir ``bytes`` değişkenine atımını sağlayan kütüphane kodunu verir.
+Bu "düz Solidity" ile de ``<address>.code`` kullanarak mümkündür ama buradaki amaç tekrar kullanılabilir assembly kütüphanelerinin
+bir compiler değişimi olmadan Solidity dilini geliştirebildiğini göstermektir.
 
 .. code-block:: solidity
 
@@ -47,23 +40,23 @@ Solidity language without a compiler change.
     library GetCode {
         function at(address addr) public view returns (bytes memory code) {
             assembly {
-                // retrieve the size of the code, this needs assembly
+                // kodun boyutunu döndürür, burası için assembly kullanılmalı
                 let size := extcodesize(addr)
-                // allocate output byte array - this could also be done without assembly
-                // by using code = new bytes(size)
+                // çıkış bit array'ini allocate() eder
+                // burası assembly kullanmadan, 
+                // code = new bytes(size) kullanarak da yapılabilir.
                 code := mload(0x40)
-                // new "memory end" including padding
+                // padding'i içeren yeni "memory end" 
                 mstore(0x40, add(code, and(add(add(size, 0x20), 0x1f), not(0x1f))))
-                // store length in memory
+                // uzunluğu hafızada saklayın
                 mstore(code, size)
-                // actually retrieve the code, this needs assembly
+                // kodun şu anki halini döndürür, burası için assembly kullanılmalı
                 extcodecopy(addr, add(code, 0x20), 0, size)
             }
         }
     }
 
-Inline assembly is also beneficial in cases where the optimizer fails to produce
-efficient code, for example:
+Inline assembly optimizer verimli kodlar üretemediği zamanlarda da yararlıdır, örneğin:
 
 .. code-block:: solidity
 
@@ -72,16 +65,15 @@ efficient code, for example:
 
 
     library VectorSum {
-        // This function is less efficient because the optimizer currently fails to
-        // remove the bounds checks in array access.
+        // Bu fonksiyon şu anda verimli değil 
+        // çünkü optimizer array sınır erişim kontrolünü yaparken hata veriyor
         function sumSolidity(uint[] memory data) public pure returns (uint sum) {
             for (uint i = 0; i < data.length; ++i)
                 sum += data[i];
         }
 
-        // We know that we only access the array in bounds, so we can avoid the check.
-        // 0x20 needs to be added to an array because the first slot contains the
-        // array length.
+        // Array'e sadece sınırları içerisinde erişebileceğimizi biliyoruz, yani bu kontrolü atlayabiliriz.
+        // 0x20'nin array'e eklenmesi gerekiyor çünkü array'in ilk slotu array uzunluğunu içerir.
         function sumAsm(uint[] memory data) public pure returns (uint sum) {
             for (uint i = 0; i < data.length; ++i) {
                 assembly {
@@ -89,22 +81,21 @@ efficient code, for example:
                 }
             }
         }
-
-        // Same as above, but accomplish the entire code within inline assembly.
+        // Yukarıdaki gibi ama tüm kodu inline assembly kullanarak tamamlayın.
         function sumPureAsm(uint[] memory data) public pure returns (uint sum) {
             assembly {
-                // Load the length (first 32 bytes)
+                // uzunluğu yükleyin (önce 32 byte)
                 let len := mload(data)
-
-                // Skip over the length field.
+                
+                // Uzunluk alanını atlayın.
                 //
-                // Keep temporary variable so it can be incremented in place.
+                // Geçici bir değişken tutun, böylece yer değiştikçe onu da arttırabilirsiniz.
                 //
-                // NOTE: incrementing data would result in an unusable
-                //       data variable after this assembly block
+                // NOT: Bu assembly bloktan sonra arttırılan veri kullanılamayacak bir değişkene dönüşecek
+                
                 let dataElementLocation := add(data, 0x20)
 
-                // Iterate until the bound is not met.
+                // Sınıra ulaşana kadar tekrarlayın.
                 for
                     { let end := add(dataElementLocation, mul(len, 0x20)) }
                     lt(dataElementLocation, end)
@@ -116,30 +107,30 @@ efficient code, for example:
         }
     }
 
-.. index:: selector; of a function
 
-Access to External Variables, Functions and Libraries
------------------------------------------------------
+.. index:: bir fonksiyon seçici
 
-You can access Solidity variables and other identifiers by using their name.
+Dış değişkenlere, fonksiyonlara ve kütüphanelere erişim
+-------------------------------------------------------
 
-Local variables of value type are directly usable in inline assembly.
-They can both be read and assigned to.
+Solidity değişkenlerine ve diğer tanımlayıcılara isimlerini kullanarak erişebilirsiniz.
 
-Local variables that refer to memory evaluate to the address of the variable in memory not the value itself.
-Such variables can also be assigned to, but note that an assignment will only change the pointer and not the data
-and that it is your responsibility to respect Solidity's memory management.
-See :ref:`Conventions in Solidity <conventions-in-solidity>`.
+Bir değer tipinin yerel değişkenleri inline assembly içinde kullanılabilir durumdadır.
+Bu yerel değişkenler okunabilir de yazılabilir de.
 
-Similarly, local variables that refer to statically-sized calldata arrays or calldata structs
-evaluate to the address of the variable in calldata, not the value itself.
-The variable can also be assigned a new offset, but note that no validation to ensure that
-the variable will not point beyond ``calldatasize()`` is performed.
+Belleği kasteden yerel değişkenler değerin kendisini değil, değerin bellekteki adresini işaret eder.
+Bu değişkenler aynı zamanda değiştirilebilir de ancak bu sadece bir pointer değişimi olur, veri değişimi olmaz.
+Bu sebeple Solidity'nin hafıza yönetimini yapmak sizin yükümlülüğünüzdedir.
+Bkz :ref:`Conventions in Solidity <conventions-in-solidity>`
 
-For external function pointers the address and the function selector can be
-accessed using ``x.address`` and ``x.selector``.
-The selector consists of four right-aligned bytes.
-Both values can be assigned to. For example:
+Benzer şekilde, statik boyutlandırılmış calldata array'leri ya da struct'ları gösteren 
+yerel değişkenler de değerin adresini işaret eder, değerini değil.
+Bu değişken yeni bir offset'e de atanabilir fakat değişkenin ``calldatasize()`` çalıştırılması 
+dışında bir yeri işaret edebileceğinin hiçbir garantisi yoktur.
+
+Dış fonksiyon pointer'ları için adres ve fonksiyon seçiyiye ``x.address`` ve ``x.selector`` ile erişilebilir.
+Seçici dört adet right-aligned bitten oluşur.
+İki değer de atanbilir. Örneğin: 
 
 .. code-block:: solidity
     :force:
@@ -148,7 +139,7 @@ Both values can be assigned to. For example:
     pragma solidity >=0.8.10 <0.9.0;
 
     contract C {
-        // Assigns a new selector and address to the return variable @fun
+        // @fun değerini dönmek için yeni bir seçici de adres atayın 
         function combineToFunctionPointer(address newAddress, uint newSelector) public pure returns (function() external fun) {
             assembly {
                 fun.selector := newSelector
@@ -157,24 +148,23 @@ Both values can be assigned to. For example:
         }
     }
 
-For dynamic calldata arrays, you can access
-their calldata offset (in bytes) and length (number of elements) using ``x.offset`` and ``x.length``.
-Both expressions can also be assigned to, but as for the static case, no validation will be performed
-to ensure that the resulting data area is within the bounds of ``calldatasize()``.
 
-For local storage variables or state variables, a single Yul identifier
-is not sufficient, since they do not necessarily occupy a single full storage slot.
-Therefore, their "address" is composed of a slot and a byte-offset
-inside that slot. To retrieve the slot pointed to by the variable ``x``, you
-use ``x.slot``, and to retrieve the byte-offset you use ``x.offset``.
-Using ``x`` itself will result in an error.
+Dinamik calldata array'leri üzerinde, ``x.offset`` ve ``x.length`` 
+kullanarak -bit halinde- calldata offset'ine ve uzunluğuna erişebilirsiniz.
+Her iki ifade aynı zamanda atanabilir de ama statik bir senaryo için dönecekleri sonucun 
+``calldatasize()`` sınırları içerisinde olacağının bir garantisi yoktur.
 
-You can also assign to the ``.slot`` part of a local storage variable pointer.
-For these (structs, arrays or mappings), the ``.offset`` part is always zero.
-It is not possible to assign to the ``.slot`` or ``.offset`` part of a state variable,
-though.
+Yerel depolama değişkenleri ya da durum değişkenleri için tek bir Yul tanımlayıcısı yeterli değildir.
+Çünkü bu değişkenler her zaman tam bir depolama alanı kaplamazlar.
+Bu sebeple onların 'adreseleri' bir slottan ve o slot içerisindeki bir byte-offset'ten oluşur.
+``x`` değişkeni tarafından işaret edilen slotu çağırmak için ``x.slot`` ,
+byte-offset'i çağırmak için ise ``x.offset`` kullanılır. Sadece ``x`` kullanmak ise hata verecektir.
 
-Local Solidity variables are available for assignments, for example:
+Bir yerel depolama değişkeninin pointer'ının ``.slot`` kısmı değiştirilebilir.
+Bu değişkenler(struct, array, mapping) için ``.offset`` kısmı ise her zaman sıfırdır.
+Fakat bir durum değişkeninin ``.slot`` ve ``.offset`` kısmını değiştirmek mümkün değildir.
+
+Yerel Solidity değişkenleri görevler için hazırdır. Örneğin:
 
 .. code-block:: solidity
     :force:
@@ -186,74 +176,60 @@ Local Solidity variables are available for assignments, for example:
         uint b;
         function f(uint x) public view returns (uint r) {
             assembly {
-                // We ignore the storage slot offset, we know it is zero
-                // in this special case.
+                // Bu senaryoda depolama slotunun offset'ini değelendirmiyoruz.
+                // Çünkü sıfır olduğunu biliyoruz.
                 r := mul(x, sload(b.slot))
             }
         }
     }
 
-.. warning::
-    If you access variables of a type that spans less than 256 bits
-    (for example ``uint64``, ``address``, or ``bytes16``),
-    you cannot make any assumptions about bits not part of the
-    encoding of the type. Especially, do not assume them to be zero.
-    To be safe, always clear the data properly before you use it
-    in a context where this is important:
-    ``uint32 x = f(); assembly { x := and(x, 0xffffffff) /* now use x */ }``
-    To clean signed types, you can use the ``signextend`` opcode:
+.. Uyarı::
+    Eğer ``uint64``, ``address`` veya ``bytes16`` gibi 256 bitten daha az 
+    yer kaplayan bir değişkene erişmeye çalışıyorsanız bu tipin parçası olmayan 
+    bitler hakkında bir varsayımda bulunmayın. Özellikle de o bitleri sıfır kabul etmeyin.
+    Her ihtimale karşı, ``uint32 x = f(); assembly { x := and(x, 0xffffffff) /* now use x */ }`` parçasının
+    önemli olduğu yerlerde düzgün bir şekilde bu verileri temizleyin.
+    Signed tipleri temizlemek için ``signextend`` kullanabilirsiniz. opcode:
     ``assembly { signextend(<num_bytes_of_x_minus_one>, x) }``
 
+Solidity 0.6.0'dan beri bir inline assembly değişkeninin ismi inline assembly bloğundaki
+kullanımını karşılamayabilir. (değişken, kontrat ve fonkisyon kullanımları dahil)
 
-Since Solidity 0.6.0 the name of a inline assembly variable may not
-shadow any declaration visible in the scope of the inline assembly block
-(including variable, contract and function declarations).
+Soldity 0.7.0'dan beri inline assembly bloğunun içinde kullanılan değişken ve fonksiyonlar ``.`` içermeyebilir.
+Fakat ``.`` kullanmak inline assembly bloğu dışındaki Solidity değişkenlerine ulaşmak için etkilidir.
 
-Since Solidity 0.7.0, variables and functions declared inside the
-inline assembly block may not contain ``.``, but using ``.`` is
-valid to access Solidity variables from outside the inline assembly block.
+Kaçınılacak Şeyler 
+-------------------
+Inline assembly high-level gözükebilir fakat aslında aşırı derecede low-level'dır.
+Fonksiyon çağrıları, döngüler, if'ler ve switch'ler basit tekrar yazım kuralları ile çevrilir 
+ve bundan sonra assembler'ın tek yaptığı iş blok sonuna erişildiğinde functional-style opcode'ları tekar ayarlamak, 
+değişken erişimi için stack boyutunu saymak ve assembly içerisindeki değişkenleri için stack slotlarını kaldırmaktır. 
 
-Things to Avoid
----------------
+.. _Solidity-kuralları:
 
-Inline assembly might have a quite high-level look, but it actually is extremely
-low-level. Function calls, loops, ifs and switches are converted by simple
-rewriting rules and after that, the only thing the assembler does for you is re-arranging
-functional-style opcodes, counting stack height for
-variable access and removing stack slots for assembly-local variables when the end
-of their block is reached.
+Solidity kuralları
+---------------------
 
-.. _conventions-in-solidity:
+.. _assembly-typed-değişkenler:
 
-Conventions in Solidity
------------------------
+Typed Değişkenlerin Değerleri
+=============================
+EVM assembly'nin aksine, Solidity 256 bitten daha küçük tiplere sahiptir (ör: ``uint24``). Verimlilik için
+çoğu aritmetik işlem bazı tiplerin 256 bitten küçük olabileceğini yok sayar ve higher-order bitler 
+gerekliyse (hafızaya yazılmadan hemen önce ya da herhangi bir karşılaştırma yapılmadan önce) temizlenir.
+Burası şu yüzden önemlidir: Eğer inline assembly içerisinde böyle bir değişkene erişmek istiyorsanız önce higher-order
+bitleri kendiniz temizlemeniz gerekebilir.
 
-.. _assembly-typed-variables:
+.. _assembly-bellek-yönetimi:
 
-Values of Typed Variables
-=========================
+Hafıza Yönetimi
+==================
 
-In contrast to EVM assembly, Solidity has types which are narrower than 256 bits,
-e.g. ``uint24``. For efficiency, most arithmetic operations ignore the fact that
-types can be shorter than 256
-bits, and the higher-order bits are cleaned when necessary,
-i.e., shortly before they are written to memory or before comparisons are performed.
-This means that if you access such a variable
-from within inline assembly, you might have to manually clean the higher-order bits
-first.
-
-.. _assembly-memory-management:
-
-Memory Management
-=================
-
-Solidity manages memory in the following way. There is a "free memory pointer"
-at position ``0x40`` in memory. If you want to allocate memory, use the memory
-starting from where this pointer points at and update it.
-There is no guarantee that the memory has not been used before and thus
-you cannot assume that its contents are zero bytes.
-There is no built-in mechanism to release or free allocated memory.
-Here is an assembly snippet you can use for allocating memory that follows the process outlined above
+Solidity Belleği şu şekilde yönetir. Hafızada ``0x40`` konumunda bir "boş bellek pointer"ı bulunur.
+Eğer belleğe bir şey atamak isterseniz bu pointer'ın işaret ettiği yerden başlayıp güncelleyin.
+Bu hafızanın daha önce kullanılmadığına dair herhangi bir kanıt bulunmadığı için tamamen sıfır olduğunu da varsayamazsınız.
+Belleği boşaltacak ya da rahatlatacak herhangi bir hazır kurulu mekanizma yoktur.
+Aşağıda Belleği yukarıda anlatıldığı şekilde kullanabileceğiniz bir assembly kod parçası bulunuyor:
 
 .. code-block:: yul
 
@@ -262,38 +238,37 @@ Here is an assembly snippet you can use for allocating memory that follows the p
       mstore(0x40, add(pos, length))
     }
 
-The first 64 bytes of memory can be used as "scratch space" for short-term
-allocation. The 32 bytes after the free memory pointer (i.e., starting at ``0x60``)
-are meant to be zero permanently and is used as the initial value for
-empty dynamic memory arrays.
-This means that the allocatable memory starts at ``0x80``, which is the initial value
-of the free memory pointer.
 
-Elements in memory arrays in Solidity always occupy multiples of 32 bytes (this is
-even true for ``bytes1[]``, but not for ``bytes`` and ``string``). Multi-dimensional memory
-arrays are pointers to memory arrays. The length of a dynamic array is stored at the
-first slot of the array and followed by the array elements.
+Hafızanın ilk 64 biti kısa dönem hafızası için "geçici alan" olarak kullanılabilir.
+Boş bellek pointer'ından sonraki 32 bit (yani ``0x60`` tan başlayan alan) ise kalıcı olarak sıfır olmalıdır
+ve bu alan boş dinamik bellek array'lerinin temel değeri olarak kullanılır.
+Bunlar ise demektir ki kullanılabilir hafıza ``0x80`` den başlar ve bu değer ise boş bellek pointer'ının ilk değeridir.   
+Solidity'deki hafıza array'lerinin tamamı 32 bitin katları olacak şekilde yer kaplar.(Bu kural ``bytes1[]`` için de geçerlidir
+fakat ``bytes`` ve ``string`` için geçerli değildir.) Çok boyutlu hafıza array'leri ise başka hafıza array'lerine pointer'lardır.
+Dinamik array'in uzunluğu array'in ilk slotunda saklanır ve diğer slotlara array'in elemanları gelir.
 
-.. warning::
-    Statically-sized memory arrays do not have a length field, but it might be added later
-    to allow better convertibility between statically- and dynamically-sized arrays, so
-    do not rely on this.
+.. uyarı::
+    Statik boyutlandırılmış hafıza array'leri herhangi bir uzunluk alanına sahip değildir fakat bu sonradan dinamik ve statik
+    boyutlandırılmış array'ler arasında daha kolay çevrimi sağlamak için eklenmiş olabilir. 
+    Yani bu kurala dayanarak ilerlememelisiniz.
 
-Memory Safety
-=============
 
-Without the use of inline assembly, the compiler can rely on memory to remain in a well-defined
-state at all times. This is especially relevant for :ref:`the new code generation pipeline via Yul IR <ir-breaking-changes>`:
-this code generation path can move local variables from stack to memory to avoid stack-too-deep errors and
-perform additional memory optimizations, if it can rely on certain assumptions about memory use.
+Hafıza Güvenliği
+================
 
-While we recommend to always respect Solidity's memory model, inline assembly allows you to use memory
-in an incompatible way. Therefore, moving stack variables to memory and additional memory optimizations are,
-by default, disabled in the presence of any inline assembly block that contains a memory operation or assigns
-to solidity variables in memory.
+Inline assembly kullanmadan; compiler, iyi tanımlanmış bir durumda kalmak için her zaman belleğe güvenir. Bu özellikle 
+:ref:`the new code generation pipeline via Yul IR <ir-breaking-changes>` ile ilgilidir. Bu kod parçası yerel değişkenleri 
+stack üzerinden belleğe atarak stack-too-deep hatasından kaçınmayı sağlar ve eğer bazı kesin varsayımlara uyuyorsa ekstra 
+bellek optimizasyonları uygulayabilir.
 
-However, you can specifically annotate an assembly block to indicate that it in fact respects Solidity's memory
-model as follows:
+
+Biz her ne kadar Solidity'nin kendi bellek modeline saygı gösterilmesini önersek de 
+Inline assembly belleği uyumsuz bir biçimde kullanmanızı sağlar. Bu nedenle stack değişkenlerini belleğe taşımak
+ve diğer bellek optimizasyonları, bir bellek işlemi içeren ya da Solidity değişkenlerini belleğe yazan 
+tüm inline assembly bloklarında varsayılan olarak devredışı haldedir.
+
+Fakat bir assembly bloğuna aşağıdaki şekilde özel olarak ek açıklamalar ekleyerek 
+Solidity'nin bellek modeline uyduğunu belirtebilirsiniz:
 
 .. code-block:: solidity
 
@@ -301,20 +276,19 @@ model as follows:
         ...
     }
 
-In particular, a memory-safe assembly block may only access the following memory ranges:
+Bellek açısından güvenli bir assembly bloğu sadece aşağıdaki bellek bölümlerine erişebilir:
+- Siz tarafından yukarıda anlatıldığı gibi ``allocate`` benzeri bir mekanizma kullanarak atanmış bellek.
+- Solidity tarafından atanmış bellek, yani sizin referans verdiğiniz bellek array'inin sınırları içerisinde kalan alan.
+- Yukarıda bahsedilen 0 ile 64 bellek offset'leri arasında kalan geçici alan.
+- Assembly bloğunun başındaki boş bellek pointer'ının değerinden *sonra* konumlanmış geçici bellek, yani boş bellek pointer'ının güncellememiş hali için ayrılan bellek alanı. 
 
-- Memory allocated by yourself using a mechanism like the ``allocate`` function described above.
-- Memory allocated by Solidity, e.g. memory within the bounds of a memory array you reference.
-- The scratch space between memory offset 0 and 64 mentioned above.
-- Temporary memory that is located *after* the value of the free memory pointer at the beginning of the assembly block,
-  i.e. memory that is "allocated" at the free memory pointer without updating the free memory pointer.
+Bunlara ek olarak, eğer bir assembly bloğu bellekteki bir Solidity değişkenine atanırsa bu erişimin 
+yukarıda belirtilen bellek sınırları içerisinde olduğundan emin olmalısınız.
 
-Furthermore, if the assembly block assigns to Solidity variables in memory, you need to assure that accesses to
-the Solidity variables only access these memory ranges.
-
-Since this is mainly about the optimizer, these restrictions still need to be followed, even if the assembly block
-reverts or terminates. As an example, the following assembly snippet is not memory safe, because the value of
-``returndatasize()`` may exceed the 64 byte scratch space:
+Belirtilen işlemler genellikle optimizer ile ilgili olduğu için 
+assembly bloğu hata verse de verilen kısıtlamalar takip edilmeli.
+Bir örnek olarak aşağıda verilen assembly kod parçası bellek açısından güvenli değil. 
+Sebebi ise ``returndatasize()`` fonksiyonunun değeri belirtilen 64 bitlik geçici bellek alanını aşabilir.
 
 .. code-block:: solidity
 
@@ -323,8 +297,8 @@ reverts or terminates. As an example, the following assembly snippet is not memo
       revert(0, returndatasize())
     }
 
-On the other hand, the following code *is* memory safe, because memory beyond the location pointed to by the
-free memory pointer can safely be used as temporary scratch space:
+Fakat aşağıdaki kod ise bellek açısından *güvenli*dir. 
+Çünkü boş bellek pointer'ının gösterdiği yerden sonrası güvenli bir şekilde geçici alan olarak kullanılabilir.
 
 .. code-block:: solidity
 
@@ -334,10 +308,11 @@ free memory pointer can safely be used as temporary scratch space:
       revert(p, returndatasize())
     }
 
-Note that you do not need to update the free memory pointer if there is no following allocation,
-but you can only use memory starting from the current offset given by the free memory pointer.
+Unutmayın ki eğer bir atama yoksa boş bellek pointer'ını güncellemenize gerek yoktur 
+ama belleği kullanmaya boş bellek pointer'ının verdiği offset'ten başlayabilirsiniz.
 
-If the memory operations use a length of zero, it is also fine to just use any offset (not only if it falls into the scratch space):
+Eğer bellek işlemleri sıfır uzunluğunu kullanıyorsa -geçici alana düşmediği sürece- 
+herhangi bir offset'i de kullanabilirsiniz.
 
 .. code-block:: solidity
 
@@ -345,8 +320,9 @@ If the memory operations use a length of zero, it is also fine to just use any o
       revert(0, 0)
     }
 
-Note that not only memory operations in inline assembly itself can be memory-unsafe, but also assignments to
-solidity variables of reference type in memory. For example the following is not memory-safe:
+Unutmayın ki inline assembly içerisindeki bellek işlemleri bellek için güvenli olmadığı gibi 
+bellekte referans tipinde olan Solidity değişkenlerine olan atamalar da bellek için güvenli olmayabilir.
+Aşağıdaki örnek bellek için güvenli değildir:
 
 .. code-block:: solidity
 
@@ -356,16 +332,16 @@ solidity variables of reference type in memory. For example the following is not
     }
     x[0x20] = 0x42;
 
-Inline assembly that neither involves any operations that access memory nor assigns to any solidity variables
-in memory is automatically considered memory-safe and does not need to be annotated.
+Belleğe erişim istemeyen işlemlerden oluşan ve bellek üzerindeki Solidity değişkenlerine atama yapmayan inline assembly 
+otomatik olarak bellek için güvenli sayılır ve ekstra olarak belirtilmesine gerek duyulmaz.
 
-.. warning::
-    It is your responsibility to make sure that the assembly actually satisfies the memory model. If you annotate
-    an assembly block as memory-safe, but violate one of the memory assumptions, this **will** lead to incorrect and
-    undefined behaviour that cannot easily be discovered by testing.
+.. uyarı::
+    Assembly'nin bellek modelini sağladığından emin olmak sizin sorumluluğunuzdadır. Eğer siz bir assembly bloğunu 
+    bellek için güvenli olarak tanımlayıp herhangi bir bellek hatası yaparsanız bu **kesinlikle**, doğru olmayan ya da 
+    tanımlanmamış bir davranışa sebep olur. Ve bu hata test yaparak kolay bir şekilde bulunamaz.
 
-In case you are developing a library that is meant to be compatible across multiple versions
-of solidity, you can use a special comment to annotate an assembly block as memory-safe:
+Eğer Solidity'nin farklı versiyonları ile uyumlu olacak şekilde bir kütüphane oluşturuyorsanız 
+bir assembly bloğunun bellek için güvenli olduğunu özel bir komut ile belirtebilirsiniz:
 
 .. code-block:: solidity
 
@@ -374,5 +350,5 @@ of solidity, you can use a special comment to annotate an assembly block as memo
         ...
     }
 
-Note that we will disallow the annotation via comment in a future breaking release, so if you are not concerned with
-backwards-compatibility with older compiler versions, prefer using the dialect string.
+Unutmayın ki yorum satırları ile belirtmeyi gelecek bir sürümde kaldıracağız yani eğer geçmiş compiler sürümleri ile uyum konusunda 
+yeterli bilgiye sahip değilseniz dialect string kullanmayı tercih edin.
