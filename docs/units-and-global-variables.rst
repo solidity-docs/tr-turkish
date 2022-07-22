@@ -1,13 +1,13 @@
 **************************************
-Units and Globally Available Variables
+Birimler ve Global Olarak Kullanılabilir Değişkenler
 **************************************
 
 .. index:: wei, finney, szabo, gwei, ether
 
-Ether Units
+Ether Birimleri
 ===========
 
-A literal number can take a suffix of ``wei``, ``gwei`` or ``ether`` to specify a subdenomination of Ether, where Ether numbers without a postfix are assumed to be Wei.
+Bir değişmez sayı, Ether'in bir alt para birimini belirtmek için ``wei``, ``gwei`` veya ``ether`` son ekini alabilir; burada son eki olmayan Ether sayılarının Wei olduğu varsayılır.
 
 .. code-block:: solidity
     :force:
@@ -16,37 +16,36 @@ A literal number can take a suffix of ``wei``, ``gwei`` or ``ether`` to specify 
     assert(1 gwei == 1e9);
     assert(1 ether == 1e18);
 
-The only effect of the subdenomination suffix is a multiplication by a power of ten.
-
+Alt isim ekinin("e") tek etkisi, onluk bir kuvvetle çarpmadır.
 .. note::
-    The denominations ``finney`` and ``szabo`` have been removed in version 0.7.0.
+    0.7.0 sürümünde "finney" ve "szabo" adları kaldırılmıştır.
 
 .. index:: time, seconds, minutes, hours, days, weeks, years
 
-Time Units
+Zaman Birimleri
 ==========
 
-Suffixes like ``seconds``, ``minutes``, ``hours``, ``days`` and ``weeks``
-after literal numbers can be used to specify units of time where seconds are the base
-unit and units are considered naively in the following way:
+Gerçek sayılardan sonra gelen ``saniye``, ``dakika``, ``saat``, ``gün`` ve
+``hafta`` gibi son ekler, saniyelerin temel birim olduğu zaman birimlerini
+belirtmek için kullanılabilir. Ve ayrıca birimler aşağıdaki şekilde olduğu
+gibi basitçe ele alınır:
 
-* ``1 == 1 seconds``
-* ``1 minutes == 60 seconds``
-* ``1 hours == 60 minutes``
-* ``1 days == 24 hours``
-* ``1 weeks == 7 days``
+* ``1 == 1 saniye``
+* ``1 dakika == 60 saniye``
+* ``1 saat == 60 dakika``
+* ``1 gün == 24 saat``
+* ``1 hafta == 7 gün``
 
-Take care if you perform calendar calculations using these units, because
-not every year equals 365 days and not even every day has 24 hours
-because of `leap seconds <https://en.wikipedia.org/wiki/Leap_second>`_.
-Due to the fact that leap seconds cannot be predicted, an exact calendar
-library has to be updated by an external oracle.
+Bu birimleri kullanarak takvim hesaplamaları yapıyorsanız dikkatli olun, çünkü her
+yıl 365 güne eşit değildir ve `"artık saniyeler" <https://en.wikipedia.org/wiki/Leap_second>`_
+nedeniyle her gün bile 24 saat değildir. "Artık saniyelerin" tahmin edilememesi nedeniyle, tam
+bir takvim kütüphanesinin harici bir oracle tarafından güncellenmesi gerekir.
 
 .. note::
-    The suffix ``years`` has been removed in version 0.5.0 due to the reasons above.
+    Yukarıdaki nedenlerden dolayı ``years`` soneki 0.5.0 sürümünde kaldırılmıştır.
 
-These suffixes cannot be applied to variables. For example, if you want to
-interpret a function parameter in days, you can in the following way:
+Bu son ekler değişkenlere uygulanamaz. Örneğin, bir fonksiyon parametresini gün olarak
+yorumlamak istiyorsanız, aşağıdaki şekilde yapabilirsiniz:
 
 .. code-block:: solidity
 
@@ -58,329 +57,325 @@ interpret a function parameter in days, you can in the following way:
 
 .. _special-variables-functions:
 
-Special Variables and Functions
+Özel Değişkenler ve Fonksiyonlar
 ===============================
 
-There are special variables and functions which always exist in the global
-namespace and are mainly used to provide information about the blockchain
-or are general-use utility functions.
+Global ad alanında her zaman var olan özel değişkenler ve işlevler vardır ve bunlar
+çoğunlukla blok zinciri hakkında bilgi sağlamak için kullanılır. Veya bunlara ek olarak
+genel kullanım amaçlı yardımcı fonksiyonlar da bulunmaktadır.
 
 .. index:: abi, block, coinbase, difficulty, encode, number, block;number, timestamp, block;timestamp, msg, data, gas, sender, value, gas price, origin
 
 
-Block and Transaction Properties
+Blok ve İşlem Özellikleri
 --------------------------------
 
-- ``blockhash(uint blockNumber) returns (bytes32)``: hash of the given block when ``blocknumber`` is one of the 256 most recent blocks; otherwise returns zero
-- ``block.basefee`` (``uint``): current block's base fee (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ and `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_)
-- ``block.chainid`` (``uint``): current chain id
-- ``block.coinbase`` (``address payable``): current block miner's address
-- ``block.difficulty`` (``uint``): current block difficulty
-- ``block.gaslimit`` (``uint``): current block gaslimit
-- ``block.number`` (``uint``): current block number
-- ``block.timestamp`` (``uint``): current block timestamp as seconds since unix epoch
-- ``gasleft() returns (uint256)``: remaining gas
-- ``msg.data`` (``bytes calldata``): complete calldata
-- ``msg.sender`` (``address``): sender of the message (current call)
-- ``msg.sig`` (``bytes4``): first four bytes of the calldata (i.e. function identifier)
-- ``msg.value`` (``uint``): number of wei sent with the message
-- ``tx.gasprice`` (``uint``): gas price of the transaction
-- ``tx.origin`` (``address``): sender of the transaction (full call chain)
+- ``blockhash(uint blockNumber) returns (bytes32)``: ``blocknumber`` en son 256 bloktan biri olduğunda verilen bloğun hash`ini döndürür, aksi takdirde sıfır döndürür
+- ``block.basefee`` (``uint``): mevcut bloğun baz ücreti (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ ve `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_)
+- ``block.chainid`` (``uint``): mevcut bloğun zincir kimliği
+- ``block.coinbase`` (``address payable``): mevcut blok madencisinin adresi
+- ``block.difficulty`` (``uint``): mevcut blok zorluğu
+- ``block.gaslimit`` (``uint``): mevcut blok gas sınırı
+- ``block.number`` (``uint``): mevcut blok numarası
+- ``block.timestamp`` (``uint``): unix döneminden bu yana saniye biçimindeki mevcut blok zaman bilgisi
+- ``gasleft() returns (uint256)``: kalan gas
+- ``msg.data`` (``bytes calldata``): bütün calldata
+- ``msg.sender`` (``address``): mesajın göndericisi (mevcut çağırma için)
+- ``msg.sig`` (``bytes4``): calldata'nın ilk 4 byte değeri (yani fonksiyon tanımlayıcısı)
+- ``msg.value`` (``uint``): mesaj ile birlikte gönderilen wei miktarı
+- ``tx.gasprice`` (``uint``): işlemin gas fiyatı
+- ``tx.origin`` (``address``): işlemin göndericisi (tam çağrı zinciri)
 
 .. note::
-    The values of all members of ``msg``, including ``msg.sender`` and
-    ``msg.value`` can change for every **external** function call.
-    This includes calls to library functions.
+    ``msg.sender`` ve ``msg.value`` dahil olmak üzere ``msg`` öğesinin tüm üyelerinin değerleri
+    her **harici** işlev çağrısı için değişebilir. Buna kütüphane fonksiyonlarına yapılan çağrılar
+    da dahildir.
 
 .. note::
-    When contracts are evaluated off-chain rather than in context of a transaction included in a
-    block, you should not assume that ``block.*`` and ``tx.*`` refer to values from any specific
-    block or transaction. These values are provided by the EVM implementation that executes the
-    contract and can be arbitrary.
+    Sözleşmeler, bir bloğa dahil edilen bir işlem bağlamında değil de zincir dışı değerlendirildiğinde,
+    "block.*" ve "tx.*" ifadelerinin herhangi bir belirli blok veya işlemden gelen değerleri ifade ettiğini
+    varsaymamalısınız. Bu değerler, sözleşmeyi yürüten ESM uygulaması tarafından sağlanır ve isteğe bağlı olabilir.
 
 .. note::
-    Do not rely on ``block.timestamp`` or ``blockhash`` as a source of randomness,
-    unless you know what you are doing.
+    Ne yaptığınızı bilmiyorsanız, rasgelelik kaynağı olarak ``block.timestamp`` veya ``blockhash``'e güvenmeyin.
 
-    Both the timestamp and the block hash can be influenced by miners to some degree.
-    Bad actors in the mining community can for example run a casino payout function on a chosen hash
-    and just retry a different hash if they did not receive any money.
+    Hem zaman bilgisi hem de blok hash'i madenciler tarafından bir dereceye kadar etkilenebilir.
+    Madencilik topluluğunda bulunan kötü aktörler, örneğin seçilen bir hash üzerinde bir kumarhane
+    ödeme fonksiyonu çalıştırabilir ve herhangi bir para almazlarsa farklı bir hash'i çözmeyi yeniden deneyebilirler.
 
-    The current block timestamp must be strictly larger than the timestamp of the last block,
-    but the only guarantee is that it will be somewhere between the timestamps of two
-    consecutive blocks in the canonical chain.
-
-.. note::
-    The block hashes are not available for all blocks for scalability reasons.
-    You can only access the hashes of the most recent 256 blocks, all other
-    values will be zero.
+    Mevcut blok zaman bilgisi, son bloğun zaman bilgisinden kesinlikle daha büyük olmalıdır. Ancak kabul
+    edilebilecek tek garanti zaman bilgisi, standart zincirdeki iki ardışık bloğun zaman bilgileri arasında
+    bir yerde olmasıdır.
 
 .. note::
-    The function ``blockhash`` was previously known as ``block.blockhash``, which was deprecated in
-    version 0.4.22 and removed in version 0.5.0.
+    Ölçeklenebilirlik nedeniyle blok hash'leri tüm bloklar için mevcut değildir. Yalnızca en son 256 bloğun
+    hash'lerine erişebilirsiniz, bunun dışındaki tüm değerler sıfır olacaktır.
 
 .. note::
-    The function ``gasleft`` was previously known as ``msg.gas``, which was deprecated in
-    version 0.4.21 and removed in version 0.5.0.
+    Daha önce ``blockhash`` işlevi ``block.blockhash`` olarak biliniyordu, bu işlev 0.4.22 sürümünde kullanımdan
+    kaldırılmış ve 0.5.0 sürümünde tamamen kaldırılmıştır.
 
 .. note::
-    In version 0.7.0, the alias ``now`` (for ``block.timestamp``) was removed.
+    Daha önce ``gasleft`` işlevi ``msg.gas`` olarak biliniyordu, bu işlev 0.4.21 sürümünde kullanımdan kaldırılmış
+    ve 0.5.0 sürümünde tamamen kaldırılmıştır.
+
+.. note::
+    0.7.0 sürümünde ``now`` takma adı (``block.timestamp`` için) kaldırıldı.
 
 .. index:: abi, encoding, packed
 
-ABI Encoding and Decoding Functions
+ABI Şifreleme ve Şifreyi Çözme Fonksiyonları
 -----------------------------------
 
-- ``abi.decode(bytes memory encodedData, (...)) returns (...)``: ABI-decodes the given data, while the types are given in parentheses as second argument. Example: ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
-- ``abi.encode(...) returns (bytes memory)``: ABI-encodes the given arguments
-- ``abi.encodePacked(...) returns (bytes memory)``: Performs :ref:`packed encoding <abi_packed_mode>` of the given arguments. Note that packed encoding can be ambiguous!
-- ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: ABI-encodes the given arguments starting from the second and prepends the given four-byte selector
-- ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``: Equivalent to ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)``
-- ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``: ABI-encodes a call to ``functionPointer`` with the arguments found in the tuple. Performs a full type-check, ensuring the types match the function signature. Result equals ``abi.encodeWithSelector(functionPointer.selector, (...))``
-
+- ``abi.decode(bytes memory encodedData, (...)) returns (...)``: ABI verilen verinin şifresini çözerken, tipler ikinci argüman olarak parantez içinde verilir. Örneğin: ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
+- ``abi.encode(...) returns (bytes memory)``: ABI verilen argümanları şifreler
+- ``abi.encodePacked(...) returns (bytes memory)``: Verilen argümanların :ref:`paketlenmiş şifreleme <abi_packed_mode>` işlemini gerçekleştirir. Paketli şifrelemenin belirsiz olabileceğine dikkat edin!
+- ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: ABI, verilen bağımsız değişkenleri ikinciden başlayarak şifreler ve verilen dört baytlık seçicinin önüne ekler.
+- ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``: Şuna eşdeğerdir ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)``
+- ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``: ABI, ``functionPointer`` çağrısını veri grupları içinde bulunan argümanlarla şifreler. Tam bir tür denetimi gerçekleştirerek türlerin fonksiyon imzasıyla eşleşmesini sağlar. Sonuç ``abi.encodeWithSelector(functionPointer.selector, (...))`` değerine eşittir
 .. note::
-    These encoding functions can be used to craft data for external function calls without actually
-    calling an external function. Furthermore, ``keccak256(abi.encodePacked(a, b))`` is a way
-    to compute the hash of structured data (although be aware that it is possible to
-    craft a "hash collision" using different function parameter types).
+    Bu şifreleme fonksiyonları, harici bir fonksiyonu çağırmadan harici fonksiyon çağrıları
+    için veri oluşturmak amacıyla kullanılabilir. Ayrıca, ``keccak256(abi.encodePacked(a, b))``
+    yapılandırılmış verilerin hashini hesaplamanın bir yoludur (ancak farklı fonksiyon parametre
+    türleri kullanarak bir "hash çakışması" oluşturmanın mümkün olduğunu unutmayın).
 
-See the documentation about the :ref:`ABI <ABI>` and the
-:ref:`tightly packed encoding <abi_packed_mode>` for details about the encoding.
+Şifreleme ile ilgili ayrıntılar için :ref:`ABI <ABI>` ve
+:ref:`sıkıca paketlenmiş şifreleme <abi_packed_mode>` hakkındaki belgelere bakabilirsiniz.
 
 .. index:: bytes members
 
-Members of bytes
+Byte Üyeleri
 ----------------
 
-- ``bytes.concat(...) returns (bytes memory)``: :ref:`Concatenates variable number of bytes and bytes1, ..., bytes32 arguments to one byte array<bytes-concat>`
+- ``bytes.concat(...) returns (bytes memory)``: :ref:`Değişken sayıda bayt ve bytes1, ..., bytes32 argümanlarını bir bayt dizisine birleştirir<bytes-concat>`
 
 .. index:: string members
 
-Members of string
+String Üyeleri
 -----------------
 
-- ``string.concat(...) returns (string memory)``: :ref:`Concatenates variable number of string arguments to one string array<string-concat>`
+- ``string.concat(...) returns (string memory)``: :ref:`Değişken sayıda string argümanını tek bir string dizisinde birleştirir<string-concat>`
 
 
 .. index:: assert, revert, require
 
-Error Handling
+Hata İşleme
 --------------
 
-See the dedicated section on :ref:`assert and require<assert-and-require>` for
-more details on error handling and when to use which function.
+Hata işleme ve hangi fonksiyonun ne zaman kullanılacağı hakkında daha fazla
+bilgi için :ref:`assert ve require<assert-and-require>` bölümüne bakın.
 
 ``assert(bool condition)``
-    causes a Panic error and thus state change reversion if the condition is not met - to be used for internal errors.
+    Panik hatasına ve dolayısıyla koşul karşılanmazsa durum değişikliğinin tersine dönmesine neden olur - dahili hatalar için kullanılır.
 
 ``require(bool condition)``
-    reverts if the condition is not met - to be used for errors in inputs or external components.
+    koşul karşılanmazsa geri döner - girişlerdeki veya harici bileşenlerdeki hatalar için kullanılır.
 
 ``require(bool condition, string memory message)``
-    reverts if the condition is not met - to be used for errors in inputs or external components. Also provides an error message.
+    koşul karşılanmazsa geri döner - girişlerdeki veya harici bileşenlerdeki hatalar için kullanılır. Ayrıca bir hata mesajı da sağlar.
 
 ``revert()``
-    abort execution and revert state changes
+    yürütmeyi iptal eder ve durum değişikliklerini geri alır
 
 ``revert(string memory reason)``
-    abort execution and revert state changes, providing an explanatory string
+    açıklayıcı bir string sağlayarak yürütmeyi iptal eder ve durum değişikliklerini geri alır
 
 .. index:: keccak256, ripemd160, sha256, ecrecover, addmod, mulmod, cryptography,
 
 .. _mathematical-and-cryptographic-functions:
 
-Mathematical and Cryptographic Functions
+Matematiksel ve Kriptografik Fonksiyonlar
 ----------------------------------------
 
 ``addmod(uint x, uint y, uint k) returns (uint)``
-    compute ``(x + y) % k`` where the addition is performed with arbitrary precision and does not wrap around at ``2**256``. Assert that ``k != 0`` starting from version 0.5.0.
+    toplama işleminin isteğe bağlı kesinlikte gerçekleştirildiği ve ``2**256``da kapsamadığı ``(x + y) % k`` değerini hesaplar. Sürüm 0.5.0'den başlayarak "k!= 0" olduğunu iddia eder.
 
 ``mulmod(uint x, uint y, uint k) returns (uint)``
-    compute ``(x * y) % k`` where the multiplication is performed with arbitrary precision and does not wrap around at ``2**256``. Assert that ``k != 0`` starting from version 0.5.0.
+    çarpmanın isteğe bağlı kesinlikte gerçekleştirildiği ve ``2**256`` değerinde kapsamadığı ``(x * y) % k`` değerini hesaplar. Sürüm 0.5.0'dan başlayarak ``k != 0`` olduğunu iddia eder.
 
 ``keccak256(bytes memory) returns (bytes32)``
-    compute the Keccak-256 hash of the input
+    girdinin Keccak-256 hash'ini hesaplar
 
 .. note::
 
-    There used to be an alias for ``keccak256`` called ``sha3``, which was removed in version 0.5.0.
+    Eskiden ``keccak256`` için ``sha3`` adında bir takma ad vardı, ancak bu ad 0.5.0 sürümünde kaldırıldı.
 
 ``sha256(bytes memory) returns (bytes32)``
-    compute the SHA-256 hash of the input
+    girdinin SHA-256 hash'ini hesaplar
 
 ``ripemd160(bytes memory) returns (bytes20)``
-    compute RIPEMD-160 hash of the input
+    girdinin RIPEMD-160 hash'ini hesaplar
 
 ``ecrecover(bytes32 hash, uint8 v, bytes32 r, bytes32 s) returns (address)``
-    recover the address associated with the public key from elliptic curve signature or return zero on error.
-    The function parameters correspond to ECDSA values of the signature:
+    eliptik eğri imzasından açık anahtarla ilişkili adresi kurtarır veya hata durumunda sıfır döndürür.
+    Fonksiyon parametreleri imzanın ECDSA değerlerine karşılık gelir:
 
-    * ``r`` = first 32 bytes of signature
-    * ``s`` = second 32 bytes of signature
-    * ``v`` = final 1 byte of signature
+    * ``r`` = imzanın ilk 32 byte'ı
+    * ``s`` = imzanın ikinci 32 byte'ı
+    * ``v`` = imzanın son 1 byte'ı
 
-    ``ecrecover`` returns an ``address``, and not an ``address payable``. See :ref:`address payable<address>` for
-    conversion, in case you need to transfer funds to the recovered address.
+    ``ecrecover`` yalnızca bir ``address`` döndürür, ``address payable`` döndürmez. Kurtarılan adrese para aktarmanız gerekirse,
+    dönüştürme için :ref:`address payable<address>` bölümüne bakabilirsiniz.
 
-    For further details, read `example usage <https://ethereum.stackexchange.com/questions/1777/workflow-on-signing-a-string-with-private-key-followed-by-signature-verificatio>`_.
+    Daha fazla ayrıntı için `örnek kullanım <https://ethereum.stackexchange.com/questions/1777/workflow-on-signing-a-string-with-private-key-followed-by-signature-verificatio>`_ bölümünü okuyun.
 
 .. warning::
 
-    If you use ``ecrecover``, be aware that a valid signature can be turned into a different valid signature without
-    requiring knowledge of the corresponding private key. In the Homestead hard fork, this issue was fixed
-    for _transaction_ signatures (see `EIP-2 <https://eips.ethereum.org/EIPS/eip-2#specification>`_), but
-    the ecrecover function remained unchanged.
+    Eğer ``ecrecover`` kullanıyorsanız, geçerli bir imzanın ilgili özel anahtarın (private key) bilinmesini
+    gerektirmeden farklı bir geçerli imzaya dönüştürülebileceğini unutmayın. Homestead hard fork'unda bu sorun
+    _transaction_ signatures için düzeltildi (bkz. `EIP-2 <https://eips.ethereum.org/EIPS/eip-2#specification>`_),
+    ancak ecrecover fonksiyonu değişmeden kaldı.
 
-    This is usually not a problem unless you require signatures to be unique or
-    use them to identify items. OpenZeppelin have a `ECDSA helper library <https://docs.openzeppelin.com/contracts/2.x/api/cryptography#ECDSA>`_ that you can use as a wrapper for ``ecrecover`` without this issue.
+    İmzaların benzersiz olmasını istemediğiniz veya bunları öğeleri tanımlamak için kullanmadığınız sürece
+    bu genellikle bir sorun değildir. OpenZeppelin, bu sorun olmadan ``ecrecover`` için bir wrapper olarak
+    kullanabileceğiniz bir `ECDSA yardımcı kütüphanesine <https://docs.openzeppelin.com/contracts/2.x/api/cryptography#ECDSA>`_ sahiptir.
 
 .. note::
 
-    When running ``sha256``, ``ripemd160`` or ``ecrecover`` on a *private blockchain*, you might encounter Out-of-Gas. This is because these functions are implemented as "precompiled contracts" and only really exist after they receive the first message (although their contract code is hardcoded). Messages to non-existing contracts are more expensive and thus the execution might run into an Out-of-Gas error. A workaround for this problem is to first send Wei (1 for example) to each of the contracts before you use them in your actual contracts. This is not an issue on the main or test net.
+    Bir *özel blok zincirinde* ``sha256``, ``ripemd160`` veya ``ecrecover`` çalıştırırken, Out-of-Gas (Bitmiş Gas) ile karşılaşabilirsiniz. Bunun nedeni, bu
+    fonksiyonların "önceden derlenmiş sözleşmeler" olarak uygulanması ve yalnızca ilk mesajı aldıktan sonra gerçekten var olmalarıdır (sözleşme kodları sabit
+    kodlanmış olsa da). Mevcut olmayan sözleşmelere gönderilen mesajlar daha pahalıdır ve bu nedenle yürütme sırasında Out-of-Gas (Bitmiş Gas) hatasıyla karşılaşabilir.
+    Bu sorun için geçici bir çözüm, gerçek sözleşmelerinizde kullanmadan önce her bir sözleşmeye Wei (örneğin 1) göndermektir. Bu sorun, ana veya test ağında bir geçerli değildir.
 
 .. index:: balance, codehash, send, transfer, call, callcode, delegatecall, staticcall
 
 .. _address_related:
 
-Members of Address Types
+Adres Tipleri Üyeleri
 ------------------------
 
 ``<address>.balance`` (``uint256``)
-    balance of the :ref:`address` in Wei
+    Wei biçimindeki :ref:`address` bakiyesi
 
 ``<address>.code`` (``bytes memory``)
-    code at the :ref:`address` (can be empty)
+    ref:`address` adresindeki kod (boş olabilir)
 
 ``<address>.codehash`` (``bytes32``)
-    the codehash of the :ref:`address`
+    ref:`address` kod hash'i
 
 ``<address payable>.transfer(uint256 amount)``
-    send given amount of Wei to :ref:`address`, reverts on failure, forwards 2300 gas stipend, not adjustable
+    verilen Wei miktarını :ref:`address` ‘ine gönderir, başarısız olması durumunda geri döner, 2300 gas ücreti iletir, ayarlanabilir değildir
 
 ``<address payable>.send(uint256 amount) returns (bool)``
-    send given amount of Wei to :ref:`address`, returns ``false`` on failure, forwards 2300 gas stipend, not adjustable
+    verilen Wei miktarını :ref:`address` 'ine gönderir, başarısız olması durumunda ``false`` döndürür, 2300 gas ücreti iletir, ayarlanabilir değildir
 
 ``<address>.call(bytes memory) returns (bool, bytes memory)``
-    issue low-level ``CALL`` with the given payload, returns success condition and return data, forwards all available gas, adjustable
+    verilen yük ile düşük seviyeli ``CALL`` yayınlar, başarı koşulu ve dönüş verisi döndürür, mevcut tüm gas'ı iletir, ayarlanabilirdir
 
 ``<address>.delegatecall(bytes memory) returns (bool, bytes memory)``
-    issue low-level ``DELEGATECALL`` with the given payload, returns success condition and return data, forwards all available gas, adjustable
+    verilen yük ile düşük seviyeli ``DELEGATECALL`` yayınlar, başarı koşulu ve dönüş verisi döndürür, mevcut tüm gazı iletir, ayarlanabilirdir
 
 ``<address>.staticcall(bytes memory) returns (bool, bytes memory)``
-    issue low-level ``STATICCALL`` with the given payload, returns success condition and return data, forwards all available gas, adjustable
+    verilen yük ile düşük seviyeli ``STATICCALL`` yayınlar, başarı koşulunu ve dönüş verilerini döndürür, mevcut tüm gazı iletir, ayarlanabilirdir
 
-For more information, see the section on :ref:`address`.
-
-.. warning::
-    You should avoid using ``.call()`` whenever possible when executing another contract function as it bypasses type checking,
-    function existence check, and argument packing.
+Daha fazla bilgi için :ref:`address` ile ilgili bölüme bakın.
 
 .. warning::
-    There are some dangers in using ``send``: The transfer fails if the call stack depth is at 1024
-    (this can always be forced by the caller) and it also fails if the recipient runs out of gas. So in order
-    to make safe Ether transfers, always check the return value of ``send``, use ``transfer`` or even better:
-    Use a pattern where the recipient withdraws the money.
+    Başka bir sözleşme fonksiyonunu çalıştırırken mümkün olduğunca ``.call()`` kullanmaktan kaçınmalısınız,
+    çünkü bu tür denetimi, fonksiyon varlığı denetimini ve argüman paketlemeyi atlar.
 
 .. warning::
-    Due to the fact that the EVM considers a call to a non-existing contract to always succeed,
-    Solidity includes an extra check using the ``extcodesize`` opcode when performing external calls.
-    This ensures that the contract that is about to be called either actually exists (it contains code)
-    or an exception is raised.
+    ``send`` kullanmanın bazı tehlikeleri vardır: Çağrı yığını derinliği 1024 ise transfer  başarısız olur
+    (bu her zaman çağıran kişi tarafından zorlanabilir) ve ayrıca alıcının gas'ı biterse de başarısız olur.
+    Bu nedenle, güvenli Ether transferleri yapmak için, her zaman ``send`` dönüş değerini kontrol edin, ``transfer``
+    kullanın veya daha da iyisi: Alıcının parayı çektiği bir model kullanın.
 
-    The low-level calls which operate on addresses rather than contract instances (i.e. ``.call()``,
-    ``.delegatecall()``, ``.staticcall()``, ``.send()`` and ``.transfer()``) **do not** include this
-    check, which makes them cheaper in terms of gas but also less safe.
+.. warning::
+    ESM'nin mevcut olmayan bir sözleşmeye yapılan bir çağrının her zaman başarılı olacağını düşünmesi
+    nedeniyle, Solidity harici çağrılar gerçekleştirirken ``extcodesize`` işlem kodunu kullanarak ekstra
+    bir kontrol yapar. Bu, çağrılmak üzere olan sözleşmenin ya gerçekten var olmasını (kod içermesini)
+    ya da bir istisnanın ortaya çıkmasını sağlar.
 
-.. note::
-   Prior to version 0.5.0, Solidity allowed address members to be accessed by a contract instance, for example ``this.balance``.
-   This is now forbidden and an explicit conversion to address must be done: ``address(this).balance``.
-
-.. note::
-   If state variables are accessed via a low-level delegatecall, the storage layout of the two contracts
-   must align in order for the called contract to correctly access the storage variables of the calling contract by name.
-   This is of course not the case if storage pointers are passed as function arguments as in the case for
-   the high-level libraries.
+    Sözleşme örnekleri yerine adresler üzerinde çalışan düşük seviyeli çağrılar (yani ``.call()``, ``.delegatecall()``,
+    ``.staticcall()``, ``.send()`` ve ``.transfer()``) Bu kontrolü **içermezler**, bu da onları gas açısından daha ucuz
+    ama aynı zamanda daha az güvenli hale getirir.
 
 .. note::
-    Prior to version 0.5.0, ``.call``, ``.delegatecall`` and ``.staticcall`` only returned the
-    success condition and not the return data.
+   0.5.0 sürümünden önce, Solidity adres üyelerine bir sözleşme örneği tarafından erişilmesine izin veriyordu,
+   örnek vermek gerekirse ``this.balance``. Bu fonksiyon artık yasaklanmıştır ve adrese yönelik olarak açık bir dönüşüm yapılmalıdır: ``address(this).balance``.
 
 .. note::
-    Prior to version 0.5.0, there was a member called ``callcode`` with similar but slightly different
-    semantics than ``delegatecall``.
+   Durum değişkenlerine düşük seviyeli bir "delegatecall" yoluyla erişiliyorsa eğer, çağrılan sözleşmenin
+   çağıran sözleşme tarafından depolama değişkenlerine adıyla doğru şekilde erişebilmesi için iki sözleşmenin
+   depolama düzeninin aynı hizada olması gerekir. Üst düzey kütüphanelerde olduğu gibi depolama işaretçilerinin(pointer)
+   fonksiyon argümanları olarak aktarılması durumunda bu durum elbette geçerli değildir.
+
+.. note::
+    0.5.0 sürümünden önce, ``.call``, ``.delegatecall`` ve ``.staticcall`` yalnızca başarı koşulunu döndürüyordu,
+    dönüş verisini döndürmüyordu.
+
+.. note::
+    0.5.0 sürümünden önce, ``delegatecall`` ile benzer ancak biraz farklı anlamlara sahip ``callcode`` adlı bir üye de bulunmaktaydı.
 
 
 .. index:: this, selfdestruct
 
-Contract Related
+Sözleşme İle İlgili
 ----------------
 
-``this`` (current contract's type)
-    the current contract, explicitly convertible to :ref:`address`
+``this`` (mevcut sözleşmenin türü)
+    mevcut sözleşme, açıkça :ref:`address`’ine dönüştürülebilir
 
-``selfdestruct(address payable recipient)``
-    Destroy the current contract, sending its funds to the given :ref:`address`
-    and end execution.
-    Note that ``selfdestruct`` has some peculiarities inherited from the EVM:
+``selfdestruct(ödenebilir alıcı adresi)``
+    Mevcut sözleşmeyi yok eder, fonlarını verilen :ref:`address`e gönderir ve yürütür.
+    ``selfdestruct``'ın ESM'den miras kalan bazı özelliklere sahip olduğunu unutmayın:
 
-    - the receiving contract's receive function is not executed.
-    - the contract is only really destroyed at the end of the transaction and ``revert`` s might "undo" the destruction.
-
+    - alıcı sözleşmenin alma(receive) fonksiyonu yürütülmez.
+    - sözleşme sadece işlemin sonunda gerçekten yok edilir ve ``revert`` bu yok edilme işlemini "geri alabilir".
 
 
 
-Furthermore, all functions of the current contract are callable directly including the current function.
+
+Ayrıca, geçerli sözleşmenin tüm fonksiyonları, geçerli fonksiyon da dahil olmak üzere doğrudan çağrılabilir.
 
 .. note::
-    Prior to version 0.5.0, there was a function called ``suicide`` with the same
-    semantics as ``selfdestruct``.
+    0.5.0 sürümünden önce, ``selfdestruct`` ile aynı semantiğe sahip ``suicide`` adlı bir fonksiyon bulunmaktaydı.
 
 .. index:: type, creationCode, runtimeCode
 
 .. _meta-type:
 
-Type Information
+Type Bilgileri
 ----------------
 
-The expression ``type(X)`` can be used to retrieve information about the type
-``X``. Currently, there is limited support for this feature (``X`` can be either
-a contract or an integer type) but it might be expanded in the future.
+``type(X)`` ifadesi ``X`` türü hakkında bilgi almak için kullanılabilir. Şu anda,
+bu özellik için sınırlı bir destek bulunmaktadır (``X`` bir sözleşme veya tamsayı türü olabilir),
+ancak gelecekte genişletilebilir.
 
-The following properties are available for a contract type ``C``:
+Aşağıdaki özellikler bir sözleşme tipi(type) ``C`` için kullanılabilir:
 
 ``type(C).name``
-    The name of the contract.
+    Sözleşmenin ismi.
 
 ``type(C).creationCode``
-    Memory byte array that contains the creation bytecode of the contract.
-    This can be used in inline assembly to build custom creation routines,
-    especially by using the ``create2`` opcode.
-    This property can **not** be accessed in the contract itself or any
-    derived contract. It causes the bytecode to be included in the bytecode
-    of the call site and thus circular references like that are not possible.
+    Sözleşmenin oluşturma bayt kodunu içeren bellek bayt dizisi. Bu, özellikle
+    ``create2`` işlem kodu kullanılarak özel oluşturma rutinleri oluşturmak için
+    satır içi derlemede kullanılabilir. Bu özelliğe sözleşmenin kendisinden veya
+    türetilmiş herhangi bir sözleşmeden **erişilemez**. Bytecode'un çağrı bölgesisin
+    bytecode'una dahil edilmesine neden olur ve bu nedenle bunun gibi döngüsel
+    referanslar mümkün değildir.
 
 ``type(C).runtimeCode``
-    Memory byte array that contains the runtime bytecode of the contract.
-    This is the code that is usually deployed by the constructor of ``C``.
-    If ``C`` has a constructor that uses inline assembly, this might be
-    different from the actually deployed bytecode. Also note that libraries
-    modify their runtime bytecode at time of deployment to guard against
-    regular calls.
-    The same restrictions as with ``.creationCode`` also apply for this
-    property.
+    Sözleşmenin çalışma zamanı bayt kodunu içeren bellek bayt dizisi. Bu, genellikle
+    ``C`` yapıcısı tarafından dağıtılan koddur. Eğer ``C``nin inline assembly kullanan
+    bir kurucusu varsa, bu gerçekte dağıtılan bytecode'dan farklı olabilir. Ayrıca,
+    kütüphanelerin normal çağrılara karşı koruma sağlamak için dağıtım sırasında
+    çalışma zamanı bayt kodlarını değiştirdiklerini unutmayın. Bu özellik için de
+    ``.creationCode`` ile aynı kısıtlamalar geçerlidir.
 
-In addition to the properties above, the following properties are available
-for an interface type ``I``:
+Yukarıdaki özelliklere ek olarak, bir arayüz tipi ``I`` için aşağıdaki
+özellikler kullanılabilir:
 
 ``type(I).interfaceId``:
-    A ``bytes4`` value containing the `EIP-165 <https://eips.ethereum.org/EIPS/eip-165>`_
-    interface identifier of the given interface ``I``. This identifier is defined as the ``XOR`` of all
-    function selectors defined within the interface itself - excluding all inherited functions.
+    Verilen ``I`` arayüzünün ``EIP-165 <https://eips.ethereum.org/EIPS/eip-165>`_
+    arayüz tanımlayıcısını içeren bir ``bytes4`` değeri. Bu tanımlayıcı, miras alınan
+    tüm fonksiyonlar hariç olmak üzere, arayüzün kendi içinde tanımlanan tüm fonksiyon
+    seçicilerinin ``XOR`` 'u olarak tanımlanır.
 
-The following properties are available for an integer type ``T``:
+Aşağıdaki özellikler ``T`` tamsayı(integer) türü için kullanılabilir:
 
 ``type(T).min``
-    The smallest value representable by type ``T``.
+    ``T`` tipi tarafından temsil edilebilen en küçük değer.
 
 ``type(T).max``
-    The largest value representable by type ``T``.
+    ``T`` tipi tarafından temsil edilebilen en büyük değer.
