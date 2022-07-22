@@ -15,13 +15,13 @@ içermeyecektir. Bu, 0.x.y sürümü ile derlenen kodun z > y olduğu durumlarda
 
 Sürümlere ek olarak, geliştiricilerin gelecek özellikleri denemelerini ve erken
 geri bildirim sağlamalarını kolaylaştırmak amacıyla **gece geliştirme yapıları**
-(Nightly Development Builds diye de bilinir) sağlıyoruz. Bununla birlikte, gecelik
+(Nightly Development Builds diye de bilinir) sağlıyoruz. Bununla birlikte, nightly
 yapılar genellikle çok kararlı olsalar da, geliştirme kolundaki (branch) en yeni
 kodları içerdiklerini ve her zaman çalışacaklarının garanti edilmediğini unutmayın.
 Tüm emeklerimize karşın, hala gerçek sürümün bir parçası olmayacak belgelenmemiş
 ve/veya arızalı değişiklikler içerebilirler. Bunlar üretim amaçlı kullanım için uygun değillerdir.
 
-Sözleşmelerin sözleşmeler ESM'ye gönderilirken Solidity'nin yayınlanan en son sürümünü kullanmalısınız. Bunun nedeni,
+Sözleşmeleri derleyip yüklerken Solidity'nin yayınlanan en son sürümünü kullanmalısınız. Bunun nedeni,
 kırılma değişikliklerinin yanı sıra yeni özelliklerin tanıtılması ve eski sürümlerdeki hataların düzenli
 olarak düzeltilmesinden kaynaklanmaktadır. Bu `hızlı sürüm değişikliklerini belirtmek için <https://semver.org/#spec-item-4>`_
 şu anda 0.x sürüm numarası kullanıyoruz.
@@ -29,7 +29,7 @@ olarak düzeltilmesinden kaynaklanmaktadır. Bu `hızlı sürüm değişiklikler
 Remix
 =====
 
-*Solidity'i hızlı bir şekilde öğrenmeniz ve küçük akıllı sözleşmeler geliştirmek için Remix'i kullanmanızı tavsiye ediyoruz.*
+*Solidity'i hızlı bir şekilde öğrenmek ve küçük akıllı sözleşmeler geliştirmek için Remix'i kullanmanızı tavsiye ediyoruz.*
 
 `Remix'i online bir şekilde kullanabilirsiniz <https://remix.ethereum.org/>`_, bunun için herhangi bir şey indirip kurmanıza gerek yoktur.
 Remix’i internet bağlantısı olmadan da kullanmak istiyorsanız, https://github.com/ethereum/remix-live/tree/gh-pages adresine gidip
@@ -48,7 +48,7 @@ npm / Node.js
 
 Solidity derleyicisi olan ``solcjs`` programını kurmanın kullanışlı ve taşınabilir bir yolu
 için ``npm`` programını kullanabilirsiniz. `solcjs` programı, bu sayfanın ilerleyen kısımlarında
-açıklanacak olan derleyiciye erişim yollarından daha az özelliğe sahiptir. ``solc``.ref:`commandline-compiler`(komut satırı derleyicisi) belgeleri
+açıklanacak olan derleyiciye erişim yollarından daha az özelliğe sahiptir. ``solc``.ref:`commandline-compiler`(komut satırı derleyicisi) dokümantasyonu
 tam özellikli derleyici olan ``solc`` kullandığınızı varsayar. ``solcjs`` kullanımı için oluşturulan
 belgeler kendi `deposu <https://github.com/ethereum/solc-js>`_ içinde bulunmaktadır.
 
@@ -65,8 +65,8 @@ projelerinde (Remix gibi) kullanılabilmektedir. Talimatlar için lütfen solc-j
 
     Komut satırında çalışabilen kod``solcjs`` olarak adlandırılmıştır (Komut satırına “solcjs" yazarak çalıştırabilirsiniz).
 
-    ``solcjs`` komut satırı seçenekleri ``solc`` ile uyumlu değildir. Ve aynı zamanda çalışmak için ``solc``’un davranışını
-    bekleyen araçlar (örneğin ``geth`` gibi) ``solcjs`` ile çalışmayacaktır.
+    ``solcjs`` komut satırı seçenekleri ``solc`` ile uyumlu değildir. Aynı zamanda çalışmak için ``solc`` komutuna ihtiyaç
+    duyan araçlar (örneğin ``geth`` gibi) ``solcjs`` ile çalışmayacaktır.
 
 Docker
 ======
@@ -76,14 +76,14 @@ Yayınlanan en son sürüm için ``stable`` etiketini ve geliştirme kolundaki (
 için ``nightly`` etiketini kullanabilirsiniz.
 
 Docker imajı derleyicinin yürütülebilir dosyasını çalıştırır, bu sayede tüm değişkenleri derleyiciye iletebilirsiniz.
-Örneğin, aşağıdaki komut ``solc`` imajının kararlı bir sürümünü çeker (zaten sahip değilseniz) ve ``--help`` parametresini ileterek
+Örneğin, aşağıdaki komut ``solc`` imajının (elinizde mevcut değilse) kararlı bir sürümünü çeker ve ``--help`` parametresini ileterek
 yeni bir konteynerde çalıştırır.
 
 .. code-block:: bash
 
     docker run ethereum/solc:stable --help
 
-Etikette, örneğin 0.5.4 sürümü için oluşturulmuş derleme sürümlerini de belirtebilirsiniz.
+Etikette derleme sürümlerini de belirtebilirsiniz, örneğin 0.5.4 sürümü için:
 
 .. code-block:: bash
 
@@ -105,10 +105,10 @@ tarafından yüklenmesi gereken herhangi bir harici dosyaya referans göstermez)
 
     docker run ethereum/solc:stable --standard-json < input.json > output.json
 
-Linux Packages
+Linux Paketleri
 ==============
 
-Solidity'nin ikili sayı sistemi (binary) paketleri `solidity/releases <https://github.com/ethereum/solidity/releases>`_ adresinde mevcuttur.
+Solidity'nin binary paketleri `solidity/releases <https://github.com/ethereum/solidity/releases>`_ adresinde mevcuttur.
 
 Ayrıca Ubuntu için PPA'larımız da bulunmaktadır, aşağıdaki komutları kullanarak en son kararlı sürümü edinebilirsiniz:
 
@@ -128,8 +128,8 @@ Gece sürümü de bu komutlar kullanılarak kurulabilir:
     sudo apt-get install solc
 
 Ayrıca, bazı Linux dağıtımları kendi paketlerini sağlamaktadırlar. Fakat bu paketlerin
-bakımı doğrudan bizim tarafımızdan yapılmamaktadır. Ama bu konuda endişelenmenize gerek
-yoktur, çünkü bu paketler genellikle ilgili paket sorumluları tarafından güncel tutulmaktadır.
+bakımı doğrudan bizim tarafımızdan yapılmamaktadır. Bu paketler genellikle ilgili
+paket sorumluları tarafından güncel tutulmaktadır.
 
 Örnek vermek gerekirse, Arch Linux en son geliştirme sürümü için paketlere sahiptir:
 
@@ -163,7 +163,7 @@ macOS Paketleri
 ==============
 
 Solidity derleyicisini, kaynaktan oluşturulmuş bir sürüm olarak Homebrew aracılığıyla
-dağıtıyoruz. Önceden oluşturulmuş olan “bottles"lar(ikili sayı sistemi(binary) paketleri)
+dağıtıyoruz. Önceden oluşturulmuş olan “bottles"lar(binary paketleri)
 şu anda desteklenmemektedir.
 
 .. code-block:: bash
@@ -197,11 +197,11 @@ Bunu ``brew`` kullanarak yükleyin:
     # eg. Install 0.4.8
     brew install solidity.rb
 
-Statik İkili Sayı Sistemleri
+Statik Binaryler
 ============================
 
 Desteklenen tüm platformlar için geçmiş ve güncel derleyici sürümlerinin statik yapılarını içeren
-bir depoyu `solc-bin`_ adresinde tutuyoruz. Bu adreste aynı zamanda gecelik yapıları da bulabilirsiniz.
+bir depoyu `solc-bin`_ adresinde tutuyoruz. Bu adreste aynı zamanda nightly yapıları da bulabilirsiniz.
 
 Bu depo, son kullanıcıların ikili dosya sistemlerini kullanıma hazır hale getirmeleri için hızlı ve kolay bir yol
 olmasının yanı sıra üçüncü taraf araçlarla da dost olmayı (kolay bir şekilde etkileşimde bulunmayı) amaçlamaktadır:
@@ -210,11 +210,11 @@ olmasının yanı sıra üçüncü taraf araçlarla da dost olmayı (kolay bir �
   sınırlaması veya git kullanma ihtiyacı olmadan HTTPS üzerinden kolayca indirilebilir.
 - İçerik, tarayıcıda çalışan araçlar tarafından doğrudan yüklenebilmesi için doğru `Content-Type`
   başlıklarıyla ve serbest CORS yapılandırmasıyla sunulur.
-- İkili sayı sistemleri için herhangi bir kurulum veya paketten çıkarma işlemi gerekmez (gerekli DLL'lerle
+- Binaryler için herhangi bir kurulum veya paketten çıkarma işlemi gerekmez (gerekli DLL'lerle
   birlikte gelen eski Windows yapıları hariç).
 - Biz yüksek düzeyde geriye dönük uyumluluk için çabalamaktayız. Dosyalar eklendikten sonra, eski konumunda
-  bulunan bir kısayol bağlantısı veya yönlendirme sağlanmadan kaldırılamaz veya taşınamaz. Ayrıca bu dosyalar
-  hiçbir zaman değiştirilemez ve her zaman orijinal  sağlama toplamı ile eşleşmelidirler. Buradaki tek istisna,
+  bulunan bir kısayol bağlantısı veya yönlendirme sağlanmadan kaldırılmaz veya taşınmaz. Ayrıca bu dosyalar
+  hiçbir zaman değiştirilmez ve her zaman orijinal  sağlama toplamı ile eşleşmelidirler. Buradaki tek istisna,
   olduğu gibi bırakıldığında yarardan çok zarar verme potansiyeli olan bozuk veya kullanılamaz dosyalar için geçerlidir.
 - Dosyalar hem HTTP hem de HTTPS protokolleri üzerinden sunulur. Dosya listesini güvenli bir şekilde aldığınız (git, HTTPS,
   IPFS aracılığıyla veya yerel olarak önbelleğe aldığınız) ve indirdikten sonra ikili sayı sistemi dosyalarının hash'lerini
@@ -246,28 +246,28 @@ dosyasında bulunan 0.7.4 sürümü hakkındaki bilgileri aşağıda bulabilirsi
 
 Bu şu anlama gelmektedir:
 
-- İkili sayı sistemini aynı dizinde `solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js <https://github.com/ethereum/solc-bin/blob/gh-pages/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js>`_
+- Binary dosyasını aynı dizinde `solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js <https://github.com/ethereum/solc-bin/blob/gh-pages/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js>`_
   adı altında bulabilirsiniz.  Dosyanın bir kısayol bağlantısı olabileceğini ve dosyayı indirmek için
   eğer git kullanmıyorsanız veya dosya sisteminiz kısayol bağlantılarını desteklemiyorsa bu dosyayı
   kendiniz çözümlemeniz gerekebileceğini unutmayın.
-- İkili sayı sistemi dosyası ayrıca https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js
+- Binary dosyası ayrıca https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js
   adresine de yansıtılır. Bu durumda git kullanımı gerekli değildir ve kısayol bağlantıları
   ya dosyanın bir kopyasını sunarak ya da bir HTTP yönlendirmesi döndürerek dosyanın şeffaf
   bir şekilde çözümlenmesini sağlar.
 - Dosya ayrıca IPFS üzerinde `QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS`_ adresinde de mevcuttur.
 - Dosya, gelecekte Swarm’da bulunan `16c5f09109c793db99fe35f037c6092b061bd39260ee7a677c8a97f18c955ab1`_ adresinde mevcut olabilir.
-- İkili sayı sisteminin bütünlüğünü keccak256 hash değerini ``0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3``
+- Binary'nin bütünlüğünü keccak256 hash değerini ``0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3``
   ile karşılaştırarak da doğrulayabilirsiniz.  Hash, komut satırında `sha3sum`_ tarafından sağlanan
   ``keccak256sum`` yardımcı programı veya JavaScript’te `ethereumjs-util'de bulunan keccak256()`_ fonksiyonu
   kullanılarak da hesaplanabilir.
-- İkili sayı sisteminin bütünlüğünü sha256 hash değerini ``0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2`` ile karşılaştırarak da doğrulayabilirsiniz.
+- Binary'nin bütünlüğünü sha256 hash değerini ``0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2`` ile karşılaştırarak da doğrulayabilirsiniz.
 
 .. warning::
 
    Güçlü bir şekilde geriye dönük uyumluluk gereksinimi sebebiyle depo bazı eski öğeler içerir, ancak
    yeni araçlar yazarken bunları kullanmaktan kaçınmalısınız:
 
-   - En iyi performansı istiyorsanız ``bin/`` yerine ``emscripten-wasm32/`` (``emscripten-asmjs/`` geri
+   - En iyi performansı istiyorsanız ``bin/`` yerine ``emscripten-wasm32/`` son çare (fallback) (``emscripten-asmjs/`` geri
      dönüşü ile) kullanın. Biz 0.6.1 sürümüne kadar sadece asm.js ikili sayı sistemi dosyalarını sağlamıştık.
      0.6.2`den itibaren çok daha iyi performans sağlayan `WebAssembly derlemelerine`_ geçtik. Eski sürümleri
      wasm için yeniden oluşturduk ancak orijinal asm.js dosyaları ``bin/`` içinde kaldı. Çünkü isim çakışmalarını
@@ -278,14 +278,14 @@ Bu şu anlama gelmektedir:
      tüm bilgileri ve daha fazlasını içerir.
    - https://solc-bin.ethereum.org yerine https://binaries.soliditylang.org kullanın. İşleri basit tutmak
      için derleyiciyle ilgili neredeyse her şeyi yeni ``soliditylang.org`` alan adı altına taşıdık ve bu durum
-     ``solc-bin`` için de geçerlidir. Yeni alan adı önerisinde bulunulsa da, eski alan adı hala tam olarak
+     ``solc-bin`` için de geçerlidir. Yeni alan adı önerilse de, eski alan adı hala tam olarak
      desteklenmekte ve aynı konuma işaret etmesi garanti edilmektedir.
 
 .. warning::
 
-    İkili sayı sistemi dosyaları https://ethereum.github.io/solc-bin/ adresinde de mevcuttur, fakat
+    Binary dosyaları https://ethereum.github.io/solc-bin/ adresinde de mevcuttur, fakat
     bu sayfanın güncellenmesi 0.7.2 sürümünün yayınlanmasından hemen sonra durdurulmuştur. Aynı
-    zamanda bu adres herhangi bir platform için yeni sürümler veya gecelik yapılar almayacak ve
+    zamanda bu adres herhangi bir platform için yeni sürümler veya nightly yapılar almayacak ve
     emscripten olmayan yapılar da dahil olmak üzere yeni dizin yapısını sunmayacaktır.
 
     Eğer hala bu adresi kullanıyorsanız, lütfen bunun yerine  https://binaries.soliditylang.org
@@ -354,7 +354,7 @@ Aşağıda Solidity'nin tüm geliştirmeleri için bağımlılıklar verilmişti
 Minimum Derleyici Sürümleri
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Aşağıdaki C++ derleyicileri ve minimum sürümleri Solidity kod tabanını oluşturabilir:
+Aşağıdaki C++ derleyicileri ve minimum sürümleri Solidity kod tabanını derleyebilir:
 
 - `GCC <https://gcc.gnu.org>`_, version 8+
 - `Clang <https://clang.llvm.org/>`_, version 7+
@@ -455,7 +455,7 @@ Komut Satırı Kullanarak Derlemek
 Solidity projesi derlemeyi yapılandırmak için CMake kullanır.
 Tekrarlanan derlemeleri hızlandırmak için `ccache`_ yüklemek isteyebilirsiniz.
 CMake bunu otomatik olarak alacaktır. Solidity'yi derlemek Linux,
-macOS ve diğer Unice'lerde de oldukça benzerdir:
+macOS ve diğer Unix'lerde de oldukça benzerdir:
 
 .. _ccache: https://ccache.dev/
 
@@ -526,17 +526,17 @@ Yapı klasörünün içinde bunları devre dışı bırakabilirsiniz, çünkü v
     # disables both Z3 and CVC4
     cmake .. -DUSE_CVC4=OFF -DUSE_Z3=OFF
 
-Sürüm Dizgisi Detayları
+Sürüm Dizgisi (String) Detayları
 ============================
 
 Solidity sürüm dizgisi dört bölümden oluşur:
 
 - Sürüm numarası
 - Sürüm öncesi etiketi (genellikle develop.YYYY.MM.DD veya night..YYYY.MM.DD olarak ayarlanır)
-- Commit biçiminde ``commit.GITHASH``
+- ``commit.GITHASH`` biçiminde ilgili commit
 - Platform ve derleyici ile ilgili ayrıntıları içeren, rasgele sayıda öğeye sahip platform
 
-Yerel değişiklikler varsa işleme ``.mod`` diye eklenir.
+Yerel değişiklikler varsa commit'in sonuna ``.mod`` diye eklenir.
 
 Tüm değişiklikler, Semver'in gerektirdiği şekilde, Solidity yayınlanma öncesi sürümün Semver yayınlanma
 öncesi sürümüne eşit olduğu ve Solidity'de bir işlem yapıldığında Semver'deki meta verilerinin de değiştiği
@@ -552,12 +552,12 @@ Sürümleme Hakkında Önemli Bilgi
 Bir sürüm yapıldıktan sonra, yama sürüm seviyesi yükseltilir, çünkü sadece yama
 seviyesindeki değişikliklerin takip edildiğini varsayıyoruz. Değişiklikler birleştirildiğinde
 (merge) , SemVer'e ve değişikliğin ciddiyetine göre sürüm yükseltilmelidir. Son olarak, bir
-sürüm her zaman mevcut gecelik derlemenin sürümüyle, ancak ``prerelease`` belirteci olmadan yapılır.
+sürüm her zaman mevcut nightly derlemenin sürümüyle, ancak ``prerelease`` belirteci olmadan yapılır.
 
 Örnek:
 
 1. 0.4.0 sürümü çıktı.
-2. Gecelik yapı şu andan itibaren 0.4.1 sürümüne sahiptir.
+2. Nightly yapı şu andan itibaren 0.4.1 sürümüne sahiptir.
 3. İşleyişi bozmayan değişikliler tanıtıldı --> sürümde değişiklik yok.
 4. İşleyişi bozan değişiklikler tanıtıldı --> version 0.5.0'a yükseltildi.
 5. 0.5.0 sürümü çıktı.
