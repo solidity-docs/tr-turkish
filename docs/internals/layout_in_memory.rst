@@ -2,18 +2,17 @@
 .. index: memory layout
 
 ****************
-Layout in Memory
+Bellekteki Düzen
 ****************
 
-Solidity reserves four 32-byte slots, with specific byte ranges (inclusive of endpoints) being used as follows:
+Solidity, belirli bayt aralıkları (uç noktalar dahil) aşağıdaki şekilde kullanılmak üzere dört adet 32 baytlık yuva ayırır:
 
-- ``0x00`` - ``0x3f`` (64 bytes): scratch space for hashing methods
-- ``0x40`` - ``0x5f`` (32 bytes): currently allocated memory size (aka. free memory pointer)
-- ``0x60`` - ``0x7f`` (32 bytes): zero slot
+- ``0x00`` - ``0x3f`` (64 bytes): Hash metotları için scratch(kazıma) alanı
+- ``0x40`` - ``0x5f`` (32 bytes): Şuan ayrılmış olan bellek boyutu (boş bellek işaretçisi olarak da bilinir)
+- ``0x60`` - ``0x7f`` (32 bytes): sıfır yuva
 
-Scratch space can be used between statements (i.e. within inline assembly). The zero slot
-is used as initial value for dynamic memory arrays and should never be written to
-(the free memory pointer points to ``0x80`` initially).
+Durumlar arasında scratch alanı kullanılabilir (yani assembly içinde). Sıfır yuvası, dinamik bellek dizilerinin başlangıç
+değeri olarak kullanılır ve asla başlangıçta ``0x80``'i gösteren boş bellek işaretçi noktasına yazılmamalıdır.
 
 Solidity always places new objects at the free memory pointer and
 memory is never freed (this might change in the future).
