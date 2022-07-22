@@ -2,6 +2,7 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 ==============================================
 
 - Blockchain = Blok Zinciri
+- Binary = Binary
 - Breaking Changes = İşleyişi Bozan Değişiklikler, Kırılan Değişiklikler veya Önemli Değişikliker 
 - State = Durum
 - Keypair = Anahtar Çifti
