@@ -34,17 +34,18 @@ dizinin ilk yuvasında depolanır ve ardından dizinin elemanları gelir.
   geçici olmayan bir işaretçi kullanmak beklenmeyen sonuçlara neden olabilir.
 
 
-Differences to Layout in Storage
+Depolama Düzeni İle Farklılıkları
 ================================
 
-As described above the layout in memory is different from the layout in
-:ref:`storage<storage-inplace-encoding>`. Below there are some examples.
+Yukarıda açıklandığı üzere bellekteki düzen ile depolama düzeni
+(:ref:`storage<storage-inplace-encoding>`) farklıdır.
+Aşağıda bazı örnekler var.
 
-Example for Difference in Arrays
+Dizilerdeki Farklılıklarına Bir Örnek
 --------------------------------
 
-The following array occupies 32 bytes (1 slot) in storage, but 128
-bytes (4 items with 32 bytes each) in memory.
+Aşağıdaki dizi, depolamada 32 bayt (1 yuva) yer kaplar, ancak bellekte 128
+bayt (her biri 32 bayt olan 4 öğe) yer kaplar.
 
 .. code-block:: solidity
 
@@ -52,12 +53,11 @@ bytes (4 items with 32 bytes each) in memory.
 
 
 
-Example for Difference in Struct Layout
+Yapı(Struct) Düzeninde Farklılıklarına Bir Örnek
 ---------------------------------------
 
-The following struct occupies 96 bytes (3 slots of 32 bytes) in storage,
-but 128 bytes (4 items with 32 bytes each) in memory.
-
+Aşağıdaki struct, depolamada 96 bayt (32 baytlık 3 yuva) kaplar,
+ama bellekte 128 bayt (her biri 32 bayt olan 4 öğe) yer kaplar.
 
 .. code-block:: solidity
 
