@@ -17,7 +17,7 @@ değeri olarak kullanılır ve asla başlangıçta ``0x80``'i gösteren boş bel
 Solidity her zaman yeni nesneleri boş bellek işaretçisine yerleştirir ve
 hafıza asla serbest bırakılmaz (Bu özellik gelecekte değişebilir).
 
-Solidity'deki bellek dizilerindeki öğeler her zaman 32 baytın katlarını kaplar (Bu 
+Solidity'de bulunan bellek dizilerindeki öğeler her zaman 32 baytın katlarını kaplar (Bu 
 ``bytes1[]`` için bile doğrudur, ama ``bytes`` ve ``string`` için geçerli değildir).
 Çok boyutlu bellek dizileri, bellek dizilerinin işaretçileridir. Bir dinamik dizinin uzunluğu
 dizinin ilk yuvasında depolanır ve ardından dizinin elemanları gelir.
