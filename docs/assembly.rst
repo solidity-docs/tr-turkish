@@ -12,7 +12,7 @@ Bu size özellikle dili kütüphaneler yazarak geliştiriyorsanız daha detaylı
 Inline assembly için kullanılan Solidity diline :ref:`Yul <yul>` deniyor ve dosyalarını kendi bölümünde bulabilirsiniz.
 BU bölüm sadece inline assembly kodunun etrafındaki Solidity kodları ile nasıl bağlandığını anlatacak.
 
-.. Uyarı::
+.. warning::
     Inline assembly Ethereum Sanal Makinesi'ne düşük seviyede erişişmin bir yoludur.
     Bu, Solidity'nin birçok güvenlik özelliklerini ve kontrollerini yok sayar.
     Yani inline assembly'i sadece gereken yerlerde ve nasıl kullanacağınızdan eminseniz kullanmalısınız.
