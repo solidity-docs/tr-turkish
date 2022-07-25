@@ -108,7 +108,7 @@ Inline assembly optimizer verimli kodlar üretemediği zamanlarda da yararlıdı
     }
 
 
-.. index:: bir fonksiyon seçici
+.. index:: selector; of a function
 
 Dış değişkenlere, fonksiyonlara ve kütüphanelere erişim
 -------------------------------------------------------
