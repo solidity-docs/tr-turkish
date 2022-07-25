@@ -220,7 +220,7 @@ gerekliyse (hafızaya yazılmadan hemen önce ya da herhangi bir karşılaştır
 Burası şu yüzden önemlidir: Eğer inline assembly içerisinde böyle bir değişkene erişmek istiyorsanız önce higher-order
 bitleri kendiniz temizlemeniz gerekebilir.
 
-.. _assembly-bellek-yönetimi:
+.. _assembly-memory-management:
 
 Hafıza Yönetimi
 ==================
