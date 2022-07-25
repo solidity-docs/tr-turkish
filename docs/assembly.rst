@@ -257,7 +257,7 @@ Hafıza Güvenliği
 ================
 
 Inline assembly kullanmadan; compiler, iyi tanımlanmış bir durumda kalmak için her zaman belleğe güvenir. Bu özellikle 
-:ref:`the new code generation pipeline via Yul IR <ir-breaking-changes>` ile ilgilidir. Bu kod parçası yerel değişkenleri 
+:ref:`Yul IR üzerinden yeni kod oluşturma hattı Yul IR <ir-breaking-changes>` ile ilgilidir. Bu kod parçası yerel değişkenleri 
 stack üzerinden belleğe atarak stack-too-deep hatasından kaçınmayı sağlar ve eğer bazı kesin varsayımlara uyuyorsa ekstra 
 bellek optimizasyonları uygulayabilir.
 
