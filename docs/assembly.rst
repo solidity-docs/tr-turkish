@@ -277,7 +277,7 @@ Solidity'nin bellek modeline uyduğunu belirtebilirsiniz:
     }
 
 Bellek açısından güvenli bir assembly bloğu sadece aşağıdaki bellek bölümlerine erişebilir:
-- Siz tarafından yukarıda anlatıldığı gibi ``allocate`` benzeri bir mekanizma kullanarak atanmış bellek.
+- Sizin tarafınızdan yukarıda anlatıldığı gibi ``allocate`` benzeri bir mekanizma kullanarak atanmış bir bellek.
 - Solidity tarafından atanmış bellek, yani sizin referans verdiğiniz bellek array'inin sınırları içerisinde kalan alan.
 - Yukarıda bahsedilen 0 ile 64 bellek offset'leri arasında kalan geçici alan.
 - Assembly bloğunun başındaki boş bellek pointer'ının değerinden *sonra* konumlanmış geçici bellek, yani boş bellek pointer'ının güncellememiş hali için ayrılan bellek alanı. 
