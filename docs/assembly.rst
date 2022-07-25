@@ -183,7 +183,7 @@ Yerel Solidity değişkenleri görevler için hazırdır. Örneğin:
         }
     }
 
-.. Uyarı::
+.. warning::
     Eğer ``uint64``, ``address`` veya ``bytes16`` gibi 256 bitten daha az 
     yer kaplayan bir değişkene erişmeye çalışıyorsanız bu tipin parçası olmayan 
     bitler hakkında bir varsayımda bulunmayın. Özellikle de o bitleri sıfır kabul etmeyin.
