@@ -110,7 +110,7 @@ Inline assembly optimizer verimli kodlar üretemediği zamanlarda da yararlıdı
 
 .. index:: selector; of a function
 
-Dış değişkenlere, fonksiyonlara ve kütüphanelere erişim
+Dış(External) değişkenlere, fonksiyonlara ve kütüphanelere erişim
 -------------------------------------------------------
 
 Solidity değişkenlerine ve diğer tanımlayıcılara isimlerini kullanarak erişebilirsiniz.
