@@ -229,7 +229,7 @@ Solidity Belleği şu şekilde yönetir. Hafızada ``0x40`` konumunda bir "boş 
 Eğer belleğe bir şey atamak isterseniz bu pointer'ın işaret ettiği yerden başlayıp güncelleyin.
 Bu hafızanın daha önce kullanılmadığına dair herhangi bir kanıt bulunmadığı için tamamen sıfır olduğunu da varsayamazsınız.
 Belleği boşaltacak ya da rahatlatacak herhangi bir hazır kurulu mekanizma yoktur.
-Aşağıda Belleği yukarıda anlatıldığı şekilde kullanabileceğiniz bir assembly kod parçası bulunuyor:
+Aşağıda belleği yukarıda anlatıldığı şekilde kullanabileceğiniz bir assembly kod parçası bulunuyor:
 
 .. code-block:: yul
 
