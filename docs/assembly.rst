@@ -210,7 +210,7 @@ değişken erişimi için stack boyutunu saymak ve assembly içerisindeki deği�
 Solidity kuralları
 ---------------------
 
-.. _assembly-typed-değişkenler:
+.. _assembly-typed-variables:
 
 Typed Değişkenlerin Değerleri
 =============================
