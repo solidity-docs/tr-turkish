@@ -205,7 +205,7 @@ Fonksiyon çağrıları, döngüler, if'ler ve switch'ler basit tekrar yazım ku
 ve bundan sonra assembler'ın tek yaptığı iş blok sonuna erişildiğinde functional-style opcode'ları tekar ayarlamak, 
 değişken erişimi için stack boyutunu saymak ve assembly içerisindeki değişkenleri için stack slotlarını kaldırmaktır. 
 
-.. _Solidity-kuralları:
+.. _conventions-in-solidity:
 
 Solidity kuralları
 ---------------------
