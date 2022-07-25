@@ -151,7 +151,7 @@ Seçici dört adet right-aligned bitten oluşur.
 
 Dinamik calldata array'leri üzerinde, ``x.offset`` ve ``x.length`` 
 kullanarak -bit halinde- calldata offset'ine ve uzunluğuna erişebilirsiniz.
-Her iki ifade aynı zamanda atanabilir de ama statik bir senaryo için dönecekleri sonucun 
+Her iki ifade aynı zamanda atanabilir de ama statik bir durum için dönecekleri sonucun 
 ``calldatasize()`` sınırları içerisinde olacağının bir garantisi yoktur.
 
 Yerel depolama değişkenleri ya da durum değişkenleri için tek bir Yul tanımlayıcısı yeterli değildir.
