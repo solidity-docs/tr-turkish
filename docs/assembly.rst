@@ -247,7 +247,7 @@ Solidity'deki hafıza array'lerinin tamamı 32 bitin katları olacak şekilde ye
 fakat ``bytes`` ve ``string`` için geçerli değildir.) Çok boyutlu hafıza array'leri ise başka hafıza array'lerine pointer'lardır.
 Dinamik array'in uzunluğu array'in ilk slotunda saklanır ve diğer slotlara array'in elemanları gelir.
 
-.. uyarı::
+.. warning::
     Statik boyutlandırılmış hafıza array'leri herhangi bir uzunluk alanına sahip değildir fakat bu sonradan dinamik ve statik
     boyutlandırılmış array'ler arasında daha kolay çevrimi sağlamak için eklenmiş olabilir. 
     Yani bu kurala dayanarak ilerlememelisiniz.
