@@ -156,7 +156,7 @@ Her iki ifade aynı zamanda atanabilir de ama statik bir durum için dönecekler
 
 Yerel depolama değişkenleri ya da durum değişkenleri için tek bir Yul tanımlayıcısı yeterli değildir.
 Çünkü bu değişkenler her zaman tam bir depolama alanı kaplamazlar.
-Bu sebeple onların 'adreseleri' bir slottan ve o slot içerisindeki bir byte-offset'ten oluşur.
+Bu sebeple onların 'adresleri' bir slottan ve o slot içerisindeki bir byte-offset'ten oluşur.
 ``x`` değişkeni tarafından işaret edilen slotu çağırmak için ``x.slot`` ,
 byte-offset'i çağırmak için ise ``x.offset`` kullanılır. Sadece ``x`` kullanmak ise hata verecektir.
 
