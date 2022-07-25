@@ -30,7 +30,7 @@ bloğunda tanımlanmış olan bir Yul fonksiyonunu çağırmak ya da bir Yul de�
 
 Aşağıdaki örnek başka bir kontrat üzerindeki koda erişimi ve bir ``bytes`` değişkenine atımını sağlayan kütüphane kodunu verir.
 Bu "düz Solidity" ile de ``<address>.code`` kullanarak mümkündür ama buradaki amaç tekrar kullanılabilir assembly kütüphanelerinin
-bir compiler değişimi olmadan Solidity dilini geliştirebildiğini göstermektir.
+bir derleyici(compiler) değişimi olmadan Solidity dilini geliştirebildiğini göstermektir.
 
 .. code-block:: solidity
 
@@ -116,19 +116,19 @@ Dış(External) değişkenlere, fonksiyonlara ve kütüphanelere erişim
 Solidity değişkenlerine ve diğer tanımlayıcılara isimlerini kullanarak erişebilirsiniz.
 
 Bir değer tipinin yerel değişkenleri inline assembly içinde kullanılabilir durumdadır.
-Bu yerel değişkenler okunabilir de yazılabilir de.
+Bu yerel değişkenler okunabilir de atanabilir de.
 
 Belleği kasteden yerel değişkenler değerin kendisini değil, değerin bellekteki adresini işaret eder.
 Bu değişkenler aynı zamanda değiştirilebilir de ancak bu sadece bir pointer değişimi olur, veri değişimi olmaz.
 Bu sebeple Solidity'nin hafıza yönetimini yapmak sizin yükümlülüğünüzdedir.
-Bkz :ref:`Conventions in Solidity <conventions-in-solidity>`
+Bkz :ref:`Solidity'de Konvansiyonlar <conventions-in-solidity>`
 
 Benzer şekilde, statik boyutlandırılmış calldata array'leri ya da struct'ları gösteren 
 yerel değişkenler de değerin adresini işaret eder, değerini değil.
 Bu değişken yeni bir offset'e de atanabilir fakat değişkenin ``calldatasize()`` çalıştırılması 
 dışında bir yeri işaret edebileceğinin hiçbir garantisi yoktur.
 
-Dış fonksiyon pointer'ları için adres ve fonksiyon seçiyiye ``x.address`` ve ``x.selector`` ile erişilebilir.
+Dış(External) fonksiyon pointer'ları için adres ve fonksiyon seçiyiye ``x.address`` ve ``x.selector`` ile erişilebilir.
 Seçici dört adet right-aligned bitten oluşur.
 İki değer de atanbilir. Örneğin: 
 
@@ -160,9 +160,9 @@ Bu sebeple onların 'adresleri' bir slottan ve o slot içerisindeki bir byte-off
 ``x`` değişkeni tarafından işaret edilen slotu çağırmak için ``x.slot`` ,
 byte-offset'i çağırmak için ise ``x.offset`` kullanılır. Sadece ``x`` kullanmak ise hata verecektir.
 
-Bir yerel depolama değişkeninin pointer'ının ``.slot`` kısmı değiştirilebilir.
+Bir yerel depolama değişkeninin pointer'ının ``.slot`` kısmına atama yapılabilir.
 Bu değişkenler(struct, array, mapping) için ``.offset`` kısmı ise her zaman sıfırdır.
-Fakat bir durum değişkeninin ``.slot`` ve ``.offset`` kısmını değiştirmek mümkün değildir.
+Fakat bir durum değişkeninin ``.slot`` ve ``.offset`` kısmına atama yapmak ise mümkün değildir.
 
 Yerel Solidity değişkenleri görevler için hazırdır. Örneğin:
 
@@ -256,7 +256,7 @@ Dinamik array'in uzunluğu array'in ilk slotunda saklanır ve diğer slotlara ar
 Hafıza Güvenliği
 ================
 
-Inline assembly kullanmadan; compiler, iyi tanımlanmış bir durumda kalmak için her zaman belleğe güvenir. Bu özellikle 
+Inline assembly kullanmadan; derleyici(compiler), iyi tanımlanmış bir durumda kalmak için her zaman belleğe güvenir. Bu özellikle 
 :ref:`Yul IR üzerinden yeni kod oluşturma hattı Yul IR <ir-breaking-changes>` ile ilgilidir. Bu kod parçası yerel değişkenleri 
 stack üzerinden belleğe atarak stack-too-deep hatasından kaçınmayı sağlar ve eğer bazı kesin varsayımlara uyuyorsa ekstra 
 bellek optimizasyonları uygulayabilir.
@@ -264,7 +264,7 @@ bellek optimizasyonları uygulayabilir.
 
 Biz her ne kadar Solidity'nin kendi bellek modeline saygı gösterilmesini önersek de 
 Inline assembly belleği uyumsuz bir biçimde kullanmanızı sağlar. Bu nedenle stack değişkenlerini belleğe taşımak
-ve diğer bellek optimizasyonları, bir bellek işlemi içeren ya da Solidity değişkenlerini belleğe yazan 
+ve diğer bellek optimizasyonları, bir bellek işlemi içeren ya da Solidity değişkenlerini belleğe atayan 
 tüm inline assembly bloklarında varsayılan olarak devredışı haldedir.
 
 Fakat bir assembly bloğuna aşağıdaki şekilde özel olarak ek açıklamalar ekleyerek 
@@ -350,5 +350,5 @@ bir assembly bloğunun bellek için güvenli olduğunu özel bir komut ile belir
         ...
     }
 
-Unutmayın ki yorum satırları ile belirtmeyi gelecek bir sürümde kaldıracağız yani eğer geçmiş compiler sürümleri ile uyum konusunda 
+Unutmayın ki yorum satırları ile belirtmeyi gelecek bir sürümde kaldıracağız yani eğer geçmiş derleyici(compiler) sürümleri ile uyum konusunda 
 yeterli bilgiye sahip değilseniz dialect string kullanmayı tercih edin.
