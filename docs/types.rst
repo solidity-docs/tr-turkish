@@ -3,20 +3,17 @@
 .. _types:
 
 *****
-Types
+Türler
 *****
 
-Solidity is a statically typed language, which means that the type of each
-variable (state and local) needs to be specified.
-Solidity provides several elementary types which can be combined to form complex types.
+Solidity statik olarak yazılmış bir dildir, bu, her bir değişkenin türünün (durum ve yerel) belirtilmesi gerektiği anlamına gelir.
+Solidity, karmaşık türler oluşturmak için bir araya getirilen birkaç temel tür sağlar. 
 
-In addition, types can interact with each other in expressions containing
-operators. For a quick reference of the various operators, see :ref:`order`.
+Ayrıca, operatör içeren ifadelerde türler birbirleriyle etkileşime girebilirler.
+Çeşitli operatörlere göz atmak için, :ref:`order`.
 
-The concept of "undefined" or "null" values does not exist in Solidity, but newly
-declared variables always have a :ref:`default value<default-value>` dependent
-on its type. To handle any unexpected values, you should use the :ref:`revert function<assert-and-require>` to revert the whole transaction, or return a
-tuple with a second ``bool`` value denoting success.
+Solidity'de "tanımsız" veya "boş" değerler kavramı yoktur, yeni bildirilen değişkenlerin türüne bağlı olarak her zaman :ref:`varsayılan bir değeri<default-value>` vardır.
+Beklenmeyen değerler ile uğraşırken, tüm işlemi geri almak için bir :ref:`geri alma fonksiyonu<assert-and-require>` kullanmalı ya da sonucu işaret eden ikinci bir ``bool`` değerine sahip bir veri demeti döndürmelisiniz.
 
 .. include:: types/value-types.rst
 
