@@ -8,7 +8,7 @@ Bir değer 256 bitten daha kısa olduğunda, bazı durumlarda kalan bitlerin tem
 gerekir. Solidity derleyicisi, kalan bitlerdeki potansiyel çöplerden olumsuz etkilenebilecek
 herhangi bir işlemden önce bu tür kalan bitleri temizlemek üzere tasarlanmıştır. Örnek vermek
 gerekirse, belleğe bir değer yazmadan öncede kalan bitlerin temizlenmesi gerekir çünkü bellek
-içeriği hash hesaplamak için kullanılabilir veya bir mesaj çağrısının verisi olarak gönderilebilir.
+içeriği hash değerlerinin hesaplanması için kullanılabilir veya bir mesaj çağrısının verisi olarak gönderilebilir.
 Benzer şekilde, bir değeri depolamadan öncede aynı durum geçerlidir çünkü aksi takdirde bozuk değer
 gözlemlenebilir.
 
@@ -26,7 +26,8 @@ Farklı türlerin geçersiz değerleri temizlemek için farklı kuralları vard�
 
 +---------------+---------------+-------------------+
 | Tür           | Geçerli       | Geçersiz          |
-|               | Değerler      | Değer Anlamları   |
+|               | Değerler      | Değerlerin        |
+|               |               | Anlamları         |
 +===============+===============+===================+
 |n üyeli bir    |0'dan n - 1'e  |istisna            |
 |enum           |kadar          |                   |
@@ -37,11 +38,9 @@ Farklı türlerin geçersiz değerleri temizlemek için farklı kuralları vard�
 |sayılar        |uzatılmış      |kapsar; gelecekte  |
 |               |kelime         |istisnalar         |
 |               |               |atılacaktır        |
-|               |               |                   |
-|               |               |                   |
 +---------------+---------------+-------------------+
-|işaretsiz  tam |yüksek bitler  |şu anda sessizce   |
-|sayılar        |sıfırlandı     |kapsar; gelecekte  |
-|               |               |istisnalar         |
+|işaretsiz  tam |daha yüksek bit|şu anda sessizce   |
+|sayılar        |değerleri      |kapsar; gelecekte  |
+|               |sıfırlandı     |istisnalar         |
 |               |               |atılacaktır        |
 +---------------+---------------+-------------------+
