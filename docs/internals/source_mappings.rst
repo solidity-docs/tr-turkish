@@ -12,7 +12,7 @@ hata ayıklama araçlarına kadar çeşitli amaçlar için kullanılabilir.
 Ayrıca derleyici, bytecode'dan komutu oluşturan kaynak koddaki aralığa kadar bir
 mapping de oluşturabilir. Bu durum bytecode seviyesinde çalışan statik analiz araçları
 ve bir hata ayıklayıcı için kaynak koddaki mevcut konumu görüntülemek veya breakpoint
-işleme açısından önemlidir. Bu mapping aynı zamanda atlama tipi ve modifier derinliği
+işleme açısından önemlidir. Bu mapping aynı zamanda atlama(jump) tipi ve modifier derinliği
 gibi diğer bilgileri de içerir (aşağıya bakınız).
 
 Her iki tür kaynak mapping'i de kaynak dosyalara başvurmak için tamsayı tanımlayıcıları
@@ -40,13 +40,13 @@ Bayt kodu için kaynak mapping'deki kodlama daha karmaşıktır: Bu, ``;`` ile a
 ``s:l:f:j:m`` listesidir. Bu öğelerin her biri bir komuta karşılık gelir, yani bayt
 ofsetini kullanamazsınız, ancak komut ofsetini kullanmanız gerekir (push komutları
 tek bir bayttan daha uzundur). ``s``, ``l`` ve ``f`` alanları yukarıdaki gibidir.
-``j`` alanı ``i``, ``o`` ya da ``-`` olabilir, bu da bir atlama talimatının bir
+``j`` alanı ``i``, ``o`` ya da ``-`` olabilir, bu da bir atlama(jump) talimatının bir
 fonksiyona mı girdiğini, bir fonksiyondan mı döndüğünü ya da örneğin bir döngünün
-parçası olarak normal bir atlama mı olduğunu gösterir. Son kısım olan ``m``, "
-modifier derinliğini" ifade eden bir tamsayıdır. Bu derinlik, yer tutucu ifade (``_``)
-bir değiştiriciye her girildiğinde artırılır ve tekrar bırakıldığında azaltılır.
+parçası olarak normal bir atlama(jump) mı olduğunu gösterir. Son kısım olan ``m``, "
+modifier derinliğini" ifade eden bir tamsayıdır. Bu derinlik, placeholder(yer tutucu) ifade (``_``)
+bir modifier'a her girildiğinde artırılır ve tekrar bırakıldığında azaltılır.
 Bu, hata ayıklayıcıların aynı modifier'ın iki kez kullanılması veya tek bir modifier'da
-birden fazla yer tutucu ifadenin kullanılması gibi zor durumları takip etmesini sağlar.
+birden fazla placeholder(yer tutucu) ifadenin kullanılması gibi zor durumları takip etmesini sağlar.
 
 Özellikle bytecode için bu kaynak mapping'lerini sıkıştırmak amacıyla aşağıdaki kurallar uygulanır:
 
