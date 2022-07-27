@@ -523,7 +523,7 @@ Devre Dışı Bırakma ve Kendini İmha
 Blok zincirinden bir kodu kaldırmanın tek yolu, söz konusu adresteki bir sözleşmenin
 selfdestruct işlemini gerçekleştirmesidir. Bu adreste depolanan kalan Ether belirlenen
 bir hedefe gönderilir ve ardından depolama ve kod durumdan kaldırılır. Teoride sözleşmeyi
-kaldırmak iyi bir fikir gibi görünse de, birisi kaldırılan sözleşmelere Ether gönderirse,
+kaldırmak iyi bir fikir gibi görünse de, biri kaldırılan sözleşmelere Ether gönderirse,
 Ether sonsuza dek kaybolacağından potansiyel olarak tehlikelidir.
 
 .. warning::

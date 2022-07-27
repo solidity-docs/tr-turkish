@@ -3,29 +3,28 @@
 .. _constants:
 
 **************************************
-Constant and Immutable State Variables
+Constant ve Immutable State Değişkenleri
 **************************************
 
-State variables can be declared as ``constant`` or ``immutable``.
-In both cases, the variables cannot be modified after the contract has been constructed.
-For ``constant`` variables, the value has to be fixed at compile-time, while
-for ``immutable``, it can still be assigned at construction time.
+State değişkenleri ``constant`` veya ``immutable`` olarak tanımlanabilir.
+Her iki durumda da contract kurulduktan sonra (constructor çalıştıktan sonra) bu tür değişkenler değiştirilemez.
+``constant`` compile-time'da (kodun içerisinde) tanımlı olması gerekirken,
+``immutable`` değişkenler constructor içerisinde de tanımlanabilir.
 
-It is also possible to define ``constant`` variables at the file level.
+``constant`` değişkenleri contractların dışarısında (dosya seviyesinde) da tanımlayabiliriz.
 
-The compiler does not reserve a storage slot for these variables, and every occurrence is
-replaced by the respective value.
+Derleyici bu tür değişkenler için storage'de slot ayırmaz. Çünkü bu değişkenlerin kullanıldığı
+her yer, belirlenmiş değerle değiştirilir.
 
-Compared to regular state variables, the gas costs of constant and immutable variables
-are much lower. For a constant variable, the expression assigned to it is copied to
-all the places where it is accessed and also re-evaluated each time. This allows for local
-optimizations. Immutable variables are evaluated once at construction time and their value
-is copied to all the places in the code where they are accessed. For these values,
-32 bytes are reserved, even if they would fit in fewer bytes. Due to this, constant values
-can sometimes be cheaper than immutable values.
+Normal state değişkenleriyle karşılaştırıldığında, constant ve immutable değişkenler çok daha az gaz harcar.
+Constant değişkenlerde, kullanıldıkları her yere karşılığında verilen değer kopyalanıp yapıştırılır.
+Bu, lokal optimizasyon olarak kullanılır. Immutable değişkenlerde ise, contractın kurulum anında (construction time)
+karşılık gelen değeri belirlenir ve kullanıldığı her yere kopyalanıp yapıştırılır. Bu değerler
+32 byte'dan daha az yer kaplasa bile 32 byte'lık bir alanda muhafaza edilir. Bu sebepten ötürü, bazı durumlarda
+constant değerler kullanmak, immutable değerleri kullanmaktan daha ucuz olabilir.
 
-Not all types for constants and immutables are implemented at this time. The only supported types are
-:ref:`strings <strings>` (only for constants) and :ref:`value types <value-types>`.
+Şu anda constant ve immutable bütün tipler için uygulanamamaktadır. Desteklenen tipler
+:ref:`strings <strings>` (sadece constant) ve :ref:`değer tipleridir <value-types>`.
 
 .. code-block:: solidity
 
@@ -43,7 +42,7 @@ Not all types for constants and immutables are implemented at this time. The onl
 
         constructor(uint decimals_, address ref) {
             decimals = decimals_;
-            // Assignments to immutables can even access the environment.
+            // Immutable tanımlamalarında blok zincirinden veri de okunabilir.
             maxBalance = ref.balance;
         }
 
@@ -56,43 +55,40 @@ Not all types for constants and immutables are implemented at this time. The onl
 Constant
 ========
 
-For ``constant`` variables, the value has to be a constant at compile time and it has to be
-assigned where the variable is declared. Any expression
-that accesses storage, blockchain data (e.g. ``block.timestamp``, ``address(this).balance`` or
-``block.number``) or
-execution data (``msg.value`` or ``gasleft()``) or makes calls to external contracts is disallowed. Expressions
-that might have a side-effect on memory allocation are allowed, but those that
-might have a side-effect on other memory objects are not. The built-in functions
-``keccak256``, ``sha256``, ``ripemd160``, ``ecrecover``, ``addmod`` and ``mulmod``
-are allowed (even though, with the exception of ``keccak256``, they do call external contracts).
+``constant`` değişkenlerin değerleri derleme anında (compile-time) sabit olmalı ve değişkenin
+tanımlandığı konumda belirtilmelidir. Herhangi bir storage'e erişim, blok zinciri verisi
+(örneğin, ``block.timestamp``, ``address(this).balance`` veya
+``block.number``) veya
+çalıştırma verisi (``msg.value`` veya ``gasleft()``) veya başka contractlara yapılan external
+çağrılara izin verilmez. Kullanılacak memory'i belirleme konusunda yan etki oluşturacak tanımalamalara
+izin verilirken, başka memory objeleri üzerinde yan etki oluşturan tanımlamalara izin verilmez.
+Built-in fonksiyonlarından ``keccak256``, ``sha256``, ``ripemd160``, ``ecrecover``, ``addmod`` ve ``mulmod``
+fonksiyonlarının kullanımına izin verilmiştir (``keccak256`` başka contractları çağırsa da, bir istisnadır).
 
-The reason behind allowing side-effects on the memory allocator is that it
-should be possible to construct complex objects like e.g. lookup-tables.
-This feature is not yet fully usable.
+Memory belirleyicisi üzerinde yan etkiye izin verilmesinin sebebi, karmaşık yapılarında kurulabilinmesi
+gereksinimidir (örneğin, lookup-table). Bu özellikler henüz tamamen kullanılabilir değildir.
 
 Immutable
 =========
 
-Variables declared as ``immutable`` are a bit less restricted than those
-declared as ``constant``: Immutable variables can be assigned an arbitrary
-value in the constructor of the contract or at the point of their declaration.
-They can be assigned only once and can, from that point on, be read even during
-construction time.
+``immutable`` olarak tanımlanan değişkenler ``constant`` olarak tanımlananlara göre
+biraz daha az kısıtlanmıştır: Immutable değişkenler contractın constructor fonksiyonunda
+keyfi bir değere atanabilir. Sadece bir kere tanımlanabilirler ve tanımlandıktan sonra
+istenilen anda sahip oldukları değer okunabilir.
 
-The contract creation code generated by the compiler will modify the
-contract's runtime code before it is returned by replacing all references
-to immutables with the values assigned to them. This is important if
-you are comparing the
-runtime code generated by the compiler with the one actually stored in the
-blockchain.
+Derleyici tarafından oluşturulmuş contractın creation code'u, runtime code'u
+return etmeden önce bütün immutable referanslarını tanımlanan değerle değiştirir.
+Bu yüzden immutable değişken kullandığınız bir contract için,
+compiler'ın oluşturduğu runtime code ile blok zincirinde saklanan runtime code'u
+karşılaştırdığınızda farklı sonuçlar alırsınız.
 
 .. note::
-  Immutables that are assigned at their declaration are only considered
-  initialized once the constructor of the contract is executing.
-  This means you cannot initialize immutables inline with a value
-  that depends on another immutable. You can do this, however,
-  inside the constructor of the contract.
+  Tanımlandıkları satırda direkt olarak değerleri atanan immutable değişkenler
+  contractın constructor fonksiyonu çalıştıktan sonra initialize edilmiş olarak
+  düşünülür. Bu demek oluyor ki başka bir immutable değişkenin değerini kullanan
+  bir immutable değişkenin değerini direkt olarak atayamazsınız. Bunu ancak constructor
+  içerisinde yapabilirsiniz.
 
-  This is a safeguard against different interpretations about the order
-  of state variable initialization and constructor execution, especially
-  with regards to inheritance.
+  Bu state değişkenlerini ilk defa tanımlama sırasının farklı bir şekilde yorumlanmasını
+  engellemek amacıyla konulmuş bir önleyicidir, özellikle de türetme (inheritance) konusunda.
+

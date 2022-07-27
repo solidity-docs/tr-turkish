@@ -3,17 +3,16 @@
 .. _modifiers:
 
 ******************
-Function Modifiers
+Fonksiyon Modifier'ları
 ******************
 
-Modifiers can be used to change the behaviour of functions in a declarative way.
-For example,
-you can use a modifier to automatically check a condition prior to executing the function.
+Modifier'lar fonksiyonların tanımlandığı şekillerinden farklı davranmalarını sağlamak için kullanılabilir.
+Örneğin,
+bir fonksiyonun çalıştırılmasından hemen önce bir koşulun kontrolünü gerçekleştirebilirsiniz.
 
-Modifiers are
-inheritable properties of contracts and may be overridden by derived contracts, but only
-if they are marked ``virtual``. For details, please see
-:ref:`Modifier Overriding <modifier-overriding>`.
+Modifier'lar contractların türetilebilen özelliklerindendir. Bu yüzden türetilmiş bir contract
+bir modifier'ı eğer ``virtual`` olarak belirtilmişse onu override edebilir. Daha fazla bilgi için
+:ref:`Modifier Overriding <modifier-overriding>` kısmına bakabilirsiniz.
 
 .. code-block:: solidity
 
@@ -24,13 +23,14 @@ if they are marked ``virtual``. For details, please see
         constructor() { owner = payable(msg.sender); }
         address payable owner;
 
-        // This contract only defines a modifier but does not use
-        // it: it will be used in derived contracts.
-        // The function body is inserted where the special symbol
-        // `_;` in the definition of a modifier appears.
-        // This means that if the owner calls this function, the
-        // function is executed and otherwise, an exception is
-        // thrown.
+        // Bu contract sadece bir tane modifier tanımlar ve onu da kullanmıyor.
+        // Tanımlanan modifier türetilen fonksiyonda kullanılacaktır.
+        // Fonksiyon içerisindeki kodların kullanılacağı yer
+        // `_;` şeklinde modifier içerisinde belirtilir.
+        // Yani `_;` gördüğünüz yerde o modifier'ın kullanıldığı fonksiyonun
+        // içerisindeki kodlar yazılmış gibi düşünebilirsiniz.
+        // Bu modifier eklendiği fonksiyonu sadece contractı oluşturan
+        // kişinin çağırmasını sağlar. Diğer erişimlerde ise işlemi revert eder.
         modifier onlyOwner {
             require(
                 msg.sender == owner,
@@ -41,17 +41,16 @@ if they are marked ``virtual``. For details, please see
     }
 
     contract destructible is owned {
-        // This contract inherits the `onlyOwner` modifier from
-        // `owned` and applies it to the `destroy` function, which
-        // causes that calls to `destroy` only have an effect if
-        // they are made by the stored owner.
+        // Bu contract türetildiği `owned` fonksiyonundaki
+        // `onlyOwner` modifier'ını `destroy` fonksiyonuna ekler.
+        // Böylece `destroy` fonksiyonunu sadece `owner` çağırabilir.
         function destroy() public onlyOwner {
             selfdestruct(owner);
         }
     }
 
     contract priced {
-        // Modifiers can receive arguments:
+        // Modifier'lar parametre alabilir:
         modifier costs(uint price) {
             if (msg.value >= price) {
                 _;
@@ -65,9 +64,9 @@ if they are marked ``virtual``. For details, please see
 
         constructor(uint initialPrice) { price = initialPrice; }
 
-        // It is important to also provide the
-        // `payable` keyword here, otherwise the function will
-        // automatically reject all Ether sent to it.
+        // Buradaki `payable` sözcüğü de oldukça önemlidir.
+        // Eğer bu fonksiyon `payable` olmazsa kendisine gelen bütün
+        // etherleri reddeder.
         function register() public payable costs(price) {
             registeredAddresses[msg.sender] = true;
         }
@@ -89,10 +88,10 @@ if they are marked ``virtual``. For details, please see
             locked = false;
         }
 
-        /// This function is protected by a mutex, which means that
-        /// reentrant calls from within `msg.sender.call` cannot call `f` again.
-        /// The `return 7` statement assigns 7 to the return value but still
-        /// executes the statement `locked = false` in the modifier.
+        /// Bu fonksiyon bir mutex ile korunmaktadır. 
+        /// Yani, bu contract re-entrancy çağrılarına karşı zaafiyetli değildir. 
+        /// `return 7` fonksiyonun bittiğini belirtse de henüz modifier'ımızın işi bitmedi.
+        /// `locked = false;` satırı return ifademizden sonra çalışır.
         function f() public noReentrancy returns (uint) {
             (bool success,) = msg.sender.call("");
             require(success);
@@ -100,34 +99,33 @@ if they are marked ``virtual``. For details, please see
         }
     }
 
-If you want to access a modifier ``m`` defined in a contract ``C``, you can use ``C.m`` to
-reference it without virtual lookup. It is only possible to use modifiers defined in the current
-contract or its base contracts. Modifiers can also be defined in libraries but their use is
-limited to functions of the same library.
+Eğer ``C`` contractındaki ``m`` modifier'ına erişmek istiyorsanız, ``C.m`` şeklinde erişebilirsiniz.
+Modifier'lar sadece tanımlandıkları contractta veya türetilen bir contractta kullanılabilir.
+Modifier'lar kütüphanelerde de tanımlanabilir. Ancak kullanımları o kütüphanenin fonksiyonlarıyla kısıtlıdır.
+Yani tanımlandıkları kütüphane dışında kullanılamazlar.
 
-Multiple modifiers are applied to a function by specifying them in a
-whitespace-separated list and are evaluated in the order presented.
+Bir fonksiyona birden fazla modifier tanımlanabilir. Bunu gerçekleştirmek için her bir modifier isminden sonra
+bir boşluk bırakılmalıdır. Modifier'lar tanımlandıkları sıraya göre çalışacaktır.
 
-Modifiers cannot implicitly access or change the arguments and return values of functions they modify.
-Their values can only be passed to them explicitly at the point of invocation.
+Modifier'lar eklendikleri fonksiyonların parametrelerine veya return değerlerine kendi başlarına erişemezler.
+Eğer bir parametreyi bir modifier'da kullanmak istiyorsanız, o modifier'ı eklediğiniz yerde
+parametreyi de vermelisiniz. Fonksiyon çağırma yapısına benzer bir şekilde kullanılırlar.
 
-Explicit returns from a modifier or function body only leave the current
-modifier or function body. Return variables are assigned and
-control flow continues after the ``_`` in the preceding modifier.
+Modifier'daki veya fonksiyon'daki return işlemi sadece o yazıldığı modifier'dan veya fonksiyon'dan
+çıkmaya yarar. Program akışı ``_`` işaretinin olduğu yerden çalışmaya devam eder.
 
 .. warning::
-    In an earlier version of Solidity, ``return`` statements in functions
-    having modifiers behaved differently.
+    Daha önceki Solidity versiyonlarında modifier'a sahip fonksiyonlarda ``return`` ifadesi farklı
+    bir şekilde davranış sergiler.
 
-An explicit return from a modifier with ``return;`` does not affect the values returned by the function.
-The modifier can, however, choose not to execute the function body at all and in that case the return
-variables are set to their :ref:`default values<default-value>` just as if the function had an empty
-body.
+Açık bir şekilde ``return;`` ifadesinin yer aldığı bir modifier, fonksiyonun return edeceği değerle alakalı değildir.
+Modifier'lar fonksiyon içerisindeki kodları hiç çalıştırmamayı da tercih edebilirler.
+Bu durumda return değerleri :ref:`default değerlerine<default-value>` eşitlenebilir. Böylelikle,
+fonksiyonun hiç bir kodu yokmuş gibi bir davranış sergilenir.
 
-The ``_`` symbol can appear in the modifier multiple times. Each occurrence is replaced with
-the function body.
+``_`` sembolü bir modifier'da birden fazla kez kullanılabilir. Her bir kullanım, fonksiyon
+içerisindeki kodla değiştirilecektir. Yani, ``_`` gördüğünüz her yerde, eklenen fonksiyonun kodlarının
+bulunduğunu düşünebilirsiniz.
 
-Arbitrary expressions are allowed for modifier arguments and in this context,
-all symbols visible from the function are visible in the modifier. Symbols
-introduced in the modifier are not visible in the function (as they might
-change by overriding).
+Modifier'lar parametre alabildiği için, bir fonksiyondaki bütün parametreler istenilen modifier'a gönderilebilir. 
+Modifier'da tanımlanan semboller, fonksiyonlarda görülemez (override ile değiştirilebilir).

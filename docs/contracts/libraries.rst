@@ -3,53 +3,48 @@
 .. _libraries:
 
 *********
-Libraries
+Kütüphaneler
 *********
 
-Libraries are similar to contracts, but their purpose is that they are deployed
-only once at a specific address and their code is reused using the ``DELEGATECALL``
-(``CALLCODE`` until Homestead)
-feature of the EVM. This means that if library functions are called, their code
-is executed in the context of the calling contract, i.e. ``this`` points to the
-calling contract, and especially the storage from the calling contract can be
-accessed. As a library is an isolated piece of source code, it can only access
-state variables of the calling contract if they are explicitly supplied (it
-would have no way to name them, otherwise). Library functions can only be
-called directly (i.e. without the use of ``DELEGATECALL``) if they do not modify
-the state (i.e. if they are ``view`` or ``pure`` functions),
-because libraries are assumed to be stateless. In particular, it is
-not possible to destroy a library.
+Kütüphaneler contractlara benzerler, ama onların amacı sadece bir kere deploy edilip
+daha sonrasında ihtiyaç duyulması halinde ``DELEGATECALL`` ile çağrılmalarıdır
+(Homestead'a kadar ``CALLCODE`` kullanılırdı). Bu demek oluyor ki kütüphane fonksiyonları
+çağrıldığında, onların kodu çağıran contractın içeriği ile çalıştırılıyor, mesela ``this``
+sözcüğü çağıran contractı işaret eder ve özellikle storage olarak çağıran contractın
+storage kısmı kullanılır. Bir kütüphane izole edilmiş bir kaynak kodu parçası olduğundan, 
+yalnızca açıkça sağlanmışlarsa çağrı sözleşmesinin durum değişkenlerine erişebilir 
+(aksi takdirde bunları adlandırmanın hiçbir yolu yoktur). Kütüphane fonksiyonları yalnızca 
+durumu değiştirmedikleri takdirde (yani ``view`` veya ``pure`` fonksiyonlarsa) doğrudan 
+(yani ``DELEGATECALL`` kullanılmadan) çağrılabilir, çünkü kütüphanelerin durumsuz 
+olduğu varsayılır. Özellikle, bir kütüphaneyi yok etmek mümkün değildir.
 
 .. note::
-    Until version 0.4.20, it was possible to destroy libraries by
-    circumventing Solidity's type system. Starting from that version,
-    libraries contain a :ref:`mechanism<call-protection>` that
-    disallows state-modifying functions
-    to be called directly (i.e. without ``DELEGATECALL``).
+    0.4.20 sürümüne kadar, Solidity'nin tip sistemini atlayarak kütüphaneleri yok etmek mümkündü.
+    Bu sürümden başlayarak, kütüphaneler, durumu değiştiren fonksiyonların doğrudan çağrılmasına 
+    izin vermeyen bir :ref:`mekanizma<call-protection>` içerir (yani ``DELEGATECALL`` olmadan).
 
-Libraries can be seen as implicit base contracts of the contracts that use them.
-They will not be explicitly visible in the inheritance hierarchy, but calls
-to library functions look just like calls to functions of explicit base
-contracts (using qualified access like ``L.f()``).
-Of course, calls to internal functions
-use the internal calling convention, which means that all internal types
-can be passed and types :ref:`stored in memory <data-location>` will be passed by reference and not copied.
-To realize this in the EVM, the code of internal library functions
-that are called from a contract
-and all functions called from therein will at compile time be included in the calling
-contract, and a regular ``JUMP`` call will be used instead of a ``DELEGATECALL``.
+Kütüphaneler, onları kullanan contractların zımni temel contractları olarak görülebilir. 
+Miras hiyerarşisinde açıkça görünmezler, ancak kütüphane fonksiyonlarına yapılan çağrılar, 
+açık temel contractların fonksiyonlarına yapılan çağrılara benzer 
+(L.f() gibi nitelikli erişim kullanarak). 
+Tabii ki, dahili fonksiyonlara yapılan çağrılar dahili çağrı kuralını kullanır; 
+bu, tüm dahili türlerin iletilebileceği ve bellekte depolanan türlerin kopyalanmadan 
+referans olarak iletileceği anlamına gelir. Bunu EVM'de gerçekleştirmek için, bir contracttan 
+çağrılan dahili kütüphane fonksiyonlarının ve buradan çağrılan tüm fonksiyonların kodu 
+derleme zamanında çağrı contractına dahil edilecek ve bir ``DELEGATECALL`` yerine normal 
+bir JUMP çağrısı kullanılacaktır.
 
 .. note::
-    The inheritance analogy breaks down when it comes to public functions.
-    Calling a public library function with ``L.f()`` results in an external call (``DELEGATECALL``
-    to be precise).
-    In contrast, ``A.f()`` is an internal call when ``A`` is a base contract of the current contract.
+    Public fonksiyonlar söz konusu olduğunda miras analojisi bozulur. 
+    L.f() ile bir genel kütüphane fonksiyonunun çağrılması, 
+    harici bir çağrıyla sonuçlanır (kesin olarak ``DELEGATECALL``). 
+    Buna karşılık, A mevcut contractın temel contractı olduğunda, A.f() dahili bir çağrıdır.
 
 .. index:: using for, set
 
-The following example illustrates how to use libraries (but using a manual method,
-be sure to check out :ref:`using for <using-for>` for a
-more advanced example to implement a set).
+Aşağıdaki örnek, kütüphanelerin nasıl kullanılacağını gösterir 
+(ancak manuel bir yöntem kullanarak, bir kümeyi uygulamak için daha gelişmiş 
+bir örnek için kullanmayı kontrol ettiğinizden emin olun).
 
 .. code-block:: solidity
 
@@ -57,25 +52,26 @@ more advanced example to implement a set).
     pragma solidity >=0.6.0 <0.9.0;
 
 
-    // We define a new struct datatype that will be used to
-    // hold its data in the calling contract.
+    // Çağrı contractında verilerini tutmak 
+    // için kullanılacak yeni bir struct veri türü tanımlıyoruz.
     struct Data {
         mapping(uint => bool) flags;
     }
 
     library Set {
-        // Note that the first parameter is of type "storage
-        // reference" and thus only its storage address and not
-        // its contents is passed as part of the call.  This is a
-        // special feature of library functions.  It is idiomatic
-        // to call the first parameter `self`, if the function can
-        // be seen as a method of that object.
+        // İlk parametrenin "depolama referansı" türünde 
+        // olduğunu ve bu nedenle çağrının bir parçası 
+        // olarak içeriğinin değil, yalnızca depolama 
+        // adresinin iletildiğini unutmayın. 
+        // Bu, kütüphane fonksiyonlarının özel bir özelliğidir. 
+        // Fonksiyon, o nesnenin bir yöntemi olarak görülebiliyorsa, 
+        // ilk parametreyi 'self' olarak adlandırmak deyimseldir.
         function insert(Data storage self, uint value)
             public
             returns (bool)
         {
             if (self.flags[value])
-                return false; // already there
+                return false; // zaten orada
             self.flags[value] = true;
             return true;
         }
@@ -85,7 +81,7 @@ more advanced example to implement a set).
             returns (bool)
         {
             if (!self.flags[value])
-                return false; // not there
+                return false; // orada değil
             self.flags[value] = false;
             return true;
         }
@@ -104,31 +100,28 @@ more advanced example to implement a set).
         Data knownValues;
 
         function register(uint value) public {
-            // The library functions can be called without a
-            // specific instance of the library, since the
-            // "instance" will be the current contract.
+            // "Instance" geçerli contract olacağından, 
+            // kütüphane fonksiyonları kütüphanenin belirli 
+            // bir örneği olmadan çağrılabilir.
             require(Set.insert(knownValues, value));
         }
-        // In this contract, we can also directly access knownValues.flags, if we want.
+        // Bu sözleşmede ayrıca direkt olarak knownValues.flags değişkenine de erişebiliriz.
     }
 
-Of course, you do not have to follow this way to use
-libraries: they can also be used without defining struct
-data types. Functions also work without any storage
-reference parameters, and they can have multiple storage reference
-parameters and in any position.
+Elbette kütüphaneleri kullanmak için bu yolu izlemeniz gerekmez: struct veri türleri 
+tanımlamadan da kullanılabilirler. Fonksiyonlar ayrıca herhangi bir depolama 
+referans parametresi olmadan da çalışırlar ve herhangi bir pozisyonda 
+birden fazla depolama referans parametresine sahip olabilirler.
 
-The calls to ``Set.contains``, ``Set.insert`` and ``Set.remove``
-are all compiled as calls (``DELEGATECALL``) to an external
-contract/library. If you use libraries, be aware that an
-actual external function call is performed.
-``msg.sender``, ``msg.value`` and ``this`` will retain their values
-in this call, though (prior to Homestead, because of the use of ``CALLCODE``, ``msg.sender`` and
-``msg.value`` changed, though).
+``Set.contains``, ``Set.insert`` ve ``Set.remove`` çağrılarının hepsi
+harici çağrı olarak derlenir (``DELEGATECALL``). Eğer kütüphaneleri kullanacaksanız
+gerçekten bir harici fonksiyon çağrısı yaptığınızı unutmayın.
+``msg.sender``, ``msg.value`` ve ``this`` çağrı boyunca kendi değerlerini koruyacaktır
+(Homestead öncesi ``CALLCODE`` yüzünden ``msg.sender`` ve ``msg.value`` değişiyordu).
 
-The following example shows how to use :ref:`types stored in memory <data-location>` and
-internal functions in libraries in order to implement
-custom types without the overhead of external function calls:
+Aşağıdaki örnek, harici fonksiyon çağrılarının ek yükü olmadan özel türleri 
+uygulamak için :ref:`bellekte depolanan türlerin <data-location>` ve kütüphanelerdeki dahili fonksiyonların 
+nasıl kullanılacağını gösterir:
 
 .. code-block:: solidity
     :force:
@@ -162,7 +155,7 @@ custom types without the overhead of external function calls:
                 }
             }
             if (carry > 0) {
-                // too bad, we have to add a limb
+                // çok kötü, bir limb eklemeliyiz
                 uint[] memory newLimbs = new uint[](r.limbs.length + 1);
                 uint i;
                 for (i = 0; i < r.limbs.length; ++i)
@@ -192,27 +185,27 @@ custom types without the overhead of external function calls:
         }
     }
 
-It is possible to obtain the address of a library by converting
-the library type to the ``address`` type, i.e. using ``address(LibraryName)``.
+Bir kütüphanenin adresini, kütüphane tipini ``address`` tipine çevirerek, 
+yani ``address(LibraryName)`` kullanarak elde etmek mümkündür.
 
-As the compiler does not know the address where the library will be deployed, the compiled hex code
-will contain placeholders of the form ``__$30bbc0abd4d6364515865950d3e0d10953$__``. The placeholder
-is a 34 character prefix of the hex encoding of the keccak256 hash of the fully qualified library
-name, which would be for example ``libraries/bigint.sol:BigInt`` if the library was stored in a file
-called ``bigint.sol`` in a ``libraries/`` directory. Such bytecode is incomplete and should not be
-deployed. Placeholders need to be replaced with actual addresses. You can do that by either passing
-them to the compiler when the library is being compiled or by using the linker to update an already
-compiled binary. See :ref:`library-linking` for information on how to use the commandline compiler
-for linking.
+Derleyici kütüphanenin konuşlandırılacağı adresi bilmediğinden, 
+derlenmiş onaltılık kod ``__$30bbc0abd4d6364515865950d3e0d10953$__`` biçiminde yer tutucular 
+içerecektir. Yer tutucu, tam nitelikli kütüphane adının keccak256 hashinin hex kodlamasının 
+34 karakterlik bir önekidir; bu, örneğin kütüphane ``bigint.sol`` isimli bir dosyada
+ve ``libraries/`` isimli bir dizinde bulunuyorsa şu şekilde gösterilir ``libraries/bigint.sol:BigInt``. 
+Bu tür bayt kodu eksiktir ve dağıtılmamalıdır. Yer tutucuların gerçek adreslerle değiştirilmesi gerekir. 
+Bunu, kütüphane derlenirken bunları derleyiciye ileterek veya önceden derlenmiş bir ikili dosyayı 
+güncellemek için bağlayıcıyı kullanarak yapabilirsiniz. Bağlama için komut satırı derleyicisinin 
+nasıl kullanılacağı hakkında bilgi için :ref:`library-linking` konusuna bakın.
 
-In comparison to contracts, libraries are restricted in the following ways:
+Contractlarla kıyaslandığında, kütüphaneler aşağıdaki şekillerde kısıtlanmışlardır:
 
-- they cannot have state variables
-- they cannot inherit nor be inherited
-- they cannot receive Ether
-- they cannot be destroyed
+- durum değişkenleri olamaz
+- miras veremezler veya alamazlar
+- Ether kabul edemezler
+- yok edilemezler
 
-(These might be lifted at a later point.)
+(Bunlar ilerleyen zamanlarda kaldırılabilirler.)
 
 .. _library-selectors:
 .. index:: ! selector; of a library function
@@ -220,28 +213,28 @@ In comparison to contracts, libraries are restricted in the following ways:
 Function Signatures and Selectors in Libraries
 ==============================================
 
-While external calls to public or external library functions are possible, the calling convention for such calls
-is considered to be internal to Solidity and not the same as specified for the regular :ref:`contract ABI<ABI>`.
-External library functions support more argument types than external contract functions, for example recursive structs
-and storage pointers. For that reason, the function signatures used to compute the 4-byte selector are computed
-following an internal naming schema and arguments of types not supported in the contract ABI use an internal encoding.
+Public veya external kütüphane fonksiyonlarına harici çağrılar mümkün olsa da, 
+bu tür çağrılar için çağrı kuralının Solidity'nin içinde olduğu ve normal 
+:ref:`contract ABI<ABI>` için belirtilenle aynı olmadığı kabul edilir. 
+External kütüphane fonksiyonları, örneğin özyinelemeli yapılar ve depolama işaretçileri 
+gibi external kütüphane fonksiyonlarından daha fazla bağımsız değişken türünü destekler. 
+Bu nedenle, 4 baytlık seçiciyi hesaplamak için kullanılan fonksiyon imzaları, 
+bir internal adlandırma şemasının ardından hesaplanır ve 
+ABI contractında desteklenmeyen türdeki bağımsız değişkenler bir dahili kodlama kullanır.
 
-The following identifiers are used for the types in the signatures:
+İmzalardaki türler için aşağıdaki tanımlayıcılar kullanılır:
 
-- Value types, non-storage ``string`` and non-storage ``bytes`` use the same identifiers as in the contract ABI.
-- Non-storage array types follow the same convention as in the contract ABI, i.e. ``<type>[]`` for dynamic arrays and
-  ``<type>[M]`` for fixed-size arrays of ``M`` elements.
-- Non-storage structs are referred to by their fully qualified name, i.e. ``C.S`` for ``contract C { struct S { ... } }``.
-- Storage pointer mappings use ``mapping(<keyType> => <valueType>) storage`` where ``<keyType>`` and ``<valueType>`` are
-  the identifiers for the key and value types of the mapping, respectively.
-- Other storage pointer types use the type identifier of their corresponding non-storage type, but append a single space
-  followed by ``storage`` to it.
+- Değer tipleri, storage olmayan ``string`` ve storage olmayan ``bytes`` tipleri contract ABI'sinde aynı tanımlayıcıları kullanır.
+- Storage olmayan array tipleri de contract ABI'sindeki genel görüşü kabul eder, yani dinamik arrayler için ``<type>[]`` ve fixed-size arrayler için ``<type>[M]`` kullanılır.
+- Storage olmayan structlar tam isimleri ile referans edilir, yani ``contract C { struct S { ... } }`` için ``C.S``.
+- Storage pointer mappingleri de ``mapping(<keyType> => <valueType>) storage`` kullanır. Burada ``<keyType>`` ve ``<valueType>`` sırasıyla mappingdeki anahtar ve değer tipleridir.
+- Diğer storage pointer tipleri de kendi storage olmayan tiplerinin tanımlayıcılarını kullanırlar, ama bir boşluk ile ``storage`` eklenmiş halleri ile.
 
-The argument encoding is the same as for the regular contract ABI, except for storage pointers, which are encoded as a
-``uint256`` value referring to the storage slot to which they point.
+Argüman encode'lama da sıradan contract ABI'si gibidir, storage pointerları hariç, 
+işaret ettikleri storage slotuna atıfta bulunan bir ``uint256`` değeri olarak kodlanmıştır.
 
-Similarly to the contract ABI, the selector consists of the first four bytes of the Keccak256-hash of the signature.
-Its value can be obtained from Solidity using the ``.selector`` member as follows:
+Contract ABI'sine benzer bir şekilde, selector, imzanın Keccak256-hashinin ilk dört baytından oluşur. 
+Değeri, ``.selector`` üyesi kullanılarak Solidity'den şu şekilde elde edilebilir:
 
 .. code-block:: solidity
 
@@ -262,30 +255,25 @@ Its value can be obtained from Solidity using the ``.selector`` member as follow
 
 .. _call-protection:
 
-Call Protection For Libraries
+Kütüphaneler İçin Çağrı Koruması
 =============================
 
-As mentioned in the introduction, if a library's code is executed
-using a ``CALL`` instead of a ``DELEGATECALL`` or ``CALLCODE``,
-it will revert unless a ``view`` or ``pure`` function is called.
+Girişte belirtildiği gibi, bir kütüphanenin kodu ``DELEGATECALL`` veya ``CALLCODE`` 
+yerine bir ``CALL`` kullanılarak yürütülürse, bir ``view`` veya ``pure`` fonksiyon
+çağrılmadığı sürece geri dönecektir.
 
-The EVM does not provide a direct way for a contract to detect
-whether it was called using ``CALL`` or not, but a contract
-can use the ``ADDRESS`` opcode to find out "where" it is
-currently running. The generated code compares this address
-to the address used at construction time to determine the mode
-of calling.
+EVM, bir contractın ``CALL`` kullanılarak çağrılıp çağrılmadığını tespit etmek 
+için doğrudan bir yol sağlamaz, ancak bir sözleşme, “nerede” çalıştığını bulmak 
+için ``ADDRESS`` işlem kodunu kullanabilir. Oluşturulan kod, arama modunu 
+belirlemek için bu adresi yapım sırasında kullanılan adresle karşılaştırır.
 
-More specifically, the runtime code of a library always starts
-with a push instruction, which is a zero of 20 bytes at
-compilation time. When the deploy code runs, this constant
-is replaced in memory by the current address and this
-modified code is stored in the contract. At runtime,
-this causes the deploy time address to be the first
-constant to be pushed onto the stack and the dispatcher
-code compares the current address against this constant
-for any non-view and non-pure function.
+Daha spesifik olarak, bir kütüphanenin çalışma zamanı kodu her zaman derleme 
+zamanında 20 bayt sıfır olan bir push komutuyla başlar. Dağıtım kodu çalıştığında, 
+bu sabit bellekte geçerli adresle değiştirilir ve bu değiştirilmiş kod sözleşmede 
+saklanır. Çalışma zamanında, bu, dağıtım zamanı adresinin yığına gönderilecek 
+ilk sabit olmasına neden olur ve dağıtıcı kodu, herhangi bir görünüm olmayan ve 
+saf olmayan işlev için geçerli adresi bu sabitle karşılaştırır.
 
-This means that the actual code stored on chain for a library
-is different from the code reported by the compiler as
+Bu, bir kitaplık için zincirde depolanan gerçek kodun
+derleyici tarafından bildirilen koddan farklıdır.
 ``deployedBytecode``.

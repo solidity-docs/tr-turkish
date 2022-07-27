@@ -6,39 +6,35 @@
 Events
 ******
 
-Solidity events give an abstraction on top of the EVM's logging functionality.
-Applications can subscribe and listen to these events through the RPC interface of an Ethereum client.
+Solidity eventleri EVM'nin loglama işlevinin üzerine bir soyutlama verir. Uygulamalar
+Ethereum clientlarının RPC arayüzüne abone olarak bu eventleri dinleyebilirler.
 
-Events are inheritable members of contracts. When you call them, they cause the
-arguments to be stored in the transaction's log - a special data structure
-in the blockchain. These logs are associated with the address of the contract,
-are incorporated into the blockchain, and stay there as long as a block is
-accessible (forever as of now, but this might
-change with Serenity). The Log and its event data is not accessible from within
-contracts (not even from the contract that created them).
+Eventler contractların türetilebilen üyeleridir. Çağrıldıklarında işlemlerin log
+kısmında - blok zincirindeki özel bir veri yapısı - depolanırlar. Bu eventler çağrıldıkları
+contractın adresi ile özdeşleştirilir ve işlemin bulunduğu blok erişilebilir olduğu
+sürece bu eventlere de erişilebilir (şu anda bu süre sonsuza kadardır ancak Serenity
+ile bu değişebilir). Log ve event verisi contract tarafından erişilebilir değildir
+(eventi oluşturan contract için bile bu geçerlidir).
 
-It is possible to request a Merkle proof for logs, so if
-an external entity supplies a contract with such a proof, it can check
-that the log actually exists inside the blockchain. You have to supply block headers
-because the contract can only see the last 256 block hashes.
+Loglar için bir Merkle proof talep etmek mümkündür, bu nedenle external bir varlık
+böyle bir kanıtla bir contract sağlarsa, logun blok zinciri içinde gerçekten var
+olup olmadığını kontrol edebilir. Sözleşme yalnızca son 256 blok hashini görebildiği
+için blok başlıkları sağlamanız gerekir.
 
-You can add the attribute ``indexed`` to up to three parameters which adds them
-to a special data structure known as :ref:`"topics" <abi_events>` instead of
-the data part of the log.
-A topic can only hold a single word (32 bytes) so if you use a :ref:`reference type
-<reference-types>` for an indexed argument, the Keccak-256 hash of the value is stored
-as a topic instead.
+Logun veri kısmı yerine :ref:`"topics" <abi_events>` olarak bilinen özel bir veri yapısına ekleyen
+en fazla üç parametreye ``indexed`` özniteliği ekleyebilirsiniz. Bir topic yalnızca tek
+bir kelimeyi (32 byte) tutabilir, bu nedenle indekslenmiş bir argüman için bir referans 
+tipi kullanırsanız, bunun yerine değerin Keccak-256 hashi topic olarak saklanır.
 
-All parameters without the ``indexed`` attribute are :ref:`ABI-encoded <ABI>`
-into the data part of the log.
+``indexed`` olmadan kullanılan bütün parametreler logun veri kısmına :ref:`ABI-encoded <ABI>` olarak
+saklanır.
 
-Topics allow you to search for events, for example when filtering a sequence of
-blocks for certain events. You can also filter events by the address of the
-contract that emitted the event.
+Topicler eventleri aramanıza izin verir, örneğin belirli eventler için bir blok dizisini filtrelerken.
+Ayrıca eventleri yayınlandıkları contracta göre de filtreleyebilirsiniz.
 
-For example, the code below uses the web3.js ``subscribe("logs")``
-`method <https://web3js.readthedocs.io/en/1.0/web3-eth-subscribe.html#subscribe-logs>`_ to filter
-logs that match a topic with a certain address value:
+Örneğin aşağıdaki kod web3.js'in ``subscribe("logs")``
+`methodunu <https://web3js.readthedocs.io/en/1.0/web3-eth-subscribe.html#subscribe-logs>`_ kullanarak
+logları belirli bir adrese göre filtreleme işlemi yapmıştır:
 
 .. code-block:: javascript
 
@@ -57,32 +53,28 @@ logs that match a topic with a certain address value:
         .on("changed", function (log) {
     });
 
-
-The hash of the signature of the event is one of the topics, except if you
-declared the event with the ``anonymous`` specifier. This means that it is
-not possible to filter for specific anonymous events by name, you can
-only filter by the contract address. The advantage of anonymous events
-is that they are cheaper to deploy and call. It also allows you to declare
-four indexed arguments rather than three.
+Eventin imzasının hashi, etkinliği anonim belirteçle bildirmeniz dışında, 
+topiclerden biridir. Bu, belirli anonim eventleri ada göre filtrelemenin mümkün 
+olmadığı, yalnızca contract adresine göre filtreleyebileceğiniz anlamına gelir. 
+Anonim eventlerin avantajı, deploy etmenin ve çağırmanın daha ucuz olmasıdır. 
+Ayrıca, üç yerine dört indexed değişken bildirmenize olanak tanır.
 
 .. note::
-    Since the transaction log only stores the event data and not the type,
-    you have to know the type of the event, including which parameter is
-    indexed and if the event is anonymous in order to correctly interpret
-    the data.
-    In particular, it is possible to "fake" the signature of another event
-    using an anonymous event.
+    İşlem logları değişken türünü değil, yalnızca olay verilerini sakladığından, verileri 
+    doğru bir şekilde yorumlamak için hangi parametrenin dizine eklendiği ve 
+    eventin anonim olup olmadığı dahil olmak üzere olayın türünü bilmeniz gerekir. 
+    Özellikle, anonim bir event kullanarak başka bir eventin imzasını "sahte" yapmak mümkündür.
 
 .. index:: ! selector; of an event
 
-Members of Events
+Eventlerin Üyeleri
 =================
 
-- ``event.selector``: For non-anonymous events, this is a ``bytes32`` value
-  containing the ``keccak256`` hash of the event signature, as used in the default topic.
+- ``event.selector``: Anonim olmayan eventlerde ``bytes32`` tipindeki bir değerdir ve
+  eventin imzasının hashini içerir ``keccak256``.
 
 
-Example
+Örnek
 =======
 
 .. code-block:: solidity
@@ -98,41 +90,42 @@ Example
         );
 
         function deposit(bytes32 id) public payable {
-            // Events are emitted using `emit`, followed by
-            // the name of the event and the arguments
-            // (if any) in parentheses. Any such invocation
-            // (even deeply nested) can be detected from
-            // the JavaScript API by filtering for `Deposit`.
+            // Eventler `emit` sözcüğü ve sonrasında
+            // eventin ismi ve parametreleri (varsa) parantez
+            // içerisine konularak yayınlanır.
+            // Bu şekildeki herhangi bir çağırma işlemi
+            // (iç içe olsa bile) `Deposit` ile filtreleme
+            // yaparak JavaScript API tarafından yakalanabilir.
             emit Deposit(msg.sender, id, msg.value);
         }
     }
 
-The use in the JavaScript API is as follows:
+JavaScript API kullanımı ise şu şekildedir:
 
 .. code-block:: javascript
 
-    var abi = /* abi as generated by the compiler */;
+    var abi = /* derleyici tarafından üretilen ABI */;
     var ClientReceipt = web3.eth.contract(abi);
-    var clientReceipt = ClientReceipt.at("0x1234...ab67" /* address */);
+    var clientReceipt = ClientReceipt.at("0x1234...ab67" /* adres */);
 
     var depositEvent = clientReceipt.Deposit();
 
-    // watch for changes
+    // değişiklikleri izle
     depositEvent.watch(function(error, result){
-        // result contains non-indexed arguments and topics
-        // given to the `Deposit` call.
+        // sonuç, `Deposit` çağrısına verilen indekslenmemiş
+        // argümanları ve topicleri içerir.
         if (!error)
             console.log(result);
     });
 
 
-    // Or pass a callback to start watching immediately
+    // veya bir callback fonksiyonu ile direkt olarak dinlemeye başlayabilirsiniz
     var depositEvent = clientReceipt.Deposit(function(error, result) {
         if (!error)
             console.log(result);
     });
 
-The output of the above looks like the following (trimmed):
+Yukarıdaki kod şu şekilde bir çıktı verir (trim edilmiş hali ile):
 
 .. code-block:: json
 
@@ -148,7 +141,7 @@ The output of the above looks like the following (trimmed):
        }
     }
 
-Additional Resources for Understanding Events
+Eventleri Anlamak İçin Ekstra Kaynaklar
 =============================================
 
 - `Javascript documentation <https://github.com/ethereum/web3.js/blob/1.x/docs/web3-eth-contract.rst#events>`_
