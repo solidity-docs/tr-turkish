@@ -2,6 +2,7 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 ==============================================
 
 - Blockchain = Blok Zinciri
+- Binary = Binary
 - Breaking Changes = İşleyişi Bozan Değişiklikler, Kırılan Değişiklikler veya Önemli Değişikliker 
 - State = Durum
 - Keypair = Anahtar Çifti
@@ -23,7 +24,7 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - Symlinks = Kısayol Bağlantısı
 - Components = Bileşen
 - Fork = Çatallamak
-- Nightly Development Builds = Gecelik Geliştirme Yapıları/Derlemeleri
+- Nightly Development Builds = Nightly Geliştirme Yapıları/Derlemeleri
 - Encode = Şifreleme
 - Decode = Şifreyi Çözme
 
