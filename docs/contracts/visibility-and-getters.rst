@@ -184,8 +184,8 @@ bir fonksiyon yazmanız gerekir.
         }
     }
 
-Şimdi ``getArray()`` fonksiyonunu kullanarak bütün array'i elde edebilirsiniz. Tek tek bütün elemanları
-``myArray(i)`` kullanarak çağırmanıza gerek kalmadı.
+Artık tüm dizine erişmek için her bir aramayı tek bir öğeye döndüren 
+``myArray(i)`` yerine ``getArray()`` kullanabilirsiniz.
 
 Sıradaki örnek biraz daha karmaşık.
 

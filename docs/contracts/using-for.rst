@@ -12,7 +12,7 @@ Using For
 
 Dosya seviyesinde veya bir contract içerisinde, contract seviyesinde, geçerlidir.
 
-İlk kısım, ``A``, aşağıdakilerden birisi olabilir:
+İlk kısım, ``A``, aşağıdakilerden biri olabilir:
 
 - dosya seviyesindeki fonksiyonların bir listesi veya kütüphane fonksiyonları (``using {f, g, h, L.t} for uint;``) -
   sadece o fonksiyonlar eklenecektir.
@@ -28,7 +28,7 @@ edilir ve fonksiyon aşırı yük çözünürlüğü gerçekleştirilir.
 
 Eğer bir fonksiyon listesi kullanırsanız (``using {f, g, h, L.t} for uint;``),
 ardından gelen tip (``uint``) o kütüphanedeki bütün fonksiyonların ilk parametrelerine
-gizlice dönüştürülebilir olmalıdır. Bu kontrol, fonksiyonların hiçbirisi çağrılmasa bile
+gizlice dönüştürülebilir olmalıdır. Bu kontrol, fonksiyonların hiçbiri çağrılmasa bile
 gerçekleştirilir.
 
 ``using A for B;`` direktifi, tüm fonksiyonları dahil olmak üzere yalnızca mevcut kapsamda 
@@ -49,7 +49,7 @@ fonksiyonlarla yeniden yazalım:
     pragma solidity ^0.8.13;
 
     struct Data { mapping(uint => bool) flags; }
-    // Şimdi tipe fonksiyonları ekliyoruz.
+    // Şimdi örneğe fonksiyonları ekliyoruz.
     // Eklenen fonksiyonlar modül boyuna kullanılabilir.
     // Eğer modülü başka bir dosyadan eklerseniz
     // using yönergesini orada yeniden kullanmalısınız:

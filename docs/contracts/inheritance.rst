@@ -26,7 +26,7 @@ yapılan bütün internal çağrılar sadece internal fonksiyon çağrılarını
 kullanırlar (``super.f(..)`` sadece JUMP opcode'unu kullanacaktır, mesaj çağrısı yapmayacaktır). 
 
 Durum değişkeni gölgeleme bir hata olarak kabul edilir. Bir türetilen contract
-sadece ve sadece eğer türettiği contractlardan hiçbirisi ``x`` isminde bir değişkeni kullanmıyorsa
+sadece ve sadece eğer türettiği contractlardan hiçbiri ``x`` isminde bir değişkeni kullanmıyorsa
 bu isimde bir değişken tanımlayabilir.
 
 Genel kalıtım sistemi `Python'a <https://docs.python.org/3/tutorial/classes.html#inheritance>`_
@@ -76,7 +76,7 @@ Aşağıdaki örnekte detaylar açıklanmıştır.
 
     // Çoklu türetim de mümkündür. `Owned` contractının
     // ayrıca `Destructible` contractının ana contractlarından
-    // birisi olduğunu unutmayın. Ancak `Owned` contractının 
+    // biri olduğunu unutmayın. Ancak `Owned` contractının 
     // sadece bir adet örneği vardır (C++'daki sanal kalıtım gibi).
     contract Named is Owned, Destructible {
         constructor(bytes32 name) {
@@ -392,7 +392,7 @@ durumunu belirtmelidir.
 Constructor'lar
 ============
 
-Constructor isteğe bağlı olarak tanımlanan özel fonksiyonlardan birisidir ve
+Constructor isteğe bağlı olarak tanımlanan özel fonksiyonlardan biridir ve
 ``constructor`` sözcüğü ile tanımlanır. Bu fonksiyon contract oluşumu sırasında
 çalıştırılır ve contract başlatma kodunuz burada bulunmaktadır.
 
@@ -500,7 +500,7 @@ için gerekli parametreleri sağlamalıdır (aksi takdirde, diğer contract da s
 ======================================
 
 Çoklu kalıtıma izin veren diller birkaç problemle uğraşmak zorundadır. 
-Birisi `Elmas Problemi <https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem>`_.
+Bunlardan bir tanesi `Elmas Problemi'dir <https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem>`_.
 Solidity Python'a benzer olarak "`C3 Linearization <https://en.wikipedia.org/wiki/C3_linearization>`_"
 kullanarak directed acyclic graph'da (DAG) spesifik bir sırayı zorlar. Bu, istenen monotonluk özelliği 
 ile sonuçlanır, ancak bazı kalıtım grafiklerine izin vermez. Özellikle ``is`` yönergesinde temel 

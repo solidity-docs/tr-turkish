@@ -6,14 +6,13 @@
 Abstract Contract'lar
 ******************
 
-Contractlar en azından bir fonksiyonlarının kodu yazılmadığında veya temel contractlarının
-constructor'larına argüman sağlamadıklarında abstract olarak tanımlanmalıdır.
-Bu durumlardan herhangi birisi geçerli değilse bile bir contract abstract olarak işaretlenebilir.
+Sözleşmeler, işlevlerinden en az biri uygulanmadığında veya bütün temel sözleme yapıcılar için argüman sağlamadığında abstract olarak işaretlenmelidir.
+Bu durumlardan herhangi biri geçerli değilse bile bir contract abstract olarak işaretlenebilir.
 Örneğin bir contractın direkt olarak oluşturulmasını istemediğiniz durumlarda bunu gerçekleştirebilirsiniz.
 Abstract contractlar :ref:`interface'lere` oldukça benzerdir ancak interface'ler çok daha kısıtlı bir
 yapıdadır.
 
-Abstract contractlar ``abstract`` olarak işaretlenerek belirtilir, aşağıdaki örnekteki gibi.
+Aşağıdaki örnekte belirtildiği gibi, Abstract contractlar ``abstract`` olarak işaretlenerek belirtilir.
 Aşağıdaki contractın abstract olarak tanımlanması gerektiğine dikkat edin. Çünkü ``utterance()``
 fonksiyonu tanımlanıp kodları yazılmamıştır (``{ }`` arasında kod bulunmamakta).
 
@@ -26,8 +25,9 @@ fonksiyonu tanımlanıp kodları yazılmamıştır (``{ }`` arasında kod bulunm
         function utterance() public virtual returns (bytes32);
     }
 
-Bu tip abstract contractlar direkt olarak örneklendirilemez. Bu ayrıca bütün fonksiyonlarını tanımlayan bir
-abstract contract için de geçerlidir. Abstract bir contractın temel sınıf olarak kullanımı aşağıda gösterilmiştir:
+Bu tip abstract contractlar direkt olarak örneklendirilemez. Bu, abstract sözleşmenin 
+kendisi tanımlanmış tüm işlevleri yerine getiriyorsa da geçerlidir. Abstract bir contractın 
+temel sınıf olarak kullanımı aşağıda gösterilmiştir:
 
 .. code-block:: solidity
 

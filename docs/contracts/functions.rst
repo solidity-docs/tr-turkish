@@ -326,7 +326,7 @@ Aşağıdaki işlemler 2300 gazdan daha fazlasını harcar:
 
     Bir contract bu gibi durumlardaki Ether transferlerine herhangi bir tepki
     veremez ve dolayısıyla bunları reddedemez. Bu EVM'in tasarım tercihlerinden
-    birisidir ve Solidity bunu es geçemez.
+    biridir ve Solidity bunu es geçemez.
 
     Bu ayrıca demek oluyor ki ``address(this).balance`` değişkenindeki değer
     sizin kendi hesaplamanızla (örneğin, receive fonksiyonunda her gelen miktarı
@@ -432,7 +432,7 @@ Diğer herhangi bir fonksiyon gibi fallback fonksiyonu da yeterli gaza sahip old
             // tipine dönüştürme gerekmektedir.
             address payable testPayable = payable(address(test));
 
-            // Eğer birisi burada da olduğu gibi payable fallback fonksiyonu olmayan bir
+            // Eğer biri burada da olduğu gibi payable fallback fonksiyonu olmayan bir
             // contracta ether göndermeye çalışırsa, hata alacaktır.
             // Dolayısıyla burada ``false`` return edilir.
             return testPayable.send(2 ether);
@@ -446,7 +446,7 @@ Diğer herhangi bir fonksiyon gibi fallback fonksiyonu da yeterli gaza sahip old
             require(success);
             // test.x == 1 olur ve test.y 1 olur.
 
-            // Eğer birisi aşağıdaki gibi TestPayable contractına Ether gönderirse, receive fonksiyonu çalışır.
+            // Eğer biri aşağıdaki gibi TestPayable contractına Ether gönderirse, receive fonksiyonu çalışır.
             // Yukarıda tanımladığımız receive fonksiyonu storage'e yazdığı için 2300'den daha fazla
             // gaz harcanmasına sebep olur. O yüzden ``send`` ve ``transfer`` kullanılamaz.
             // Onların yerine low-level call kullanmalıyız.
@@ -487,7 +487,7 @@ Aşağıdaki örnek ``A`` contractındaki ``f`` fonksiyonları ile overloading'i
 
 Overload edilmiş fonksiyonlar external interface'de de göründüğü için iki fonksiyonun
 aldığı parametreler external tiplerine göre karşılaştırılır. Yani, örneğin aşağıdaki
-fonksiyonlardan birisi parametre olarak contract aldığını belirtmiş. Ancak external
+fonksiyonlardan biri parametre olarak contract aldığını belirtmiş. Ancak external
 interface'de bu, bir contract değil, adres olarak görünür. O yüzden bu contract 
 compile edilemez.
 
