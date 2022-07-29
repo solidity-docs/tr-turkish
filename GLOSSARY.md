@@ -1,19 +1,36 @@
 Solidity Dokümantasyonları İçin Kavram Dizini
 ==============================================
 
-- Blockchain = blok zinciri
-- breaking = önemli
-- state = durum
-- keypair = anahtar çifti
-- stack = yığın
-- execute = çalıştırmak
-- timestamp = zaman bilgisi
-- opcode = işlem kodu
-- log = kayıt, sistem kaydı veya log
-- state = durumda
+- Blockchain = Blok Zinciri
+- Binary = Binary
+- Breaking Changes = İşleyişi Bozan Değişiklikler, Kırılan Değişiklikler veya Önemli Değişikliker 
+- State = Durum
+- Keypair = Anahtar Çifti
+- Stack = Yığın
+- Execute = Çalıştırmak
+- Timestamp = Zaman Bilgisi
+- Opcode = İşlem Kodu
+- Log = Kayıt, Sistem Kaydı veya Log
 - EVM (Ethereum Virtual Machine) = ESM (Ethereum Sanal Makinası)
 - client = istemci
-- publish = yayılan
+- Publish = Yayılan
+- Repository = Depo
+- Function = Fonksiyon
+- Branch = Kol, Dal
+- Repository = Depo
+- Image = İmaj (Docker için)
+- Interface = Arayüz
+- Formula = Formula (Homebrew'e Özel Bir Kavram)
+- Symlinks = Kısayol Bağlantısı
+- Components = Bileşen
+- Fork = Çatallamak
+- Nightly Development Builds = Nightly Geliştirme Yapıları/Derlemeleri
+- Encode = Şifreleme
+- Decode = Şifreyi Çözme
+
+Dipnotlar ve Kavram Açıklamaları
+=================================
+- Breaking Changes = "Bir yazılım sisteminin bir bölümünde, potansiyel olarak diğer bileşenlerin başarısız olmasına neden olan bir değişiklikler"
 
 Kavram Dizini İçin Yararlanabileceğiniz Faydalı Linkler
 =======================================================

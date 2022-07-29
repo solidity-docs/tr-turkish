@@ -11,7 +11,12 @@ Bu dokümanların çevirisi tamamlanırken, çevrilmiş bir sürümünü bu adre
 - @AliErcanOzgokce
 - @kuzdogan
 
-Katkıda bulunmak için lütfen [Discord Grubumuz'dan](https://discord.gg/cyN3vrhB) bilgi alın.
+## Denetleyiciler
+- @muratartan
+- @cemdemircioglu
+- @sevvalmutlu
+
+Katkıda bulunmak için lütfen [Discord Grubumuz'dan](https://discord.gg/b94AvkPuuP) bilgi alın.
 
 Çeviri görevini aldığınız sayfaları lütfen başlangıçta belirlenen zamana göre teslim edin.
 
@@ -32,5 +37,5 @@ Resmi Solidity dokümanları, .rst(reStructuredText) uzantılı dosyalardan olu�
 
 ## Resmi Sosyal Medya Hesapları ve Gruplar
 
-- [Discord](https://discord.gg/cyN3vrhB)
+- [Discord](https://discord.gg/b94AvkPuuP)
 - [Twitter](https://twitter.com/TrSolidity)
