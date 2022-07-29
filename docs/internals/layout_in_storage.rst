@@ -1,103 +1,94 @@
 .. index:: storage, state variable, mapping
 
 ************************************
-Layout of State Variables in Storage
+Depolama Alanındaki Durum Değişkenlerinin Düzeni
 ************************************
 
 .. _storage-inplace-encoding:
 
-State variables of contracts are stored in storage in a compact way such
-that multiple values sometimes use the same storage slot.
-Except for dynamically-sized arrays and mappings (see below), data is stored
-contiguously item after item starting with the first state variable,
-which is stored in slot ``0``. For each variable,
-a size in bytes is determined according to its type.
-Multiple, contiguous items that need less than 32 bytes are packed into a single
-storage slot if possible, according to the following rules:
+Sözleşmelerin durum değişkenleri, birden fazla değerin bazen aynı depolama yuvasını(slot)
+kullanacağı şekilde kompakt bir şekilde depolanır. Dinamik olarak boyutlandırılmış diziler(arrays)
+ve mappingler (aşağıya bakınız) hariç olmak üzere, diğer tüm veriler ``0`` yuvasında saklanan ilk
+durum değişkeninden başlamak üzere bitişik bir şekilde öğe öğe saklanır. Her değişken için, değişkenin
+türüne göre bayt cinsinden bir boyut belirlenir. 32 bayttan daha az bir değere ihtiyaç duyan birden
+fazla bitişik öğe aşağıdaki kurallara uygun olarak eğer mümkünse tek bir depolama yuvasında paketlenir:
 
-- The first item in a storage slot is stored lower-order aligned.
-- Value types use only as many bytes as are necessary to store them.
-- If a value type does not fit the remaining part of a storage slot, it is stored in the next storage slot.
-- Structs and array data always start a new slot and their items are packed tightly according to these rules.
-- Items following struct or array data always start a new storage slot.
+- Bir depolama yuvasındaki ilk öğe alt sıraya hizalanmış olarak saklanır.
+- Değer türleri, depolanmak için yalnızca gerek duydukları kadar bayt kullanır.
+- Bir değer türü bir depolama yuvasının kalan kısmına sığmazsa, bir sonraki depolama yuvasında saklanır.
+- Struct'lar ve dizi(array) verileri için her zaman yeni bir yuva başlatılır. Ve öğeler bu kurallara göre sıkıca paketlenir.
+- Struct veya dizi (array) verilerini izleyen öğeler için her zaman yeni bir depolama yuvası başlatır.
 
-For contracts that use inheritance, the ordering of state variables is determined by the
-C3-linearized order of contracts starting with the most base-ward contract. If allowed
-by the above rules, state variables from different contracts do share the same storage slot.
+Kalıtım kullanan sözleşmeler için durum değişkenlerinin sıralaması, en temeldeki sözleşmeden başlayarak
+sözleşmelerin C3-doğrusallaştırılmış sırasına göre belirlenir. Eğer yukarıdaki kurallara da uygunsa,
+farklı sözleşmelerdeki durum değişkenleri aynı depolama yuvasını paylaşabilir.
 
-The elements of structs and arrays are stored after each other, just as if they were given
-as individual values.
+Structure'ların ve dizilerin(arrays) elemanları, ayrı ayrı değerler şeklinde verilmiş gibi birbirlerinden sonra saklanırlar.
 
 .. warning::
-    When using elements that are smaller than 32 bytes, your contract's gas usage may be higher.
-    This is because the EVM operates on 32 bytes at a time. Therefore, if the element is smaller
-    than that, the EVM must use more operations in order to reduce the size of the element from 32
-    bytes to the desired size.
+    32 bayttan daha küçük değerdeki elemanları kullanırken, sözleşmenizin gas kullanımı daha yüksek olabilir.
+    Bunun nedeni, ESM'nin bir seferde 32 bayt üzerinde çalışmasıdır. Bu nedenle, eleman bundan daha küçükse,
+    ESM'nin elemanın boyutunu 32 bayttan istenen boyuta düşürmek için daha fazla işlem kullanması gerekir.
 
-    It might be beneficial to use reduced-size types if you are dealing with storage values
-    because the compiler will pack multiple elements into one storage slot, and thus, combine
-    multiple reads or writes into a single operation.
-    If you are not reading or writing all the values in a slot at the same time, this can
-    have the opposite effect, though: When one value is written to a multi-value storage
-    slot, the storage slot has to be read first and then
-    combined with the new value such that other data in the same slot is not destroyed.
+    Depolama değerleriyle uğraşıyorsanız, küçültülmüş boyutlu türleri kullanmak faydalı olabilir, çünkü derleyici
+    birden fazla öğeyi tek bir depolama yuvasına yerleştirecek ve böylece birden fazla okuma veya yazma işlemini
+    tek bir işlemde birleştirecektir. Ancak bir yuvadaki tüm değerleri aynı anda okumuyor veya yazmıyorsanız, bunun
+    ters bir etkisi olabilir: Çok değerli bir depolama yuvasına bir değer yazıldığı zaman, depolama yuvasının önce
+    okunması ve ardından aynı yuvadaki diğer verilerin yok edilmemesi için yeni değerler ile birleştirilmesi gerekir.
 
-    When dealing with function arguments or memory
-    values, there is no inherent benefit because the compiler does not pack these values.
+    Fonksiyon argümanları veya bellek değerleriyle uğraşırken, derleyici bu değerleri paketlemediği için bu durumun
+    herhangi bir faydası yoktur.
 
-    Finally, in order to allow the EVM to optimize for this, ensure that you try to order your
-    storage variables and ``struct`` members such that they can be packed tightly. For example,
-    declaring your storage variables in the order of ``uint128, uint128, uint256`` instead of
-    ``uint128, uint256, uint128``, as the former will only take up two slots of storage whereas the
-    latter will take up three.
+    Son olarak, ESM'nin bunu optimize etmesine izin vermek için, depolama değişkenlerinizi ve ``struct`` üyelerinizi
+    sıkıca paketlenebilecekleri şekilde sıralamaya çalıştığınızdan emin olun. Örneğin, saklama değişkenlerinizi
+    ``uint128, uint256, uint128`` yerine ``uint128, uint128, uint256`` şeklinde bildirdiğinizde, ilk örnek yalnızca
+    iki saklama alanı kaplarken ikincisi üç saklama alanı kaplayacaktır.
 
 .. note::
-     The layout of state variables in storage is considered to be part of the external interface
-     of Solidity due to the fact that storage pointers can be passed to libraries. This means that
-     any change to the rules outlined in this section is considered a breaking change
-     of the language and due to its critical nature should be considered very carefully before
-     being executed. In the event of such a breaking change, we would want to release a
-     compatibility mode in which the compiler would generate bytecode supporting the old layout.
+     Depolama alanındaki durum değişkenlerinin düzeni, depolama pointer'larının
+     kütüphanelere aktarılabilmesi nedeniyle Solidity'nin harici arayüzünün bir
+     parçası olarak kabul edilir. Bu, bu bölümde özetlenen kurallarda yapılacak
+     herhangi bir değişikliğin dilde işleyişi bozan bir değişiklik olarak kabul
+     edileceği ve kritik yapısı nedeniyle uygulanmadan önce çok dikkatli bir şekilde
+     düşünülmesi gerekeceği anlamına gelir. Böyle bir işleyişi bozan değişiklik
+     durumunda, derleyicinin eski düzeni(layout) destekleyecek bir bytecode üreteceği
+     bir uyumluluk modu yayınlamak isteriz.
 
 
-Mappings and Dynamic Arrays
+Mapping'ler ve Dinamik Diziler(Arrays)
 ===========================
 
 .. _storage-hashed-encoding:
 
-Due to their unpredictable size, mappings and dynamically-sized array types cannot be stored
-"in between" the state variables preceding and following them.
-Instead, they are considered to occupy only 32 bytes with regards to the
-:ref:`rules above <storage-inplace-encoding>` and the elements they contain are stored starting at a different
-storage slot that is computed using a Keccak-256 hash.
+Tahmin edilemeyen boyutları nedeniyle, mapping’ler ve dinamik boyutlu dizi türleri
+kendilerinden önceki ve sonraki durum değişkenlerinin "arasında" saklanamaz. Bunun
+yerine, :ref:`yukarıdaki <storage-inplace-encoding>` depolama kurallarına göre yalnızca
+32 bayt kapladıkları kabul edilir ve içerdikleri öğeler bir Keccak-256 hash'i kullanılarak
+hesaplanan farklı bir depolama yuvasından başlayarak depolanır.
 
-Assume the storage location of the mapping or array ends up being a slot ``p``
-after applying :ref:`the storage layout rules <storage-inplace-encoding>`.
-For dynamic arrays,
-this slot stores the number of elements in the array (byte arrays and
-strings are an exception, see :ref:`below <bytes-and-string>`).
-For mappings, the slot stays empty, but it is still needed to ensure that even if there are
-two mappings next to each other, their content ends up at different storage locations.
+Mapping veya dizinin depolama konumunun :ref:`depolama düzeni kuralları <storage-inplace-encoding>`
+uygulandıktan sonra ``p`` yuvası olduğunu varsayalım. Dinamik diziler için, bu yuva dizideki
+eleman sayısını saklar (bayt dizileri ve stringler bir istisnadır, bkz. :ref:`aşağıda <bytes-and-string>`).
+Mapping'ler için yuva boş kalır, ancak yine de yan yana duran iki mapping olsa bile içeriklerinin farklı
+depolama konumlarında sonlanmasını sağlamak için gereklidir.
 
-Array data is located starting at ``keccak256(p)`` and it is laid out in the same way as
-statically-sized array data would: One element after the other, potentially sharing
-storage slots if the elements are not longer than 16 bytes. Dynamic arrays of dynamic arrays apply this
-rule recursively. The location of element ``x[i][j]``, where the type of ``x`` is ``uint24[][]``, is
-computed as follows (again, assuming ``x`` itself is stored at slot ``p``):
-The slot is ``keccak256(keccak256(p) + i) + floor(j / floor(256 / 24))`` and
-the element can be obtained from the slot data ``v`` using ``(v >> ((j % floor(256 / 24)) * 24)) & type(uint24).max``.
+Dizi(array) verileri ``keccak256(p)`` adresinden başlayarak yerleştirilir ve statik olarak boyutlandırılmış
+dizi verileriyle aynı biçimde düzenlenir: Elemanlar birbiri ardına sıralanır ve elemanlar 16 bayttan uzun
+değilse potansiyel olarak depolama yuvalarını paylaşırlar. Dinamik dizilerin dinamik dizileri bu kuralı
+özyinelemeli(recursive) şekilde uygular. ``x`` türünün ``uint24[][]`` olduğu ``x[i][j]`` öğesinin konumu aşağıdaki
+gibi hesaplanır (yine ``x`` öğesinin kendisinin ``p`` yuvasında saklandığını varsayarak): Yuva
+``keccak256(keccak256(p) + i) + floor(j / floor(256 / 24))`` ve eleman ``v`` yuva verisinden ``(v >> ((j % floor(256 / 24)) * 24)) & type(uint24).max``.
 
-The value corresponding to a mapping key ``k`` is located at ``keccak256(h(k) . p)``
-where ``.`` is concatenation and ``h`` is a function that is applied to the key depending on its type:
+Bir ``k`` mapping anahtarına karşılık gelen değer ``keccak256(h(k) . p)`` adresinde bulunur; burada ``.`` birleştirme,
+``h`` ise türüne bağlı olarak anahtara uygulanan bir fonksiyondur:
 
-- for value types, ``h`` pads the value to 32 bytes in the same way as when storing the value in memory.
-- for strings and byte arrays, ``h(k)`` is just the unpadded data.
+- değer türleri için, ``h`` değeri bellekte depolarken olduğu gibi 32 bayt olarak doldurur.
+- stringler ve byte dizileri için, ``h(k)`` sadece doldurulmamış veridir.
 
-If the mapping value is a
-non-value type, the computed slot marks the start of the data. If the value is of struct type,
-for example, you have to add an offset corresponding to the struct member to reach the member.
+Mapping değeri değer olmayan bir türse, hesaplanan yuva verinin başlangıcını işaret eder. Örneğin, değer struct
+türündeyse, üyeye ulaşmak için struct üyesine karşılık gelen bir ofset eklemeniz gerekir.
 
-As an example, consider the following contract:
+Örnek olarak, aşağıdaki sözleşmeye bakalım:
 
 .. code-block:: solidity
 
@@ -124,33 +115,32 @@ The type of the value is ``uint256``, so it uses a single slot.
 
 .. _bytes-and-string:
 
-``bytes`` and ``string``
+``bytes`` ve ``string``
 ------------------------
 
-``bytes`` and ``string`` are encoded identically.
-In general, the encoding is similar to ``bytes1[]``, in the sense that there is a slot for the array itself and
-a data area that is computed using a ``keccak256`` hash of that slot's position.
-However, for short values (shorter than 32 bytes) the array elements are stored together with the length in the same slot.
+``bytes`` ve ``string`` aynı şekilde şifrelenir. Genel olarak, şifreleme ``bytes1[]`` şifrelemesine benzer;
+dizinin kendisi için bir yuva ve bu yuvanın konumunun ``keccak256`` hash`i kullanılarak hesaplanan bir veri
+alanı vardır. Ancak, küçük değerler için (32 bayttan daha küçük) dizi elemanları uzunluklarıyla birlikte aynı
+yuvada saklanır.
 
-In particular: if the data is at most ``31`` bytes long, the elements are stored
-in the higher-order bytes (left aligned) and the lowest-order byte stores the value ``length * 2``.
-For byte arrays that store data which is ``32`` or more bytes long, the main slot ``p`` stores ``length * 2 + 1`` and the data is
-stored as usual in ``keccak256(p)``. This means that you can distinguish a short array from a long array
-by checking if the lowest bit is set: short (not set) and long (set).
+Özellikle: veri en fazla ``31`` bayt uzunluğundaysa, elemanlar yüksek sıralı baytlarda (sola hizalı bir şekilde)
+saklanır ve en düşük sıralı baytta ``uzunluk * 2`` değeri saklanır. ``32`` veya daha fazla bayt uzunluğundaki
+verileri saklayan bayt dizileri için, ``p`` ana yuvası ``length * 2 + 1`` değerini saklar ve veriler her zamanki
+gibi ``keccak256(p)`` içinde saklanır. Bu, en düşük bit'in ayarlanıp ayarlanmadığını kontrol ederek kısa bir
+diziyi uzun bir diziden ayırt edebileceğiniz anlamına gelir: kısa (ayarlanmamış) ve uzun (ayarlanmış).
 
 .. note::
-  Handling invalidly encoded slots is currently not supported but may be added in the future.
-  If you are compiling via IR, reading an invalidly encoded slot results in a ``Panic(0x22)`` error.
+  Geçersiz olarak şifrelenmiş yuvaların işlenmesi şu anda desteklenmemektedir ancak gelecekte bu özellik eklenebilir.
+  IR aracılığıyla derleme yapıyorsanız, geçersiz olarak kodlanmış bir yuvayı okumak ``Panic(0x22)`` hatasıyla sonuçlanır.
 
-JSON Output
+JSON Çıktısı
 ===========
 
 .. _storage-layout-top-level:
 
-The storage layout of a contract can be requested via
-the :ref:`standard JSON interface <compiler-api>`.  The output is a JSON object containing two keys,
-``storage`` and ``types``.  The ``storage`` object is an array where each
-element has the following form:
+Bir sözleşmenin depolama düzeni :ref:`standart JSON arayüzü <compiler-api>` aracılığıyla talep edilebilir.
+Çıktı, ``storage`` ve ``types`` olmak üzere iki anahtar içeren bir JSON nesnesidir.  ``storage`` nesnesi,
+her bir elemanın aşağıdaki forma sahip olduğu bir dizidir:
 
 
 .. code::
@@ -165,20 +155,16 @@ element has the following form:
         "type": "t_uint256"
     }
 
-The example above is the storage layout of ``contract A { uint x; }`` from source unit ``fileA``
-and
+Yukarıdaki örnek, ``fileA`` kaynak biriminden ``contract A { uint x; }`` depolama düzenidir ve
 
-- ``astId`` is the id of the AST node of the state variable's declaration
-- ``contract`` is the name of the contract including its path as prefix
-- ``label`` is the name of the state variable
-- ``offset`` is the offset in bytes within the storage slot according to the encoding
-- ``slot`` is the storage slot where the state variable resides or starts. This
-  number may be very large and therefore its JSON value is represented as a
-  string.
-- ``type`` is an identifier used as key to the variable's type information (described in the following)
+- ``astId`` durum değişkeninin bildiriminin AST node'unun id'sidir
+- ``contract``, ön ek olarak yolunu da içeren sözleşmenin adıdır
+- ``label`` durum değişkeninin adıdır
+- ``offset`` şifrelemeye göre depolama yuvası içindeki bayt cinsinden ofsettir
+- ``slot`` durum değişkeninin bulunduğu veya başladığı depolama yuvasıdır. Bu sayı çok büyük olabilir ve bu nedenle JSON değeri bir dize olarak gösterilir.
+- ``type`` değişkenin tip bilgisi için anahtar olarak kullanılan bir tanımlayıcıdır (aşağıda açıklanmıştır)
 
-The given ``type``, in this case ``t_uint256`` represents an element in
-``types``, which has the form:
+Verilen ``typep``, bu durumda ``t_uint256``, ``types`` içinde şu forma sahip bir elemanı temsil eder:
 
 
 .. code::
@@ -189,31 +175,30 @@ The given ``type``, in this case ``t_uint256`` represents an element in
         "numberOfBytes": "32",
     }
 
-where
+nerede
 
-- ``encoding`` how the data is encoded in storage, where the possible values are:
+- ``encoding`` verinin depolama alanında nasıl kodlandığı, olası değerler şunlardır:
 
-  - ``inplace``: data is laid out contiguously in storage (see :ref:`above <storage-inplace-encoding>`).
-  - ``mapping``: Keccak-256 hash-based method (see :ref:`above <storage-hashed-encoding>`).
-  - ``dynamic_array``: Keccak-256 hash-based method (see :ref:`above <storage-hashed-encoding>`).
-  - ``bytes``: single slot or Keccak-256 hash-based depending on the data size (see :ref:`above <bytes-and-string>`).
+  - ``inplace``: veri depolama alanında bitişik olarak yerleştirilir (bkz :ref:`above <storage-inplace-encoding>`).
+  - ``mapping``: Keccak-256 hash tabanlı yöntem (bkz :ref:`above <storage-hashed-encoding>`).
+  - ``dynamic_array``: Keccak-256 hash tabanlı yöntem (bkz :ref:`above <storage-hashed-encoding>`).
+  - ``bytes``: veri boyutuna bağlı olarak tek slot veya Keccak-256 hash tabanlı (bkz :ref:`above <bytes-and-string>`).
 
-- ``label`` is the canonical type name.
-- ``numberOfBytes`` is the number of used bytes (as a decimal string).
-  Note that if ``numberOfBytes > 32`` this means that more than one slot is used.
+- ``label`` kanonik tip adıdır.
+- ``numberOfBytes`` kullanılan bayt sayısıdır (ondalık bir dize olarak).
+      Eğer ``numberOfBytes > 32`` ise bunun birden fazla slot kullanıldığı anlamına geldiğini unutmayın.
 
-Some types have extra information besides the four above. Mappings contain
-its ``key`` and ``value`` types (again referencing an entry in this mapping
-of types), arrays have its ``base`` type, and structs list their ``members`` in
-the same format as the top-level ``storage`` (see :ref:`above
-<storage-layout-top-level>`).
+Bazı türler yukarıdaki dört bilginin yanı sıra ekstra bilgilere de sahiptir.
+Mappingler ``key`` ve ``value`` türlerini içerir (yine bu tür mappingindeki
+bir girdiye referansta bulunur), diziler ``base`` türüne sahiptir ve structlar
+``members`` türlerini üst düzey ``storage`` ile aynı formatta listeler (bkz :ref:`above <storage-layout-top-level>`).
 
 .. note ::
-  The JSON output format of a contract's storage layout is still considered experimental
-  and is subject to change in non-breaking releases of Solidity.
+  Bir sözleşmenin depolama düzeninin JSON çıktısı hala deneysel olarak kabul edilir
+  ve Solidity'nin işleyişi bozmayan sürümlerinde değiştirilebilir.
 
-The following example shows a contract and its storage layout, containing
-value and reference types, types that are encoded packed, and nested types.
+Aşağıdaki örnekte, değer ve referans türleri, paketlenmiş olarak şifrelenmiş türler
+ve iç içe geçmiş türler içeren bir sözleşme ve depolama düzeni gösterilmektedir.
 
 
 .. code-block:: solidity
