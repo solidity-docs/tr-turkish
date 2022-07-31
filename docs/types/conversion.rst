@@ -8,13 +8,13 @@ Temel Türler Arası Dönüşümler
 Örtülü Dönüşümler
 --------------------
 
-Örtülü tür dönüşümü, argümanları fonksiyonlara iletmek ya da operatör atamaları sırasında, derleyici tarafından
+Örtülü tür dönüşümü, argümanları fonksiyonlara iletme ya da operatör atamaları sırasında, derleyici tarafından
 otomatik olarak uygulanır. Genel olarak, bilgi kaybı yoksa ve anlamsal açıdan bir sorun yoksa, değer türleri arasında bir örtülü dönüşüm mümkündür. 
 
-Örnek vermek, ``uint8`` türü,
+Örneğin, ``uint8`` türü,
 ``uint16`` türüne ve ``int128`` türü, ``int256`` türüne dönüştürülebilirken, ``int8`` türü ``uint256`` türüne dönüştürülemez çünkü  ``uint256``, ``-1`` gibi değerleri tutamaz.
 
-Bir operatör diğer türlere uygulanırsa, derleyici işlenenlerden birini örtük olarak diğerinin türüne dönüştürmeye çalışır (aynısı atamalar için de geçerlidir).
+Bir operatör birbirinden farklı türlere uygulanırsa, derleyici işlenenlerden birini örtük olarak diğerinin türüne dönüştürmeye çalışır (aynısı atamalar için de geçerlidir).
 Bu, işlemlerin her zaman işlenenlerden birinin türünde gerçekleştirildiği anlamına gelir.
 
 Hangi örtük dönüşümlerin mümkün olduğu hakkında daha fazla ayrıntı için, lütfen türlerle ilgili bölümlere bakın.
@@ -43,7 +43,7 @@ Negatif değere sahip bir ``int`` değişkenini, ``uint`` değişkenine dönüş
     int  y = -3;
     uint x = uint(y);
 
-Bu kod bloğunun sonunda ``x``, ``0xfffff..fd`` (64 adet onaltılık karaker) değerine sahip olacaktır, bu, ikisinin 256 bitlik tümleyen temsili olan -3'tür.
+Bu kod bloğunun sonunda ``x``, ``0xfffff..fd`` (64 adet onaltılık karaker) değerine sahip olacaktır, bu, iki'nin 256 bitlik tümleyen (two's complement) temsili olan -3'tür.
 
 Bir tam sayı, kendisinden daha küçük bir türe açık şekilde dönüştürülürse, daha yüksek dereceli bitler kesilir.
 
@@ -60,7 +60,7 @@ Bir tam sayı, kendisinden daha büyük bir türe açık şekilde dönüştürü
     uint32 b = uint32(a); // b, 0x00001234 olacaktır
     assert(a == b);
 
-Sabit boyutlu bayt türleri, dönüşümler sırasında farklı davranır. Bireysel bayt dizileri olarak düşünülebilirler ve daha küçük bir türe dönüştürmek diziyi kesecektir:
+Sabit boyutlu bayt dizisi türleri, dönüşümler sırasında farklı davranır. Bireysel bayt dizileri olarak düşünülebilirler ve daha küçük bir türe dönüştürmek diziyi kesecektir:
 
 .. code-block:: solidity
 
@@ -68,7 +68,7 @@ Sabit boyutlu bayt türleri, dönüşümler sırasında farklı davranır. Birey
     bytes1 b = bytes1(a); // b, 0x12 olacaktır
 
 
-Sabit boyutlu bir bayt türü, daha büyük bir türe açıkça dönüştürülürse, elde edilen ortak tümleyen sağ tarafta doldurulur. Sabit bir dizindeki bayta erişmek, dönüştürmeden önce ve sonra aynı değerle sonuçlanır (dizin hala aralıktaysa):
+Sabit boyutlu bir bayt dizisi türü, daha büyük bir türe açıkça dönüştürülürse, elde edilen ortak tümleyen sağ tarafta doldurulur. Sabit bir dizindeki bayt dizisine erişmek, dönüştürmeden önce ve sonra aynı değerle sonuçlanır (dizin hala aralıktaysa):
 
 .. code-block:: solidity
 
@@ -109,13 +109,13 @@ Dizinin hedef sabit bayt türünden daha uzun olması durumunda, sonunda kesme g
 
 .. _types-conversion-literals:
 
-Değişmezler ve Temel Türler Arasındaki Dönüşümler
+İfadeler (Literals) ve Temel Türler Arasındaki Dönüşümler
 =================================================
 
 Tamsayı Türleri
 -------------
 
-Ondalık ve onaltılık sayı değişmezleri, onu kesmeden temsil edecek kadar büyük herhangi bir tamsayı türüne örtük olarak dönüştürülebilir:
+Ondalık ve onaltılık sayı ifadeleri, onu kesmeden temsil edecek kadar büyük herhangi bir tamsayı türüne örtük olarak dönüştürülebilir:
 
 .. code-block:: solidity
 
@@ -124,12 +124,12 @@ Ondalık ve onaltılık sayı değişmezleri, onu kesmeden temsil edecek kadar b
     uint16 c = 0x123456; // hatalı, çünkü 0x3456 olacak şekilde kesilmek zorundadır
 
 .. not::
-    0.8.0 sürümünden önce, herhangi bir ondalık veya onaltılık sayı değişmezleri bir tamsayı türüne açıkça dönüştürülebilirdi. 0.8.0'dan itibaren, bu tür açık dönüştürmeler, örtülü dönüştürmeler kadar katıdır, yani, yalnızca değişmez değer elde edilen aralığa uyuyorsa bunlara izin verilir.  
+    0.8.0 sürümünden önce, herhangi bir ondalık veya onaltılık sayı ifadeleri bir tamsayı türüne açıkça dönüştürülebilirdi. 0.8.0'dan itibaren, bu tür açık dönüştürmeler, örtülü dönüştürmeler kadar katıdır, yani, yalnızca ifade elde edilen aralığa uyuyorsa bunlara izin verilir.  
 
 Sabit Boyutlu Bayt Dizileri
 ----------------------
 
-Ondalık sayı değişmezleri örtük olarak sabit boyutlu bayt dizilerine dönüştürülemez. Onaltılık sayı değişmezleri olabilir, ancak yalnızca onaltılık basamak sayısı bayt türünün boyutuna tam olarak uyuyorsa. Bir istisna olarak, sıfır değerine sahip hem ondalık hem de onaltılık değişmezler herhangi bir sabit boyutlu bayt türüne dönüştürülebilir:
+Ondalık sayı ifadeleri örtük olarak sabit boyutlu bayt dizilerine dönüştürülemez. Onaltılık sayı ifadeleri olabilir, ancak yalnızca onaltılık basamak sayısı bayt türünün boyutuna tam olarak uyuyorsa. Bir istisna olarak, sıfır değerine sahip hem ondalık hem de onaltılık ifadeler herhangi bir sabit boyutlu bayt türüne dönüştürülebilir:
 
 .. code-block:: solidity
 
@@ -141,7 +141,7 @@ Ondalık sayı değişmezleri örtük olarak sabit boyutlu bayt dizilerine dön�
     bytes4 f = 0; // uygun
     bytes4 g = 0x0; // uygun
 
-Dize (String) değişmezleri ve onaltılı dize değişmezleri, karakter sayıları bayt türünün boyutuyla eşleşiyorsa, örtük olarak sabit boyutlu bayt dizilerine dönüştürülebilir:
+String ifadeleri ve onaltılı string ifadeleri, karakter sayıları bayt türünün boyutuyla eşleşiyorsa, örtük olarak sabit boyutlu bayt dizilerine dönüştürülebilir:
 
 .. code-block:: solidity
 
@@ -155,7 +155,7 @@ Dize (String) değişmezleri ve onaltılı dize değişmezleri, karakter sayıla
 Adresler
 ---------
 
- :ref:`adres_değişmezleri` böümünde açıklandığı gibi, sağlama toplamı testini geçen doğru boyuttaki onaltılık değişmezler ``address`` türündedir. Başka hiçbir değişmez ``address`` türüne örtük olarak dönüştürülemez.
+ :ref:`adres_ifadeleri <_address_literals:>` bölümünde açıklandığı gibi, sağlama toplamı (checksum) testini geçen doğru boyuttaki onaltılık ifadeler ``address`` türündedir. Başka hiçbir ifade ``address`` türüne örtük olarak dönüştürülemez.
 
 ``bytes20`` değişkeninden ya da herhangi bir tam sayı türünden ``adress`` değişkenine yapılacak açık dönüştürmeler, ``address payable`` ile sonuçlanır.
 

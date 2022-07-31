@@ -104,16 +104,16 @@ Diziler olarak ``bytes`` ve ``string``
 
 ``bytes`` ve ``string`` türündeki değişkenler özel dizilerdir. ``bytes`` türü ``bytes1[]`` ile benzerdir, ancak çağrı verileri ve bellekte sıkıca paketlenmiştir. ``string``, ``bytes`` değerine eşittir ancak uzunluk veya dizin erişimine izin vermez.
 
-Solidity'nin dize (string) işleme fonksiyonları yoktur, ancak üçüncü taraf dize (string) kitaplıkları vardır. Ayrıca,
+Solidity'nin string işleme fonksiyonları yoktur, ancak üçüncü taraf string kitaplıkları vardır. Ayrıca,
 ``keccak256(abi.encodePacked(s1)) == keccak256(abi.encodePacked(s2))`` 
 kullanarak iki dizgiyi keccak256-hash ile karşılaştırabilir ve ``string.concat(s1, s2)`` kullanarak iki dizgiyi birleştirebilirsiniz.
 
-``bytes1[]`` yerine ``bytes`` kullanmalısınız çünkü daha ucuzdur, çünkü ``memory``de ``bytes1[]`` kullanmak, öğeler arasında 31 dolgu bayt ekler. ``storage``"da, sıkı paketleme nedeniyle dolgu bulunmadığına dikkat edin, bkz. :ref:`bayt ve dize<bytes-and-string>`. Genel bir kural olarak, rastgele uzunluktaki ham bayt verileri için ``bytes`` ve rastgele uzunluktaki dize (UTF-8) verileri için ``string`` kullanın. Uzunluğu belirli bir bayt sayısıyla sınırlayabiliyorsanız, her zaman ``bytes1`` ile ``bytes32`` arasındaki değer türlerinden birini kullanın çünkü bunlar çok daha ucuzdur.
+``bytes1[]`` yerine ``bytes`` kullanmalısınız çünkü daha ucuzdur, çünkü ``memory``de ``bytes1[]`` kullanmak, öğeler arasında 31 dolgu bayt ekler. ``storage``"da, sıkı paketleme nedeniyle dolgu bulunmadığına dikkat edin, bkz. :ref:`bayt ve string <bytes-and-string>`. Genel bir kural olarak, rastgele uzunluktaki ham bayt verileri için ``bytes`` ve rastgele uzunluktaki string (UTF-8) verileri için ``string`` kullanın. Uzunluğu belirli bir bayt sayısıyla sınırlayabiliyorsanız, her zaman ``bytes1`` ile ``bytes32`` arasındaki değer türlerinden birini kullanın çünkü bunlar çok daha ucuzdur.
 
 
 .. not::
 
-    ``s`` dizesinin bayt temsiline erişmek istiyorsanız, ``bytes(s).length`` / ``bytes(s)[7] = 'x';`` yapısını kullanın. Tek tek karakterlere değil, UTF-8 temsilinin düşük seviyeli baytlarına eriştiğinizi unutmayın.
+    ``s`` stringinin bayt temsiline erişmek istiyorsanız, ``bytes(s).length`` / ``bytes(s)[7] = 'x';`` yapısını kullanın. Tek tek karakterlere değil, UTF-8 temsilinin düşük seviyeli baytlarına eriştiğinizi unutmayın.
 
 .. index:: ! bytes-concat, ! string-concat
 
@@ -125,7 +125,7 @@ kullanarak iki dizgiyi keccak256-hash ile karşılaştırabilir ve ``string.conc
 
 ``string.concat`` kullanarak rastgele sayıda ``string`` değerini birleştirebilirsiniz. Fonksiyon, bağımsız değişkenlerin içeriğini doldurmadan içeren tek bir ``string memory`` dizisi döndürür. Örtülü olarak ``string``e dönüştürülemeyen diğer türlerin parametrelerini kullanmak istiyorsanız, önce bunları ``string``e dönüştürmeniz gerekir.
 
-Benzer şekilde, ``bytes.concat`` fonksiyonu, rastgele sayıda ``bytes`` veya ``bytes1 ... bytes32`` değerlerini birleştirebilir. Fonksiyon, bağımsız değişkenlerin içeriğini doldurmadan içeren tek bir ``bytes memory`` dizisi döndürür. Dize parametreleri veya örtük olarak ``bytes``a dönüştürülemeyen diğer türleri kullanmak istiyorsanız, önce bunları ``bytes`` veya ``bytes1``/.../``bytes32``ye dönüştürmeniz gerekir.
+Benzer şekilde, ``bytes.concat`` fonksiyonu, rastgele sayıda ``bytes`` veya ``bytes1 ... bytes32`` değerlerini birleştirebilir. Fonksiyon, bağımsız değişkenlerin içeriğini doldurmadan içeren tek bir ``bytes memory`` dizisi döndürür. String parametreleri veya örtük olarak ``bytes``a dönüştürülemeyen diğer türleri kullanmak istiyorsanız, önce bunları ``bytes`` veya ``bytes1``/.../``bytes32``ye dönüştürmeniz gerekir.
 
 
 .. code-block:: solidity
@@ -172,10 +172,10 @@ Solidity'deki tüm değişkenler gibi, yeni tahsis edilen dizilerin öğeleri he
 
 .. index:: ! array;literals, ! inline;arrays
 
-Dizi Değişmezleri
+Dizi İfadeleri
 ^^^^^^^^^^^^^^
 
-Bir dizi değişmezi, köşeli parantezler (``[...]``) içine alınmış bir veya daha fazla ifadenin virgülle ayrılmış bir listesidir. Örneğin ``[1, a, f(3)]``. Dizi değişmezinin türü şu şekilde belirlenir:
+Bir dizi ifadesi, köşeli parantezler (``[...]``) içine alınmış bir veya daha fazla ifadenin virgülle ayrılmış bir listesidir. Örneğin ``[1, a, f(3)]``. Dizi ifadesinin türü şu şekilde belirlenir:
 
 Her zaman uzunluğu ifade sayısı olan statik olarak boyutlandırılmış bir bellek dizisidir.
 
@@ -199,9 +199,9 @@ Aşağıdaki örnekte, ``[1, 2, 3]`` türü ``uint8[3] memory``dir, çünkü bu 
         }
     }
 
-Birinci ifadenin türü ``uint8`` iken ikincinin türü ``int8`` olduğundan ve bunlar örtük olarak birbirine dönüştürülemediğinden ``[1, -1]`` dizisi değişmezi geçersizdir. Çalışması için örneğin ``[int8(1), -1]`` kullanabilirsiniz.
+Birinci ifadenin türü ``uint8`` iken ikincinin türü ``int8`` olduğundan ve bunlar örtük olarak birbirine dönüştürülemediğinden ``[1, -1]`` dizisi ifadesi geçersizdir. Çalışması için örneğin ``[int8(1), -1]`` kullanabilirsiniz.
 
-Farklı türdeki sabit boyutlu bellek dizileri birbirine dönüştürülemediğinden (temel türler yapabilse bile), iki boyutlu dizi değişmezlerini kullanmak istiyorsanız, her zaman ortak bir temel türü açıkça belirtmeniz gerekir:
+Farklı türdeki sabit boyutlu bellek dizileri birbirine dönüştürülemediğinden (temel türler yapabilse bile), iki boyutlu dizi ifadelerini kullanmak istiyorsanız, her zaman ortak bir temel türü açıkça belirtmeniz gerekir:
 
 .. code-block:: solidity
 
