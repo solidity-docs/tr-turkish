@@ -1,5 +1,5 @@
 ****************
-Language Grammar
+Dilbilgisi (Language Grammar)
 ****************
 
 .. a4:autogrammar:: SolidityParser

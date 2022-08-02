@@ -1,13 +1,13 @@
 /**
- * Solidity is a statically typed, contract-oriented, high-level language for implementing smart contracts on the Ethereum platform.
+ * Solidity, Ethereum platformunda akıllı sözleşmelerin uygulanması için statik olarak yazılan, sözleşme odaklı, yüksek seviyeli bir programlama dilidir.
  */
 parser grammar SolidityParser;
 
 options { tokenVocab=SolidityLexer; }
 
 /**
- * On top level, Solidity allows pragmas, import directives, and
- * definitions of contracts, interfaces, libraries, structs, enums and constants.
+ * Solidity en üst seviyede pragmalara, import direktiflerine ve sözleşmelerin,
+ * arayüzlerin, kütüphanelerin, structların, enumların ve constantların tanımlanmasına izin verir.
  */
 sourceUnit: (
 	pragmaDirective
@@ -28,7 +28,7 @@ sourceUnit: (
 pragmaDirective: Pragma PragmaToken+ PragmaSemicolon;
 
 /**
- * Import directives import identifiers from different files.
+ * İçe aktarma direktifleri farklı dosyalardan tanımlayıcıları içe aktarır.
  */
 importDirective:
 	Import (
@@ -40,30 +40,30 @@ importDirective:
 //@doc:name aliases
 importAliases: symbol=identifier (As alias=identifier)?;
 /**
- * Path of a file to be imported.
+ * İçeri aktarılacak dosyanın yolu.
  */
 path: NonEmptyStringLiteral;
 /**
- * List of aliases for symbols to be imported.
+ * İçe aktarılacak semboller için takma adların listesi.
  */
 symbolAliases: LBrace aliases+=importAliases (Comma aliases+=importAliases)* RBrace;
 
 /**
- * Top-level definition of a contract.
+ * Bir sözleşmenin en üst düzey tanımı.
  */
 contractDefinition:
 	Abstract? Contract name=identifier
 	inheritanceSpecifierList?
 	LBrace contractBodyElement* RBrace;
 /**
- * Top-level definition of an interface.
+ * Bir arayüzün en üst düzey tanımı.
  */
 interfaceDefinition:
 	Interface name=identifier
 	inheritanceSpecifierList?
 	LBrace contractBodyElement* RBrace;
 /**
- * Top-level definition of a library.
+ * Bir kütüphanenin en üst düzey tanımı.
  */
 libraryDefinition: Library name=identifier LBrace contractBodyElement* RBrace;
 
@@ -72,16 +72,16 @@ inheritanceSpecifierList:
 	Is inheritanceSpecifiers+=inheritanceSpecifier
 	(Comma inheritanceSpecifiers+=inheritanceSpecifier)*?;
 /**
- * Inheritance specifier for contracts and interfaces.
- * Can optionally supply base constructor arguments.
+ * Sözleşmeler ve arayüzler için kalıtım belirleyicisi.
+ * İsteğe bağlı olarak temel constructor argümanları sağlayabilir.
  */
 inheritanceSpecifier: name=identifierPath arguments=callArgumentList?;
 
 /**
- * Declarations that can be used in contracts, interfaces and libraries.
+ * Sözleşmelerde, arayüzlerde ve kütüphanelerde kullanılabilen tanımlamalar.
  *
- * Note that interfaces and libraries may not contain constructors, interfaces may not contain state variables
- * and libraries may not contain fallback, receive functions nor non-constant state variables.
+ * Arayüzlerin ve kütüphanelerin constructor, arayüzlerin durum değişkenleri ve
+ * kütüphanelerin fallback, receive fonksiyonları veya sabit olmayan durum değişkenleri içermeyebileceğini unutmayın.
  */
 contractBodyElement:
 	constructorDefinition
@@ -99,34 +99,34 @@ contractBodyElement:
 //@doc:inline
 namedArgument: name=identifier Colon value=expression;
 /**
- * Arguments when calling a function or a similar callable object.
- * The arguments are either given as comma separated list or as map of named arguments.
+ * Bir fonksiyonu veya benzer bir çağrılabilir nesneyi çağırırken mevcut olan argümanlar.
+ * Bağımsız değişkenler ya virgülle ayrılmış liste olarak ya da adlandırılmış bağımsız değişkenlerin haritası olarak verilir.
  */
 callArgumentList: LParen ((expression (Comma expression)*)? | LBrace (namedArgument (Comma namedArgument)*)? RBrace) RParen;
 /**
- * Qualified name.
+ * Nitelikli isim.
  */
 identifierPath: identifier (Period identifier)*;
 
 /**
- * Call to a modifier. If the modifier takes no arguments, the argument list can be skipped entirely
- * (including opening and closing parentheses).
+ * Bir modifier'a çağrı yapın. Modifier hiçbir argüman almazsa, argüman listesi
+ * tamamen atlanabilir (açılış ve kapanış parantezleri dahil).
  */
 modifierInvocation: identifierPath callArgumentList?;
 /**
- * Visibility for functions and function types.
+ * Fonksiyonlar ve fonksiyon türleri için görünürlük.
  */
 visibility: Internal | External | Private | Public;
 /**
- * A list of parameters, such as function arguments or return values.
+ * Fonksiyon argümanları veya dönüş değerleri gibi parametrelerin bir listesi.
  */
 parameterList: parameters+=parameterDeclaration (Comma parameters+=parameterDeclaration)*;
 //@doc:inline
 parameterDeclaration: type=typeName location=dataLocation? name=identifier?;
 /**
- * Definition of a constructor.
- * Must always supply an implementation.
- * Note that specifying internal or public visibility is deprecated.
+ * Bir constructor tanımı.
+ * Her zaman bir uygulama sağlamalıdır.
+ * Internal veya Public görünürlük belirtmenin kullanımdan kaldırıldığını unutmayın.
  */
 constructorDefinition
 locals[boolean payableSet = false, boolean visibilitySet = false]
@@ -141,20 +141,20 @@ locals[boolean payableSet = false, boolean visibilitySet = false]
 	body=block;
 
 /**
- * State mutability for function types.
- * The default mutability 'non-payable' is assumed if no mutability is specified.
+ * Fonksiyon tipleri için durum değiştirilebilirliği.
+ * Herhangi bir değişebilirlik belirtilmezse varsayılan değişebilirlik 'non-payable' olarak kabul edilir.
  */
 stateMutability: Pure | View | Payable;
 /**
- * An override specifier used for functions, modifiers or state variables.
- * In cases where there are ambiguous declarations in several base contracts being overridden,
- * a complete list of base contracts has to be given.
+ * Fonksiyonlar, modifier'lar veya durum değişkenleri için kullanılan bir geçersiz kılma belirteci.
+ * Geçersiz kılınan birden fazla temel sözleşmede belirsiz tanımlamalar olduğu durumlarda,
+ * temel sözleşmelerin tam bir listesi verilmelidir.
  */
 overrideSpecifier: Override (LParen overrides+=identifierPath (Comma overrides+=identifierPath)* RParen)?;
 /**
- * The definition of contract, library and interface functions.
- * Depending on the context in which the function is defined, further restrictions may apply,
- * e.g. functions in interfaces have to be unimplemented, i.e. may not contain a body block.
+ * Sözleşme, kütüphane ve arayüz fonksiyonlarının tanımı.
+ * Fonksiyonun tanımlandığı bağlama bağlı olarak, başka kısıtlamalar da uygulanabilir;
+ * örneğin, arayüzlerdeki fonksiyonlar uygulanmamış olmalıdır, yani bir gövde bloğu içermemelidir.
  */
 functionDefinition
 locals[
@@ -176,9 +176,9 @@ locals[
 	(Returns LParen returnParameters=parameterList RParen)?
 	(Semicolon | body=block);
 /**
- * The definition of a modifier.
- * Note that within the body block of a modifier, the underscore cannot be used as identifier,
- * but is used as placeholder statement for the body of a function to which the modifier is applied.
+ * Bir modifier'ın tanımı.
+ * Bir modifier'ın gövde bloğu içinde, alt çizginin tanımlayıcı olarak kullanılamayacağını,
+ * ancak modifier'ın uygulandığı bir fonksiyonun gövdesi için yer tutucu ifade olarak kullanıldığını unutmayın.
  */
 modifierDefinition
 locals[
@@ -195,7 +195,7 @@ locals[
 	(Semicolon | body=block);
 
 /**
- * Definition of the special fallback function.
+ * Özel fallback fonksiyonunun tanımı.
  */
 fallbackFunctionDefinition
 locals[
@@ -218,7 +218,7 @@ locals[
 	(Semicolon | body=block);
 
 /**
- * Definition of the special receive function.
+ * Özel receive fonksiyonunun tanımı.
  */
 receiveFunctionDefinition
 locals[
@@ -239,25 +239,25 @@ locals[
 	(Semicolon | body=block);
 
 /**
- * Definition of a struct. Can occur at top-level within a source unit or within a contract, library or interface.
+ * Bir struct'ın tanımı. Bir kaynak birimin içinde üst seviyede veya bir sözleşme, kütüphane veya arayüz içinde oluşabilir.
  */
 structDefinition: Struct name=identifier LBrace members=structMember+ RBrace;
 /**
- * The declaration of a named struct member.
+ * Adlandırılmış bir struct üyesinin tanımı.
  */
 structMember: type=typeName name=identifier Semicolon;
 /**
- * Definition of an enum. Can occur at top-level within a source unit or within a contract, library or interface.
+ * Bir enum tanımı. Bir kaynak birim içinde üst seviyede veya bir sözleşme, kütüphane veya arayüz içinde oluşabilir.
  */
 enumDefinition:	Enum name=identifier LBrace enumValues+=identifier (Comma enumValues+=identifier)* RBrace;
 /**
- * Definition of a user defined value type. Can occur at top-level within a source unit or within a contract, library or interface.
+ * Kullanıcı tanımlı bir değer tipinin tanımı. Bir kaynak birim içinde üst seviyede veya bir sözleşme, kütüphane veya arayüz içinde oluşabilir.
  */
 userDefinedValueTypeDefinition:
 	Type name=identifier Is elementaryTypeName[true] Semicolon;
 
 /**
- * The declaration of a state variable.
+ * Bir durum değişkeninin tanımı.
  */
 stateVariableDeclaration
 locals [boolean constantnessSet = false, boolean visibilitySet = false, boolean overrideSpecifierSet = false]
@@ -276,7 +276,7 @@ locals [boolean constantnessSet = false, boolean visibilitySet = false, boolean 
 	Semicolon;
 
 /**
- * The declaration of a constant variable.
+ * Sabit bir değişkenin tanımı.
  */
 constantVariableDeclaration
 :
@@ -287,11 +287,11 @@ constantVariableDeclaration
 	Semicolon;
 
 /**
- * Parameter of an event.
+ * Bir eventin parametresi.
  */
 eventParameter: type=typeName Indexed? name=identifier?;
 /**
- * Definition of an event. Can occur in contracts, libraries or interfaces.
+ * Bir event tanımı. Sözleşmelerde, kütüphanelerde veya arayüzlerde meydana gelebilir.
  */
 eventDefinition:
 	Event name=identifier
@@ -300,11 +300,11 @@ eventDefinition:
 	Semicolon;
 
 /**
- * Parameter of an error.
+ * Error parametresi.
  */
 errorParameter: type=typeName name=identifier?;
 /**
- * Definition of an error.
+ * Bir error tanımı.
  */
 errorDefinition:
 	Error name=identifier
@@ -312,13 +312,13 @@ errorDefinition:
 	Semicolon;
 
 /**
- * Using directive to bind library functions and free functions to types.
- * Can occur within contracts and libraries and at the file level.
+ * Kütüphane işlevlerini ve serbest işlevleri türlere bağlamak için yönerge kullanma.
+ * Sözleşmeler ve kütüphaneler içinde ve dosya düzeyinde meydana gelebilir.
  */
 usingDirective: Using (identifierPath | (LBrace identifierPath (Comma identifierPath)* RBrace)) For (Mul | typeName) Global? Semicolon;
 /**
- * A type name can be an elementary type, a function type, a mapping type, a user-defined type
- * (e.g. a contract or struct) or an array type.
+ * Bir tür adı bir temel tür, bir fonksiyon türü, bir mapping türü, bir kullanıcı tanımlı tür olabilir
+ * (örneğin bir sözleşme veya struct) veya bir dizi türü.
  */
 typeName: elementaryTypeName[true] | functionTypeName | mappingType | identifierPath | typeName LBrack expression? RBrack;
 elementaryTypeName[boolean allowAddressPayable]: Address | {$allowAddressPayable}? Address Payable | Bool | String | Bytes | SignedIntegerType | UnsignedIntegerType | FixedBytes | Fixed | Ufixed;
@@ -333,17 +333,18 @@ locals [boolean visibilitySet = false, boolean mutabilitySet = false]
 	(Returns LParen returnParameters=parameterList RParen)?;
 
 /**
- * The declaration of a single variable.
+ * Tek bir değişkenin tanımı.
  */
 variableDeclaration: type=typeName location=dataLocation? name=identifier;
 dataLocation: Memory | Storage | Calldata;
 
 /**
- * Complex expression.
- * Can be an index access, an index range access, a member access, a function call (with optional function call options),
- * a type conversion, an unary or binary expression, a comparison or assignment, a ternary expression,
- * a new-expression (i.e. a contract creation or the allocation of a dynamic memory array),
- * a tuple, an inline array or a primary expression (i.e. an identifier, literal or type name).
+ * Karmaşık bir ifade.
+ * Bir dizin erişimi, bir dizin aralığı erişimi, bir üye erişimi, bir fonksiyon
+ * çağrısı (isteğe bağlı fonksiyon çağrısı seçenekleriyle), bir tür dönüştürme,
+ * bir tekli veya ikili ifade, bir karşılaştırma veya atama, bir üçlü ifade, bir
+ * yeni ifade (yani bir sözleşme oluşturma veya bir dinamik bellek dizisinin tahsisi),
+ * bir tuple, bir inline dizi veya bir birincil ifade (yani bir tanımlayıcı, literal veya tür adı) olabilir.
  */
 expression:
 	expression LBrack index=expression? RBrack # IndexAccess
@@ -382,36 +383,36 @@ expression:
 assignOp: Assign | AssignBitOr | AssignBitXor | AssignBitAnd | AssignShl | AssignSar | AssignShr | AssignAdd | AssignSub | AssignMul | AssignDiv | AssignMod;
 tupleExpression: LParen (expression? ( Comma expression?)* ) RParen;
 /**
- * An inline array expression denotes a statically sized array of the common type of the contained expressions.
+ * Inline dizi ifadesi, içerdiği ifadelerin ortak türünde statik olarak boyutlandırılmış bir diziyi belirtir.
  */
 inlineArrayExpression: LBrack (expression ( Comma expression)* ) RBrack;
 
 /**
- * Besides regular non-keyword Identifiers, some keywords like 'from' and 'error' can also be used as identifiers.
+ * Normal anahtar kelime olmayan Tanımlayıcıların yanı sıra, 'from' ve 'error' gibi bazı anahtar kelimeler de tanımlayıcı olarak kullanılabilir.
  */
 identifier: Identifier | From | Error | Revert | Global;
 
 literal: stringLiteral | numberLiteral | booleanLiteral | hexStringLiteral | unicodeStringLiteral;
 booleanLiteral: True | False;
 /**
- * A full string literal consists of either one or several consecutive quoted strings.
+ * Tam bir dize literali, bir veya birkaç ardışık tırnaklı dizeden oluşur.
  */
 stringLiteral: (NonEmptyStringLiteral | EmptyStringLiteral)+;
 /**
- * A full hex string literal that consists of either one or several consecutive hex strings.
+ * Bir veya birkaç ardışık onaltılık dizeden oluşan tam onaltılık dize literali.
  */
 hexStringLiteral: HexString+;
 /**
- * A full unicode string literal that consists of either one or several consecutive unicode strings.
+ * Bir veya birkaç ardışık unicode string'den oluşan tam bir unicode string literal.
  */
 unicodeStringLiteral: UnicodeStringLiteral+;
 
 /**
- * Number literals can be decimal or hexadecimal numbers with an optional unit.
+ * Sayı literalleri isteğe bağlı bir birimle birlikte ondalık veya onaltılık sayılar olabilir.
  */
 numberLiteral: (DecimalNumber | HexNumber) NumberUnit?;
 /**
- * A curly-braced block of statements. Opens its own scope.
+ * Kıvırcık parantezli bir ifade bloğu. Kendi alanını açar.
  */
 block:
 	LBrace ( statement | uncheckedBlock )* RBrace;
@@ -437,59 +438,59 @@ statement:
 //@doc:inline
 simpleStatement: variableDeclarationStatement | expressionStatement;
 /**
- * If statement with optional else part.
+ * İsteğe bağlı olarak "else" kısmı olan if ifadesi.
  */
 ifStatement: If LParen expression RParen statement (Else statement)?;
 /**
- * For statement with optional init, condition and post-loop part.
+ * İsteğe bağlı init, condition ve post-loop kısmı olan for ifadesi.
  */
 forStatement: For LParen (simpleStatement | Semicolon) (expressionStatement | Semicolon) expression? RParen statement;
 whileStatement: While LParen expression RParen statement;
 doWhileStatement: Do statement While LParen expression RParen Semicolon;
 /**
- * A continue statement. Only allowed inside for, while or do-while loops.
+ * Bir devam ifadesi. Yalnızca for, while veya do-while döngüleri içinde izin verilir.
  */
 continueStatement: Continue Semicolon;
 /**
- * A break statement. Only allowed inside for, while or do-while loops.
+ * Bir break ifadesi. Yalnızca for, while veya do-while döngüleri içinde izin verilir.
  */
 breakStatement: Break Semicolon;
 /**
- * A try statement. The contained expression needs to be an external function call or a contract creation.
+ * Bir try ifadesi. İçerilen ifadenin harici bir işlev çağrısı veya bir sözleşme oluşturma olması gerekir.
  */
 tryStatement: Try expression (Returns LParen returnParameters=parameterList RParen)? block catchClause+;
 /**
- * The catch clause of a try statement.
+ * Bir try ifadesinin catch cümlesi.
  */
 catchClause: Catch (identifier? LParen (arguments=parameterList) RParen)? block;
 
 returnStatement: Return expression? Semicolon;
 /**
- * An emit statement. The contained expression needs to refer to an event.
+ * Bir emit ifadesi. İçerilen ifadenin bir event'e referans vermesi gerekir.
  */
 emitStatement: Emit expression callArgumentList Semicolon;
 /**
- * A revert statement. The contained expression needs to refer to an error.
+ * Bir revert ifadesi. İçerilen ifadenin bir error'e referans vermesi gerekir.
  */
 revertStatement: Revert expression callArgumentList Semicolon;
 /**
- * An inline assembly block.
- * The contents of an inline assembly block use a separate scanner/lexer, i.e. the set of keywords and
- * allowed identifiers is different inside an inline assembly block.
+ * Bir inline assembly bloğu.
+ * Inline assembly bloğunun içeriği ayrı bir tarayıcı/lexer kullanır, yani bir
+ * inline assembly bloğunun içinde anahtar sözcükler ve izin verilen tanımlayıcılar kümesi farklıdır.
  */
 assemblyStatement: Assembly AssemblyDialect? assemblyFlags? AssemblyLBrace yulStatement* YulRBrace;
 
 /**
- * Assembly flags.
- * Comma-separated list of double-quoted strings as flags.
+ * Assembly bayrakları.
+ * Bayrak olarak çift tırnaklı stringlerin virgülle ayrılmış listesi.
  */
 assemblyFlags: AssemblyBlockLParen AssemblyFlagString (AssemblyBlockComma AssemblyFlagString)* AssemblyBlockRParen;
 
 //@doc:inline
 variableDeclarationList: variableDeclarations+=variableDeclaration (Comma variableDeclarations+=variableDeclaration)*;
 /**
- * A tuple of variable names to be used in variable declarations.
- * May contain empty fields.
+ * Değişken tanımlamalarında kullanılacak değişken adlarının bir demeti.
+ * Boş alanlar içerebilir.
  */
 variableDeclarationTuple:
 	LParen
@@ -497,23 +498,23 @@ variableDeclarationTuple:
 		(Comma (variableDeclarations+=variableDeclaration)?)*
 	RParen;
 /**
- * A variable declaration statement.
- * A single variable may be declared without initial value, whereas a tuple of variables can only be
- * declared with initial value.
+ * Bir değişken tanımlama ifadesi.
+ * Tek bir değişken başlangıç değeri olmadan tanımlanabilirken, değişken çiftleri
+ * yalnızca başlangıç değeriyle tanımlanabilir.
  */
 variableDeclarationStatement: ((variableDeclaration (Assign expression)?) | (variableDeclarationTuple Assign expression)) Semicolon;
 expressionStatement: expression Semicolon;
 
 mappingType: Mapping LParen key=mappingKeyType DoubleArrow value=typeName RParen;
 /**
- * Only elementary types or user defined types are viable as mapping keys.
+ * Eşleme anahtarları olarak yalnızca temel tipler veya kullanıcı tanımlı tipler kullanılabilir.
  */
 mappingKeyType: elementaryTypeName[false] | identifierPath;
 
 /**
- * A Yul statement within an inline assembly block.
- * continue and break statements are only valid within for loops.
- * leave statements are only valid within function bodies.
+ * Inline assembly bloğu içinde bir Yul ifadesi.
+ * continue ve break ifadeleri yalnızca for döngüleri içinde geçerlidir.
+ * leave ifadeleri yalnızca fonksiyon gövdeleri içinde geçerlidir.
  */
 yulStatement:
 	yulBlock
@@ -531,16 +532,16 @@ yulStatement:
 yulBlock: YulLBrace yulStatement* YulRBrace;
 
 /**
- * The declaration of one or more Yul variables with optional initial value.
- * If multiple variables are declared, only a function call is a valid initial value.
+ * İsteğe bağlı başlangıç değerine sahip bir veya daha fazla Yul değişkeninin tanımlanması.
+ * Birden fazla değişken tanımlanmışsa, yalnızca bir fonksiyon çağrısı geçerli bir başlangıç değeridir.
  */
 yulVariableDeclaration:
 	(YulLet variables+=YulIdentifier (YulAssign yulExpression)?)
 	| (YulLet variables+=YulIdentifier (YulComma variables+=YulIdentifier)* (YulAssign yulFunctionCall)?);
 
 /**
- * Any expression can be assigned to a single Yul variable, whereas
- * multi-assignments require a function call on the right-hand side.
+ * Herhangi bir ifade tek bir Yul değişkenine atanabilirken, çoklu atamalar için bir
+ * yandan bir fonksiyon çağrısı yapılması gerekir.
  */
 yulAssignment: yulPath YulAssign yulExpression | (yulPath (YulComma yulPath)+) YulAssign yulFunctionCall;
 
@@ -551,8 +552,8 @@ yulForStatement: YulFor init=yulBlock cond=yulExpression post=yulBlock body=yulB
 //@doc:inline
 yulSwitchCase: YulCase yulLiteral yulBlock;
 /**
- * A Yul switch statement can consist of only a default-case (deprecated) or
- * one or more non-default cases optionally followed by a default-case.
+ * Bir Yul switch ifadesi yalnızca bir varsayılan durumdan (kullanımdan kaldırılmıştır)
+ * veya isteğe bağlı olarak bir varsayılan durum tarafından takip edilen bir veya daha fazla varsayılan olmayan durumdan oluşabilir.
  */
 yulSwitchStatement:
 	YulSwitch yulExpression
@@ -568,13 +569,13 @@ yulFunctionDefinition:
 	body=yulBlock;
 
 /**
- * While only identifiers without dots can be declared within inline assembly,
- * paths containing dots can refer to declarations outside the inline assembly block.
+ * Inline assembly içinde yalnızca noktasız tanımlayıcılar bildirilebilirken,
+ * nokta içeren yollar inline assembly bloğunun dışındaki bildirimlere başvurabilir.
  */
 yulPath: YulIdentifier (YulPeriod (YulIdentifier | YulEVMBuiltin))*;
 /**
- * A call to a function with return values can only occur as right-hand side of an assignment or
- * a variable declaration.
+ * Dönüş değerlerine sahip bir fonksiyon çağrısı yalnızca bir atama veya değişken bildiriminin
+ * sağ tarafı olarak gerçekleşebilir.
  */
 yulFunctionCall: (YulIdentifier | YulEVMBuiltin) YulLParen (yulExpression (YulComma yulExpression)*)? YulRParen;
 yulBoolean: YulTrue | YulFalse;
