@@ -6,16 +6,14 @@ Yul
 
 .. index:: ! assembly, ! asm, ! evmasm, ! yul, julia, iulia
 
-Yul (previously also called JULIA or IULIA) is an intermediate language that can be
-compiled to bytecode for different backends.
+Yul (önceden JULIA veya IULIA olarak da adlandırılmıştır), farklı backend'ler için bayt koduna derlenebilen bir ara dildir.
 
-Support for EVM 1.0, EVM 1.5 and Ewasm is planned, and it is designed to
-be a usable common denominator of all three
-platforms. It can already be used in stand-alone mode and
-for "inline assembly" inside Solidity
-and there is an experimental implementation of the Solidity compiler
-that uses Yul as an intermediate language. Yul is a good target for
-high-level optimisation stages that can benefit all target platforms equally.
+EVM 1.0, EVM 1.5 ve Ewasm desteği planlanmış olup, her üç platformda 
+kullanılabilir bir ortak paydası olacak şekilde 
+tasarlanmıştır. Halihazırda Solidity içinde bağımsız modda ve 
+"inline (satır-içi) Assembly" için kullanılabilir ve Solidity derleyicisinin Yul'u bir ara dil olarak 
+kullanan  deneysel bir uygulaması bulunmaktadır. Yul, üst düzey optimizasyon aşamaları için 
+tüm hedef platformlara eşit olarak fayda sağlayabilecek  iyi bir araçtır.
 
 Motivation and High-level Description
 =====================================
