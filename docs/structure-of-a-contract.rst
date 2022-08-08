@@ -9,7 +9,7 @@ Bir Sözleşmenin Yapısı
 Solidity'deki sözleşmeler, nesne yönelimli dillerdeki sınıflara benzer.
 Her kontrat içerisinde şu beyanları bulundurabilir: :ref:`structure-state-variables`, :ref:`structure-functions`,
 :ref:`structure-function-modifiers`, :ref:`structure-events`, :ref:`structure-errors`, :ref:`structure-struct-types` ve :ref:`structure-enum-types`.
-Ayrıca, sözleşmeler bilgileri diğer sözleşmelerden miras alabilir.
+Ayrıca, sözleşmeler bilgileri diğer sözleşmelerden kalıt alabilir.
 
 Aynı zamanda :ref:`libraries<libraries>` ve :ref:`interfaces<interfaces>` adı verilen özel sözleşme türleri de vardır.
 
@@ -42,7 +42,7 @@ Fonksiyonlar
 =========
 
 Fonksiyonlar, yürütülebilir kod birimleridir. Fonksiyonlar genellikle 
-bir sözleşme içinde tanımlanırlar, ancak sözleşmelerin dışında da tanımlanabilirler.
+bir sözleşme içinde tanımlanabilecekleri gibi sözleşmelerin dışında da tanımlanabilirler.
 
 .. code-block:: solidity
 
@@ -55,7 +55,7 @@ bir sözleşme içinde tanımlanırlar, ancak sözleşmelerin dışında da tan�
         }
     }
 
-    // Helper fonksiyonu sözleşmenin dışında tanımlı 
+    // Helper fonksiyonu sözleşmenin dışında tanımlanmıştır 
     function helper(uint x) pure returns (uint) {
         return x * 2;
     }
@@ -66,7 +66,7 @@ seviyelerine sahiptir. :ref:`Functions<functions>` parametre ve değişkenleri b
 
 .. _structure-function-modifiers:
 
-Fonksiyon Değiştiriciler
+Fonksiyon Değiştiriciler (Modifier'lar)
 ==================
 
 Fonksiyon değiştiriciler fonksiyonların semantiğini bildirimsel bir şekilde değiştirmek için kullanılabilir.
@@ -101,7 +101,7 @@ Fonksiyonlar gibi, değiştiriciler de :ref:`overridden <modifier-overriding>` o
 
 .. _structure-events:
 
-Olaylar
+Olaylar (Event)
 ======
 
 Olaylar, EVM için yapılacak olan kayıt işlemlerine kolaylık sağlayan arayüzlerdir.
@@ -159,7 +159,7 @@ Daha fazla bilgi için sözleşmeler bölümündeki :ref:`errors`a bakın.
 
 .. _structure-struct-types:
 
-Yapı Tipleri
+Yapı (Struct) Tipleri
 =============
 
 Yapılar, birkaç değişkeni grup halinde bir arada bulunduran özel tanımlı türlerdir (tipler
