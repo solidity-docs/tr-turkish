@@ -6,13 +6,13 @@ Sözleşme Meta Verisi
 
 .. index:: metadata, contract verification
 
-Solidity derleyicisi otobatik olarak derlenen sözleşme hakkında bilgiler içeren "şözleşme meta verisi" adlı bir JSON dosyası oluşturur. Bu dosyayı derleyici sürümünü, kaynak dosyaları, ABI ve NatSpec dokümentasyonunu sorgulamak için kullanabilirsiniz. Bu sayede sözleşmenin kaynak kodunu doğrulayabilir ve sözleşmeyle daha güvenli bir şekilde etkileşime geçebilirsiniz.
+Solidity derleyicisi derlenen sözleşme hakkında bilgiler içeren "şözleşme meta verisi" adlı bir JSON dosyasını otomatik olarak oluşturur. Bu dosyayı derleyici sürümünü, kaynak dosyaları, ABI ve NatSpec dokümentasyonunu sorgulamak için kullanabilirsiniz. Bu sayede sözleşmenin kaynak kodunu doğrulayabilir ve sözleşmeyle daha güvenli bir şekilde etkileşime geçebilirsiniz.
 
-Derleyici varsayılan şeklinde meta veri dosyasının IPFS hash'ini bayt kodun sonuna ekler (detaylar için aşağıya göz atınız). Böylelikle meta veri dosyasını doğrulanmış bir şekilde ve merkezi bir veri sağlayıcısına bağlı kalmadan doğrulanmış bir şekilde indirebilirsiniz. Bu konuda diğer seçenekler Swarm hash'ini kullanmak veya meta veri hash'ini bayt kodun sonuna eklememektir. Bu seçenekler :ref:`Standard JSON Arayüzü<compiler-api>` üzerinden ayarlanabilir.
+Derleyici varsayılan şeklinde meta veri dosyasının IPFS hash'ini bayt kodun sonuna ekler (detaylar için aşağıya göz atınız). Böylelikle meta veri merkezi bir veri sağlayıcısına bağlı kalmadan doğrulanmış bir şekilde indirebilirsiniz. Bu konuda diğer seçenekler Swarm hash'ini kullanmak veya meta veri hash'ini bayt kodun sonuna eklememektir. Bu seçenekler :ref:`Standard JSON Arayüzü<compiler-api>` üzerinden ayarlanabilir.
 
 Meta veri dosyasına erişilebilmesi için dosyayı IPFS, Swarm veya başka bir serviste yayınlamanız gerekmektedir. Dosyayı ``SözleşmeAdı_meta.json`` adında bir dosya oluşturan ``solc --metadata`` komutunu kullanarak yaratabilirsiniz. Dosya kaynak kodu dosyalarının IPFS ve Swarm hash'lerini içerdiği için bütün kaynak kodu dosyalarını ve meta veri dosyasını yüklemeniz gerekmektedir.
 
-Meta veri dosyası aşağıdaki formattadır. Fakat aşağıdaki örnek okuması kolay şekilde gösterilmektedir. Normalde düzgün şekilde formatlanmış meta veri tırnak işaretlerini doğru şekilde kullanmalı, metindeki boşlukları en aza indirmeli ve JSON nesnesinin anahtarlarını tutarlı bir formatlamaya ulaşmak için sıralamalıdır. Normalde JSON dosyalarında yorum satırlarına müsade edilmezken burada yalnızde gösterim amaçlı olarak eklenmiştir.
+Meta veri dosyası aşağıdaki formattadır. Fakat aşağıdaki örnek okuması kolay şekilde gösterilmektedir. Normalde düzgün şekilde formatlanmış meta veri tırnak işaretlerini doğru şekilde kullanmalı, metindeki boşlukları en aza indirmeli ve JSON nesnesinin anahtarlarını tutarlı bir formatlamaya ulaşmak için sıralamalıdır. Normalde JSON dosyalarında yorum satırlarına müsade edilmezken burada yalnızca gösterim amaçlı olarak eklenmiştir.
 
 .. code-block:: javascript
 
@@ -57,7 +57,7 @@ Meta veri dosyası aşağıdaki formattadır. Fakat aşağıdaki örnek okuması
       {
         // Solidity için mecburi: yeniden eşlemelerin sıralı listesi
         "remappings": [ ":g=/dir" ],
-        // Opsiyonel: Optimize edeici ayarları. "enabled" vs "runs" anahtarıları 
+        // Opsiyonel: Optimize edici ayarları. "enabled" vs "runs" anahtarları 
         // artık kullanılmamaktadır ve geriye dönük uyumluluk için verilmiştir.
         "optimizer": {
           "enabled": true,
@@ -88,7 +88,7 @@ Meta veri dosyası aşağıdaki formattadır. Fakat aşağıdaki örnek okuması
           "bytecodeHash": "ipfs"
         },
         // Solidity için mecburi: Bu meta veri hangisi için yaratıldıysa o
-        // dosya ile sözleşme veya kütüphane adı.
+        // dosya ile sözleşme veya kütüphanenin adı.
         "compilationTarget": {
           "myFile.sol": "MyContract"
         },
@@ -123,13 +123,13 @@ Meta veri dosyası aşağıdaki formattadır. Fakat aşağıdaki örnek okuması
 
 .. _encoding-of-the-metadata-hash-in-the-bytecode:
 
-Meta Veri Hash'inin Bayt Kodu İçinde Kodlanması
+Meta Veri Hash'inin Bayt Kod İçinde Kodlanması
 =============================================
 
 Meta veriyi indirmenin farklı yollarını ileride destekleyebileceğimiz için 
 ``{"ipfs": <IPFS hash>, "solc": <compiler version>}`` eşlemesi 
-`CBOR <https://tools.ietf.org/html/rfc7049>`_ ile kodlanmıştır. Eşlenme birden
-fazla anahtar içerebileceğ için (aşağıdaki gibi) ve kodlamanın en başını bulması
+`CBOR <https://tools.ietf.org/html/rfc7049>`_ ile kodlanmıştır. Eşleme birden
+fazla anahtar içerebileceği için (aşağıdaki gibi) ve kodlamanın en başını bulması
 kolay olmayabileceği için kodlamanın uzunluğu 2 bayt big-endian şeklinde (sona)
 eklenmiştir. Solidity derleyicisinin mevcut sürümü çoğunlukla aşağıdaki kodu
 yüklenen bayt kodun sonuna ekler. 
@@ -151,8 +151,8 @@ string ile kodlanır.
 
 .. note::
   CBOR eşlemesi farklı anahtarlar kullanabileceği için bu kodlamanın 
-  ``0xa264`` ile başlamasına güvenmemek ve kodlamayı doğru şekilde deşifre
-  etmek gerekir. Örneğin, kod oluşturmayı etkileyecek herhangi bir deneysel
+  ``0xa264`` ile başlamasına güvenmemek ve kodlamayı doğru şekilde çözmek
+  gerekir. Örneğin, kod oluşturmayı etkileyecek herhangi bir deneysel
   özellik kullanıldıysa eşleme ``"experimental": true``'yu içerir.
 
 .. note::
@@ -174,8 +174,8 @@ Bu dosya yukarıdaki yapıya uygun şekilde JSON formatında çözülür.
 için kullanabilir.
 
 Ek olarak cüzdan, kullanıcı bir sözleşmeyle etkileşime geçerken kullanıcıdan
- işlem için imza onayı istemenin yanında kullanıcıya bir onay mesajı göstermek 
- için NatSpec kullanıcı dokümantasyonunu kullanabilir. 
+işlem için imza onayı istemenin yanında kullanıcıya bir onay mesajı göstermek 
+için NatSpec kullanıcı dokümantasyonunu kullanabilir. 
 
 Daha fazla bilgi için :doc:`Ethereum Natural Language Specification (NatSpec) format <natspec-format>`ını okuyunuz.
 
@@ -191,5 +191,5 @@ zaten bayt kodun bir parçası olduğu için meta veriyi otomatik olarak doğrul
 veri, kullanıcıya sunulan arayüze uygun şekilde çözülmesi gereken constructor girdi verisidir.
 
 `sourcify <https://github.com/ethereum/sourcify>`_
-(`npm package <https://www.npmjs.com/package/source-verify>`_) deposunda bu özelliği nasıl 
+(`npm paketi <https://www.npmjs.com/package/source-verify>`_) deposunda bu özelliği nasıl 
 kullanabileceğinize dair kodu görebilirsiniz.
