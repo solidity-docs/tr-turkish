@@ -14,13 +14,14 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - Opcode = İşlem Kodu
 - Log = Kayıt, Sistem Kaydı veya Log
 - EVM (Ethereum Virtual Machine) = ESM (Ethereum Sanal Makinası)
-- client = istemci
+- Client = İstemci
 - Publish = Yayılan
 - Repository = Depo
 - Function = Fonksiyon
 - Branch = Kol, Dal
 - Repository = Depo
 - Image = İmaj (Docker için)
+- Inheritance = Kalıtım
 - Interface = Arayüz
 - Formula = Formula (Homebrew'e Özel Bir Kavram)
 - Symlinks = Kısayol Bağlantısı
