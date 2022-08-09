@@ -1,6 +1,7 @@
 Solidity Dokümantasyonları İçin Kavram Dizini
 ==============================================
 
+- Smart Contract = Akıllı Sözleşme
 - Blockchain = Blok Zinciri
 - Binary = Binary
 - Breaking Changes = İşleyişi Bozan Değişiklikler, Kırılan Değişiklikler veya Önemli Değişikliker 
