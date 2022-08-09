@@ -10,6 +10,7 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - Stack = Yığın
 - Execute = Çalıştırmak
 - Timestamp = Zaman Bilgisi
+- Statement = İfade
 - Opcode = İşlem Kodu
 - Log = Kayıt, Sistem Kaydı veya Log
 - EVM (Ethereum Virtual Machine) = ESM (Ethereum Sanal Makinası)
