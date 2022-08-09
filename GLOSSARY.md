@@ -12,6 +12,7 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - Timestamp = Zaman Bilgisi
 - Statement = İfade
 - Opcode = İşlem Kodu
+- Optimizer = Optimize Edici
 - Log = Kayıt, Sistem Kaydı veya Log
 - EVM (Ethereum Virtual Machine) = ESM (Ethereum Sanal Makinası)
 - Client = İstemci
