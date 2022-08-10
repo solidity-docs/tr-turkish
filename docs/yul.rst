@@ -60,12 +60,12 @@ ve yalnızca EVM'nin yerel 256 bit türü olan ``u256`` türünü tanımlar.
 Bu nedenle, aşağıdaki örneklerde türlerden bahsetmeyeceğiz.
 
 
-Simple Example
+Basit Bir Örnek
 ==============
 
-The following example program is written in the EVM dialect and computes exponentiation.
-It can be compiled using ``solc --strict-assembly``. The builtin functions
-``mul`` and ``div`` compute product and division, respectively.
+Aşağıdaki örnek program EVM diyalektiyle yazılmıştır ve üs alma işlemini hesaplar.
+``solc --strict-assembly`` kullanılarak derlenebilir.
+Yerleşik fonksiyonlar olan ``mul`` ve ``div``, sırasıyla çarpma ve bölme işlemlerini yapar.
 
 .. code-block:: yul
 
@@ -84,9 +84,9 @@ It can be compiled using ``solc --strict-assembly``. The builtin functions
         }
     }
 
-It is also possible to implement the same function using a for-loop
-instead of with recursion. Here, ``lt(a, b)`` computes whether ``a`` is less than ``b``.
-less-than comparison.
+Aynı fonksiyonu özyineleme (recursion) yerine bir for döngüsü 
+kullanarak da uygulamak mümkündür. Burada ``lt(a, b)``, ``a``'nın ``b``'den küçük olup olmadığını hesaplar. 
+
 
 .. code-block:: yul
 
@@ -101,8 +101,7 @@ less-than comparison.
         }
     }
 
-At the :ref:`end of the section <erc20yul>`, a complete implementation of
-the ERC-20 standard can be found.
+:ref:`Bölümün sonunda <erc20yul>`, ERC-20 standardı ile ilgili eksiksiz bir uygulama bulunabilir.
 
 
 
