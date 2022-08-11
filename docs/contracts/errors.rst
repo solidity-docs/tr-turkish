@@ -6,7 +6,7 @@ Hata ve Geri Alma Durumları
 *******************************
 
 Solidity'de hatalar gaz-verimli ve kullanışlı bir şekilde kullanıcılara bir işlemin
-neden başarısız olduğunu söylemeyi sağlar. Contractın içerisinde veya dışarısında tanımlanabilirler
+neden başarısız olduğunu söylemeyi sağlar. Akıllı sözleşmenin içerisinde veya dışarısında tanımlanabilirler
 (interface ve kütüphaneler de dahil).
 
 :ref:`Revert ifadesi <revert-statement>` ile kullanılmalıdır. Bu ifade anlık çağrıda yapılan

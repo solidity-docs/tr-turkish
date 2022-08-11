@@ -10,7 +10,7 @@ Modifier'lar fonksiyonların tanımlandığı şekillerinden farklı davranmalar
 Örneğin,
 bir fonksiyonun çalıştırılmasından hemen önce bir koşulun kontrolünü gerçekleştirebilirsiniz.
 
-Modifier'lar contractların türetilebilen özelliklerindendir. Bu yüzden türetilmiş bir contract
+Modifier'lar akıllı sözleşmelerin türetilebilen özelliklerindendir. Bu yüzden türetilmiş bir akıllı sözleşme
 bir modifier'ı eğer ``virtual`` olarak belirtilmişse onu override edebilir. Daha fazla bilgi için
 :ref:`Modifier Overriding <modifier-overriding>` kısmına bakabilirsiniz.
 
@@ -23,13 +23,13 @@ bir modifier'ı eğer ``virtual`` olarak belirtilmişse onu override edebilir. D
         constructor() { owner = payable(msg.sender); }
         address payable owner;
 
-        // Bu contract sadece bir tane modifier tanımlar ve onu da kullanmıyor.
+        // Bu akıllı sözleşme sadece bir tane modifier tanımlar ve onu da kullanmıyor.
         // Tanımlanan modifier türetilen fonksiyonda kullanılacaktır.
         // Fonksiyon içerisindeki kodların kullanılacağı yer
         // `_;` şeklinde modifier içerisinde belirtilir.
         // Yani `_;` gördüğünüz yerde o modifier'ın kullanıldığı fonksiyonun
         // içerisindeki kodlar yazılmış gibi düşünebilirsiniz.
-        // Bu modifier eklendiği fonksiyonu sadece contractı oluşturan
+        // Bu modifier eklendiği fonksiyonu sadece akıllı sözleşmeyi oluşturan
         // kişinin çağırmasını sağlar. Diğer erişimlerde ise işlemi revert eder.
         modifier onlyOwner {
             require(
@@ -41,7 +41,7 @@ bir modifier'ı eğer ``virtual`` olarak belirtilmişse onu override edebilir. D
     }
 
     contract destructible is owned {
-        // Bu contract türetildiği `owned` fonksiyonundaki
+        // Bu akıllı sözleşme türetildiği `owned` fonksiyonundaki
         // `onlyOwner` modifier'ını `destroy` fonksiyonuna ekler.
         // Böylece `destroy` fonksiyonunu sadece `owner` çağırabilir.
         function destroy() public onlyOwner {
@@ -89,7 +89,7 @@ bir modifier'ı eğer ``virtual`` olarak belirtilmişse onu override edebilir. D
         }
 
         /// Bu fonksiyon bir mutex ile korunmaktadır. 
-        /// Yani, bu contract re-entrancy çağrılarına karşı zaafiyetli değildir. 
+        /// Yani, bu akıllı sözleşme re-entrancy çağrılarına karşı zaafiyetli değildir. 
         /// `return 7` fonksiyonun bittiğini belirtse de henüz modifier'ımızın işi bitmedi.
         /// `locked = false;` satırı return ifademizden sonra çalışır.
         function f() public noReentrancy returns (uint) {
@@ -99,8 +99,8 @@ bir modifier'ı eğer ``virtual`` olarak belirtilmişse onu override edebilir. D
         }
     }
 
-Eğer ``C`` contractındaki ``m`` modifier'ına erişmek istiyorsanız, ``C.m`` şeklinde erişebilirsiniz.
-Modifier'lar sadece tanımlandıkları contractta veya türetilen bir contractta kullanılabilir.
+Eğer ``C`` akıllı sözleşmesindeki ``m`` modifier'ına erişmek istiyorsanız, ``C.m`` şeklinde erişebilirsiniz.
+Modifier'lar sadece tanımlandıkları akıllı sözleşmede veya türetilen bir akıllı sözleşmede kullanılabilir.
 Modifier'lar kütüphanelerde de tanımlanabilir. Ancak kullanımları o kütüphanenin fonksiyonlarıyla kısıtlıdır.
 Yani tanımlandıkları kütüphane dışında kullanılamazlar.
 

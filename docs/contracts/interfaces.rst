@@ -6,18 +6,18 @@
 Interface'ler
 **********
 
-Interface'ler abstract contractlara benzerler ama onlardan farklı olarak hiçbir
+Interface'ler abstract akıllı sözleşmelere benzerler ama onlardan farklı olarak hiçbir
 fonksiyonunun kodu yazılamaz. Daha fazla kısıtlama vardır:
 
-- Diğer contractlardan miras alamazken, diğer interface'lerden alabilirler.
-- Interface'deki bütün fonksiyonlar external olmalıdır, contractta public olsalar dahi.
+- Diğer akıllı sözleşmelerden miras alamazken, diğer interface'lerden alabilirler.
+- Interface'deki bütün fonksiyonlar external olmalıdır, akıllı sözleşmede public olsalar dahi.
 - Constructor tanımlayamazlar.
 - Durum değişkeni tanımlayamazlar.
 - Modifier tanımlayamazlar.
 
 Bu kısıtlamalardan bazıları ilerleyen zamanlarda kaldırılabilir.
 
-Interface'ler kabaca Contract ABI'sinin temsil edebileciği ile kısıtlıdır. Bu yüzden
+Interface'ler kabaca akıllı sözleşme ABI'sinin temsil edebileciği ile kısıtlıdır. Bu yüzden
 ABI ve interface arasındaki dönüşümler bilgi kaybı yaşanmadan gerçekleştirilebilmelidir.
 
 Interface'ler kendi anahtar sözcükleri ile tanımlanırlar:
@@ -33,7 +33,7 @@ Interface'ler kendi anahtar sözcükleri ile tanımlanırlar:
         function transfer(address recipient, uint amount) external;
     }
 
-Contractlar diğer contractlardan miras alabildikleri gibi diğer interface'lerden de alabilirler.
+Akıllı sözleşmeler diğer akıllı sözleşmelerden miras alabildikleri gibi diğer interface'lerden de alabilirler.
 
 Interface'lerdeki bütün fonksiyonlar gizlici ``virtual`` olarak işaretlenmiş haldedir ve
 onları override ederken ``override`` kelimesine gerek yoktur. Bu, otomatik olarak override eden bir
@@ -61,7 +61,7 @@ Interface'ler diğer interfacelerden miras alabilirler, normal kalıtım kuralı
         function test() external override(ParentA, ParentB) returns (uint256);
     }
 
-Interface'lerde tanımlanan tiplere ve diğer contract benzeri yapılara diğer contractlardan 
+Interface'lerde tanımlanan tiplere ve diğer akıllı sözleşme benzeri yapılara diğer akıllı sözleşmelerden 
 erişilebilir: ``Token.TokenType`` veya ``Token.Coin``.
 
 .. warning:

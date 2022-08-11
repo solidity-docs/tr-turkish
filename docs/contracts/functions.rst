@@ -6,11 +6,11 @@
 Fonksiyonlar
 *********
 
-Fonksiyonlar contractların içerisinde veya dışarısında tanımlanabilir.
+Fonksiyonlar akıllı sözleşmelerin içerisinde veya dışarısında tanımlanabilir.
 
-Contractların dışarısında tanımlanan fonksiyonlara "özgür fonksiyonlar" denir ve her zaman
+Akıllı sözleşmelerin dışarısında tanımlanan fonksiyonlara "özgür fonksiyonlar" denir ve her zaman
 ``internal`` :ref:`görünürlüktedirler<visibility-and-getters>`. Kodları, o fonksiyonları
-kullanan her bir contracta eklenir, tıpkı internal kütüphane fonksiyonları gibi.
+kullanan her bir akıllı sözleşmeye eklenir, tıpkı internal kütüphane fonksiyonları gibi.
 
 .. code-block:: solidity
 
@@ -26,7 +26,7 @@ kullanan her bir contracta eklenir, tıpkı internal kütüphane fonksiyonları 
         bool found;
         function f(uint[] memory arr) public {
             // Burada özgür bir fonksiyon internal olarak çağrılıyor.
-            // Derleyici `sum` fonksiyonunu bu contractın kodları arasına ekleyecek.
+            // Derleyici `sum` fonksiyonunu bu akıllı sözleşmenin kodları arasına ekleyecek.
             uint s = sum(arr);
             require(s >= 10);
             found = true;
@@ -34,10 +34,10 @@ kullanan her bir contracta eklenir, tıpkı internal kütüphane fonksiyonları 
     }
 
 .. note::
-    Contract dışında tanımlanan bir fonksiyon her zaman o contractın içeriği ile birlikte
+    Akıllı sözleşme dışında tanımlanan bir fonksiyon her zaman o akıllı sözleşmenin içeriği ile birlikte
     çalıştırılırlar. Hâlâ ``this`` değişkenini kullanabilir,
-    diğer contractları çağırabilir, onlara Ether gönderebilir ve kendilerini çağıran contractları
-    yok edebilirler. Contract içerisinde tanımlanan bir fonksiyon ile özgür bir fonksiyonun arasındaki
+    diğer akıllı sözleşmeleri çağırabilir, onlara Ether gönderebilir ve kendilerini çağıran akıllı sözleşmeleri
+    yok edebilirler. Akıllı sözleşme içerisinde tanımlanan bir fonksiyon ile özgür bir fonksiyonun arasındaki
     en temel fark; özgür fonksiyonlar kendi alanlarında (scope) bulunmayan storage değişkenlerine ve
     fonksiyonlara direkt erişime sahip değillerdir.
 
@@ -55,7 +55,7 @@ Fonksiyon Parametreleri
 Fonksiyon parametreleri değişkenlerle aynı şekilde tanımlanırlar.
 Ayrıca kullanılmayan parametreler gözardı edilebilirler.
 
-Örneğin, eğer contractınızdaki bir fonksiyonun iki adet integer değişkeni
+Örneğin, eğer akıllı sözleşmenizdeki bir fonksiyonun iki adet integer değişkeni
 parametre olarak almasını isterseniz, aşağıdaki gibi bir yapı kullanabilirsiniz:
 
 .. code-block:: solidity
@@ -141,7 +141,7 @@ bütün return değişkenlerini vermeniz gerekir.
     örneğin, çok boyutlu dinamik boyutlu diziler ve structlar. Eğer
     ABI coder v2'yi ``pragma abicoder v2;`` şeklinde kodunuza eklerseniz
     daha fazla tip kullanılabilir olacaktır, ancak ``mapping`` tipi
-    hâlâ bir contract içerisinde sınırlıdır ve onları transfer edemezsiniz.
+    hâlâ bir akıllı sözleşme içerisinde sınırlıdır ve onları transfer edemezsiniz.
 
 .. _multi-return:
 
@@ -181,7 +181,7 @@ Aşağıdaki ifadeler state değişikliğini temsil eder:
 
 #. State değişkenlerine yazmak.
 #. :ref:`Event yayınlama <events>`.
-#. :ref:`Başka contractlar oluşturma <creating-contracts>`.
+#. :ref:`Başka akıllı sözleşmeler oluşturma <creating-contracts>`.
 #. ``selfdestruct`` kullanmak.
 #. Ether göndermek.
 #. ``view`` veya ``pure`` olarak belirtilmeyen bir fonksiyon çağırmak.
@@ -287,17 +287,17 @@ Bu davranış ``STATICCALL`` için de geçerlidir.
 Receive Ether Fonksiyonu
 ----------------------
 
-Bİr contract sadece bir adet ``receive`` fonksiyonuna sahip olabilir. Bu fonksiyon
+Bİr akıllı sözleşme sadece bir adet ``receive`` fonksiyonuna sahip olabilir. Bu fonksiyon
 şu şekilde tanımlanır: ``receive() external payable { ... }`` (function sözcüğü olmadan).
 Bu fonksiyon parametre alamaz, hiçbir şey return edemez, görünürlüğü ``external``
 olmalı ve ayrıca ``payable`` olarak tanımlanmalıdır. Bir receive fonksiyonu virtual olabilir, override edilebilir
 ve modifier'lara sahip olabilir.
 
-Receive fonksiyonu contractımıza gelen boş bir calldata'sı bulunan çağrılarda çalıştırılır.
-Bu fonksiyon, contractımıza direkt Ether transferi gerçekleştirildiğinde (``.send()`` veya ``.transfer()``
+Receive fonksiyonu akıllı sözleşmemize gelen boş bir calldata'sı bulunan çağrılarda çalıştırılır.
+Bu fonksiyon, akıllı sözleşmemize direkt Ether transferi gerçekleştirildiğinde (``.send()`` veya ``.transfer()``
 kullanılarak) çalıştırılır. Eğer bu fonksiyon tanımlı değil ama payable bir :ref:`fallback fonksiyon <fallback-function>`
-tanımlı ise, direkt Ether transferlerinde bu fallback fonksiyonu çalıştırılır. Eğer contract ne bir receive
-fonksiyonu, ne de bir payable fallback fonksiyonu tanımlamamışsa, contractımız direkt Ether transflerlerini
+tanımlı ise, direkt Ether transferlerinde bu fallback fonksiyonu çalıştırılır. Eğer akıllı sözleşme ne bir receive
+fonksiyonu, ne de bir payable fallback fonksiyonu tanımlamamışsa, akıllı sözleşmemiz direkt Ether transflerlerini
 kabul edemez, kendisine ether gönderildiğinde bir hata verir.
 
 En kötü durumda ``receive`` fonksiyonu 2300 adet gazın mevcut olduğunu varsayabilir 
@@ -305,26 +305,26 @@ En kötü durumda ``receive`` fonksiyonu 2300 adet gazın mevcut olduğunu varsa
 Aşağıdaki işlemler 2300 gazdan daha fazlasını harcar:
 
 - Storage'e yazmak
-- Contract oluşturmak
+- Akıllı sözleşme oluşturmak
 - Yüksek miktarda gaz harcayan bir external fonksiyonun çağrılması
 - Ether gönderimi
 
 .. warning::
-    Bir contracta direkt olarak Ether gönderirken (bir fonksiyon çağrısı olmadan, yani gönderenin
-    ``send`` veya ``transfer`` kullandığı durumda) eğer contract bir receive fonksiyonu veya
+    Bir akıllı sözleşmede direkt olarak Ether gönderirken (bir fonksiyon çağrısı olmadan, yani gönderenin
+    ``send`` veya ``transfer`` kullandığı durumda) eğer akıllı sözleşme bir receive fonksiyonu veya
     bir payable fallback fonksiyonu tanımlamamışsa, bir hata oluşur ve Etherler gönderene iade edilir
-    (bu durum Solidity 0.4.0 öncesinde farklıydı). Eğer contractınızın direkt Ether transferlerini kabul
+    (bu durum Solidity 0.4.0 öncesinde farklıydı). Eğer akıllı sözleşmenizin direkt Ether transferlerini kabul
     etmesini istiyorsanız, bir receive fonksiyonu tanımlayın (Ether kabulu için payable fallback fonksiyonunun
     kullanımını tavsiye etmiyoruz, çünkü fallback fonksiyonu interface karışıklığı yaşandığında kullanıcıya
     hata vermeyecektir).
   
 .. warning::
-    Bir contract receive fonksiyonu olmadan da Ether kabul edebilir; 
+    Bir akıllı sözleşme receive fonksiyonu olmadan da Ether kabul edebilir; 
     *coinbase transaction* (diğer adıyla *miner block reward*)
     veya ``selfdestruct`` kullanılırken hedef adres olarak verilmesi halinde
-    contract Etherleri kabul etmek zorundadır.
+    akıllı sözleşme Etherleri kabul etmek zorundadır.
 
-    Bir contract bu gibi durumlardaki Ether transferlerine herhangi bir tepki
+    Bir akıllı sözleşme bu gibi durumlardaki Ether transferlerine herhangi bir tepki
     veremez ve dolayısıyla bunları reddedemez. Bu EVM'in tasarım tercihlerinden
     biridir ve Solidity bunu es geçemez.
 
@@ -332,14 +332,14 @@ Aşağıdaki işlemler 2300 gazdan daha fazlasını harcar:
     sizin kendi hesaplamanızla (örneğin, receive fonksiyonunda her gelen miktarı
     hesaplamanız halinde) farklı olabilir.
 
-Aşağıdaki Sink contractı ``receive`` kullanımına bir örnektir.
+Aşağıdaki Sink akıllı sözleşmesi ``receive`` kullanımına bir örnektir.
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.6.0 <0.9.0;
 
-    // Bu contracta gönderilen Etherleri geri almanın hiçbir
+    // Bu akıllı sözleşmeye gönderilen Etherleri geri almanın hiçbir
     // yolu yoktur.
     contract Sink {
         event Received(address, uint);
@@ -355,21 +355,21 @@ Aşağıdaki Sink contractı ``receive`` kullanımına bir örnektir.
 Fallback Fonksiyonu
 -----------------
 
-Bir contract sadece bir adet ``fallback`` fonksiyonuna sahip olabilir. Bu fonksiyon
+Bir akıllı sözleşme sadece bir adet ``fallback`` fonksiyonuna sahip olabilir. Bu fonksiyon
 şu iki şekilde tanımlanabilir: ``fallback () external [payable]`` veya 
 ``fallback (bytes calldata input) external [payable] returns (bytes memory output)``
 (ikisi de ``function`` sözcüğü olmadan kullanılıyor). Bu fonksiyon ``external``
 görünürlüğe sahip olmalıdır. Bir fallback fonksiyonu virtual olabilir, override edilebilir
 ve modifier'lara sahip olabilir.
 
-Fallback fonksiyonu bir çağrıda gönderilen fonksiyon imzasının (function signature) contracttaki
+Fallback fonksiyonu bir çağrıda gönderilen fonksiyon imzasının (function signature) akıllı sözleşmedeki
 herhangi bir fonksiyon ile eşleşmediği durumda çalıştırılır, yani, eğer kullanıcının çalıştırmak
-istediği fonksiyon contractta yoksa, fallback fonksiyonu çalıştırılır. Bir diğer kullanım alanı ise
-direkt Ether gönderimlerinde eğer contractta :ref:`receive Ether fonksiyonu <receive-ether-function>`
+istediği fonksiyon akıllı sözleşmede yoksa, fallback fonksiyonu çalıştırılır. Bir diğer kullanım alanı ise
+direkt Ether gönderimlerinde eğer akıllı sözleşmede :ref:`receive Ether fonksiyonu <receive-ether-function>`
 yoksa ve fallback fonksiyonumuz ``payable`` ise, fallback fonksiyonu çalıştırılır.
 
 Eğer yukarıda gösterdiğimiz iki kullanım şeklinden ``input`` kullanılanı kullanmak isterseniz,
-``input`` contracta gönderilen tüm data, ``msg.data``, olacaktır. Ayrıca ``output`` ile de
+``input`` akıllı sözleşmeye gönderilen tüm data, ``msg.data``, olacaktır. Ayrıca ``output`` ile de
 data return edebilir. Return edilen data ABI-encoded olmayacaktır, onun yerine herhangi bir
 düzenleme olmadan (hatta padding bile olmadan) return edilecektir.
 
@@ -399,8 +399,8 @@ Diğer herhangi bir fonksiyon gibi fallback fonksiyonu da yeterli gaza sahip old
 
     contract Test {
         uint x;
-        // Bu contracta gelen bütün mesaj çağrılarını
-        // bu fonksiyon karşılar (contractta başka bir
+        // Bu akıllı sözleşmeye gelen bütün mesaj çağrılarını
+        // bu fonksiyon karşılar (akıllı sözleşmede başka bir
         // fonksiyon bulunmadığı için).
         // Fonksiyon payable olarak belirtilmediği için 
         // Ether gönderimlerinde hata alınacaktır.
@@ -410,7 +410,7 @@ Diğer herhangi bir fonksiyon gibi fallback fonksiyonu da yeterli gaza sahip old
     contract TestPayable {
         uint x;
         uint y;
-        // Bu contracta gelen direkt Ether gönderimleri dışındaki bütün mesajları
+        // Bu akıllı sözleşmeye gelen direkt Ether gönderimleri dışındaki bütün mesajları
         // bu fonksiyon karşılayacaktır (receive dışında başka bir fonksiyon
         // bulunmamakta). Calldatası boş olmayan bütün çağrıları bu fonksiyon
         // karşılar (çağrı ile birlikte Ether gönderilse bile).
@@ -433,7 +433,7 @@ Diğer herhangi bir fonksiyon gibi fallback fonksiyonu da yeterli gaza sahip old
             address payable testPayable = payable(address(test));
 
             // Eğer biri burada da olduğu gibi payable fallback fonksiyonu olmayan bir
-            // contracta ether göndermeye çalışırsa, hata alacaktır.
+            // akıllı sözleşmeye ether göndermeye çalışırsa, hata alacaktır.
             // Dolayısıyla burada ``false`` return edilir.
             return testPayable.send(2 ether);
         }
@@ -446,7 +446,7 @@ Diğer herhangi bir fonksiyon gibi fallback fonksiyonu da yeterli gaza sahip old
             require(success);
             // test.x == 1 olur ve test.y 1 olur.
 
-            // Eğer biri aşağıdaki gibi TestPayable contractına Ether gönderirse, receive fonksiyonu çalışır.
+            // Eğer biri aşağıdaki gibi TestPayable akıllı sözleşmesine Ether gönderirse, receive fonksiyonu çalışır.
             // Yukarıda tanımladığımız receive fonksiyonu storage'e yazdığı için 2300'den daha fazla
             // gaz harcanmasına sebep olur. O yüzden ``send`` ve ``transfer`` kullanılamaz.
             // Onların yerine low-level call kullanmalıyız.
@@ -465,9 +465,9 @@ Diğer herhangi bir fonksiyon gibi fallback fonksiyonu da yeterli gaza sahip old
 Fonksiyon Overloading
 ====================
 
-Bir contract aynı isimde fakat farklı parametre tiplerine sahip fonksiyonlara sahip olabilir.
+Bir akıllı sözleşme aynı isimde fakat farklı parametre tiplerine sahip fonksiyonlara sahip olabilir.
 Bu işlem "overloading" olarak adlandırılır ve ayrıca türetilen fonksiyonlar için de geçerlidir.
-Aşağıdaki örnek ``A`` contractındaki ``f`` fonksiyonları ile overloading'i gösterir.
+Aşağıdaki örnek ``A`` akıllı sözleşmesindeki ``f`` fonksiyonları ile overloading'i gösterir.
 
 .. code-block:: solidity
 
@@ -487,8 +487,8 @@ Aşağıdaki örnek ``A`` contractındaki ``f`` fonksiyonları ile overloading'i
 
 Overload edilmiş fonksiyonlar external interface'de de göründüğü için iki fonksiyonun
 aldığı parametreler external tiplerine göre karşılaştırılır. Yani, örneğin aşağıdaki
-fonksiyonlardan biri parametre olarak contract aldığını belirtmiş. Ancak external
-interface'de bu, bir contract değil, adres olarak görünür. O yüzden bu contract 
+fonksiyonlardan biri parametre olarak akıllı sözleşme aldığını belirtmiş. Ancak external
+interface'de bu, bir akıllı sözleşme değil, adres olarak görünür. O yüzden bu akıllı sözleşme 
 compile edilemez.
 
 .. code-block:: solidity

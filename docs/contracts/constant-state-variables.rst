@@ -7,18 +7,18 @@ Constant ve Immutable State Değişkenleri
 **************************************
 
 State değişkenleri ``constant`` veya ``immutable`` olarak tanımlanabilir.
-Her iki durumda da contract kurulduktan sonra (constructor çalıştıktan sonra) bu tür değişkenler değiştirilemez.
+Her iki durumda da akıllı sözleşme kurulduktan sonra (constructor çalıştıktan sonra) bu tür değişkenler değiştirilemez.
 ``constant`` compile-time'da (kodun içerisinde) tanımlı olması gerekirken,
 ``immutable`` değişkenler constructor içerisinde de tanımlanabilir.
 
-``constant`` değişkenleri contractların dışarısında (dosya seviyesinde) da tanımlayabiliriz.
+``constant`` değişkenleri akıllı sözleşmelerin dışarısında (dosya seviyesinde) da tanımlayabiliriz.
 
 Derleyici bu tür değişkenler için storage'de slot ayırmaz. Çünkü bu değişkenlerin kullanıldığı
 her yer, belirlenmiş değerle değiştirilir.
 
 Normal state değişkenleriyle karşılaştırıldığında, constant ve immutable değişkenler çok daha az gaz harcar.
 Constant değişkenlerde, kullanıldıkları her yere karşılığında verilen değer kopyalanıp yapıştırılır.
-Bu, lokal optimizasyon olarak kullanılır. Immutable değişkenlerde ise, contractın kurulum anında (construction time)
+Bu, lokal optimizasyon olarak kullanılır. Immutable değişkenlerde ise, akıllı sözleşmenin kurulum anında (construction time)
 karşılık gelen değeri belirlenir ve kullanıldığı her yere kopyalanıp yapıştırılır. Bu değerler
 32 byte'dan daha az yer kaplasa bile 32 byte'lık bir alanda muhafaza edilir. Bu sebepten ötürü, bazı durumlarda
 constant değerler kullanmak, immutable değerleri kullanmaktan daha ucuz olabilir.
@@ -59,11 +59,11 @@ Constant
 tanımlandığı konumda belirtilmelidir. Herhangi bir storage'e erişim, blok zinciri verisi
 (örneğin, ``block.timestamp``, ``address(this).balance`` veya
 ``block.number``) veya
-çalıştırma verisi (``msg.value`` veya ``gasleft()``) veya başka contractlara yapılan external
+çalıştırma verisi (``msg.value`` veya ``gasleft()``) veya başka akıllı sözleşmelere yapılan external
 çağrılara izin verilmez. Kullanılacak memory'i belirleme konusunda yan etki oluşturacak tanımalamalara
 izin verilirken, başka memory objeleri üzerinde yan etki oluşturan tanımlamalara izin verilmez.
 Built-in fonksiyonlarından ``keccak256``, ``sha256``, ``ripemd160``, ``ecrecover``, ``addmod`` ve ``mulmod``
-fonksiyonlarının kullanımına izin verilmiştir (``keccak256`` başka contractları çağırsa da, bir istisnadır).
+fonksiyonlarının kullanımına izin verilmiştir (``keccak256`` başka akıllı sözleşmeleri çağırsa da, bir istisnadır).
 
 Memory belirleyicisi üzerinde yan etkiye izin verilmesinin sebebi, karmaşık yapılarında kurulabilinmesi
 gereksinimidir (örneğin, lookup-table). Bu özellikler henüz tamamen kullanılabilir değildir.
@@ -72,19 +72,19 @@ Immutable
 =========
 
 ``immutable`` olarak tanımlanan değişkenler ``constant`` olarak tanımlananlara göre
-biraz daha az kısıtlanmıştır: Immutable değişkenler contractın constructor fonksiyonunda
+biraz daha az kısıtlanmıştır: Immutable değişkenler akıllı sözleşmenin constructor fonksiyonunda
 keyfi bir değere atanabilir. Sadece bir kere tanımlanabilirler ve tanımlandıktan sonra
 istenilen anda sahip oldukları değer okunabilir.
 
-Derleyici tarafından oluşturulmuş contractın creation code'u, runtime code'u
+Derleyici tarafından oluşturulmuş akıllı sözleşmenin creation code'u, runtime code'u
 return etmeden önce bütün immutable referanslarını tanımlanan değerle değiştirir.
-Bu yüzden immutable değişken kullandığınız bir contract için,
+Bu yüzden immutable değişken kullandığınız bir akıllı sözleşme için,
 compiler'ın oluşturduğu runtime code ile blok zincirinde saklanan runtime code'u
 karşılaştırdığınızda farklı sonuçlar alırsınız.
 
 .. note::
   Tanımlandıkları satırda direkt olarak değerleri atanan immutable değişkenler
-  contractın constructor fonksiyonu çalıştıktan sonra initialize edilmiş olarak
+  akıllı sözleşmenin constructor fonksiyonu çalıştıktan sonra initialize edilmiş olarak
   düşünülür. Bu demek oluyor ki başka bir immutable değişkenin değerini kullanan
   bir immutable değişkenin değerini direkt olarak atayamazsınız. Bunu ancak constructor
   içerisinde yapabilirsiniz.

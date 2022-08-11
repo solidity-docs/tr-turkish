@@ -1,6 +1,6 @@
 .. index:: ! visibility, external, public, private, internal
 
-.. |visibility-caveat| replace::Bir şeyi ``private`` veya ``internal`` yapmak sadece diğer contractların o bilgiye erişimini veya değiştirilmesini engeller. Ama bu bilgiler blok zinciri dışından erişilebilir durumdadır.
+.. |visibility-caveat| replace::Bir şeyi ``private`` veya ``internal`` yapmak sadece diğer akıllı sözleşmelerin o bilgiye erişimini veya değiştirilmesini engeller. Ama bu bilgiler blok zinciri dışından erişilebilir durumdadır.
 
 .. _visibility-and-getters:
 
@@ -13,21 +13,21 @@ Durum Değişkenlerinde Görünürlük
 
 ``public``
     Public durum değişkenleri internallerden sadece bir açıdan farklıdır, o da derleyicinin direkt olarak bir
-    :ref:`getter fonksiyon<getter-functions>` oluşturmasıdır. Bu şekilde diğer contractlar bu değerlere erişebilir.
+    :ref:`getter fonksiyon<getter-functions>` oluşturmasıdır. Bu şekilde diğer akıllı sözleşmeler bu değerlere erişebilir.
     Aynı fonksiyon içerisinde external erişim sağlandığında (örneğin, ``this.x``) getter fonksiyonu çağrılırken,
     internal erişimde (örneğin, ``x``) değer direkt olarak storage'den alınır.
     Setter fonksiyonlar derleyici tarafından tanımlanmaz. Bu yüzden siz kendiniz bir setter fonksiyon eklemediyseniz
     diğer fonksiyonlar bu değişkeni değiştiremez.
 
 ``internal``
-    Internal durum değişkenleri sadece tanımlandıkları contractlar ve o contractlardan türetilen (inherited)
-    contractlar tarafından erişebilir durumdadır.
+    Internal durum değişkenleri sadece tanımlandıkları akıllı sözleşmeler ve o akıllı sözleşmelerden türetilen (inherited)
+    akıllı sözleşmeler tarafından erişebilir durumdadır.
     External erişim mümkün değildir.
     Bütün durum değişkenlerinin default hali internal'dir.
 
 ``private``
-    Private durum değişkenlerine sadece tanımlandıkları contracttan erişim mümkündür. Internal'den farklı olarak
-    türetilen contractlardan da erişilemez.
+    Private durum değişkenlerine sadece tanımlandıkları akıllı sözleşmeden erişim mümkündür. Internal'den farklı olarak
+    türetilen akıllı sözleşmelerden de erişilemez.
 
 .. warning::
     |visibility-caveat|
@@ -40,16 +40,16 @@ Ayrıca internal fonksiyonlar türetilen fonksiyonlardan erişilemez hale de get
 Bu da ortaya dört çeşit fonksiyon görünürlüğü çıkarır.
 
 ``external``
-    External fonksiyonlar contract interface'inin bir parçasıdır,
-    bu da demektir ki diğer contractlar ve transactionlar tarafından çağrılabilirler.
+    External fonksiyonlar akıllı sözleşme interface'inin bir parçasıdır,
+    bu da demektir ki diğer akıllı sözleşmeler ve transactionlar tarafından çağrılabilirler.
     Bir ``f`` external fonksiyonu internal olarak çağrılamaz (yani, ``f()`` işe yaramaz, ama ``this.f()`` çalışır).
 
 ``public``
-    Public fonksiyonlar contract interface'inin bir parçasıdır
+    Public fonksiyonlar akıllı sözleşme interface'inin bir parçasıdır
     ve internal olarak veya mesaj çağrıları ile kullanılabilirler.
 
 ``internal``
-    Internal fonksiyonlar sadece tanımlandıkları contracttan veya o contracttan türetilen contractlar tarafından erişilebilir.
+    Internal fonksiyonlar sadece tanımlandıkları akıllı sözleşmeden veya o akıllı sözleşmeden türetilen akıllı sözleşmeler tarafından erişilebilir.
     External olarak erişim mümkün değildir.
     ABI kullanılarak external olarak erişilemese bile mapping ve storage referanslarını parametre olarak alabilirler.
 
@@ -74,7 +74,7 @@ fonksiyonlarda parametreler ve return tanımının arasına yazılır.
     }
 
 Aşağıdaki örnekte, ``D``, ``c.getData()`` çağrısı yapabilir ve ``data`` değerini elde eder,
-ama ``f`` fonksiyonunu çağıramaz. ``E`` contractı ise ``C`` contractından türetildiği için
+ama ``f`` fonksiyonunu çağıramaz. ``E`` akıllı sözleşmeleri ise ``C`` akıllı sözleşmesinden türetildiği için
 ``compute`` fonksiyonunu çağırabilir.
 
 .. code-block:: solidity
@@ -91,7 +91,7 @@ ama ``f`` fonksiyonunu çağıramaz. ``E`` contractı ise ``C`` contractından t
         function compute(uint a, uint b) internal pure returns (uint) { return a + b; }
     }
 
-    // Bu contract derlenemez, hata verir
+    // Bu akıllı sözleşme derlenemez, hata verir
     contract D {
         function readData() public {
             C c = new C();
@@ -116,7 +116,7 @@ Getter Fonksiyonlar
 ================
 
 Derleyici bütün **public** durum değişkenleri için getter fonksiyonu oluşturur.
-Örneğin aşağıdaki contract için, derleyici ``data`` adında bir fonksiyon üretir.
+Örneğin aşağıdaki akıllı sözleşme için, derleyici ``data`` adında bir fonksiyon üretir.
 Bu fonksiyon hiçbir parametre almaz ve ``uint`` tipinde bir değişken return eder.
 Return edilen değer ise ``data`` değişkeninde saklanan değerdir. Durum değişkenleri
 tanımlandıkları yerde initialize edilebilir (initialize, bir değişkenin ilk defa tanımlanması olarak çevrilebilir).

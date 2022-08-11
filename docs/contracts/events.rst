@@ -3,21 +3,21 @@
 .. _events:
 
 ******
-Events
+Eventler
 ******
 
 Solidity eventleri EVM'nin loglama işlevinin üzerine bir soyutlama verir. Uygulamalar
 Ethereum clientlarının RPC arayüzüne abone olarak bu eventleri dinleyebilirler.
 
-Eventler contractların türetilebilen üyeleridir. Çağrıldıklarında işlemlerin log
+Eventler akıllı sözleşmelerin türetilebilen üyeleridir. Çağrıldıklarında işlemlerin log
 kısmında - blok zincirindeki özel bir veri yapısı - depolanırlar. Bu eventler çağrıldıkları
-contractın adresi ile özdeşleştirilir ve işlemin bulunduğu blok erişilebilir olduğu
+akıllı sözleşmenin adresi ile özdeşleştirilir ve işlemin bulunduğu blok erişilebilir olduğu
 sürece bu eventlere de erişilebilir (şu anda bu süre sonsuza kadardır ancak Serenity
-ile bu değişebilir). Log ve event verisi contract tarafından erişilebilir değildir
-(eventi oluşturan contract için bile bu geçerlidir).
+ile bu değişebilir). Log ve event verisi akıllı sözleşme tarafından erişilebilir değildir
+(eventi oluşturan akıllı sözleşme için bile bu geçerlidir).
 
 Loglar için bir Merkle proof talep etmek mümkündür, bu nedenle external bir varlık
-böyle bir kanıtla bir contract sağlarsa, logun blok zinciri içinde gerçekten var
+böyle bir kanıtla bir akıllı sözleşme sağlarsa, logun blok zinciri içinde gerçekten var
 olup olmadığını kontrol edebilir. Sözleşme yalnızca son 256 blok hashini görebildiği
 için blok başlıkları sağlamanız gerekir.
 
@@ -30,7 +30,7 @@ tipi kullanırsanız, bunun yerine değerin Keccak-256 hashi topic olarak saklan
 saklanır.
 
 Topicler eventleri aramanıza izin verir, örneğin belirli eventler için bir blok dizisini filtrelerken.
-Ayrıca eventleri yayınlandıkları contracta göre de filtreleyebilirsiniz.
+Ayrıca eventleri yayınlandıkları akıllı sözleşmede göre de filtreleyebilirsiniz.
 
 Örneğin aşağıdaki kod web3.js'in ``subscribe("logs")``
 `methodunu <https://web3js.readthedocs.io/en/1.0/web3-eth-subscribe.html#subscribe-logs>`_ kullanarak
@@ -55,7 +55,7 @@ logları belirli bir adrese göre filtreleme işlemi yapmıştır:
 
 Eventin imzasının hashi, etkinliği anonim belirteçle bildirmeniz dışında, 
 topiclerden biridir. Bu, belirli anonim eventleri ada göre filtrelemenin mümkün 
-olmadığı, yalnızca contract adresine göre filtreleyebileceğiniz anlamına gelir. 
+olmadığı, yalnızca akıllı sözleşme adresine göre filtreleyebileceğiniz anlamına gelir. 
 Anonim eventlerin avantajı, deploy etmenin ve çağırmanın daha ucuz olmasıdır. 
 Ayrıca, üç yerine dört indexed değişken bildirmenize olanak tanır.
 

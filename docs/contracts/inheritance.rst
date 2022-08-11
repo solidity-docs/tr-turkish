@@ -8,7 +8,7 @@ Solidity polimorfizm dahil birçok kalıtım yöntemini destekler.
 
 Polimorfizm, bir fonksiyon çağrısının (dahili ve harici),
 kalıtım hiyerarşisinde aynı fonksiyona sahip birden fazla
-contractın olması durumunda, ilk türetilen contractın fonksiyonunun
+akıllı sözleşmenin olması durumunda, ilk türetilen akıllı sözleşmenin fonksiyonunun
 çalıştırılmasına verilen isimdir.
 Bu, ``virtual`` ve ``override`` anahtar sözcükleri kullanılarak hiyerarşideki
 her işlevde açıkça etkinleştirilmelidir. Daha fazla ayrıntı için
@@ -16,17 +16,17 @@ her işlevde açıkça etkinleştirilmelidir. Daha fazla ayrıntı için
 
 Kalıtım hiyerarşisinden bir fonksiyonu çağırmak isterseniz;
 ``ContractName.functionName()`` bu şekilde çağırabilirsiniz. Veya
-kalıtım hiyerarşisinde bir üst contractta bulunan bir fonksiyonu
+kalıtım hiyerarşisinde bir üst akıllı sözleşmede bulunan bir fonksiyonu
 çağırmak isterseniz de; ``super.functionName()`` kullanabilirsiniz.
 
-Bir contract başka bir contractı türettiğinde, blockchainde sadece bir adet
-contract oluşturulur ve tüm ana contractlardan gelen kodlar oluşturulan
-contracta eklenir. Bu demek oluyorki ana contractların fonksiyonlarına
+Bir akıllı sözleşme başka bir akıllı sözleşmeyi türettiğinde, blockchainde sadece bir adet
+akıllı sözleşme oluşturulur ve tüm ana akıllı sözleşmelerden gelen kodlar oluşturulan
+akıllı sözleşmeye eklenir. Bu demek oluyorki ana akıllı sözleşmelerin fonksiyonlarına
 yapılan bütün internal çağrılar sadece internal fonksiyon çağrılarını
 kullanırlar (``super.f(..)`` sadece JUMP opcode'unu kullanacaktır, mesaj çağrısı yapmayacaktır). 
 
-Durum değişkeni gölgeleme bir hata olarak kabul edilir. Bir türetilen contract
-sadece ve sadece eğer türettiği contractlardan hiçbiri ``x`` isminde bir değişkeni kullanmıyorsa
+Durum değişkeni gölgeleme bir hata olarak kabul edilir. Bir türetilen akıllı sözleşme
+sadece ve sadece eğer türettiği akıllı sözleşmelerden hiçbiri ``x`` isminde bir değişkeni kullanmıyorsa
 bu isimde bir değişken tanımlayabilir.
 
 Genel kalıtım sistemi `Python'a <https://docs.python.org/3/tutorial/classes.html#inheritance>`_
@@ -46,22 +46,22 @@ Aşağıdaki örnekte detaylar açıklanmıştır.
     }
 
 
-    // `is` kullanarak başka bir contractı türetebiliriz.
-    // Türetilen contractlar private olmayan bütün üyelere
+    // `is` kullanarak başka bir akıllı sözleşmeyi türetebiliriz.
+    // Türetilen akıllı sözleşmeler private olmayan bütün üyelere
     // erişebilir, internal fonksiyonlar ve durum değişkenleri
     // dahil. Bunlara external olarak `this` kullanılarak da erişilemez.
     contract Destructible is Owned {
         // `virtual` sözcüğü bu fonksiyonun, türetilen
-        // contractlarda değiştirilebileceğini belirtir ("overriding").
+        // akıllı sözleşmelerde değiştirilebileceğini belirtir ("overriding").
         function destroy() virtual public {
             if (msg.sender == owner) selfdestruct(owner);
         }
     }
 
 
-    // Abstract contractlar sadece derleyiciye interface'i
+    // Abstract akıllı sözleşmeler sadece derleyiciye interface'i
     // bildirmek için kullanılır. Fonksiyonun kodlarının olmadığına
-    // dikkat edin. Eğer bir contract bütün fonksiyonlarının içeriğini
+    // dikkat edin. Eğer bir akıllı sözleşme bütün fonksiyonlarının içeriğini
     // bulundurmazsa, sadece interface olarak da kullanılabilir.
     abstract contract Config {
         function lookup(uint id) public virtual returns (address adr);
@@ -74,9 +74,9 @@ Aşağıdaki örnekte detaylar açıklanmıştır.
     }
 
 
-    // Çoklu türetim de mümkündür. `Owned` contractının
-    // ayrıca `Destructible` contractının ana contractlarından
-    // biri olduğunu unutmayın. Ancak `Owned` contractının 
+    // Çoklu türetim de mümkündür. `Owned` akıllı sözleşmesinin
+    // ayrıca `Destructible` akıllı sözleşmesinin ana akıllı sözleşmelerinden
+    // biri olduğunu unutmayın. Ancak `Owned` akıllı sözleşmesinin 
     // sadece bir adet örneği vardır (C++'daki sanal kalıtım gibi).
     contract Named is Owned, Destructible {
         constructor(bytes32 name) {
@@ -106,7 +106,7 @@ Aşağıdaki örnekte detaylar açıklanmıştır.
 
     // Eğer bir constructor parametre alıyorsa, bu
     // başlıkta veya değiştirici-çağırma-stili ile
-    // türetilen contractın constructor'ında
+    // türetilen akıllı sözleşmesinin constructor'ında
     // verilmelidir (aşağıya bakın).
     contract PriceFeed is Owned, Destructible, Named("GoldFeed") {
         function updateInfo(uint newInfo) public {
@@ -114,7 +114,7 @@ Aşağıdaki örnekte detaylar açıklanmıştır.
         }
 
         // Burada sadece `override` yazıyoruz, `virtual` yazmıyoruz.
-        // Bu, `PriceFeed` contractından türetilen contractların
+        // Bu, `PriceFeed` akıllı sözleşmesinden türetilen akıllı sözleşmelerin
         // artık `destroy` fonksiyonunu override edemeyecekleri anlamına geliyor.
         function destroy() public override(Destructible, Named) { Named.destroy(); }
         function get() public view returns(uint r) { return info; }
@@ -257,7 +257,7 @@ bunu açıkça geçersiz kılması gerekir:
 
     contract Inherited is Base1, Base2
     {
-        // foo() fonksiyonuna sahip birden fazla temel contractı türetir.
+        // foo() fonksiyonuna sahip birden fazla temel akıllı sözleşmesi türetir.
         // Bu yüzden override etmek için açıkça belirtmeliyiz.
         function foo() public override(Base1, Base2) {}
     }
@@ -282,13 +282,13 @@ Daha resmi olarak, imza için tüm override etme yollarının
 parçası olan bir temel sözleşme varsa, birden çok tabandan 
 devralınan bir fonksiyonu (doğrudan veya dolaylı olarak) override 
 etme gerekli değildir ve (1) bu taban fonksiyonu uygular ve mevcut
-contracttan tabana giden hiçbir yol bu imzaya sahip bir fonksiyondan bahsetmez
-veya (2) bu taban fonksiyonu yerine getirmiyor ve mevcut contracttan
+akıllı sözleşmeden tabana giden hiçbir yol bu imzaya sahip bir fonksiyondan bahsetmez
+veya (2) bu taban fonksiyonu yerine getirmiyor ve mevcut akıllı sözleşmeden
 o tabana kadar olan tüm yollarda fonksiyondan en fazla bir kez söz ediliyor.
 
 Bu anlamda, bir imza için override etme yolu, söz konusu 
-contractta başlayan ve override etmeyen bu imzaya sahip bir 
-işlevden bahseden bir contractta sona eren miras grafiği boyunca bir yoldur.
+akıllı sözleşmede başlayan ve override etmeyen bu imzaya sahip bir 
+işlevden bahseden bir akıllı sözleşmede sona eren miras grafiği boyunca bir yoldur.
 
 Override eden bir fonksiyonu ``virtual`` olarak işaretlemezseniz,
 türetilmiş sözleşmeler artık bu fonksiyonun davranışını değiştiremez.
@@ -307,7 +307,7 @@ türetilmiş sözleşmeler artık bu fonksiyonun davranışını değiştiremez.
 
   Solidity 0.8.8 itibari ile bir interface fonksiyonunu override
   ederken ``override`` sözcüğünü kullanmanıza gerek kalmıyor,
-  birden fazla temel contractta tanımlanan fonksiyonlar dışında.
+  birden fazla temel akıllı sözleşmede tanımlanan fonksiyonlar dışında.
 
 Public durum değişkenleri parametre ve dönüş tipleri uyuştuğu zaman
 bir external fonksiyonu override edebilir:
@@ -360,7 +360,7 @@ override edilecek modifier'da kullanılmalı ve override eden modifier'da ise
         modifier foo() override {_;}
     }
 
-Çoklu kalıtım durumumnda bütün temel contractlar açıkça override edilme
+Çoklu kalıtım durumumnda bütün temel akıllı sözleşmeler açıkça override edilme
 durumunu belirtmelidir.
 
 .. code-block:: solidity
@@ -393,8 +393,8 @@ Constructor'lar
 ============
 
 Constructor isteğe bağlı olarak tanımlanan özel fonksiyonlardan biridir ve
-``constructor`` sözcüğü ile tanımlanır. Bu fonksiyon contract oluşumu sırasında
-çalıştırılır ve contract başlatma kodunuz burada bulunmaktadır.
+``constructor`` sözcüğü ile tanımlanır. Bu fonksiyon akıllı sözleşme oluşumu sırasında
+çalıştırılır ve akıllı sözleşme başlatma kodunuz burada bulunmaktadır.
 
 Constructor kodu çalıştırılmadan önce durum değişkenleri eğer aynı satırda
 tanımladıysanız gerekli değer atamalarını veya tanımlamadıysanız
@@ -427,12 +427,12 @@ Eğer constructor yoksa, default constructor çalıştırılır ``constructor() 
     }
 
 Constructor'larda internal parametreleri kullanabilirsiniz (örneğin, storage pointer'ları).
-Bu durumda contract :ref:`abstract <abstract-contract>` olarak işaretlenmelidir. Çünkü bu
+Bu durumda akıllı sözleşme :ref:`abstract <abstract-contract>` olarak işaretlenmelidir. Çünkü bu
 parametrelere dışarıdan geçerli değerler atanamaz, ancak yalnızca türetilmiş sözleşmelerin 
 constructor'ları aracılığıyla atanır.
 
 .. warning ::
-    Versiyon 0.4.22 öncesinde constructor'lar contract ile aynı isme sahip fonksiyonlar
+    Versiyon 0.4.22 öncesinde constructor'lar akıllı sözleşme ile aynı isme sahip fonksiyonlar
     olarak kullanılırdı. Ancak bu yazılış biçiminin Versiyon 0.5.0 sonrasında kullanımına izin
     verilmemektedir.
     
@@ -445,8 +445,8 @@ constructor'ları aracılığıyla atanır.
 Temel Constructor'lar için Argümanlar
 ===============================
 
-Tüm temel contractların constructor'ları, aşağıda açıklanan doğrusallaştırma kurallarına göre çağrılacaktır. 
-Temel contractların argümanları varsa, türetilmiş contractların hepsini belirtmesi gerekir. 
+Tüm temel akıllı sözleşmelerin constructor'ları, aşağıda açıklanan doğrusallaştırma kurallarına göre çağrılacaktır. 
+Temel akıllı sözleşmelerin argümanları varsa, türetilmiş akıllı sözleşmelerin hepsini belirtmesi gerekir. 
 Bu iki şekilde yapılabilir:
 
 .. code-block:: solidity
@@ -480,16 +480,16 @@ Bu iki şekilde yapılabilir:
 
 Bir yol doğrudan kalıtım listesindedir (``is Base(7)``). Diğeri, türetilmiş constructor'ın 
 bir parçası olarak bir modifier'ın çağrılma biçimindedir (``Base(y * y)``). 
-Bunu yapmanın ilk yolu, constructor argümanının sabit olması ve contractın davranışını 
+Bunu yapmanın ilk yolu, constructor argümanının sabit olması ve akıllı sözleşmenin davranışını 
 tanımlaması veya tanımlaması durumunda daha uygundur. Temel constructor argümanları 
-türetilmiş contractın argümanlarına bağlıysa, ikinci yol kullanılmalıdır. 
+türetilmiş akıllı sözleşmenin argümanlarına bağlıysa, ikinci yol kullanılmalıdır. 
 Argümanlar ya kalıtım listesinde ya da türetilmiş constructor'da değiştirici-tarzda verilmelidir. 
 Argümanları her iki yerde de belirtmek bir hatadır.
 
-Türetilmiş bir contract, temel contractların tüm constructorları için argümanları belirtmiyorsa, 
-özet olarak bildirilmelidir. Bu durumda, ondan başka bir contract türetildiğinde, diğer 
-contractın miras listesi veya constructor'ı, parametreleri belirtilmemiş tüm temel sınıflar 
-için gerekli parametreleri sağlamalıdır (aksi takdirde, diğer contract da soyut olarak bildirilmelidir). 
+Türetilmiş bir akıllı sözleşme, temel akıllı sözleşmelerin tüm constructorları için argümanları belirtmiyorsa, 
+özet olarak bildirilmelidir. Bu durumda, ondan başka bir akıllı sözleşme türetildiğinde, diğer 
+akıllı sözleşmenin miras listesi veya constructor'ı, parametreleri belirtilmemiş tüm temel sınıflar 
+için gerekli parametreleri sağlamalıdır (aksi takdirde, diğer akıllı sözleşme da soyut olarak bildirilmelidir). 
 Örneğin, yukarıdaki kod parçacığında, bkz. ``Derived3`` ve ``DerivedFromDerived``.
 
 .. index:: ! inheritance;multiple, ! linearization, ! C3 linearization
@@ -507,9 +507,9 @@ ile sonuçlanır, ancak bazı kalıtım grafiklerine izin vermez. Özellikle ``i
 sınıfların veriliş sırası önemlidir: Doğrudan temel sözleşmeleri “en temele benzeyen”den 
 “en çok türetilene” doğru sıralamalısınız. Bu sıralamanın Python'da kullanılanın tersi olduğuna dikkat edin.
 
-Bunu açıklamanın bir başka basitleştirici yolu, farklı contractlarda birden çok kez tanımlanan
+Bunu açıklamanın bir başka basitleştirici yolu, farklı akıllı sözleşmelerde birden çok kez tanımlanan
 bir fonksiyon çağrıldığında, verilen tabanların sağdan sola (Python'da soldan sağa) derinlemesine 
-ilk olarak aranması ve ilk eşleşmede durdurulmasıdır. . Bir temel contract zaten aranmışsa, atlanır.
+ilk olarak aranması ve ilk eşleşmede durdurulmasıdır. . Bir temel akıllı sözleşme zaten aranmışsa, atlanır.
 
 Aşağıdaki kodda Solidity "Linearization of inheritance graph impossible" hatası verecektir.
 
@@ -523,9 +523,9 @@ Aşağıdaki kodda Solidity "Linearization of inheritance graph impossible" hata
     // Bu derlenemez
     contract C is A, X {}
 
-Bunun sebebi ``C`` contractının ``X`` contractının ``A`` contractını
+Bunun sebebi ``C`` akıllı sözleşmesinin ``X`` akıllı sözleşmesinin ``A`` akıllı sözleşmesini
 override etmesini istemesidir (``A, X`` sırası ile bunu belirtiyor),
-ancak ``A`` contractının kendisi ``X`` contractını override etmeyi talep
+ancak ``A`` akıllı sözleşmesinin kendisi ``X`` akıllı sözleşmesini override etmeyi talep
 eder ki bu çözülemeyecek bir çelişkidir.
 
 Benzersiz bir override olmadan birden çok tabandan devralınan bir 
@@ -533,7 +533,7 @@ fonksiyonu açıkça override etmek gerektiğinden, pratikte C3 doğrusallaştı
 
 Kalıtım doğrusallaştırmasının özellikle önemli olduğu ve belki de o kadar net olmadığı bir alan, 
 miras hiyerarşisinde birden çok constructor olduğu zamandır. Constructor'lar, argümanlarının devralınan 
-contractın constructor'ında sağlandığı sıraya bakılmaksızın her zaman doğrusallaştırılmış sırada 
+akıllı sözleşmenin constructor'ında sağlandığı sıraya bakılmaksızın her zaman doğrusallaştırılmış sırada 
 yürütülür. Örneğin:
 
 .. code-block:: solidity
@@ -577,7 +577,7 @@ yürütülür. Örneğin:
 Farklı Türden Aynı İsme Sahip Üyeleri Türetme
 ======================================================
 
-Bir contractta aşağıdaki çiftlerden herhangi birinin miras nedeniyle aynı ada sahip olması bir hatadır:
+Bir akıllı sözleşmede aşağıdaki çiftlerden herhangi birinin miras nedeniyle aynı ada sahip olması bir hatadır:
   - bir fonksiyon ve bir modifier
   - bir fonksiyon ve bir event
   - bir event ve bir modifier

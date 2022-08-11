@@ -3,15 +3,15 @@
 .. _contracts:
 
 ##########
-Contracts
+Akıllı Sözleşmeler
 ##########
 
-Solidity'deki contractlar nesne yönelimli programlama dillerine benzerdir. State
+Solidity'deki akıllı sözleşmeler nesne yönelimli programlama dillerine benzerdir. State
 değişkenlerinde kalıcı data içerirler ve fonksiyonlar bu değişkenlerin değerini
-değiştirebilir. Başka bir contracttaki fonksiyonu çağırmak bir EVM fonksiyon çağrısı
-gerçekleştirir ve burada çağıran contractın state değişkenlerine erişilemez. Contractta
-herhangi bir şeyin yaşanmasını istiyorsanız o contractın herhangi bir fonksiyonunu 
-çağırmanız gerekir. Çünkü Ethereum'da "cron" konsepti yoktur, yani contractlar kendi
+değiştirebilir. Başka bir akıllı sözleşmedeki fonksiyonu çağırmak bir EVM fonksiyon çağrısı
+gerçekleştirir ve burada çağıran akıllı sözleşmenin state değişkenlerine erişilemez. Akıllı sözleşmede
+herhangi bir şeyin yaşanmasını istiyorsanız o akıllı sözleşmenin herhangi bir fonksiyonunu 
+çağırmanız gerekir. Çünkü Ethereum'da "cron" konsepti yoktur, yani akıllı sözleşmeler kendi
 başlarına bir şeyler yapamaz. Dışarıdan tetiklenmeleri gerekir.
 
 .. include:: contracts/creating-contracts.rst

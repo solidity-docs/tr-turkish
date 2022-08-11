@@ -10,7 +10,7 @@ Using For
 (``B``) üye fonksiyonlar olarak eklemek için kullanılabilir. Bu fonksiyonlar,
 çağrıldıkları nesneyi ilk parametreleri olarak alırlar (Python'daki  ``self`` değişkeni gibi).
 
-Dosya seviyesinde veya bir contract içerisinde, contract seviyesinde, geçerlidir.
+Dosya seviyesinde veya bir akıllı sözleşme içerisinde, akıllı sözleşme seviyesinde, geçerlidir.
 
 İlk kısım, ``A``, aşağıdakilerden biri olabilir:
 
@@ -19,7 +19,7 @@ Dosya seviyesinde veya bir contract içerisinde, contract seviyesinde, geçerlid
 - kütüphanenin adı (``using L for uint;``) - bütün fonksiyonlar (public ve internallerin hepsi) tipe eklenir.
 
 Dosya seviyesinde, ikinci kısım, ``B``, açık bir tip olmalıdır (veri konumu belirtici olmadan).
-Contractın içerisinde, ayrıca şu ifadeyi de kullanabilirsiniz ``using L for *;``, böylece ``L``
+Akıllı sözleşmenin içerisinde, ayrıca şu ifadeyi de kullanabilirsiniz ``using L for *;``, böylece ``L``
 kütüphanesinin bütün fonksiyonları *bütün* tiplere eklenmiş olur.
 
 Bir kütüphane belirtirseniz, kütüphanedeki tüm fonksiyonlar, ilk parametrenin türü 

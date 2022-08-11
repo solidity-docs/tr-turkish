@@ -6,11 +6,11 @@
 Kütüphaneler
 *********
 
-Kütüphaneler contractlara benzerler, ama onların amacı sadece bir kere deploy edilip
+Kütüphaneler akıllı sözleşmelere benzerler, ama onların amacı sadece bir kere deploy edilip
 daha sonrasında ihtiyaç duyulması halinde ``DELEGATECALL`` ile çağrılmalarıdır
 (Homestead'a kadar ``CALLCODE`` kullanılırdı). Bu demek oluyor ki kütüphane fonksiyonları
-çağrıldığında, onların kodu çağıran contractın içeriği ile çalıştırılıyor, mesela ``this``
-sözcüğü çağıran contractı işaret eder ve özellikle storage olarak çağıran contractın
+çağrıldığında, onların kodu çağıran akıllı sözleşmenin içeriği ile çalıştırılıyor, mesela ``this``
+sözcüğü çağıran akıllı sözleşmeyi işaret eder ve özellikle storage olarak çağıran akıllı sözleşmenin
 storage kısmı kullanılır. Bir kütüphane izole edilmiş bir kaynak kodu parçası olduğundan, 
 yalnızca açıkça sağlanmışlarsa çağrı sözleşmesinin durum değişkenlerine erişebilir 
 (aksi takdirde bunları adlandırmanın hiçbir yolu yoktur). Kütüphane fonksiyonları yalnızca 
@@ -23,22 +23,22 @@ olduğu varsayılır. Özellikle, bir kütüphaneyi yok etmek mümkün değildir
     Bu sürümden başlayarak, kütüphaneler, durumu değiştiren fonksiyonların doğrudan çağrılmasına 
     izin vermeyen bir :ref:`mekanizma<call-protection>` içerir (yani ``DELEGATECALL`` olmadan).
 
-Kütüphaneler, onları kullanan contractların zımni temel contractları olarak görülebilir. 
+Kütüphaneler, onları kullanan akıllı sözleşmelerin zımni temel akıllı sözleşmeleri olarak görülebilir. 
 Miras hiyerarşisinde açıkça görünmezler, ancak kütüphane fonksiyonlarına yapılan çağrılar, 
-açık temel contractların fonksiyonlarına yapılan çağrılara benzer 
+açık temel akıllı sözleşmelerin fonksiyonlarına yapılan çağrılara benzer 
 (L.f() gibi nitelikli erişim kullanarak). 
 Tabii ki, dahili fonksiyonlara yapılan çağrılar dahili çağrı kuralını kullanır; 
 bu, tüm dahili türlerin iletilebileceği ve bellekte depolanan türlerin kopyalanmadan 
-referans olarak iletileceği anlamına gelir. Bunu EVM'de gerçekleştirmek için, bir contracttan 
+referans olarak iletileceği anlamına gelir. Bunu EVM'de gerçekleştirmek için, bir akıllı sözleşmeden 
 çağrılan dahili kütüphane fonksiyonlarının ve buradan çağrılan tüm fonksiyonların kodu 
-derleme zamanında çağrı contractına dahil edilecek ve bir ``DELEGATECALL`` yerine normal 
+derleme zamanında çağrı akıllı sözleşmesine dahil edilecek ve bir ``DELEGATECALL`` yerine normal 
 bir JUMP çağrısı kullanılacaktır.
 
 .. note::
     Public fonksiyonlar söz konusu olduğunda miras analojisi bozulur. 
     L.f() ile bir genel kütüphane fonksiyonunun çağrılması, 
     harici bir çağrıyla sonuçlanır (kesin olarak ``DELEGATECALL``). 
-    Buna karşılık, A mevcut contractın temel contractı olduğunda, A.f() dahili bir çağrıdır.
+    Buna karşılık, A mevcut akıllı sözleşmesinin temel akıllı sözleşmesi olduğunda, A.f() dahili bir çağrıdır.
 
 .. index:: using for, set
 
@@ -52,7 +52,7 @@ bir örnek için kullanmayı kontrol ettiğinizden emin olun).
     pragma solidity >=0.6.0 <0.9.0;
 
 
-    // Çağrı contractında verilerini tutmak 
+    // Çağrı akıllı sözleşmesinde verilerini tutmak 
     // için kullanılacak yeni bir struct veri türü tanımlıyoruz.
     struct Data {
         mapping(uint => bool) flags;
@@ -100,7 +100,7 @@ bir örnek için kullanmayı kontrol ettiğinizden emin olun).
         Data knownValues;
 
         function register(uint value) public {
-            // "Instance" geçerli contract olacağından, 
+            // "Instance" geçerli akıllı sözleşme olacağından, 
             // kütüphane fonksiyonları kütüphanenin belirli 
             // bir örneği olmadan çağrılabilir.
             require(Set.insert(knownValues, value));
@@ -198,7 +198,7 @@ Bunu, kütüphane derlenirken bunları derleyiciye ileterek veya önceden derlen
 güncellemek için bağlayıcıyı kullanarak yapabilirsiniz. Bağlama için komut satırı derleyicisinin 
 nasıl kullanılacağı hakkında bilgi için :ref:`library-linking` konusuna bakın.
 
-Contractlarla kıyaslandığında, kütüphaneler aşağıdaki şekillerde kısıtlanmışlardır:
+Akıllı sözleşmelerle kıyaslandığında, kütüphaneler aşağıdaki şekillerde kısıtlanmışlardır:
 
 - durum değişkenleri olamaz
 - miras veremezler veya alamazlar
@@ -220,20 +220,20 @@ External kütüphane fonksiyonları, örneğin özyinelemeli yapılar ve depolam
 gibi external kütüphane fonksiyonlarından daha fazla bağımsız değişken türünü destekler. 
 Bu nedenle, 4 baytlık seçiciyi hesaplamak için kullanılan fonksiyon imzaları, 
 bir internal adlandırma şemasının ardından hesaplanır ve 
-ABI contractında desteklenmeyen türdeki bağımsız değişkenler bir dahili kodlama kullanır.
+ABI akıllı sözleşmesinde desteklenmeyen türdeki bağımsız değişkenler bir dahili kodlama kullanır.
 
 İmzalardaki türler için aşağıdaki tanımlayıcılar kullanılır:
 
-- Değer tipleri, storage olmayan ``string`` ve storage olmayan ``bytes`` tipleri contract ABI'sinde aynı tanımlayıcıları kullanır.
-- Storage olmayan array tipleri de contract ABI'sindeki genel görüşü kabul eder, yani dinamik arrayler için ``<type>[]`` ve fixed-size arrayler için ``<type>[M]`` kullanılır.
+- Değer tipleri, storage olmayan ``string`` ve storage olmayan ``bytes`` tipleri akıllı sözleşme ABI'sinde aynı tanımlayıcıları kullanır.
+- Storage olmayan array tipleri de akıllı sözleşme ABI'sindeki genel görüşü kabul eder, yani dinamik arrayler için ``<type>[]`` ve fixed-size arrayler için ``<type>[M]`` kullanılır.
 - Storage olmayan structlar tam isimleri ile referans edilir, yani ``contract C { struct S { ... } }`` için ``C.S``.
 - Storage pointer mappingleri de ``mapping(<keyType> => <valueType>) storage`` kullanır. Burada ``<keyType>`` ve ``<valueType>`` sırasıyla mappingdeki anahtar ve değer tipleridir.
 - Diğer storage pointer tipleri de kendi storage olmayan tiplerinin tanımlayıcılarını kullanırlar, ama bir boşluk ile ``storage`` eklenmiş halleri ile.
 
-Argüman encode'lama da sıradan contract ABI'si gibidir, storage pointerları hariç, 
+Argüman encode'lama da sıradan akıllı sözleşme ABI'si gibidir, storage pointerları hariç, 
 işaret ettikleri storage slotuna atıfta bulunan bir ``uint256`` değeri olarak kodlanmıştır.
 
-Contract ABI'sine benzer bir şekilde, selector, imzanın Keccak256-hashinin ilk dört baytından oluşur. 
+Akıllı sözleşme ABI'sine benzer bir şekilde, selector, imzanın Keccak256-hashinin ilk dört baytından oluşur. 
 Değeri, ``.selector`` üyesi kullanılarak Solidity'den şu şekilde elde edilebilir:
 
 .. code-block:: solidity
@@ -262,7 +262,7 @@ Girişte belirtildiği gibi, bir kütüphanenin kodu ``DELEGATECALL`` veya ``CAL
 yerine bir ``CALL`` kullanılarak yürütülürse, bir ``view`` veya ``pure`` fonksiyon
 çağrılmadığı sürece geri dönecektir.
 
-EVM, bir contractın ``CALL`` kullanılarak çağrılıp çağrılmadığını tespit etmek 
+EVM, bir akıllı sözleşmenin ``CALL`` kullanılarak çağrılıp çağrılmadığını tespit etmek 
 için doğrudan bir yol sağlamaz, ancak bir sözleşme, “nerede” çalıştığını bulmak 
 için ``ADDRESS`` işlem kodunu kullanabilir. Oluşturulan kod, arama modunu 
 belirlemek için bu adresi yapım sırasında kullanılan adresle karşılaştırır.
