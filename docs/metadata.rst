@@ -187,7 +187,7 @@ IPFS/Swarm'dan indirilebilir.
 Derleyicinin ("resmi" sürüm mü değil mi diye bakılan) doğru sürümü ilgili girdiye
 belirtilen ayarlar ile çağrılır. (Derlemeden) elde edilen bayt kodu (sözleşmeyi) yaratma 
 işleminin verisi ile veya ``CREATE`` işlem kodu verisi ile karşılaştırılır. Bu, hash'i 
-zaten bayt kodun bir parçası olduğu için meta veriyi otomatik olarak doğrular. Fazldan
+zaten bayt kodun bir parçası olduğu için meta veriyi otomatik olarak doğrular. Fazladan
 veri, kullanıcıya sunulan arayüze uygun şekilde çözülmesi gereken constructor girdi verisidir.
 
 `sourcify <https://github.com/ethereum/sourcify>`_
