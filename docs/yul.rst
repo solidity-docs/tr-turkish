@@ -105,13 +105,13 @@ kullanarak da uygulamak mümkündür. Burada ``lt(a, b)``, ``a``'nın ``b``'den 
 
 
 
-Stand-Alone Usage
+Tek Başına Kullanım
 =================
 
-You can use Yul in its stand-alone form in the EVM dialect using the Solidity compiler.
-This will use the :ref:`Yul object notation <yul-object>` so that it is possible to refer
-to code as data to deploy contracts. This Yul mode is available for the commandline compiler
-(use ``--strict-assembly``) and for the :ref:`standard-json interface <compiler-api>`:
+Yul'u Solidity derleyicisini kullanarak EVM diyalektinde tek başına kullanabilirsiniz. 
+Bu, Yul nesne notasyonunu kullanır, böylece sözleşmeleri deploy etmek için koda veri 
+olarak atıfta bulunulabilir. Bu Yul modu, komut satırı derleyicisi 
+( ``--strict-assembly`` kullanın) ve :ref:`standard-json arayüzü <compiler-api>` için kullanılabilir:
 
 .. code-block:: json
 
@@ -124,13 +124,13 @@ to code as data to deploy contracts. This Yul mode is available for the commandl
         }
     }
 
-.. warning::
+.. uyarı::
 
-    Yul is in active development and bytecode generation is only fully implemented for the EVM dialect of Yul
-    with EVM 1.0 as target.
+    Yul aktif geliştirme aşamasındadır ve bayt kodu oluşturma, yalnızca hedef olarak EVM 1.0 
+    ile Yul'un EVM diyalekti için tam olarak uygulanabilir.
 
 
-Informal Description of Yul
+Yul'un Resmi Olmayan Tanımı
 ===========================
 
 In the following, we will talk about each individual aspect
