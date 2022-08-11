@@ -133,39 +133,38 @@ olarak atıfta bulunulabilir. Bu Yul modu, komut satırı derleyicisi
 Yul'un Resmi Olmayan Tanımı
 ===========================
 
-In the following, we will talk about each individual aspect
-of the Yul language. In examples, we will use the default EVM dialect.
+Aşağıda Yul dilinin bütün yönleri hakkında konuşacağız. Örneklerde varsayılan EVM diyalektini kullanacağız.
 
-Syntax
+Sözdizimi (Syntax)
 ------
 
-Yul parses comments, literals and identifiers in the same way as Solidity,
-so you can e.g. use ``//`` and ``/* */`` to denote comments.
-There is one exception: Identifiers in Yul can contain dots: ``.``.
+Yul, yorumları, değişmez değerleri ve tanımlayıcıları Solidity ile aynı şekilde ayrıştırır,
+böylece örneğin yorumları belirtmek için  ``//`` ve ``/* */`` kullanabilirsiniz.  
+Bir istisna vardır: Yul'daki tanımlayıcılar noktalar içerebilir: ``.``.
 
-Yul can specify "objects" that consist of code, data and sub-objects.
-Please see :ref:`Yul Objects <yul-object>` below for details on that.
-In this section, we are only concerned with the code part of such an object.
-This code part always consists of a curly-braces
-delimited block. Most tools support specifying just a code block
-where an object is expected.
+Yul, kod, veri ve alt nesnelerden oluşan “nesneler” belirleyebilir. 
+Bununla ilgili ayrıntılar için lütfen aşağıdaki :ref:`Yul Nesneleri <yul-object>` bölümüne bakın. 
+Bu bölümde, bu tür bir nesnenin sadece kod kısmı ile ilgileniyoruz.
+Bu kod bölümü her zaman süslü parantezlerle ayrılmış bir bloktan oluşur. 
+Çoğu araç, bir nesnenin olması beklenen yerde yalnızca bir 
+kod bloğu tanımlamayı destekler.
 
-Inside a code block, the following elements can be used
-(see the later sections for more details):
+Bir kod bloğu içinde aşağıdaki öğeler kullanılabilir 
+(daha fazla ayrıntı için sonraki bölümlere bakınız):
 
-- literals, i.e. ``0x123``, ``42`` or ``"abc"`` (strings up to 32 characters)
-- calls to builtin functions, e.g. ``add(1, mload(0))``
-- variable declarations, e.g. ``let x := 7``, ``let x := add(y, 3)`` or ``let x`` (initial value of 0 is assigned)
-- identifiers (variables), e.g. ``add(3, x)``
-- assignments, e.g. ``x := add(y, 3)``
-- blocks where local variables are scoped inside, e.g. ``{ let x := 3 { let y := add(x, 1) } }``
-- if statements, e.g. ``if lt(a, b) { sstore(0, 1) }``
-- switch statements, e.g. ``switch mload(0) case 0 { revert() } default { mstore(0, 1) }``
-- for loops, e.g. ``for { let i := 0} lt(i, 10) { i := add(i, 1) } { mstore(i, 7) }``
-- function definitions, e.g. ``function f(a, b) -> c { c := add(a, b) }``
+- değişmez değerler, yani ``0x123``, ``42`` veya ``"abc"`` (32 karaktere kadar string'ler)
+- gömülü fonksiyonlara yapılan çağrılar, örneğin ``add(1, mload(0))``
+- değişken tanımlamaları, örneğin ``let x := 7``, ``let x := add(y, 3)`` veya ``let x`` (başlangıç değeri olarak 0 atanır)
+- tanımlayıcılar (değişkenler), örneğin ``add(3, x)``
+- atamalar, örneğin ``x := add(y, 3)``
+- yerel değişkenlerin kapsam dahilinde olduğu bloklar, ör., örneğin ``{ let x := 3 { let y := add(x, 1) } }``
+- if ifadeleri, örneğin ``if lt(a, b) { sstore(0, 1) }``
+- switch ifadeleri, örneğin ``switch mload(0) case 0 { revert() } default { mstore(0, 1) }``
+- for döngünleri, örneğin ``for { let i := 0} lt(i, 10) { i := add(i, 1) } { mstore(i, 7) }``
+- fonksiyon tanımlamaları, örneğin ``function f(a, b) -> c { c := add(a, b) }``
 
-Multiple syntactical elements can follow each other simply separated by
-whitespace, i.e. there is no terminating ``;`` or newline required.
+Birden fazla sözdizimsel öğe, yalnızca boşlukla ayrılmış olarak birbirini 
+takip edebilir, yani ``;`` ile sonlandırma yoktur veya yeni satıra geçilmelidir.
 
 Literals
 --------
