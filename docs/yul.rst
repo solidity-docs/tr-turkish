@@ -248,25 +248,25 @@ ve bu, bağımsız değişken listelerinin değerlendirilme sırasıdır.
 Yine de, return edilen değerler yığında (stack) soldan sağa olması beklenir, 
 yani bu örnekte, ``y`` yığının üstünde ve ``x`` onun altındadır.
 
-Variable Declarations
+Değişken Atamaları
 ---------------------
 
-You can use the ``let`` keyword to declare variables.
-A variable is only visible inside the
-``{...}``-block it was defined in. When compiling to the EVM,
-a new stack slot is created that is reserved
-for the variable and automatically removed again when the end of the block
-is reached. You can provide an initial value for the variable.
-If you do not provide a value, the variable will be initialized to zero.
+Değişkenleri atamak için ``let`` anahtar sözcüğünü kullanabilirsiniz. 
+Bir değişken sadece tanımlandığı ``{...}``-blokunun içinde görünür. 
+EVM'ye derlenirken, değişken için ayrılmış yeni bir yığın (stack) 
+yuvası oluşturulur ve bloğun sonuna ulaşıldığında otomatik 
+olarak tekrar kaldırılır. Değişken için bir başlangıç 
+değeri atayabilirsiniz. Bir değer atamazsanız, 
+değişken sıfıra eşitlenerek başlatılır.
 
-Since variables are stored on the stack, they do not directly
-influence memory or storage, but they can be used as pointers
-to memory or storage locations in the built-in functions
-``mstore``, ``mload``, ``sstore`` and ``sload``.
-Future dialects might introduce specific types for such pointers.
+Değişkenler yığında depolandığından, belleği veya hafızayı 
+doğrudan etkilemezler, ancak gömülü fonksiyonlar olan ``mstore``, 
+``mload``, ``sstore`` ve ``sload``'da belleğe veya hafıza 
+konumlarına işaretçiler (pointer) olarak kullanılabilirler. Gelecekteki 
+diyalektler, bu tür işaretçiler için belirlenmiş türler sağlayabilir.
 
-When a variable is referenced, its current value is copied.
-For the EVM, this translates to a ``DUP`` instruction.
+Bir değişkene referans verildiğinde, mevcut değeri kopyalanır. 
+EVM için bu, bir ``DUP`` talimatı anlamına gelir.
 
 .. code-block:: yul
 
@@ -276,28 +276,28 @@ For the EVM, this translates to a ``DUP`` instruction.
         {
             let y := add(sload(v), 1)
             v := y
-        } // y is "deallocated" here
+        } // y burada "serbest bırakılmıştır"
         sstore(v, zero)
-    } // v and zero are "deallocated" here
+    } // v ve sıfır burada "serbest bırakılmıştır"
 
 
-If the declared variable should have a type different from the default type,
-you denote that following a colon. You can also declare multiple
-variables in one statement when you assign from a function call
-that returns multiple values.
+Atanan değişkenin varsayılan (default) türden farklı bir türde olması gerekiyorsa, 
+iki nokta üst üste işareti ile bunu belirtirsiniz. Ayrıca, birden 
+çok değer döndüren bir fonksiyon çağrısından atama yaptığınızda, 
+tek bir ifadede birden çok değişken atayabilirsiniz.
 
 .. code-block:: yul
 
-    // This will not compile (u32 and u256 type not implemented yet)
+    // Bu derlenmeyecek (u32 ve u256 türü henüz uygulanmadı)
     {
         let zero:u32 := 0:u32
         let v:u256, t:u32 := f()
         let x, y := g()
     }
 
-Depending on the optimiser settings, the compiler can free the stack slots
-already after the variable has been used for
-the last time, even though it is still in scope.
+Optimize edici ayarlarına bağlı olarak derleyici, 
+değişken hala kod bloğu kapsamında olsa bile, son kez kullanıldıktan 
+sonra yığın yuvalarını serbest bırakabilir.
 
 
 Assignments
