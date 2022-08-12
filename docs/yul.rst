@@ -220,34 +220,33 @@ iki nokta üst üste (:) işaretinden sonra belirtilmesi gerekir:
     let x := and("abc":u32, add(3:u256, 2:u256))
 
 
-Function Calls
+Fonksiyon Çağrıları
 --------------
 
-Both built-in and user-defined functions (see below) can be called
-in the same way as shown in the previous example.
-If the function returns a single value, it can be directly used
-inside an expression again. If it returns multiple values,
-they have to be assigned to local variables.
+Hem gömülü hem de kullanıcı tanımlı fonksiyonlar (aşağıya bakın)
+önceki örnekte gösterildiği gibi çağrılabilir.
+Fonksiyon tek bir değer döndürürse, tekrar doğrudan bir ifadenin 
+içinde kullanılabilir. Birden fazla değer döndürürse, 
+yerel değişkenlere atanmaları gerekir.
 
 .. code-block:: yul
 
     function f(x, y) -> a, b { /* ... */ }
     mstore(0x80, add(mload(0x80), 3))
-    // Here, the user-defined function `f` returns two values.
+    // Burada, kullanıcı tanımlı `f` fonksiyonu iki değer döndürür.
     let x, y := f(1, mload(0))
 
-For built-in functions of the EVM, functional expressions
-can be directly translated to a stream of opcodes:
-You just read the expression from right to left to obtain the
-opcodes. In the case of the first line in the example, this
-is ``PUSH1 3 PUSH1 0x80 MLOAD ADD PUSH1 0x80 MSTORE``.
+EVM'nin gömülü fonksiyonları için, fonksiyonel ifadeler 
+doğrudan bir işlem kodu akışına çevrilebilir: 
+İşlem kodlarını elde etmek için ifadeyi sağdan sola 
+okumanız yeterlidir. Örnekteki ilk satır söz konusu olduğunda, 
+bu ``PUSH1 3 PUSH1 0x80 MLOAD ADD PUSH1 0x80 MSTORE``'dur.
 
-For calls to user-defined functions, the arguments are also
-put on the stack from right to left and this is the order
-in which argument lists are evaluated. The return values,
-though, are expected on the stack from left to right,
-i.e. in this example, ``y`` is on top of the stack and ``x``
-is below it.
+Kullanıcı tanımlı fonksiyonlara yapılan çağrılar için, 
+bağımsız değişkenler de yığına sağdan sola doğru yerleştirilir 
+ve bu, bağımsız değişken listelerinin değerlendirilme sırasıdır. 
+Yine de, return edilen değerler yığında (stack) soldan sağa olması beklenir, 
+yani bu örnekte, ``y`` yığının üstünde ve ``x`` onun altındadır.
 
 Variable Declarations
 ---------------------
