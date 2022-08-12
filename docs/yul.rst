@@ -300,17 +300,17 @@ değişken hala kod bloğu kapsamında olsa bile, son kez kullanıldıktan
 sonra yığın yuvalarını serbest bırakabilir.
 
 
-Assignments
+Atamalar
 -----------
 
-Variables can be assigned to after their definition using the
-``:=`` operator. It is possible to assign multiple
-variables at the same time. For this, the number and types of the
-values have to match.
-If you want to assign the values returned from a function that has
-multiple return parameters, you have to provide multiple variables.
-The same variable may not occur multiple times on the left-hand side of
-an assignment, e.g. ``x, x := f()`` is invalid.
+Değişkenler, tanımlarından sonra ``:=`` operatörü kullanılarak 
+atanabilir. Aynı anda birden fazla değişken atamak mümkündür. 
+Bunun için değerlerin sayı ve türlerinin eşleşmesi gerekir. 
+Birden çok return parametresi olan bir fonksiyondan döndürülen 
+değerleri atamak istiyorsanız, birden çok değişken 
+tanımlamanız gerekir. Aynı değişken, bir atamanın 
+sol tarafında birden çok kez bulunamaz, 
+örn. ``x, x := f()`` geçersizdir.
 
 .. code-block:: yul
 
@@ -319,7 +319,7 @@ an assignment, e.g. ``x, x := f()`` is invalid.
     v := 2
     let t := add(v, 2)
     function f() -> a, b { }
-    // assign multiple values
+    // birden çok değer atama
     v, t := f()
 
 
