@@ -363,20 +363,20 @@ alınan ve ``default`` olarak adlandırılan bir varsayılan ifade veya bir alte
 Switch ifadesindeki case'ler süslü parantezle çevrelenmez, ancak case'lerin kod blokları
 için süslü parantezle çevreleme zorunluluğu vardır.
 
-Loops
+Döngüler (Loop)
 -----
 
-Yul supports for-loops which consist of
-a header containing an initializing part, a condition, a post-iteration
-part and a body. The condition has to be an expression, while
-the other three are blocks. If the initializing part
-declares any variables at the top level, the scope of these variables extends to all other
-parts of the loop.
+Yul, bir başlatma bölümü, bir koşul, 
+bir iterasyon sonrası bölümü ve bir kod gövdesi içeren
+döngüleri destekler. Koşul bölümü bir ifade 
+olmalıdır, diğer üçü ise bloklar şeklindedir. Başlatma bölümünde herhangi 
+bir değişken en üst düzeyde atanırsa, bu 
+değişkenlerin kapsamı döngünün diğer tüm bölümlerine kadar genişler.
 
-The ``break`` and ``continue`` statements can be used in the body to exit the loop
-or skip to the post-part, respectively.
+``break`` ve ``continue`` ifadeleri kod gövdesinde sırasıyla döngüden çıkmak 
+veya iterasyon sonrası bölümüne atlamak için kullanılabilir.
 
-The following example computes the sum of an area in memory.
+Aşağıdaki örnek, bellekteki bir alanın toplamını hesaplar.
 
 .. code-block:: yul
 
@@ -387,8 +387,8 @@ The following example computes the sum of an area in memory.
         }
     }
 
-For loops can also be used as a replacement for while loops:
-Simply leave the initialization and post-iteration parts empty.
+For döngüleri, while döngülerinin yerine de kullanılabilir: 
+Başlatma ve iterasyon sonrası bölümlerini boş bırakmanız yeterlidir.
 
 .. code-block:: yul
 
