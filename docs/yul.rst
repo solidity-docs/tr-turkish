@@ -339,12 +339,12 @@ Kod bloğu için süslü parantez gereklidir.
 Switch
 ------
 
-You can use a switch statement as an extended version of the if statement.
-It takes the value of an expression and compares it to several literal constants.
-The branch corresponding to the matching constant is taken.
-Contrary to other programming languages, for safety reasons, control flow does
-not continue from one case to the next. There can be a fallback or default
-case called ``default`` which is taken if none of the literal constants matches.
+if ifadesinin genişletilmiş bir versiyonu olarak bir switch 
+ifadesi kullanabilirsiniz. Switch, bir ifadenin değerini alır ve onu birkaç 
+değişmez sabitle karşılaştırır. Eşleşen sabite karşılık gelen kısım değerlendirmeye alınır. 
+Diğer programlama dillerinin aksine, güvenlik nedeniyle, kontrol akışı 
+bir durumdan diğerine devam etmez. Değişmez sabitlerin hiçbiri eşleşmezse 
+alınan ve ``default`` olarak adlandırılan bir varsayılan ifade veya bir alternatif durum olabilir.
 
 .. code-block:: yul
 
@@ -360,8 +360,8 @@ case called ``default`` which is taken if none of the literal constants matches.
         sstore(0, div(x, 2))
     }
 
-The list of cases is not enclosed by curly braces, but the body of a
-case does require them.
+Switch ifadesindeki case'ler süslü parantezle çevrelenmez, ancak case'lerin kod blokları
+için süslü parantezle çevreleme zorunluluğu vardır.
 
 Loops
 -----
