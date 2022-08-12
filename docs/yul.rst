@@ -315,7 +315,7 @@ sol tarafında birden çok kez bulunamaz,
 .. code-block:: yul
 
     let v := 0
-    // re-assign v
+    // v değişkenini tekrar atama
     v := 2
     let t := add(v, 2)
     function f() -> a, b { }
@@ -326,15 +326,15 @@ sol tarafında birden çok kez bulunamaz,
 If
 --
 
-The if statement can be used for conditionally executing code.
-No "else" block can be defined. Consider using "switch" instead (see below) if
-you need multiple alternatives.
+if ifadesi, koşullu olarak kod çalıştırmak için kullanılabilir. 
+“else” bloğu tanımlanamaz. Birden fazla alternatife ihtiyacınız varsa, 
+bunun yerine "switch" kullanmayı düşünebilirsiniz (aşağıya göz atın).
 
 .. code-block:: yul
 
     if lt(calldatasize(), 4) { revert(0, 0) }
 
-The curly braces for the body are required.
+Kod bloğu için süslü parantez gereklidir.
 
 Switch
 ------
