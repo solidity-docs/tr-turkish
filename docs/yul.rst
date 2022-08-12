@@ -448,11 +448,11 @@ Aşağıdaki örnek, power adlı fonksiyonun kare-ve-çarpma yöntemiyle bir uyg
         }
     }
 
-Specification of Yul
+Yul Tanımlaması
 ====================
 
-This chapter describes Yul code formally. Yul code is usually placed inside Yul objects,
-which are explained in their own chapter.
+Bu bölüm Yul kodunu resmi olarak açıklar. Yul kodu genellikle 
+kendi bölümlerinde açıklandığı üzere Yul nesnelerinin içine yerleştirilir.
 
 .. code-block:: none
 
