@@ -401,37 +401,37 @@ Başlatma ve iterasyon sonrası bölümlerini boş bırakmanız yeterlidir.
         }
     }
 
-Function Declarations
+Fonksiyon Atamaları
 ---------------------
 
-Yul allows the definition of functions. These should not be confused with functions
-in Solidity since they are never part of an external interface of a contract and
-are part of a namespace separate from the one for Solidity functions.
+Yul, fonksiyonların tanımlanmasına izin verir. Bunlar, hiçbir zaman bir 
+sözleşmenin harici arayüzünün parçası olmadıkları ve Solidity fonksiyonlarından ayrı 
+bir ad alanının parçası oldukları için Solidity'deki fonksiyonlarla karıştırılmamalıdır.
 
-For the EVM, Yul functions take their
-arguments (and a return PC) from the stack and also put the results onto the
-stack. User-defined functions and built-in functions are called in exactly the same way.
+EVM için, Yul fonksiyonları bağımsız değişkenlerini (ve bir return PC'sini) 
+yığından alır ve ayrıca sonuçları yığına koyar. 
+Kullanıcı tanımlı fonksiyonlar ve gömülü fonksiyonlar tam olarak aynı şekilde çağrılır.
 
-Functions can be defined anywhere and are visible in the block they are
-declared in. Inside a function, you cannot access local variables
-defined outside of that function.
+Fonksiyonlar herhangi bir yerde tanımlanabilir ve tanımlandıkları 
+blokta görülebilir olurlar. Bir fonksiyonun içinde, o fonksiyonun 
+dışında tanımlanan yerel değişkenlere erişemezsiniz.
 
-Functions declare parameters and return variables, similar to Solidity.
-To return a value, you assign it to the return variable(s).
+Fonksiyonlar, Solidity'ye benzer şekilde parametreleri atar ve değişkenleri döndürür. 
+Bir değer döndürmek için, onu return değişken(ler)ine atarsınız.
 
-If you call a function that returns multiple values, you have to assign
-them to multiple variables using ``a, b := f(x)`` or ``let a, b := f(x)``.
+Birden çok değer döndüren bir fonksiyonu çağırırsanız, bunları
+ ``a, b := f(x)`` veya ``let a, b := f(x)`` kullanarak birden çok değişkene atamanız gerekir.
 
-The ``leave`` statement can be used to exit the current function. It
-works like the ``return`` statement in other languages just that it does
-not take a value to return, it just exits the functions and the function
-will return whatever values are currently assigned to the return variable(s).
+``leave`` ifadesi, geçerli fonksiyondan çıkmak için kullanılabilir. 
+Diğer dillerdeki ``return`` ifadesi gibi çalışır, sadece döndürmek için 
+bir değer almaz, sadece fonksiyonlardan çıkar ve fonksiyon, dönüş (return) 
+değişkenlerine o anda atanmış olan değerleri döndürür.
 
-Note that the EVM dialect has a built-in function called ``return`` that
-quits the full execution context (internal message call) and not just
-the current yul function.
+EVM diyalektinin, yalnızca geçerli yul fonksiyonundan değil, 
+tam çalıştırma bağlamından (dahili mesaj çağrısı) çıkan 
+``return`` adlı gömülü bir fonksiyonu olduğunu unutmayın.
 
-The following example implements the power function by square-and-multiply.
+Aşağıdaki örnek, power adlı fonksiyonun kare-ve-çarpma yöntemiyle bir uygulamasıdır.
 
 .. code-block:: yul
 
