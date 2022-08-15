@@ -568,44 +568,45 @@ Atamalar ve fonksiyon çağrıları sırasında ilgili değerlerin türlerinin e
 bir türün değerini alan ve farklı bir türün değerini döndüren 
 uygun bir gömülü fonksiyon sağladığında gerçekleştirilebilir.
 
-Scoping Rules
+Kapsam Belirleme Kuralları
 -------------
 
-Scopes in Yul are tied to Blocks (exceptions are functions and the for loop
-as explained below) and all declarations
-(``FunctionDefinition``, ``VariableDeclaration``)
-introduce new identifiers into these scopes.
+Yul'daki kapsamlar (scope) Bloklara bağlıdır (fonksiyonlar ve aşağıda açıklandığı 
+gibi for döngüsü hariç) ve tüm bildirimler 
+(``FunctionDefinition``, ``VariableDeclaration``) 
+bu kapsamlara yeni tanımlayıcılar (identifier) getirir.
 
-Identifiers are visible in
-the block they are defined in (including all sub-nodes and sub-blocks):
-Functions are visible in the whole block (even before their definitions) while
-variables are only visible starting from the statement after the ``VariableDeclaration``.
+Tanımlayıcılar, tanımlandıkları blokta görünürler 
+(tüm alt düğümler ve alt bloklar dahil): fonksiyonlar tüm blokta 
+(hatta tanımlandıkları yerden önce bile) görünürken, değişkenler 
+yalnızca ``VariableDeclaration``'dan sonraki ifadeden başlayarak görünür.
 
-In particular,
-variables cannot be referenced in the right hand side of their own variable
-declaration.
-Functions can be referenced already before their declaration (if they are visible).
+Özellikle, değişkenlere kendi değişken 
+atamalarının sağ tarafında referans verilemez. 
+Fonksiyonlara, atamalarından önce 
+referans verilebilir (eğer görünürlerse).
 
-As an exception to the general scoping rule, the scope of the "init" part of the for-loop
-(the first block) extends across all other parts of the for loop.
-This means that variables (and functions) declared in the init part (but not inside a
-block inside the init part) are visible in all other parts of the for-loop.
 
-Identifiers declared in the other parts of the for loop respect the regular
-syntactical scoping rules.
+Genel kapsam belirleme kuralının bir istisnası olarak, 
+for döngüsünün  "init" bölümünün (ilk blok) kapsamı, for döngüsünün diğer tüm bölümlerini içine alır. 
+Bu, init bölümünde bildirilen (ancak init parçasının içindeki bir bloğun içerisinde değil) 
+değişkenlerin ve fonksiyonların for döngüsünün diğer tüm bölümlerinde görünür olduğu anlamına gelir.
 
-This means a for-loop of the form ``for { I... } C { P... } { B... }`` is equivalent
-to ``{ I... for {} C { P... } { B... } }``.
+For döngüsünün diğer bölümlerinde bildirilen tanımlayıcılar, normal 
+sözdizimsel kapsam belirleme kurallarına uyar.
 
-The parameters and return parameters of functions are visible in the
-function body and their names have to be distinct.
+Bu demektir ki ``for { I... } C { P... } { B... }`` şeklindeki bir for döngüsü
+ ``{ I... for {} C { P... } { B... } }`` ifadesine eşittir.
 
-Inside functions, it is not possible to reference a variable that was declared
-outside of that function.
+Fonksiyonların parametreleri ve return parametreleri fonksiyon 
+gövdesinde görünür ve isimleri farklı olmalıdır.
 
-Shadowing is disallowed, i.e. you cannot declare an identifier at a point
-where another identifier with the same name is also visible, even if it is
-not possible to reference it because it was declared outside the current function.
+Fonksiyonların içinde, o fonksiyonun dışında bildirilen 
+bir değişkene referans vermek mümkün değildir.
+
+Gölgelemeye (shadowing) izin verilmez, yani aynı ada sahip başka bir tanımlayıcının da 
+görünür olduğu bir noktada, geçerli işlevin dışında bildirildiği için 
+ona başvurmak mümkün olmasa bile bir tanımlayıcı (identifier) atayamazsınız.
 
 Formal Specification
 --------------------
