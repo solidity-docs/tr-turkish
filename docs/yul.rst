@@ -506,48 +506,48 @@ kendi bölümlerinde açıklandığı üzere Yul nesnelerinin içine yerleştiri
     DecimalNumber = [0-9]+
 
 
-Restrictions on the Grammar
+Dilbilgisi ile İlgili Kısıtlamalar
 ---------------------------
 
-Apart from those directly imposed by the grammar, the following
-restrictions apply:
+Doğrudan dilbilgisi tarafından dayatılanların dışında, 
+aşağıdaki kısıtlamalar geçerlidir:
 
-Switches must have at least one case (including the default case).
-All case values need to have the same type and distinct values.
-If all possible values of the expression type are covered, a default case is
-not allowed (i.e. a switch with a ``bool`` expression that has both a
-true and a false case do not allow a default case).
+Switc ifadelerinin en az bir case'i (durumu) olmalıdır (default case dahil). 
+Tüm case değerlerinin aynı türe ve farklı değerlere sahip olması gerekir. 
+İfade türünün tüm olası değerleri kapsam dahilindeyse, default bir case 
+ifadesine izin verilmez (yani, hem doğru hem de yanlış bir duruma sahip 
+bir ``bool`` ifadesine sahip bir switch, default bir case'e izin vermez).
 
-Every expression evaluates to zero or more values. Identifiers and Literals
-evaluate to exactly
-one value and function calls evaluate to a number of values equal to the
-number of return variables of the function called.
+Her ifade sıfır veya daha fazla değer olarak ele alınır. 
+Tanımlayıcılar (identifier) ve Değişmez Değerler (literal) tam 
+bir değer olarak ele alınır ve fonksiyon çağrıları, 
+çağrılan fonksiyonun return değişkenlerinin sayısına eşit sayıda değer olarak ele alınır.
 
-In variable declarations and assignments, the right-hand-side expression
-(if present) has to evaluate to a number of values equal to the number of
-variables on the left-hand-side.
-This is the only situation where an expression evaluating
-to more than one value is allowed.
-The same variable name cannot occur more than once in the left-hand-side of
-an assignment or variable declaration.
+Değişken bildirimlerinde ve atamalarında, 
+eğer varsa sağ taraftaki ifadenin, 
+sol taraftaki değişkenlerin sayısına eşit sayıda değer alması gerekir. 
+Bu, birden fazla değeri ele alan bir ifadeye 
+izin verilen tek durumdur. Aynı değişken 
+adı, bir atamanın veya değişken bildiriminin 
+sol tarafında birden fazla olamaz.
 
-Expressions that are also statements (i.e. at the block level) have to
-evaluate to zero values.
+Aynı zamanda komut olan ifadeler (yani blok seviyesinde) 
+0 değeri olarak değerlendirilmelidir.
 
-In all other situations, expressions have to evaluate to exactly one value.
+Diğer tüm durumlarda, ifadeler tam olarak tek bir değere göre ele alınmalıdır.
 
-A ``continue`` or ``break`` statement can only be used inside the body of a for-loop, as follows.
-Consider the innermost loop that contains the statement.
-The loop and the statement must be in the same function, or both must be at the top level.
-The statement must be in the loop's body block;
-it cannot be in the loop's initialization block or update block.
-It is worth emphasizing that this restriction applies just
-to the innermost loop that contains the ``continue`` or ``break`` statement:
-this innermost loop, and therefore the ``continue`` or ``break`` statement,
-may appear anywhere in an outer loop, possibly in an outer loop's initialization block or update block.
-For example, the following is legal,
-because the ``break`` occurs in the body block of the inner loop,
-despite also occurring in the update block of the outer loop:
+``continue`` veya ``break`` ifadesi yalnızca aşağıdaki gibi bir for-loop gövdesi içinde kullanılabilir. 
+İfadeyi içeren en içteki loop döngüsünü düşünün. 
+Döngü ve ifade aynı fonksiyonda olmalı veya her ikisi de en üst seviyede olmalıdır. 
+İfade, loop döngüsünün gövde bloğunda olmalıdır; 
+döngünün başlatma bloğunda veya güncelleme bloğunda olamaz. 
+Bu kısıtlamanın yalnızca ``continue`` veya ``break`` deyimini içeren en 
+içteki döngü için geçerli olduğunu vurgulamakta fayda var: 
+bu en içteki döngü (loop) ve dolayısıyla ``continue`` veya ``break`` ifadesi, 
+bir dış döngünün herhangi bir yerinde, muhtemelen bir dış döngünün başlatma bloğunda 
+veya güncelleme bloğunda görünebilir. Örneğin, aşağıdakiler yasaldır, çünkü ``break``, 
+dış döngünün güncelleme bloğunda da meydana gelmesine rağmen, 
+iç döngünün gövde bloğunda meydana gelir:
 
 .. code-block:: yul
 
@@ -555,18 +555,18 @@ despite also occurring in the update block of the outer loop:
     {
     }
 
-The condition part of the for-loop has to evaluate to exactly one value.
+For döngüsünün koşul kısmı tam olarak bir değere göre değerlendirilmelidir.
 
-The ``leave`` statement can only be used inside a function.
+``leave`` ifadesi yalnızca bir fonksiyon içinde kullanılabilir.
 
-Functions cannot be defined anywhere inside for loop init blocks.
+Fonksiyonlar, döngü başlatma blokları söz konusu olduğunda herhangi bir yerde tanımlanamaz.
 
-Literals cannot be larger than their type. The largest type defined is 256-bit wide.
+Değişmezler kendi türlerinden daha büyük olamaz. Tanımlanan en büyük tür 256 bit genişliğindedir.
 
-During assignments and function calls, the types of the respective values have to match.
-There is no implicit type conversion. Type conversion in general can only be achieved
-if the dialect provides an appropriate built-in function that takes a value of one
-type and returns a value of a different type.
+Atamalar ve fonksiyon çağrıları sırasında ilgili değerlerin türlerinin eşleşmesi gerekir. 
+Örtülü (implicit) tür dönüşümü yoktur. Genel olarak tür dönüştürme, yalnızca diyalekt 
+bir türün değerini alan ve farklı bir türün değerini döndüren 
+uygun bir gömülü fonksiyon sağladığında gerçekleştirilebilir.
 
 Scoping Rules
 -------------
