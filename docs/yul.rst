@@ -608,67 +608,67 @@ Gölgelemeye (shadowing) izin verilmez, yani aynı ada sahip başka bir tanımla
 görünür olduğu bir noktada, geçerli işlevin dışında bildirildiği için 
 ona başvurmak mümkün olmasa bile bir tanımlayıcı (identifier) atayamazsınız.
 
-Formal Specification
+Resmi Şartname
 --------------------
 
-We formally specify Yul by providing an evaluation function E overloaded
-on the various nodes of the AST. As builtin functions can have side effects,
-E takes two state objects and the AST node and returns two new
-state objects and a variable number of other values.
-The two state objects are the global state object
-(which in the context of the EVM is the memory, storage and state of the
-blockchain) and the local state object (the state of local variables, i.e. a
-segment of the stack in the EVM).
+AST'nin çeşitli düğümlerinde aşırı yüklenmiş bir E değerlendirme fonksiyonu 
+sağlayarak resmi olarak Yul'u tanımlarız. Gömülü fonksiyonların yan etkileri olabileceğinden, 
+E iki durum nesnesini (state object) ve AST düğümünü alır ve iki yeni durum 
+nesnesi ve değişken sayıda başka değer döndürür. 
+Bu iki durum nesnesinden birisi global durum nesnesi 
+(EVM bağlamında blok zincirinin belleği, depolanması ve durumudur) 
+ve diğeri de yerel durum nesnesidir 
+(yerel değişkenlerin durumu, yani EVM'deki yığının bir bölümü).
 
-If the AST node is a statement, E returns the two state objects and a "mode",
-which is used for the ``break``, ``continue`` and ``leave`` statements.
-If the AST node is an expression, E returns the two state objects and
-as many values as the expression evaluates to.
+AST düğümü bir ifadeyse, E iki durum nesnesini ve ``break``, ``continue`` ve ``leave`` 
+komutları için kullanılan bir "mod"u döndürür. 
+AST düğümü bir ifadeyse, E, iki durum nesnesini 
+ve ifadenin değerlendirdiği sayıda değeri döndürür.
 
 
-The exact nature of the global state is unspecified for this high level
-description. The local state ``L`` is a mapping of identifiers ``i`` to values ``v``,
-denoted as ``L[i] = v``.
+Bu üst düzey açıklama için global durumun (state) kesin hatları belirtilmemiştir. 
+L yerel durumu , ``i`` tanımlayıcılarının ``L[i] = v`` olarak 
+gösterilen ``v`` değerlerine eşlenmesidir.
 
-For an identifier ``v``, let ``$v`` be the name of the identifier.
+Bir ``v`` tanımlayıcısı (identifier) için, tanımlayıcının adı ``$v`` olsun.
 
-We will use a destructuring notation for the AST nodes.
+AST düğümleri (node) için bir destructuring notasyonu kullanacağız.
 
 .. code-block:: none
 
     E(G, L, <{St1, ..., Stn}>: Block) =
         let G1, L1, mode = E(G, L, St1, ..., Stn)
-        let L2 be a restriction of L1 to the identifiers of L
+        L2, L1'in L tanımlayıcılarına bir kısıtlaması olsun
         G1, L2, mode
     E(G, L, St1, ..., Stn: Statement) =
         if n is zero:
             G, L, regular
         else:
             let G1, L1, mode = E(G, L, St1)
-            if mode is regular then
+            eğer mode regular ise
                 E(G1, L1, St2, ..., Stn)
-            otherwise
+            değilse
                 G1, L1, mode
     E(G, L, FunctionDefinition) =
         G, L, regular
     E(G, L, <let var_1, ..., var_n := rhs>: VariableDeclaration) =
         E(G, L, <var_1, ..., var_n := rhs>: Assignment)
     E(G, L, <let var_1, ..., var_n>: VariableDeclaration) =
-        let L1 be a copy of L where L1[$var_i] = 0 for i = 1, ..., n
+        L1 in L nin kopyası olduğu durumda L1[$var_i] = 0 for i = 1, ..., n
         G, L1, regular
     E(G, L, <var_1, ..., var_n := rhs>: Assignment) =
         let G1, L1, v1, ..., vn = E(G, L, rhs)
-        let L2 be a copy of L1 where L2[$var_i] = vi for i = 1, ..., n
+        L2 nin L1 in kopyası olduğu durumda L2[$var_i] = vi for i = 1, ..., n
         G, L2, regular
     E(G, L, <for { i1, ..., in } condition post body>: ForLoop) =
         if n >= 1:
             let G1, L, mode = E(G, L, i1, ..., in)
-            // mode has to be regular or leave due to the syntactic restrictions
-            if mode is leave then
-                G1, L1 restricted to variables of L, leave
-            otherwise
+            // mode regular olmalı veya sözdizimsel kısıtlamalar nedeniyle terk edilmelidir
+            eğer mode leave ise o zaman
+                G1, L1 değişkenleri L, leave değişkenlerine kısıtlıdır
+            değilse
                 let G2, L2, mode = E(G1, L1, for {} condition post body)
-                G2, L2 restricted to variables of L, mode
+                G2, L2 değişkenleri L, mode değişkenlerine kısıtlıdır
         else:
             let G1, L1, v = E(G, L, condition)
             if v is false:
@@ -702,7 +702,7 @@ We will use a destructuring notation for the AST nodes.
     E(G, L, <switch condition case l1:t1 st1 ... case ln:tn stn default st'>: Switch) =
         let G0, L0, v = E(G, L, condition)
         // i = 1 .. n
-        // Evaluate literals, context doesn't matter
+        // Değişmezleri (literal) değerlendirin, bağlam önemli değil
         let _, _, v1 = E(G0, L0, l1)
         ...
         let _, _, vn = E(G0, L0, ln)
