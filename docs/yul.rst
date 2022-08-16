@@ -766,7 +766,7 @@ yanı sıra ``jump`` talimatlarını, etiketleri ve ``push`` talimatlarını iç
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | Komut             |     |   | Açıklama                                                     |
 +=========================+=====+===+=================================================================+
-| stop()                  | `-` | F | stop execution, identical to return(0, 0)                       |
+| stop()                  | `-` | F | çalışmayı durdurur, return(0, 0) ile eşdeğerdir                 |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | add(x, y)               |     | F | x + y                                                           |
 +-------------------------+-----+---+-----------------------------------------------------------------+
@@ -774,102 +774,102 @@ yanı sıra ``jump`` talimatlarını, etiketleri ve ``push`` talimatlarını iç
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | mul(x, y)               |     | F | x * y                                                           |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| div(x, y)               |     | F | x / y or 0 if y == 0                                            |
+| div(x, y)               |     | F | x / y veya 0 eğer y == 0 ise                                    |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| sdiv(x, y)              |     | F | x / y, for signed numbers in two's complement, 0 if y == 0      |
+| sdiv(x, y)              |     | F | x / y, ikinin tümleyenindeki işaretli sayılar için, y == 0 ise 0|
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| mod(x, y)               |     | F | x % y, 0 if y == 0                                              |
+| mod(x, y)               |     | F | x % y, y == 0 ise 0                                             |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| smod(x, y)              |     | F | x % y, for signed numbers in two's complement, 0 if y == 0      |
+| smod(x, y)              |     | F | x % y, ikinin tümleyenindeki işaretli sayılar için, y == 0 ise 0|
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| exp(x, y)               |     | F | x to the power of y                                             |
+| exp(x, y)               |     | F | x in y ninci kuvveti                                            |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| not(x)                  |     | F | bitwise "not" of x (every bit of x is negated)                  |
+| not(x)                  |     | F | x'in bit düzeyinde "değil"i (x'in her biti reddedilir)          |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| lt(x, y)                |     | F | 1 if x < y, 0 otherwise                                         |
+| lt(x, y)                |     | F | x < y ise 1, değilse 0                                          |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| gt(x, y)                |     | F | 1 if x > y, 0 otherwise                                         |
+| gt(x, y)                |     | F | x > y ise 1, 0 değilse 0                                        |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| slt(x, y)               |     | F | 1 if x < y, 0 otherwise, for signed numbers in two's complement |
+| slt(x, y)               |     | F | x < y ise 1, değilse 0, ikinin tümleyenindeki işaretli sayılar için |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| sgt(x, y)               |     | F | 1 if x > y, 0 otherwise, for signed numbers in two's complement |
+| sgt(x, y)               |     | F | x > y ise 1, değilse 0, ikinin tümleyenindeki işaretli sayılar için |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| eq(x, y)                |     | F | 1 if x == y, 0 otherwise                                        |
+| eq(x, y)                |     | F | x == y ise 1, değilse 0                                         |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| iszero(x)               |     | F | 1 if x == 0, 0 otherwise                                        |
+| iszero(x)               |     | F | x == 0 ise 1, değilse 0                                         |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| and(x, y)               |     | F | bitwise "and" of x and y                                        |
+| and(x, y)               |     | F | x ve y için bit düzeyinde "and"                                 |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| or(x, y)                |     | F | bitwise "or" of x and y                                         |
+| or(x, y)                |     | F | x ve y için bit düzeyinde "or"                                  |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| xor(x, y)               |     | F | bitwise "xor" of x and y                                        |
+| xor(x, y)               |     | F | x ve y için bit düzeyinde "xor"                                 |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| byte(n, x)              |     | F | nth byte of x, where the most significant byte is the 0th byte  |
+| byte(n, x)              |     | F | x'in n. baytı, burada en önemli bayt 0. bayttır                    |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| shl(x, y)               |     | C | logical shift left y by x bits                                  |
+| shl(x, y)               |     | C | y ile x bit sola mantıksal kaydırma                                  |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| shr(x, y)               |     | C | logical shift right y by x bits                                 |
+| shr(x, y)               |     | C | y ile x bit sağa mantıksal kaydırma                                 |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| sar(x, y)               |     | C | signed arithmetic shift right y by x bits                       |
+| sar(x, y)               |     | C |  işaretli aritmetik kaydırma sağa y ile x bit                      |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| addmod(x, y, m)         |     | F | (x + y) % m with arbitrary precision arithmetic, 0 if m == 0    |
+| addmod(x, y, m)         |     | F | (x + y) % m keyfi kesinlikli aritmetik ile, m == 0 ise 0    |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| mulmod(x, y, m)         |     | F | (x * y) % m with arbitrary precision arithmetic, 0 if m == 0    |
+| mulmod(x, y, m)         |     | F | (x * y) % m keyfi kesinlikli aritmetik ile, m == 0 ise 0    |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| signextend(i, x)        |     | F | sign extend from (i*8+7)th bit counting from least significant  |
+| signextend(i, x)        |     | F | işaret, en önemsizden başlayarak (i*8+7). bitten başlayarak genişler  |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | keccak256(p, n)         |     | F | keccak(mem[p...(p+n)))                                          |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| pc()                    |     | F | current position in code                                        |
+| pc()                    |     | F | koddaki geçerli konum                                        |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| pop(x)                  | `-` | F | discard value x                                                 |
+| pop(x)                  | `-` | F | x değerini at                                                 |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | mload(p)                |     | F | mem[p...(p+32))                                                 |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | mstore(p, v)            | `-` | F | mem[p...(p+32)) := v                                            |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| mstore8(p, v)           | `-` | F | mem[p] := v & 0xff (only modifies a single byte)                |
+| mstore8(p, v)           | `-` | F | mem[p] := v & 0xff (yalnızca tek bir baytı değiştirir)                |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | sload(p)                |     | F | storage[p]                                                      |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | sstore(p, v)            | `-` | F | storage[p] := v                                                 |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| msize()                 |     | F | size of memory, i.e. largest accessed memory index              |
+| msize()                 |     | F | bellek boyutu, yani erişilen en büyük bellek indeksi              |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| gas()                   |     | F | gas still available to execution                                |
+| gas()                   |     | F | gaz hala uygulama için kullanılabilir                                |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| address()               |     | F | address of the current contract / execution context             |
+| address()               |     | F | mevcut sözleşmenin / uygulama bağlamının adresi             |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| balance(a)              |     | F | wei balance at address a                                        |
+| balance(a)              |     | F | a adresindeki wei bakiyesi                                        |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| selfbalance()           |     | I | equivalent to balance(address()), but cheaper                   |
+| selfbalance()           |     | I |  balance(address()) ile eşdeğer, ancak daha ucuz                   |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| caller()                |     | F | call sender (excluding ``delegatecall``)                        |
+| caller()                |     | F | sender'ı çağırır (``delegatecall``'u' hariç tutarak)            |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| callvalue()             |     | F | wei sent together with the current call                         |
+| callvalue()             |     | F | mevcut çağrı ile birlikte gönderilen wei                         |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| calldataload(p)         |     | F | call data starting from position p (32 bytes)                   |
+| calldataload(p)         |     | F | p konumundan başlayan çağrı verileri (32 bayt)                  |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| calldatasize()          |     | F | size of call data in bytes                                      |
+| calldatasize()          |     | F | bayt cinsinden çağrı verilerinin boyutu                         |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| calldatacopy(t, f, s)   | `-` | F | copy s bytes from calldata at position f to mem at position t   |
+| calldatacopy(t, f, s)   | `-` | F | f konumundaki çağrı verilerinden t konumundaki mem'e s bayt kopyalayın   |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| codesize()              |     | F | size of the code of the current contract / execution context    |
+| codesize()              |     | F | mevcut sözleşme / uygulama bağlamının kodunun boyutu    |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| codecopy(t, f, s)       | `-` | F | copy s bytes from code at position f to mem at position t       |
+| codecopy(t, f, s)       | `-` | F | s baytını f konumundaki koddan t konumundaki mem'e kopyalayın       |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| extcodesize(a)          |     | F | size of the code at address a                                   |
+| extcodesize(a)          |     | F | a adresindeki kodun boyutu                                   |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| extcodecopy(a, t, f, s) | `-` | F | like codecopy(t, f, s) but take code at address a               |
+| extcodecopy(a, t, f, s) | `-` | F | codecopy(t, f, s) gibi ama a adresindeki kodu alır               |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| returndatasize()        |     | B | size of the last returndata                                     |
+| returndatasize()        |     | B | son returndata'nın boyutu                                     |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| returndatacopy(t, f, s) | `-` | B | copy s bytes from returndata at position f to mem at position t |
+| returndatacopy(t, f, s) | `-` | B | f konumundaki returndata'dan t konumundaki mem'e s bayt kopyalayın |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| extcodehash(a)          |     | C | code hash of address a                                          |
+| extcodehash(a)          |     | C | a adresinin hash kodu                                          |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| create(v, p, n)         |     | F | create new contract with code mem[p...(p+n)) and send v wei     |
-|                         |     |   | and return the new address; returns 0 on error                  |
+| create(v, p, n)         |     | F | mem[p...(p+n)) koduyla yeni sözleşme oluştur ve v wei gönder    |
+|                         |     |   | ve yeni adresi return et; hata durumunda 0 döndürür             |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | create2(v, p, n, s)     |     | C | create new contract with code mem[p...(p+n)) at address         |
 |                         |     |   | keccak256(0xff . this . s . keccak256(mem[p...(p+n)))           |
