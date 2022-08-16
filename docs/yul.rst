@@ -948,16 +948,16 @@ yanı sıra ``jump`` talimatlarını, etiketleri ve ``push`` talimatlarını iç
 
 .. _yul-call-return-area:
 
-.. note::
-  The ``call*`` instructions use the ``out`` and ``outsize`` parameters to define an area in memory where
-  the return or failure data is placed. This area is written to depending on how many bytes the called contract returns.
-  If it returns more data, only the first ``outsize`` bytes are written. You can access the rest of the data
-  using the ``returndatacopy`` opcode. If it returns less data, then the remaining bytes are not touched at all.
-  You need to use the ``returndatasize`` opcode to check which part of this memory area contains the return data.
-  The remaining bytes will retain their values as of before the call.
+.. not::
+  ``call*`` komutları, return veya hata verilerinin yerleştirildiği bellekte bir alanı 
+  tanımlamak için ``out`` ve ``outsize`` parametrelerini kullanır. Bu alan, çağrılan sözleşmenin 
+  kaç bayt döndüğüne bağlı olarak yazılır. Daha fazla veri döndürürse, yalnızca ilk ``outsize`` baytlar yazılır. 
+  Geri kalan verilere ``returndatacopy`` işlem kodunu kullanarak erişebilirsiniz. Daha az veri döndürürse, kalan 
+  baytlara hiç dokunulmaz. Bu bellek alanının hangi bölümünün geri dönüş verilerini içerdiğini kontrol etmek için 
+  ``returndatasize`` işlem kodunu kullanmanız gerekir. Kalan baytlar, çağrıdan önceki değerlerini koruyacaktır.
 
 
-In some internal dialects, there are additional functions:
+Bazı dahili diyalektlerde ek fonksiyonlar vardır:
 
 datasize, dataoffset, datacopy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
