@@ -706,7 +706,7 @@ AST düğümleri (node) için bir destructuring notasyonu kullanacağız.
         let _, _, v1 = E(G0, L0, l1)
         ...
         let _, _, vn = E(G0, L0, ln)
-        if there exists smallest i such that vi = v:
+        vi = v olacak şekilde en küçük i varsa:
             E(G0, L0, sti)
         else:
             E(G0, L0, st')
@@ -725,44 +725,46 @@ AST düğümleri (node) için bir destructuring notasyonu kullanacağız.
         Let G'', L'', mode = E(Gn, L', block)
         G'', Ln, L''[$ret1], ..., L''[$retm]
     E(G, L, l: StringLiteral) = G, L, str(l),
-        where str is the string evaluation function,
-        which for the EVM dialect is defined in the section 'Literals' above
+        burada str, EVM diyalekti için yukarıdaki 'Değişmezler' bölümünde 
+        tanımlanan string değerlendirme fonksiyonudur.
     E(G, L, n: HexNumber) = G, L, hex(n)
-        where hex is the hexadecimal evaluation function,
-        which turns a sequence of hexadecimal digits into their big endian value
+        burada hex, bir onaltılık (hexadecimal) basamak dizisini soldan okumalı (big endian) 
+        değerine dönüştüren onaltılık değerlendirme fonksiyonudur.
     E(G, L, n: DecimalNumber) = G, L, dec(n),
         where dec is the decimal evaluation function,
         which turns a sequence of decimal digits into their big endian value
+        burada dec, ondalık (decimal) basamak dizisini soldan okumalı (büyük endian) değerine 
+        dönüştüren ondalık değerlendirme fonksiyonudur.
 
 .. _opcodes:
 
 EVM Dialect
 -----------
 
-The default dialect of Yul currently is the EVM dialect for the currently selected version of the EVM.
-with a version of the EVM. The only type available in this dialect
-is ``u256``, the 256-bit native type of the Ethereum Virtual Machine.
-Since it is the default type of this dialect, it can be omitted.
+Yul'un varsayılan lehçesi şu anda EVM'nin mevcut sürümü için olan EVM lehçesidir.
+ EVM'nin bir sürümü ile birlikte. Bu lehçede kullanılabilen tek tür, 
+ Ethereum Sanal Makinesinin 256 bit yerel türü olan ``u256``'dır. 
+ Bu tür, lehçenin varsayılan türü olduğu için görmezden gelinebilir.
 
-The following table lists all builtin functions
-(depending on the EVM version) and provides a short description of the
-semantics of the function / opcode.
-This document does not want to be a full description of the Ethereum virtual machine.
-Please refer to a different document if you are interested in the precise semantics.
+Aşağıdaki tablo tüm gömülü fonksiyonları (EVM sürümüne bağlı olarak) 
+listeler ve fonksiyonun / işlem kodunun semantiğinin kısa bir 
+açıklamasını sunar. Bu belge, Ethereum sanal makinesinin tam bir açıklaması 
+olmak istemediği için kesin semantikleriyle ilgileniyorsanız, 
+lütfen farklı bir belgeye bakınız.
 
-Opcodes marked with ``-`` do not return a result and all others return exactly one value.
-Opcodes marked with ``F``, ``H``, ``B``, ``C``, ``I`` and ``L`` are present since Frontier, Homestead,
-Byzantium, Constantinople, Istanbul or London respectively.
+``-`` ile işaretlenen işlem kodları bir sonuç döndürmez ve diğerleri tam olarak bir değer döndürür. 
+``F``, ``H``, ``B``, ``C``, ``I`` ve ``L`` ile işaretlenen işlem kodları sırasıyla Frontier, Homestead, 
+Byzantium, Constantinople, Istanbul veya London'dan beri mevcuttur.
 
-In the following, ``mem[a...b)`` signifies the bytes of memory starting at position ``a`` up to
-but not including position ``b`` and ``storage[p]`` signifies the storage contents at slot ``p``.
+Aşağıda, ``mem[a...b)``, ``a`` konumundan başlayan ancak ``b`` konumuna kadar 
+olmayan bellek baytlarını belirtir ve ``storage[p]``, ``p`` yuvasındaki depolama içeriğini belirtir.
 
-Since Yul manages local variables and control-flow,
-opcodes that interfere with these features are not available. This includes
-the ``dup`` and ``swap`` instructions as well as ``jump`` instructions, labels and the ``push`` instructions.
+Yul, yerel değişkenleri ve kontrol akışını yönettiğinden, 
+bu özelliklere müdahale eden işlem kodları mevcut değildir. Bu, ``dup`` ve ``swap`` talimatlarının 
+yanı sıra ``jump`` talimatlarını, etiketleri ve ``push`` talimatlarını içerir.
 
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| Instruction             |     |   | Explanation                                                     |
+| Komut             |     |   | Açıklama                                                     |
 +=========================+=====+===+=================================================================+
 | stop()                  | `-` | F | stop execution, identical to return(0, 0)                       |
 +-------------------------+-----+---+-----------------------------------------------------------------+
