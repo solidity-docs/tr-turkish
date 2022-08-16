@@ -764,7 +764,7 @@ bu özelliklere müdahale eden işlem kodları mevcut değildir. Bu, ``dup`` ve 
 yanı sıra ``jump`` talimatlarını, etiketleri ve ``push`` talimatlarını içerir.
 
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| Komut             |     |   | Açıklama                                                     |
+| Komut                   |     |   | Açıklama                                                        |
 +=========================+=====+===+=================================================================+
 | stop()                  | `-` | F | çalışmayı durdurur, return(0, 0) ile eşdeğerdir                 |
 +-------------------------+-----+---+-----------------------------------------------------------------+
@@ -776,11 +776,13 @@ yanı sıra ``jump`` talimatlarını, etiketleri ve ``push`` talimatlarını iç
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | div(x, y)               |     | F | x / y veya 0 eğer y == 0 ise                                    |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| sdiv(x, y)              |     | F | x / y, ikinin tümleyenindeki işaretli sayılar için, y == 0 ise 0|
+| sdiv(x, y)              |     | F | x / y, ikinin tümleyenindeki işaretli sayılar için,             |
+|                         |     |   | y == 0 ise 0                                                    |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | mod(x, y)               |     | F | x % y, y == 0 ise 0                                             |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| smod(x, y)              |     | F | x % y, ikinin tümleyenindeki işaretli sayılar için, y == 0 ise 0|
+| smod(x, y)              |     | F | x % y, ikinin tümleyenindeki işaretli sayılar için,             |
+|                         |     |   | y == 0 ise 0                                                    |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | exp(x, y)               |     | F | x in y ninci kuvveti                                            |
 +-------------------------+-----+---+-----------------------------------------------------------------+
@@ -790,9 +792,11 @@ yanı sıra ``jump`` talimatlarını, etiketleri ve ``push`` talimatlarını iç
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | gt(x, y)                |     | F | x > y ise 1, 0 değilse 0                                        |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| slt(x, y)               |     | F | x < y ise 1, değilse 0, ikinin tümleyenindeki işaretli sayılar için |
+| slt(x, y)               |     | F | x < y ise 1, değilse 0, ikinin tümleyenindeki                   |
+|                         |     |   | işaretli sayılar için                                           |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| sgt(x, y)               |     | F | x > y ise 1, değilse 0, ikinin tümleyenindeki işaretli sayılar için |
+| sgt(x, y)               |     | F | x > y ise 1, değilse 0, ikinin tümleyenindeki                   |
+|                         |     |   | işaretli sayılar için                                           |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | eq(x, y)                |     | F | x == y ise 1, değilse 0                                         |
 +-------------------------+-----+---+-----------------------------------------------------------------+
@@ -804,136 +808,142 @@ yanı sıra ``jump`` talimatlarını, etiketleri ve ``push`` talimatlarını iç
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | xor(x, y)               |     | F | x ve y için bit düzeyinde "xor"                                 |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| byte(n, x)              |     | F | x'in n. baytı, burada en önemli bayt 0. bayttır                    |
+| byte(n, x)              |     | F | x'in n. baytı, burada en önemli bayt 0. bayttır                 |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| shl(x, y)               |     | C | y ile x bit sola mantıksal kaydırma                                  |
+| shl(x, y)               |     | C | y ile x bit sola mantıksal kaydırma                             |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| shr(x, y)               |     | C | y ile x bit sağa mantıksal kaydırma                                 |
+| shr(x, y)               |     | C | y ile x bit sağa mantıksal kaydırma                             |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| sar(x, y)               |     | C |  işaretli aritmetik kaydırma sağa y ile x bit                      |
+| sar(x, y)               |     | C |  işaretli aritmetik kaydırma sağa y ile x bit                   |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| addmod(x, y, m)         |     | F | (x + y) % m keyfi kesinlikli aritmetik ile, m == 0 ise 0    |
+| addmod(x, y, m)         |     | F | (x + y) % m keyfi kesinlikli aritmetik ile, m == 0 ise 0        |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| mulmod(x, y, m)         |     | F | (x * y) % m keyfi kesinlikli aritmetik ile, m == 0 ise 0    |
+| mulmod(x, y, m)         |     | F | (x * y) % m keyfi kesinlikli aritmetik ile, m == 0 ise 0        |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| signextend(i, x)        |     | F | işaret, en önemsizden başlayarak (i*8+7). bitten başlayarak genişler  |
+| signextend(i, x)        |     | F | işaret, en önemsizden başlayarak (i*8+7). bitten                |
+|                         |     |   | başlayarak genişler                                             |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | keccak256(p, n)         |     | F | keccak(mem[p...(p+n)))                                          |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| pc()                    |     | F | koddaki geçerli konum                                        |
+| pc()                    |     | F | koddaki geçerli konum                                           |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| pop(x)                  | `-` | F | x değerini at                                                 |
+| pop(x)                  | `-` | F | x değerini at                                                   |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | mload(p)                |     | F | mem[p...(p+32))                                                 |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | mstore(p, v)            | `-` | F | mem[p...(p+32)) := v                                            |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| mstore8(p, v)           | `-` | F | mem[p] := v & 0xff (yalnızca tek bir baytı değiştirir)                |
+| mstore8(p, v)           | `-` | F | mem[p] := v & 0xff (yalnızca tek bir baytı değiştirir)          |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | sload(p)                |     | F | storage[p]                                                      |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | sstore(p, v)            | `-` | F | storage[p] := v                                                 |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| msize()                 |     | F | bellek boyutu, yani erişilen en büyük bellek indeksi              |
+| msize()                 |     | F | bellek boyutu, yani erişilen en büyük bellek indeksi            |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| gas()                   |     | F | gaz hala uygulama için kullanılabilir                                |
+| gas()                   |     | F | gaz hala uygulama için kullanılabilir                           |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| address()               |     | F | mevcut sözleşmenin / uygulama bağlamının adresi             |
+| address()               |     | F | mevcut sözleşmenin / uygulama bağlamının adresi                 |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| balance(a)              |     | F | a adresindeki wei bakiyesi                                        |
+| balance(a)              |     | F | a adresindeki wei bakiyesi                                      |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| selfbalance()           |     | I |  balance(address()) ile eşdeğer, ancak daha ucuz                   |
+| selfbalance()           |     | I |  balance(address()) ile eşdeğer, ancak daha ucuz                |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | caller()                |     | F | sender'ı çağırır (``delegatecall``'u' hariç tutarak)            |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| callvalue()             |     | F | mevcut çağrı ile birlikte gönderilen wei                         |
+| callvalue()             |     | F | mevcut çağrı ile birlikte gönderilen wei                        |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | calldataload(p)         |     | F | p konumundan başlayan çağrı verileri (32 bayt)                  |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | calldatasize()          |     | F | bayt cinsinden çağrı verilerinin boyutu                         |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| calldatacopy(t, f, s)   | `-` | F | f konumundaki çağrı verilerinden t konumundaki mem'e s bayt kopyalayın   |
+| calldatacopy(t, f, s)   | `-` | F | f konumundaki çağrı verilerinden t konumundaki                  |
+|                         |     |   | mem'e s bayt kopyalayın                                         |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| codesize()              |     | F | mevcut sözleşme / uygulama bağlamının kodunun boyutu    |
+| codesize()              |     | F | mevcut sözleşme / uygulama bağlamının kodunun boyutu            |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| codecopy(t, f, s)       | `-` | F | s baytını f konumundaki koddan t konumundaki mem'e kopyalayın       |
+| codecopy(t, f, s)       | `-` | F | s baytını f konumundaki koddan t konumundaki mem'e kopyalayın   |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| extcodesize(a)          |     | F | a adresindeki kodun boyutu                                   |
+| extcodesize(a)          |     | F | a adresindeki kodun boyutu                                      |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| extcodecopy(a, t, f, s) | `-` | F | codecopy(t, f, s) gibi ama a adresindeki kodu alır               |
+| extcodecopy(a, t, f, s) | `-` | F | codecopy(t, f, s) gibi ama a adresindeki kodu alır              |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| returndatasize()        |     | B | son returndata'nın boyutu                                     |
+| returndatasize()        |     | B | son returndata'nın boyutu                                       |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| returndatacopy(t, f, s) | `-` | B | f konumundaki returndata'dan t konumundaki mem'e s bayt kopyalayın |
+| returndatacopy(t, f, s) | `-` | B | f konumundaki returndata'dan t konumundaki mem'e                |
+|                         |     |   | s bayt kopyalayın                                               |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| extcodehash(a)          |     | C | a adresinin hash kodu                                          |
+| extcodehash(a)          |     | C | a adresinin hash kodu                                           |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | create(v, p, n)         |     | F | mem[p...(p+n)) koduyla yeni sözleşme oluştur ve v wei gönder    |
 |                         |     |   | ve yeni adresi return et; hata durumunda 0 döndürür             |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| create2(v, p, n, s)     |     | C | create new contract with code mem[p...(p+n)) at address         |
-|                         |     |   | keccak256(0xff . this . s . keccak256(mem[p...(p+n)))           |
-|                         |     |   | and send v wei and return the new address, where ``0xff`` is a  |
-|                         |     |   | 1 byte value, ``this`` is the current contract's address        |
-|                         |     |   | as a 20 byte value and ``s`` is a big-endian 256-bit value;     |
-|                         |     |   | returns 0 on error                                              |
+| create2(v, p, n, s)     |     | C | keccak256(0xff . this .s .keccak256(mem[p…(p+n))) adresinde     |
+|                         |     |   | mem[p…(p+n)) koduyla yeni sözleşme oluşturun ve v wei gönderin  |
+|                         |     |   | ve yeni adresi döndürün, burada 0xff 1 baytlık bir değerdir,    |
+|                         |     |   | bu 20 baytlık bir değer olarak mevcut sözleşmenin adresidir ve  |
+|                         |     |   | s, soldan okumalı (big-endian) 256 bitlik bir değerdir;         |
+|                         |     |   | hata durumunda 0 döndürür                                       |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| call(g, a, v, in,       |     | F | call contract at address a with input mem[in...(in+insize))     |
-| insize, out, outsize)   |     |   | providing g gas and v wei and output area                       |
-|                         |     |   | mem[out...(out+outsize)) returning 0 on error (eg. out of gas)  |
-|                         |     |   | and 1 on success                                                |
-|                         |     |   | :ref:`See more <yul-call-return-area>`                          |
+| call(g, a, v, in,       |     | F | a adresindeki mem[in…(in+insize) girişli                        |
+| insize, out, outsize)   |     |   | çağrı sözleşmesi, g gaz, v wei ve                               |
+|                         |     |   | mem[out...(out+outsize)) ise çıkış alanı                        |
+|                         |     |   | hata durumunda 0 döndürür (örn. gazın bitmesi) başarı durumunda |
+|                         |     |   | ise 1 döndürür :ref:`Daha fazla bilgi <yul-call-return-area>`   |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| callcode(g, a, v, in,   |     | F | identical to ``call`` but only use the code from a and stay     |
-| insize, out, outsize)   |     |   | in the context of the current contract otherwise                |
-|                         |     |   | :ref:`See more <yul-call-return-area>`                          |
+| callcode(g, a, v, in,   |     | F |  ``call`` ile aynıdır, ancak yalnızca a kodunu kullanın         |
+| insize, out, outsize)   |     |   | ve aksi takdirde mevcut sözleşme bağlamında kalın               |
+|                         |     |   | :ref:`Daha fazla bilgi <yul-call-return-area>`                  |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| delegatecall(g, a, in,  |     | H | identical to ``callcode`` but also keep ``caller``              |
-| insize, out, outsize)   |     |   | and ``callvalue``                                               |
-|                         |     |   | :ref:`See more <yul-call-return-area>`                          |
+| delegatecall(g, a, in,  |     | H |  ``callcode`` ile eşdeğerdir ama aynı zamanda ``caller``        |
+| insize, out, outsize)   |     |   | ve ``callvalue`` değerini de tutar                              |
+|                         |     |   | :ref:`Daha fazla bilgi <yul-call-return-area>`                  |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| staticcall(g, a, in,    |     | B | identical to ``call(g, a, 0, in, insize, out, outsize)`` but do |
-| insize, out, outsize)   |     |   | not allow state modifications                                   |
-|                         |     |   | :ref:`See more <yul-call-return-area>`                          |
+| staticcall(g, a, in,    |     | B | ``call(g, a, 0, in, insize, out, outsize)`` ile eşdeğerdir      |
+| insize, out, outsize)   |     |   | ama durum değişikliklerine izin vermez                          |
+|                         |     |   | :ref:`Daha fazla bilgi <yul-call-return-area>`                  |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| return(p, s)            | `-` | F | end execution, return data mem[p...(p+s))                       |
+| return(p, s)            | `-` | F | yürütmeyi sonlandırır, veriyi dönderir mem[p...(p+s))           |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| revert(p, s)            | `-` | B | end execution, revert state changes, return data mem[p...(p+s)) |
+| revert(p, s)            | `-` | B | yürütmeyi sonlandırır, durum değişikliklerini geri alır         |
+|                         |     |   | mem[p...(p+s) verisini dönderir                                 |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| selfdestruct(a)         | `-` | F | end execution, destroy current contract and send funds to a     |
+| selfdestruct(a)         | `-` | F | yürütmeyi sonlandırır, mevcut sözleşmeyi yok eder               |
+|                         |     |   | ve parayı a'ya gönderir                                         |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| invalid()               | `-` | F | end execution with invalid instruction                          |
+| invalid()               | `-` | F | geçersiz talimatla yürütmeyi sonlandır                          |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| log0(p, s)              | `-` | F | log without topics and data mem[p...(p+s))                      |
+| log0(p, s)              | `-` | F | topic ve mem[p...(p+s)) datası olmadan log aç                   |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| log1(p, s, t1)          | `-` | F | log with topic t1 and data mem[p...(p+s))                       |
+| log1(p, s, t1)          | `-` | F | t1 ve mem[p...(p+s)) datası ile log aç                          |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| log2(p, s, t1, t2)      | `-` | F | log with topics t1, t2 and data mem[p...(p+s))                  |
+| log2(p, s, t1, t2)      | `-` | F | t1, t2 topic'leri ve mem[p...(p+s)) datası ile log aç           |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| log3(p, s, t1, t2, t3)  | `-` | F | log with topics t1, t2, t3 and data mem[p...(p+s))              |
+| log3(p, s, t1, t2, t3)  | `-` | F | t1, t2, t3 topic'leri ve mem[p...(p+s)) datası ile log aç       |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| log4(p, s, t1, t2, t3,  | `-` | F | log with topics t1, t2, t3, t4 and data mem[p...(p+s))          |
-| t4)                     |     |   |                                                                 |
+| log4(p, s, t1, t2, t3,  | `-` | F | topics t1, t2, t3, t4 topic'leri ve mem[p...(p+s))              |
+| t4)                     |     |   | datası ile log aç                                               |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| chainid()               |     | I | ID of the executing chain (EIP-1344)                            |
+| chainid()               |     | I | Yürütme zincirinin kimliği (EIP-1344)                           |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| basefee()               |     | L | current block's base fee (EIP-3198 and EIP-1559)                |
+| basefee()               |     | L | mevcut bloğun taban ücreti (EIP-3198 ve EIP-1559)               |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| origin()                |     | F | transaction sender                                              |
+| origin()                |     | F | işlem gönderen                                                  |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| gasprice()              |     | F | gas price of the transaction                                    |
+| gasprice()              |     | F | işlemin gaz fiyatı                                              |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| blockhash(b)            |     | F | hash of block nr b - only for last 256 blocks excluding current |
+| blockhash(b)            |     | F | b nolu bloğun hash değeri - mevcut hariç yalnızca               |
+|                         |     |   | son 256 blok için                                               |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| coinbase()              |     | F | current mining beneficiary                                      |
+| coinbase()              |     | F | mevcut madencilik faydalanıcısı                                 |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| timestamp()             |     | F | timestamp of the current block in seconds since the epoch       |
+| timestamp()             |     | F | çağlardan bu yana geçerli bloğun saniye cinsindenzaman damgası  |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| number()                |     | F | current block number                                            |
+| number()                |     | F | mevcut blok numarası                                            |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| difficulty()            |     | F | difficulty of the current block                                 |
+| difficulty()            |     | F | mevcut bloğun zorluğu                                           |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| gaslimit()              |     | F | block gas limit of the current block                            |
+| gaslimit()              |     | F | mevcut bloğun gaz limitini engelle                              |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 
 .. _yul-call-return-area:
