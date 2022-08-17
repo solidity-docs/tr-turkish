@@ -1010,22 +1010,22 @@ Solidity bağlayıcı (linker) hakkında ayrıntılar için :ref:`Komut Satırı
 memoryguard
 ^^^^^^^^^^^
 
-This function is available in the EVM dialect with objects. The caller of
-``let ptr := memoryguard(size)`` (where ``size`` has to be a literal number)
-promises that they only use memory in either the range ``[0, size)`` or the
-unbounded range starting at ``ptr``.
+Bu fonksiyon, nesnelerle birlikte EVM lehçesinde mevcuttur. 
+``let ptr := memoryguard(size)`` (``size``'ın' değişmez bir sayı olması gerektiği yerde) 
+çağıranı, yalnızca ``[0, size)`` aralığında veya ``ptr``'dan 
+başlayan sınırsız aralıkta bellek kullandıklarında garanti verir.
 
-Since the presence of a ``memoryguard`` call indicates that all memory access
-adheres to this restriction, it allows the optimizer to perform additional
-optimization steps, for example the stack limit evader, which attempts to move
-stack variables that would otherwise be unreachable to memory.
+Bir ``memoryguard`` çağrısının varlığı, tüm bellek erişiminin 
+bu kısıtlamaya bağlı olduğunu gösterdiğinden, optimize edicinin 
+ek optimizasyon adımları gerçekleştirmesine izin verir, örneğin, aksi takdirde 
+belleğe erişilemeyecek olan yığın (stack) değişkenlerini taşımaya çalışan yığın limiti kaçağı gibi.
 
-The Yul optimizer promises to only use the memory range ``[size, ptr)`` for its purposes.
-If the optimizer does not need to reserve any memory, it holds that ``ptr == size``.
+Yul optimizer, amaçları için yalnızca bellek aralığını ``[size, ptr)`` kullanmayı vaat eder. 
+Optimize edicinin herhangi bir bellek ayırması gerekmiyorsa, ``ptr == size`` boyutunu tutar.
 
-``memoryguard`` can be called multiple times, but needs to have the same literal as argument
-within one Yul subobject. If at least one ``memoryguard`` call is found in a subobject,
-the additional optimiser steps will be run on it.
+``memoryguard`` birden çok kez çağrılabilir, ancak bir Yul alt nesnesinde bağımsız değişkenle 
+aynı değişmeze sahip olması gerekir. Bir alt nesnede en az bir ``memoryguard`` çağrısı bulunursa, 
+bunun üzerinde ek optimize edici adımlar çalıştırılır.
 
 
 .. _yul-verbatim:
