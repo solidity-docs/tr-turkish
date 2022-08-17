@@ -983,30 +983,29 @@ Bu, çalışma zamanı kodunda ``loadimmutable("name")`` çağrıları için olu
 
 linkersymbol
 ^^^^^^^^^^^^
-The function ``linkersymbol("library_id")`` is a placeholder for an address literal to be substituted
-by the linker.
-Its first and only argument must be a string literal and uniquely represents the address to be inserted.
-Identifiers can be arbitrary but when the compiler produces Yul code from Solidity sources,
-it uses a library name qualified with the name of the source unit that defines that library.
-To link the code with a particular library address, the same identifier must be provided to the
-``--libraries`` option on the command line.
 
-For example this code
+``linkersymbol("library_id")`` fonksiyonu, bağlayıcı (linker) tarafından değiştirilecek bir 
+adres değişmezi (literal) için bir yer tutucudur (placeholder). 
+İlk ve tek bağımsız değişkeni bir string değişmezi olmalıdır ve eklenecek adresi benzersiz şekilde temsil eder. 
+Tanımlayıcılar (identifier) isteğe bağlı olabilir, ancak derleyici Solidity kaynaklarından Yul kodu ürettiğinde, 
+o kitaplığı tanımlayan kaynak birimin adıyla nitelenmiş bir kitaplık adı kullanır. 
+Kodu belirli bir kitaplık adresiyle ilişkilendirmek için, komut satırındaki
+ ``--libraries`` seçeneğine aynı tanımlayıcı verilmelidir.
+
+Örneğin aşağıdaki kod
 
 .. code-block:: yul
 
     let a := linkersymbol("file.sol:Math")
 
-is equivalent to
+bağlayıcı (linker) ``--libraries "file.sol:Math=0x1234567890123456789012345678901234567890`` 
+seçeneği ile çağrıldığında şu koda eşittir:
 
 .. code-block:: yul
 
     let a := 0x1234567890123456789012345678901234567890
 
-when the linker is invoked with ``--libraries "file.sol:Math=0x1234567890123456789012345678901234567890``
-option.
-
-See :ref:`Using the Commandline Compiler <commandline-compiler>` for details about the Solidity linker.
+Solidity bağlayıcı (linker) hakkında ayrıntılar için :ref:`Komut Satırı Derleyicisini Kullanma <commandline-compiler>` bölümüne bakın.
 
 memoryguard
 ^^^^^^^^^^^
