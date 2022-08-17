@@ -1033,81 +1033,81 @@ bunun üzerinde ek optimize edici adımlar çalıştırılır.
 verbatim
 ^^^^^^^^
 
-The set of ``verbatim...`` builtin functions lets you create bytecode for opcodes
-that are not known to the Yul compiler. It also allows you to create
-bytecode sequences that will not be modified by the optimizer.
+``verbatim...`` gömülü fonksiyonlar kümesi, Yul derleyicisi tarafından bilinmeyen işlem kodları 
+için bayt kodu oluşturmanıza olanak tanır. Ayrıca, optimize edici tarafından 
+değiştirilmeyecek olan bayt kodu dizileri oluşturmanıza da olanak tanır.
 
-The functions are ``verbatim_<n>i_<m>o("<data>", ...)``, where
+Fonksiyonlar şu şekildedir: ``verbatim_<n>i_<m>o("<data>", ...)``, burada
 
-- ``n`` is a decimal between 0 and 99 that specifies the number of input stack slots / variables
-- ``m`` is a decimal between 0 and 99 that specifies the number of output stack slots / variables
-- ``data`` is a string literal that contains the sequence of bytes
+- ``n`` giriş (input) yığını yuvalarının/değişkenlerinin sayısını belirten 0 ile 99 arasında bir ondalık sayıdır
+- çıktı (output) yığını yuvalarının / değişkenlerinin sayısını belirten 0 ile 99 arasında bir ondalık sayıdır
+- ``data`` bayt dizisini içeren bir string değişmezidir
 
-If you for example want to define a function that multiplies the input
-by two, without the optimizer touching the constant two, you can use
+Örneğin, optimize edicinin sabit değer olan ikiye dokunmadan girişi 
+iki ile çarpan bir fonksiyon tanımlamak istiyorsanız, şöyle kullanabilirsiniz:
 
 .. code-block:: yul
 
     let x := calldataload(0)
     let double := verbatim_1i_1o(hex"600202", x)
 
-This code will result in a ``dup1`` opcode to retrieve ``x``
-(the optimizer might directly re-use result of the
-``calldataload`` opcode, though)
-directly followed by ``600202``. The code is assumed to
-consume the copied value of ``x`` and produce the result
-on the top of the stack. The compiler then generates code
-to allocate a stack slot for ``double`` and store the result there.
+Bu kod, ``x``'i doğrudan almak amacıyla 
+(yine de optimize edici, ``calldataload`` işlem kodunun sonucunu 
+doğrudan yeniden kullanabilir) bir ``dup1`` işlem kodunun 
+ardından ``600202`` ile sonuçlanır. Kodun, kopyalanan ``x`` değerini tükettiği 
+ve sonucu yığının en üstünde ürettiği varsayılır. 
+Derleyici daha sonra ``double`` için bir yığın yuvası 
+tahsis etmek ve sonucu orada saklamak için kod üretir.
 
-As with all opcodes, the arguments are arranged on the stack
-with the leftmost argument on the top, while the return values
-are assumed to be laid out such that the rightmost variable is
-at the top of the stack.
+Tüm işlem kodlarında olduğu gibi, değişmez değerler en soldaki değişmez değer 
+en üstte olacak şekilde yığın üzerinde düzenlenirken, 
+return değerleri ise en sağdaki değişken, yığının 
+en üstünde olacak şekilde düzenlendiği varsayılır.
 
-Since ``verbatim`` can be used to generate arbitrary opcodes
-or even opcodes unknown to the Solidity compiler, care has to be taken
-when using ``verbatim`` together with the optimizer. Even when the
-optimizer is switched off, the code generator has to determine
-the stack layout, which means that e.g. using ``verbatim`` to modify
-the stack height can lead to undefined behaviour.
+``verbatim`` isteğe bağlı işlem kodları ve hatta Solidity derleyicisi 
+tarafından bilinmeyen işlem kodları oluşturmak için kullanılabildiğinden, 
+optimize edici ile birlikte ``verbatim`` kullanılırken dikkatli olunmalıdır. 
+Optimize edici kapatıldığında bile, kod oluşturucu yığın düzenini 
+belirlemelidir, bu da örneğin yığın yüksekliğini değiştirmek 
+için ``verbatim`` kullanmak istediğinizde tanımsız davranışa yol açabilir.
 
-The following is a non-exhaustive list of restrictions on
-verbatim bytecode that are not checked by
-the compiler. Violations of these restrictions can result in
-undefined behaviour.
+Aşağıda, derleyici tarafından kontrol edilmeyen verbatim 
+bayt kodundaki kısıtlamaların kapsamlı olmayan 
+bir listesi bulunmaktadır. Bu kısıtlamaların ihlali, 
+tanımlanmamış davranışlara neden olabilir.
 
-- Control-flow should not jump into or out of verbatim blocks,
-  but it can jump within the same verbatim block.
-- Stack contents apart from the input and output parameters
-  should not be accessed.
-- The stack height difference should be exactly ``m - n``
-  (output slots minus input slots).
-- Verbatim bytecode cannot make any assumptions about the
-  surrounding bytecode. All required parameters have to be
-  passed in as stack variables.
+- Kontrol akışı verbatim bloklarının içine veya dışına atlamamalıdır, 
+  ancak aynı verbatim bloğu içinde atlayabilir.
+- Giriş ve çıkış parametreleri dışındaki yığın 
+  içeriklerine erişilmemelidir.
+- Yığın yükseklik farkı tam olarak ``m - n`` olmalıdır 
+  (çıkış yuvaları eksi giriş yuvaları).
+- Verbatim bayt kodu, kapsayan bayt kodu hakkında herhangi 
+  bir varsayımda bulunamaz. Gerekli tüm parametreler 
+  yığın değişkenleri olarak iletilmelidir.
 
-The optimizer does not analyze verbatim bytecode and always
-assumes that it modifies all aspects of state and thus can only
-do very few optimizations across ``verbatim`` function calls.
+Optimize edici "verbatim" bayt kodunu analiz etmez ve her zaman 
+durumun tüm yönlerini değiştirdiğini ve bu nedenle ``verbatim`` 
+fonksiyon çağrılarında yalnızca çok az optimizasyon yapabileceğini varsayar.
 
-The optimizer treats verbatim bytecode as an opaque block of code.
-It will not split it but might move, duplicate
-or combine it with identical verbatim bytecode blocks.
-If a verbatim bytecode block is unreachable by the control-flow,
-it can be removed.
+Optimize edici, verbatim bayt kodunu opak bir kod bloğu olarak ele alır. 
+Bölmez, ancak aynı verbatim bayt kodu bloklarıyla taşıyabilir, 
+çoğaltabilir veya birleştirebilir. 
+Bir "verbatim" bayt kodu bloğuna kontrol akışı 
+tarafından ulaşılamıyorsa, kaldırılabilir.
 
 
-.. warning::
+.. uyarı::
 
-    During discussions about whether or not EVM improvements
-    might break existing smart contracts, features inside ``verbatim``
-    cannot receive the same consideration as those used by the Solidity
-    compiler itself.
+    EVM iyileştirmelerinin mevcut akıllı sözleşmeleri bozup bozmayacağı 
+    konusundaki tartışmalar sırasında, ``verbatim`` içindeki özellikler, 
+    Solidity derleyicisinin kullandığı özelliklerle 
+    aynı değerlendirmeyi alamaz.
 
-.. note::
+.. not::
 
-    To avoid confusion, all identifiers starting with the string ``verbatim`` are reserved
-    and cannot be used for user-defined identifiers.
+    Karışıklığı önlemek için, "verbatim" string'i başlayan tüm tanımlayıcılar reserv edilmiştir ve 
+    kullanıcıların atadığı tanımlayıcılar için kullanılamaz.
 
 .. _yul-object:
 
