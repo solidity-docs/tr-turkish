@@ -973,12 +973,12 @@ Yul nesnesinin diğer bölümlerine erişmek için kullanılır.
 setimmutable, loadimmutable
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The functions ``setimmutable(offset, "name", value)`` and ``loadimmutable("name")`` are
-used for the immutable mechanism in Solidity and do not nicely map to pure Yul.
-The call to ``setimmutable(offset, "name", value)`` assumes that the runtime code of the contract
-containing the given named immutable was copied to memory at offset ``offset`` and will write ``value`` to all
-positions in memory (relative to ``offset``) that contain the placeholder that was generated for calls
-to ``loadimmutable("name")`` in the runtime code.
+``setimmutable(offset, "name", value)`` ve ``loadimmutable("name")`` fonksiyonları, 
+Solidity'deki değişmez mekanizma için kullanılır ve saf Yul ile hoş bir şekilde eşleşmez. 
+``setimmutable(offset, "name", value)`` çağrısı, verilen adlandırılmış değişmezi içeren sözleşmenin 
+çalışma zamanı (runtime) kodunun ofsette ``offset`` belleğe kopyalandığını ve yer tutucuyu (placeholder) içeren 
+bellekteki tüm konumlara (``offset``'e göre) ``value`` yazacağını varsayar. 
+Bu, çalışma zamanı kodunda ``loadimmutable("name")`` çağrıları için oluşturulmuştur.
 
 
 linkersymbol
