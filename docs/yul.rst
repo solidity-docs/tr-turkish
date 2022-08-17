@@ -962,12 +962,12 @@ Bazı dahili diyalektlerde ek fonksiyonlar vardır:
 datasize, dataoffset, datacopy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The functions ``datasize(x)``, ``dataoffset(x)`` and ``datacopy(t, f, l)``
-are used to access other parts of a Yul object.
+``datasize(x)``, ``dataoffset(x)`` ve ``datacopy(t, f, l)`` fonksiyonları bir 
+Yul nesnesinin diğer bölümlerine erişmek için kullanılır.
 
-``datasize`` and ``dataoffset`` can only take string literals (the names of other objects)
-as arguments and return the size and offset in the data area, respectively.
-For the EVM, the ``datacopy`` function is equivalent to ``codecopy``.
+``datasize`` ve ``dataoffset`` argüman olarak yalnızca string değişmezlerini (diğer nesnelerin adlarını)
+ alabilir ve sırasıyla veri alanındaki boyutu ve ofseti döndürebilir. 
+ EVM için ``datacopy`` fonksiyonu ``codecopy`` fonksiyonu ile eşdeğerdir.
 
 
 setimmutable, loadimmutable
