@@ -1157,15 +1157,15 @@ Yukarıda ``Block``, önceki bölümde Yul kodu dilbilgisinde açıklanan ``Bloc
 
 .. code-block:: yul
 
-    // A contract consists of a single object with sub-objects representing
-    // the code to be deployed or other contracts it can create.
-    // The single "code" node is the executable code of the object.
-    // Every (other) named object or data section is serialized and
-    // made accessible to the special built-in functions datacopy / dataoffset / datasize
-    // The current object, sub-objects and data items inside the current object
-    // are in scope.
+    // Bir sözleşme, dağıtılacak kodu veya oluşturabileceği diğer sözleşmeleri 
+    // temsil eden alt nesnelere sahip tek bir nesneden oluşur.
+    // Tek "kod" düğümü, nesnenin yürütülebilir kodudur.
+    // Her (diğer) adlandırılmış nesne veya veri bölümü serileştirilir ve
+    //  özel gömülü fonksiyonlar olan datacopy / dataoffset / datasize için erişilebilir hale getirilir.
+    // Geçerli nesnenin içindeki geçerli nesne, alt nesneler ve 
+    // veri öğeleri kapsam içindedir.
     object "Contract1" {
-        // This is the constructor code of the contract.
+        // Bu, sözleşmenin yapıcı (constructor) kodudur.
         code {
             function allocate(size) -> ptr {
                 ptr := mload(0x40)
@@ -1173,21 +1173,21 @@ Yukarıda ``Block``, önceki bölümde Yul kodu dilbilgisinde açıklanan ``Bloc
                 mstore(0x40, add(ptr, size))
             }
 
-            // first create "Contract2"
+            // ilk olarak  "Contract2" oluştur 
             let size := datasize("Contract2")
             let offset := allocate(size)
-            // This will turn into codecopy for EVM
+            // Bu, EVM için kod kopyasına dönüşecek
             datacopy(offset, dataoffset("Contract2"), size)
-            // constructor parameter is a single number 0x1234
+            // yapıcı parametresi tek bir sayıdır 0x1234
             mstore(add(offset, size), 0x1234)
             pop(create(offset, add(size, 32), 0))
 
-            // now return the runtime object (the currently
-            // executing code is the constructor code)
+            // şimdi çalışma zamanı nesnesini döndür
+            // (şu anda yürütülmekte olan kod, yapıcı kodudur)
             size := datasize("Contract1_deployed")
             offset := allocate(size)
-            // This will turn into a memory->memory copy for Ewasm and
-            // a codecopy for EVM
+            // Bu, Ewasm için bir memory->memory kopyasına ve
+            // EVM için bir kod kopyasına dönüşecektir.
             datacopy(offset, dataoffset("Contract1_deployed"), size)
             return(offset, size)
         }
@@ -1209,16 +1209,16 @@ Yukarıda ``Block``, önceki bölümde Yul kodu dilbilgisinde açıklanan ``Bloc
             }
         }
 
-        // Embedded object. Use case is that the outside is a factory contract,
-        // and Contract2 is the code to be created by the factory
+        // Gömülü nesne. Kullanım durumu, dışarının bir fabrika sözleşmesi olması ve 
+        // Sözleşme2'nin fabrika tarafından oluşturulacak kod olmasıdır.
         object "Contract2" {
             code {
-                // code here ...
+                // kod buraya ...
             }
 
             object "Contract2_deployed" {
                 code {
-                    // code here ...
+                    // kod buraya ...
                 }
             }
 
