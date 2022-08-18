@@ -1229,21 +1229,21 @@ Yukarıda ``Block``, önceki bölümde Yul kodu dilbilgisinde açıklanan ``Bloc
 Yul Optimizer
 =============
 
-The Yul optimizer operates on Yul code and uses the same language for input, output and
-intermediate states. This allows for easy debugging and verification of the optimizer.
+Yul optimize edicisi Yul kodunda çalışır ve giriş, çıkış ve  ara durumlar için aynı dili kullanır. 
+Bu, optimize edicinin kolay hata ayıklamasını ve doğrulanmasını sağlar.
 
-Please refer to the general :ref:`optimizer documentation <optimizer>`
-for more details about the different optimization stages and how to use the optimizer.
+Farklı optimizasyon aşamaları ve optimize edicinin nasıl kullanılacağı hakkında 
+daha fazla ayrıntı için lütfen :ref:`optimize edici dökümantasyonu <optimizer>` bölümüne bakın.
 
-If you want to use Solidity in stand-alone Yul mode, you activate the optimizer using ``--optimize``
-and optionally specify the :ref:`expected number of contract executions <optimizer-parameter-runs>` with
-``--optimize-runs``:
+Solidity'yi bağımsız Yul modunda kullanmak istiyorsanız, optimize ediciyi ``--optimize`` 
+kullanarak etkinleştirirsiniz ve isteğe bağlı olarak ``--optimize-runs`` ile 
+:ref:`beklenen sözleşme yürütme sayısı <optimizer-parameter-runs>` belirtirsiniz:
 
 .. code-block:: sh
 
     solc --strict-assembly --optimize --optimize-runs 200
 
-In Solidity mode, the Yul optimizer is activated together with the regular optimizer.
+Solidity modunda Yul optimizer, normal optimizer ile birlikte etkinleştirilir.
 
 .. _optimization-step-sequence:
 
