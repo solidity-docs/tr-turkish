@@ -1114,12 +1114,12 @@ tarafından ulaşılamıyorsa, kaldırılabilir.
 Specification of Yul Object
 ===========================
 
-Yul objects are used to group named code and data sections.
-The functions ``datasize``, ``dataoffset`` and ``datacopy``
-can be used to access these sections from within code.
-Hex strings can be used to specify data in hex encoding,
-regular strings in native encoding. For code,
-``datacopy`` will access its assembled binary representation.
+Yul nesneleri, adlandırılmış kod ve veri bölümlerini gruplandırmak için kullanılır. 
+``datasize``, ``dataoffset`` ve ``datacopy`` fonksiyonları 
+bu bölümlere kod içinden erişmek için kullanılabilir. 
+Onaltılı (hex) string'ler, onaltılı kodlamada verileri belirtmek için kullanılabilir, 
+yerel (native) kodlamada normal string'ler kullanılır. 
+Kod için ``datacopy``, birleştirilmiş ikili (binary) gösterimine erişecektir.
 
 .. code-block:: none
 
@@ -1129,31 +1129,31 @@ regular strings in native encoding. For code,
     HexLiteral = 'hex' ('"' ([0-9a-fA-F]{2})* '"' | '\'' ([0-9a-fA-F]{2})* '\'')
     StringLiteral = '"' ([^"\r\n\\] | '\\' .)* '"'
 
-Above, ``Block`` refers to ``Block`` in the Yul code grammar explained in the previous chapter.
+Yukarıda ``Block``, önceki bölümde Yul kodu dilbilgisinde açıklanan ``Block`` anlamına gelir.
 
-.. note::
+.. not::
 
-    An object with a name that ends in ``_deployed`` is treated as deployed code by the Yul optimizer.
-    The only consequence of this is a different gas cost heuristic in the optimizer.
+    ``_deployed`` ile biten bir ada sahip bir nesne, Yul optimizer tarafından deploy edilmiş 
+    kod olarak değerlendirilir. Bunun tek sonucu, optimize edicide bulgusal olarak farklı bir gaz maliyeti yöntemidir.
 
-.. note::
+.. not::
 
-    Data objects or sub-objects whose names contain a ``.`` can be defined
-    but it is not possible to access them through ``datasize``,
-    ``dataoffset`` or ``datacopy`` because ``.`` is used as a separator
-    to access objects inside another object.
+    Adında ``.`` bulunan veri nesneleri veya alt nesneler tanımlanabilir, 
+    ancak bunlara ``datasize``, ``dataoffset`` veya ``datacopy`` üzerinden erişim 
+    mümkün değildir, çünkü ``.``, başka bir nesnenin içindeki 
+    nesnelere erişmek için ayırıcı olarak kullanılır.
 
-.. note::
+.. not::
 
-    The data object called ``".metadata"`` has a special meaning:
-    It cannot be accessed from code and is always appended to the very end of the
-    bytecode, regardless of its position in the object.
+    ``".metadata"`` adı verilen veri nesnesinin özel bir anlamı vardır: 
+    Koddan erişilemez ve nesnedeki konumundan bağımsız 
+    olarak her zaman bayt kodunun en sonuna eklenir.
 
-    Other data objects with special significance might be added in the
-    future, but their names will always start with a ``.``.
+    Gelecekte özel öneme sahip diğer veri nesneleri eklenebilir, 
+    ancak adları her zaman bir ``.`` ile başlayacaktır.
 
 
-An example Yul Object is shown below:
+Örnek bir Yul Nesnesi aşağıda gösterilmiştir:
 
 .. code-block:: yul
 
