@@ -1247,27 +1247,28 @@ Solidity modunda Yul optimizer, normal optimizer ile birlikte etkinleştirilir.
 
 .. _optimization-step-sequence:
 
-Optimization Step Sequence
+Optimizasyon Adım Sırası
 --------------------------
 
-By default the Yul optimizer applies its predefined sequence of optimization steps to the generated assembly.
-You can override this sequence and supply your own using the ``--yul-optimizations`` option:
+Varsayılan olarak Yul optimizer, önceden tanımlanmış optimizasyon adımları dizisini oluşturulan assembly'ye uygular. 
+Bu sırayı geçersiz kılabilir ve ``--yul-optimizations`` seçeneğini kullanarak kendinizinkini uygulatabilirsiniz:
 
 .. code-block:: sh
 
     solc --optimize --ir-optimized --yul-optimizations 'dhfoD[xarrscLMcCTU]uljmul'
 
-The order of steps is significant and affects the quality of the output.
-Moreover, applying a step may uncover new optimization opportunities for others that were already
-applied so repeating steps is often beneficial.
-By enclosing part of the sequence in square brackets (``[]``) you tell the optimizer to repeatedly
-apply that part until it no longer improves the size of the resulting assembly.
-You can use brackets multiple times in a single sequence but they cannot be nested.
+Adımların sırası önemlidir ve çıktının kalitesini etkiler. 
+Ayrıca, bir adımı uygulamak, daha önce uygulanmış olan diğerleri için yeni optimizasyon 
+fırsatlarını ortaya çıkarabilir, bu nedenle adımları tekrarlamak genellikle faydalıdır. 
+Dizinin bir kısmını köşeli parantezler (``[]``) içine alarak, optimize ediciye, 
+sonuçta ortaya çıkan assemby'nin boyutunu artık iyileştirmeyene kadar o kısmı 
+tekrar tekrar uygulamasını söylersiniz. Köşeli ayraçları tek bir sırada 
+birden çok kez kullanabilirsiniz ancak iç içe geçemezler.
 
-The following optimization steps are available:
+Aşağıdaki optimizasyon adımları uygulanabilir:
 
 ============ ===============================
-Abbreviation Full name
+Kısaltma     Tam adı
 ============ ===============================
 ``f``        ``BlockFlattener``
 ``l``        ``CircularReferencesPruner``
@@ -1292,7 +1293,7 @@ Abbreviation Full name
 ``L``        ``LoadResolver``
 ``M``        ``LoopInvariantCodeMotion``
 ``r``        ``RedundantAssignEliminator``
-``R``        ``ReasoningBasedSimplifier`` - highly experimental
+``R``        ``ReasoningBasedSimplifier`` - son derece deneysel
 ``m``        ``Rematerialiser``
 ``V``        ``SSAReverser``
 ``a``        ``SSATransform``
@@ -1302,13 +1303,13 @@ Abbreviation Full name
 ``d``        ``VarDeclInitializer``
 ============ ===============================
 
-Some steps depend on properties ensured by ``BlockFlattener``, ``FunctionGrouper``, ``ForLoopInitRewriter``.
-For this reason the Yul optimizer always applies them before applying any steps supplied by the user.
+Bazı adımlar ``BlockFlattener``, ``FunctionGrouper``, ``ForLoopInitRewriter`` tarafından sağlanan özelliklere bağlıdır. 
+Bu nedenle Yul optimize edicisi, kullanıcı tarafından sağlanan herhangi bir adımı uygulamadan önce bunları uygular.
 
-The ReasoningBasedSimplifier is an optimizer step that is currently not enabled
-in the default set of steps. It uses an SMT solver to simplify arithmetic expressions
-and boolean conditions. It has not received thorough testing or validation yet and can produce
-non-reproducible results, so please use with care!
+ReasoningBasedSimplifier, şu anda varsayılan adımlar kümesinde etkinleştirilmeyen bir 
+optimize edici adımıdır. Aritmetik ifadeleri ve boole koşullarını basitleştirmek için bir 
+SMT çözücüsü kullanır. Henüz kapsamlı bir test veya doğrulama almamıştır ve tekrarlanamayan 
+sonuçlar üretebilir, bu yüzden lütfen dikkatli kullanın!
 
 .. _erc20yul:
 
