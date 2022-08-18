@@ -1,95 +1,91 @@
 .. _security_considerations:
 
 #######################
-Security Considerations
+Güvenlikle ilgili Değerlendirmeler
 #######################
 
-While it is usually quite easy to build software that works as expected,
-it is much harder to check that nobody can use it in a way that was **not** anticipated.
+Genellikle öngörüldüğü gibi çalışan bir yazılım oluşturmak oldukça kolay olsa da,
+kimsenin bu yazılımı **öngörülmeyen** bir şekilde kullanamayacağını kontrol etmek oldukça zordur.
 
-In Solidity, this is even more important because you can use smart contracts
-to handle tokens or, possibly, even more valuable things. Furthermore, every
-execution of a smart contract happens in public and, in addition to that,
-the source code is often available.
+Solidity'de durum daha da önemlidir çünkü akıllı sözleşmeleri tokenları ya da muhtemelen
+daha değerli şeyleri yönetmek için kullanabilirsiniz. Dahası, bir akıllı sözleşme her
+yürütüldüğünde herkese görünür bir şekilde gerçekleşir ve buna ek olarak kaynak koduna
+da genellikle erişilebilirdir.
 
-Of course you always have to consider how much is at stake:
-You can compare a smart contract with a web service that is open to the
-public (and thus, also to malicious actors) and perhaps even open source.
-If you only store your grocery list on that web service, you might not have
-to take too much care, but if you manage your bank account using that web service,
-you should be more careful.
+Elbette her zaman ne kadar tehlikede olduğunu göz önünde bulundurmanız gerekir: Bir
+akıllı sözleşmeyi halka (ve dolayısıyla kötü niyetli kişilere) açık ve hatta belki
+de açık kaynaklı bir web hizmeti ile karşılaştırabilirsiniz. Bu web hizmetinde yalnızca
+alışveriş listenizi saklıyorsanız, çok fazla dikkat etmeniz gerekmeyebilir, ancak banka
+hesabınızı bu web hizmetini kullanarak yönetiyorsanız, daha dikkatli olmalısınız.
 
-This section will list some pitfalls and general security recommendations but
-can, of course, never be complete.  Also, keep in mind that even if your smart
-contract code is bug-free, the compiler or the platform itself might have a
-bug. A list of some publicly known security-relevant bugs of the compiler can
-be found in the :ref:`list of known bugs<known_bugs>`, which is also
-machine-readable. Note that there is a bug bounty program that covers the code
-generator of the Solidity compiler.
+Bu bölüm bazı tuzakları ve genel güvenlik önerilerini listeleyecektir, ancak elbette
+asla eksiksiz olamaz.  Ayrıca, akıllı sözleşme kodunuz hatasız olsa bile derleyicide
+ya da platformun kendisinde bir hata bulunabileceğini unutmayın. Derleyicinin herkesçe
+bilinen güvenlikle ilgili bazı hatalarının bir listesi, makine tarafından da okunabilen
+:ref: `bilinen hataların listesi<known_bugs>` bölümünde bulunabilir. Solidity derleyicisinin
+kod oluşturucusunu kapsayan bir hata ödül programı olduğunu unutmayın.
 
-As always, with open source documentation, please help us extend this section
-(especially, some examples would not hurt)!
+Her zaman olduğu gibi, açık kaynak belgelerinde, lütfen bu bölümü genişletmemize
+yardımcı olun (özellikle, bazı örneklerin hiç kimseye zararı dokunmaz)!
 
-NOTE: In addition to the list below, you can find more security recommendations and best practices
-`in Guy Lando's knowledge list <https://github.com/guylando/KnowledgeLists/blob/master/EthereumSmartContracts.md>`_ and
-`the Consensys GitHub repo <https://consensys.github.io/smart-contract-best-practices/>`_.
+NOT: Aşağıdaki listeye ek olarak, `Guy Lando'nun bilgi listesinde <https://github.com/guylando/KnowledgeLists/blob/master/EthereumSmartContracts.md>`_
+ve `Consensys GitHub reposunda <https://consensys.github.io/smart-contract-best-practices/>`_ daha fazla güvenlik önerisi ve en iyi uygulamaları bulabilirsiniz.
 
 ********
-Pitfalls
+Tuzaklar
 ********
 
-Private Information and Randomness
+Özel(Private) Bilgiler ve Rastgelelik
 ==================================
 
-Everything you use in a smart contract is publicly visible, even
-local variables and state variables marked ``private``.
+Bir akıllı sözleşmede kullandığınız her şey, yerel değişkenler ve ``private`` olarak
+işaretlenmiş durum değişkenleri de dahil olmak üzere herkes tarafından görülebilir.
 
-Using random numbers in smart contracts is quite tricky if you do not want
-miners to be able to cheat.
+Madencilerin hile yapabilmesini istemiyorsanız, akıllı sözleşmelerde rastgele sayılar
+kullanmak oldukça zordur.
 
-Re-Entrancy
+Yeniden Giriş (Re-Entrancy)
 ===========
 
-Any interaction from a contract (A) with another contract (B) and any transfer
-of Ether hands over control to that contract (B). This makes it possible for B
-to call back into A before this interaction is completed. To give an example,
-the following code contains a bug (it is just a snippet and not a
-complete contract):
+Bir sözleşmeden (A) başka bir sözleşmeye (B) herhangi bir etkileşim ve herhangi
+bir Ether transferi, kontrolü o sözleşmeye (B) devreder. Bu, B'nin bu etkileşim
+tamamlanmadan önce A'yı geri çağırmasını mümkün kılar. Bir örnek vermek gerekirse,
+aşağıdaki kod bir hata içermektedir (bu sadece bir kod parçacığıdır ve tam bir sözleşme değildir):
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.6.0 <0.9.0;
 
-    // THIS CONTRACT CONTAINS A BUG - DO NOT USE
+    // BU SÖZLEŞME BUG İÇERİR: KULLANMAYIN
     contract Fund {
-        /// @dev Mapping of ether shares of the contract.
+        /// @dev Sözleşmenin ether paylarının eşleştirilmesi.
         mapping(address => uint) shares;
-        /// Withdraw your share.
+        /// Payınızı geri çekin.
         function withdraw() public {
             if (payable(msg.sender).send(shares[msg.sender]))
                 shares[msg.sender] = 0;
         }
     }
 
-The problem is not too serious here because of the limited gas as part
-of ``send``, but it still exposes a weakness: Ether transfer can always
-include code execution, so the recipient could be a contract that calls
-back into ``withdraw``. This would let it get multiple refunds and
-basically retrieve all the Ether in the contract. In particular, the
-following contract will allow an attacker to refund multiple times
-as it uses ``call`` which forwards all remaining gas by default:
+Burada sorun, ``send``in bir parçası olarak sınırlı gas miktarı nedeniyle çok ciddi
+değildir, ancak yine de bir zafiyet ortaya çıkarmaktadır: Ether transferi her zaman
+kod yürütmeyi içerebilir, bu nedenle alıcı ``withdraw``a geri çağıran bir sözleşme
+olabilir. Bu, birden fazla geri ödeme almasına ve temelde sözleşmedeki tüm Ether'i geri
+almasına izin verecektir. Özellikle, aşağıdaki sözleşme, varsayılan olarak kalan tüm
+gazı ileten ``call`` kullandığı için bir saldırganın birden fazla kez geri ödeme
+yapmasına izin verecektir:
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.6.2 <0.9.0;
 
-    // THIS CONTRACT CONTAINS A BUG - DO NOT USE
+    // BU SÖZLEŞME BUG İÇERİR: KULLANMAYIN
     contract Fund {
-        /// @dev Mapping of ether shares of the contract.
+        /// @dev Sözleşmenin ether paylarının eşleştirilmesi.
         mapping(address => uint) shares;
-        /// Withdraw your share.
+        /// Payınızı geri çekin.
         function withdraw() public {
             (bool success,) = msg.sender.call{value: shares[msg.sender]}("");
             if (success)
@@ -97,8 +93,8 @@ as it uses ``call`` which forwards all remaining gas by default:
         }
     }
 
-To avoid re-entrancy, you can use the Checks-Effects-Interactions pattern as
-outlined further below:
+Re-entrancy'den kaçınmak için, aşağıda daha ayrıntılı olarak açıklandığı gibi
+Checks-Effects-Interactions kalıbını kullanabilirsiniz:
 
 .. code-block:: solidity
 
@@ -106,9 +102,9 @@ outlined further below:
     pragma solidity >=0.6.0 <0.9.0;
 
     contract Fund {
-        /// @dev Mapping of ether shares of the contract.
+        /// @dev Sözleşmenin ether paylarının eşleştirilmesi.
         mapping(address => uint) shares;
-        /// Withdraw your share.
+        /// Payınızı geri çekin.
         function withdraw() public {
             uint share = shares[msg.sender];
             shares[msg.sender] = 0;
@@ -116,92 +112,93 @@ outlined further below:
         }
     }
 
-Note that re-entrancy is not only an effect of Ether transfer but of any
-function call on another contract. Furthermore, you also have to take
-multi-contract situations into account. A called contract could modify the
-state of another contract you depend on.
+Yeniden girişin yalnızca Ether aktarımının değil, başka bir sözleşmedeki herhangi
+bir fonksiyon çağrısının da bir etkisi olduğunu unutmayın. Ayrıca, çoklu sözleşme
+içeren durumları da hesaba katmanız gerekmektedir. Çağrılan bir sözleşme, bağımlı
+olduğunuz başka bir sözleşmenin yapısını değiştirebilir.
 
-Gas Limit and Loops
+Gas Limiti ve Döngüler
 ===================
 
-Loops that do not have a fixed number of iterations, for example, loops that depend on storage values, have to be used carefully:
-Due to the block gas limit, transactions can only consume a certain amount of gas. Either explicitly or just due to
-normal operation, the number of iterations in a loop can grow beyond the block gas limit which can cause the complete
-contract to be stalled at a certain point. This may not apply to ``view`` functions that are only executed
-to read data from the blockchain. Still, such functions may be called by other contracts as part of on-chain operations
-and stall those. Please be explicit about such cases in the documentation of your contracts.
+Sabit sayıda iterasyona sahip olmayan döngüler, örneğin depolama değerine bağlı döngüler,
+dikkatli bir şekilde kullanılmalıdır: Blok gas limiti nedeniyle, işlemler yalnızca belirli
+bir miktarda gas tüketebilir. Ya açıkça ya da sadece normal çalışma nedeniyle, bir döngüdeki
+yineleme sayısı blok gas limitinin ötesine geçebilir ve bu da tüm sözleşmenin belirli bir
+noktada durmasına neden olabilir. Bu durum, yalnızca blok zincirinden veri okumak için
+çalıştırılan ``view`` fonksiyonları için geçerli olmayabilir. Yine de, bu tür fonksiyonlar
+zincir üzerindeki işlemlerin bir parçası olarak diğer sözleşmeler tarafından çağrılabilir
+ve bunları durdurabilir. Lütfen sözleşmelerinizin dokümantasyonunda bu tür durumlar hakkında
+açıkça bilgi verin.
 
-Sending and Receiving Ether
+
+Ether Gönderme ve Alma
 ===========================
 
-- Neither contracts nor "external accounts" are currently able to prevent that someone sends them Ether.
-  Contracts can react on and reject a regular transfer, but there are ways
-  to move Ether without creating a message call. One way is to simply "mine to"
-  the contract address and the second way is using ``selfdestruct(x)``.
+- Ne sözleşmeler ne de "harici hesaplar" şu anda birinin onlara Ether göndermesini
+  engelleyememektedir. Sözleşmeler normal bir transfere yanıt verebilir ve reddedebilir,
+  ancak bir mesaj çağrısı oluşturmadan Ether'i taşımanın yolları vardır. Bir yol basitçe
+  sözleşme adresine "mine to" yapmak, ikinci yol ise ``selfdestruct(x)`` kullanmaktır.
 
-- If a contract receives Ether (without a function being called),
-  either the :ref:`receive Ether <receive-ether-function>`
-  or the :ref:`fallback <fallback-function>` function is executed.
-  If it does not have a receive nor a fallback function, the Ether will be
-  rejected (by throwing an exception). During the execution of one of these
-  functions, the contract can only rely on the "gas stipend" it is passed (2300
-  gas) being available to it at that time. This stipend is not enough to modify
-  storage (do not take this for granted though, the stipend might change with
-  future hard forks). To be sure that your contract can receive Ether in that
-  way, check the gas requirements of the receive and fallback functions
-  (for example in the "details" section in Remix).
+- Bir sözleşme Ether alırsa (bir fonksiyon çağrılmadan), ya :ref:`receive Ether <receive-ether-function>`
+  ya da :ref:`fallback <fallback-function>` fonksiyonu çalıştırılır. Eğer bir receive ya da fallback fonksiyonu
+  yoksa, Ether reddedilir (bir istisna gönderilerek). Bu fonksiyonlardan birinin yürütülmesi sırasında, sözleşme
+  yalnızca o anda kendisine aktarılan "gas stipend "in (2300 gas) kullanılabilir olmasına güvenebilir. Ancak
+  bu miktarı depolamayı değiştirmek için yeterli değildir (bunu kesin olarak kabul etmeyin, gelecekteki hard
+  fork'larla miktar değişebilir). Sözleşmenizin bu şekilde Ether alabileceğinden emin olmak için, receive ve
+  fallback fonksiyonlarının gas gereksinimlerini kontrol etmeyi unutmayın (örneğin Remix'teki "ayrıntılar" bölümünde).
 
-- There is a way to forward more gas to the receiving contract using
-  ``addr.call{value: x}("")``. This is essentially the same as ``addr.transfer(x)``,
-  only that it forwards all remaining gas and opens up the ability for the
-  recipient to perform more expensive actions (and it returns a failure code
-  instead of automatically propagating the error). This might include calling back
-  into the sending contract or other state changes you might not have thought of.
-  So it allows for great flexibility for honest users but also for malicious actors.
+- Daha fazla gas'ı ``addr.call{value: x}("")`` kullanarak alıcı sözleşmeye iletmenin
+  bir yolu vardır. Bu aslında ``addr.transfer(x)`` ile aynıdır, sadece kalan tüm gas
+  miktarını iletir ve alıcının daha pahalı eylemler gerçekleştirmesine olanak sağlar
+  (ve hatayı otomatik olarak iletmek yerine bir hata kodu döndürür). Bu, gönderici
+  sözleşmeyi geri çağırmayı veya aklınıza gelmemiş olabilecek diğer durum değişikliklerini
+  içerebilir. Dolayısıyla güvenilir kullanıcılar için olduğu kadar kötü niyetli kullanıcılar
+  için de büyük esneklik sağlar.
 
-- Use the most precise units to represent the wei amount as possible, as you lose
-  any that is rounded due to a lack of precision.
+- Wei miktarını temsil etmek için mümkün olan en kesin birimleri kullanın, çünkü
+  kesinlik eksikliği nedeniyle yuvarlanan her şeyi kaybedersiniz.
 
-- If you want to send Ether using ``address.transfer``, there are certain details to be aware of:
+- Eğer ``address.transfer`` kullanarak Ether göndermek istiyorsanız, dikkat etmeniz gereken bazı detaylar var:
 
-  1. If the recipient is a contract, it causes its receive or fallback function
-     to be executed which can, in turn, call back the sending contract.
-  2. Sending Ether can fail due to the call depth going above 1024. Since the
-     caller is in total control of the call depth, they can force the
-     transfer to fail; take this possibility into account or use ``send`` and
-     make sure to always check its return value. Better yet, write your
-     contract using a pattern where the recipient can withdraw Ether instead.
-  3. Sending Ether can also fail because the execution of the recipient
-     contract requires more than the allotted amount of gas (explicitly by
-     using :ref:`require <assert-and-require>`, :ref:`assert <assert-and-require>`,
-     :ref:`revert <assert-and-require>` or because the
-     operation is too expensive) - it "runs out of gas" (OOG).  If you
-     use ``transfer`` or ``send`` with a return value check, this might
-     provide a means for the recipient to block progress in the sending
-     contract. Again, the best practice here is to use a :ref:`"withdraw"
-     pattern instead of a "send" pattern <withdrawal_pattern>`.
+  1. Alıcı bir sözleşme ise, alıcı veya fallback fonksiyonunun yürütülmesine neden
+     olur ve bu da gönderen sözleşmeyi geri çağırabilir.
+  2. Ether gönderimi, çağrı derinliğinin 1024'ün üzerine çıkması nedeniyle başarısız
+     olabilir. Çağrı derinliği tamamen çağıranın kontrolünde olduğundan, aktarımı
+     başarısız olmaya zorlayabilirler; bu olasılığı göz önünde bulundurun veya ``send``
+     kullanın ve dönüş değerini her zaman kontrol ettiğinizden emin olun. Daha da iyisi,
+     sözleşmenizi alıcının Ether çekebileceği bir model kullanarak yazın.
+  3. Ether göndermek, alıcı sözleşmenin yürütülmesi için tahsis edilen gas miktarından
+     daha fazlası gerektiği için de başarısız olabilir (açıkça :ref:`require <assert-and-require>`,
+     :ref:`assert <assert-and-require>`, :ref:`revert <assert-and-require>` kullanarak veya
+     işlem çok pahalı olduğu için) - "gas biter" (OOG).  Dönüş değeri kontrolü ile ``transfer``
+     veya ``send`` kullanırsanız, bu, alıcının gönderim sözleşmesindeki ilerlemeyi
+     engellemesi için bir yöntem sağlayabilir. Burada da en iyi uygulama "send" pattern
+     yerine bir :ref:`"withdraw" pattern <withdrawal_pattern>` kullanmaktır.
 
-Call Stack Depth
+Çağrı Yığını Derinliği
 ================
 
-External function calls can fail any time because they exceed the maximum
-call stack size limit of 1024. In such situations, Solidity throws an exception.
-Malicious actors might be able to force the call stack to a high value
-before they interact with your contract. Note that, since `Tangerine Whistle <https://eips.ethereum.org/EIPS/eip-608>`_ hardfork, the `63/64 rule <https://eips.ethereum.org/EIPS/eip-150>`_ makes call stack depth attack impractical. Also note that the call stack and the expression stack are unrelated, even though both have a size limit of 1024 stack slots.
+External fonksiyon çağrıları, 1024 olan maksimum çağrı yığını boyutu sınırını aştıkları
+için her an başarısız olabilirler. Bu gibi durumlarda Solidity bir istisna gönderir.
+Kötü niyetli kişiler, sözleşmenizle etkileşime girmeden önce çağrı yığınını yüksek bir
+değere zorlayabilir. Tangerine Whistle <https://eips.ethereum.org/EIPS/eip-608>`_ hardfork
+olduğundan, `63/64 kuralı <https://eips.ethereum.org/EIPS/eip-150>`_ çağrı yığını derinliği
+saldırısını kullanışsız hale getirir. Ayrıca, her ikisinin de 1024 yığın yuvası boyut
+sınırına sahip olmasına rağmen, çağrı yığını ve ifade yığınının birbiriyle alakasız olduğunu unutmayın.
 
-Note that ``.send()`` does **not** throw an exception if the call stack is
-depleted but rather returns ``false`` in that case. The low-level functions
-``.call()``, ``.delegatecall()`` and ``.staticcall()`` behave in the same way.
+Eğer çağrı yığını tükenirse ``.send()`` fonksiyonunun **bir istisna göndermediğini**,
+bu durumda ``false`` döndürdüğünü unutmayın. Düşük seviyeli fonksiyonlar ``.call()``,
+``.delegatecall()`` ve ``.staticcall()`` da aynı şekilde davranırlar.
 
-Authorized Proxies
+
+Yetkilendirilmiş Proxyler (Authorized Proxies)
 ==================
 
-If your contract can act as a proxy, i.e. if it can call arbitrary contracts
-with user-supplied data, then the user can essentially assume the identity
-of the proxy contract. Even if you have other protective measures in place,
-it is best to build your contract system such that the proxy does not have
-any permissions (not even for itself). If needed, you can accomplish that
-using a second proxy:
+Sözleşmeniz bir proxy olarak hareket edebiliyorsa, yani kullanıcı tarafından
+sağlanan verilerle rastgele sözleşmeleri çağırabiliyorsa, kullanıcı esasen proxy
+sözleşmesinin kimliğini üstlenebilir. Başka koruyucu önlemleriniz olsa bile, sözleşme
+sisteminizi proxy'nin herhangi bir izne sahip olmayacağı şekilde (kendisi için bile)
+oluşturmak en iyisidir. Gerekirse bunu ikinci bir proxy kullanarak gerçekleştirebilirsiniz:
 
 .. code-block:: solidity
 
@@ -214,11 +211,11 @@ using a second proxy:
                 returns (bool, bytes memory) {
             return proxy.callOther(addr, payload);
         }
-        // Other functions and other functionality
+        // Diğer fonksiyonlar ve diğer fonksiyonellikler
     }
 
-    // This is the full contract, it has no other functionality and
-    // requires no privileges to work.
+    // Bu tam sözleşmedir, başka hiçbir fonksiyonu yoktur ve çalışması
+    // için hiçbir ayrıcalık gerektirmez.
     contract PermissionlessProxy {
         function callOther(address addr, bytes memory payload) public
                 returns (bool, bytes memory) {
@@ -229,13 +226,13 @@ using a second proxy:
 tx.origin
 =========
 
-Never use tx.origin for authorization. Let's say you have a wallet contract like this:
+Doğrulama için asla tx.origin kullanmayın. Diyelim ki şöyle bir cüzdan sözleşmeniz var:
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
-    // THIS CONTRACT CONTAINS A BUG - DO NOT USE
+    // BU SÖZLEŞME BUG İÇERİR : KULLANMAYIN
     contract TxUserWallet {
         address owner;
 
@@ -244,13 +241,13 @@ Never use tx.origin for authorization. Let's say you have a wallet contract like
         }
 
         function transferTo(address payable dest, uint amount) public {
-            // THE BUG IS RIGHT HERE, you must use msg.sender instead of tx.origin
+            // BUG burada, tx.origin yerine msg.sender kullanın
             require(tx.origin == owner);
             dest.transfer(amount);
         }
     }
 
-Now someone tricks you into sending Ether to the address of this attack wallet:
+Şimdi birisi sizi bu saldırı cüzdanının adresine Ether göndermeniz için kandırıyor:
 
 .. code-block:: solidity
 
@@ -272,18 +269,22 @@ Now someone tricks you into sending Ether to the address of this attack wallet:
         }
     }
 
-If your wallet had checked ``msg.sender`` for authorization, it would get the address of the attack wallet, instead of the owner address. But by checking ``tx.origin``, it gets the original address that kicked off the transaction, which is still the owner address. The attack wallet instantly drains all your funds.
+Cüzdanınız doğrulama için ``msg.sender`` adresini kontrol etseydi, sahibinin adresi
+yerine saldırı cüzdanının adresini alırdı. Ancak ``tx.origin`` adresini kontrol ederek,
+işlemi başlatan orijinal adresi, yani hala sahibinin adresini alır. Saldırgan cüzdan
+anında tüm paranızı çeker.
 
 .. _underflow-overflow:
 
 Two's Complement / Underflows / Overflows
 =========================================
 
-As in many programming languages, Solidity's integer types are not actually integers.
-They resemble integers when the values are small, but cannot represent arbitrarily large numbers.
+Birçok programlama dilinde olduğu gibi, Solidity'nin integer türleri aslında tam
+sayı değildir. Değerler küçük olduğunda tamsayılara benzerler, ancak keyfi olarak
+büyük sayıları temsil edemezler.
 
-The following code causes an overflow because the result of the addition is too large
-to be stored in the type ``uint8``:
+Aşağıdaki kod bir taşmaya neden olur çünkü toplama işleminin sonucu ``uint8`` tipinde
+saklanamayacak kadar büyüktür:
 
 .. code-block:: solidity
 
@@ -291,37 +292,37 @@ to be stored in the type ``uint8``:
   uint8 y = 1;
   return x + y;
 
-Solidity has two modes in which it deals with these overflows: Checked and Unchecked or "wrapping" mode.
+Solidity'nin bu taşmaları ele aldığı iki modu bulunmaktadır: Kontrollü ve Kontrolsüz veya "wrapping" modu.
 
-The default checked mode will detect overflows and cause a failing assertion. You can disable this check
-using ``unchecked { ... }``, causing the overflow to be silently ignored. The above code would return
-``0`` if wrapped in ``unchecked { ... }``.
+Varsayılan kontrollü mod, taşmaları tespit eder ve başarısız bir doğrulamaya neden olur.
+Bu kontrolü ``unchecked { ... }``  kullanarak bu kontrolü devre dışı bırakabilir ve
+taşmanın sessizce göz ardı edilmesine neden olabilirsiniz. Yukarıdaki kod ``unchecked { … }``
+içine sarılmış olsaydı ``0`` döndürürdü. .
 
-Even in checked mode, do not assume you are protected from overflow bugs.
-In this mode, overflows will always revert. If it is not possible to avoid the
-overflow, this can lead to a smart contract being stuck in a certain state.
+Kontrollü modda bile, taşma hatalarından korunduğunuzu sanmayın. Bu modda, taşmalar her
+zaman geri döndürülecektir. Eğer taşmadan kaçınmak mümkün değilse, bu durum akıllı sözleşmenin
+belirli bir durumda takılı kalmasına neden olabilir.
 
-In general, read about the limits of two's complement representation, which even has some
-more special edge cases for signed numbers.
+Genel olarak, işaretli sayılar için bazı daha özel uç durumlara sahip olan ikiye tamamlayan sayı
+gösteriminin sınırları hakkında bilgi edinmelisiniz.
 
-Try to use ``require`` to limit the size of inputs to a reasonable range and use the
-:ref:`SMT checker<smt_checker>` to find potential overflows.
+Girdilerin boyutunu makul bir aralıkla sınırlamak için ``require`` kullanmayı deneyin ve olası
+taşmaları bulmak için :ref:`SMT checker<smt_checker>` kullanın.
 
 .. _clearing-mappings:
 
-Clearing Mappings
+Mappingleri Temizleme
 =================
 
-The Solidity type ``mapping`` (see :ref:`mapping-types`) is a storage-only
-key-value data structure that does not keep track of the keys that were
-assigned a non-zero value.  Because of that, cleaning a mapping without extra
-information about the written keys is not possible.
-If a ``mapping`` is used as the base type of a dynamic storage array, deleting
-or popping the array will have no effect over the ``mapping`` elements.  The
-same happens, for example, if a ``mapping`` is used as the type of a member
-field of a ``struct`` that is the base type of a dynamic storage array.  The
-``mapping`` is also ignored in assignments of structs or arrays containing a
-``mapping``.
+Yalnızca depolama amaçlı bir anahtar-değer veri yapısı olan Solidity tipi ``mapping``
+(bkz. :ref:`mapping-types`), sıfır olmayan bir değer atanmış anahtarların kaydını tutmaz.
+Bu nedenle, yazılan anahtarlar hakkında ekstra bilgi olmadan bir mapping'i temizlemek mümkün
+değildir. Bir dinamik depolama dizisinin temel türü olarak bir ``mapping`` kullanılıyorsa,
+dizinin silinmesi veya boşaltılmasının ``mapping`` elemanları üzerinde hiçbir etkisi olmayacaktır.
+Aynı durum, örneğin, bir dinamik depolama dizisinin temel türü olan bir ``struct``ın eleman
+türünün bir ``mapping`` olması durumunda da geçerlidir.  Bir ``mapping`` içeren struct veya
+dizilerin atamalarında da ``mapping`` göz ardı edilir.
+
 
 .. code-block:: solidity
 
@@ -349,105 +350,98 @@ field of a ``struct`` that is the base type of a dynamic storage array.  The
         }
     }
 
-Consider the example above and the following sequence of calls: ``allocate(10)``,
-``writeMap(4, 128, 256)``.
-At this point, calling ``readMap(4, 128)`` returns 256.
-If we call ``eraseMaps``, the length of state variable ``array`` is zeroed, but
-since its ``mapping`` elements cannot be zeroed, their information stays alive
-in the contract's storage.
-After deleting ``array``, calling ``allocate(5)`` allows us to access
-``array[4]`` again, and calling ``readMap(4, 128)`` returns 256 even without
-another call to ``writeMap``.
+Yukarıdaki örneği ve aşağıdaki çağrı dizisini göz önünde bulundurun: ``allocate(10)``,
+``writeMap(4, 128, 256)``. Bu noktada, ``readMap(4, 128)`` çağrısı 256 değerini döndürür.
+Eğer ``eraseMaps`` çağrısı yaparsak, ``array`` durum değişkeninin uzunluğu sıfırlanır,
+ancak ``mapping`` elemanları sıfırlanamadığından, bilgileri sözleşmenin deposunda canlı
+kalır. Diziyi sildikten sonra, ``allocate(5)`` çağrısı ``array[4]`` öğesine tekrar erişmemizi
+sağlar ve ``readMap(4, 128)`` çağrısı, başka bir ``writeMap`` çağrısı olmadan bile 256 döndürür.
 
-If your ``mapping`` information must be deleted, consider using a library similar to
-`iterable mapping <https://github.com/ethereum/dapp-bin/blob/master/library/iterable_mapping.sol>`_,
-allowing you to traverse the keys and delete their values in the appropriate ``mapping``.
+Eğer ``mapping`` bilgilerinizin silinmesi gerekiyorsa, ``iterable mapping <https://github.com/ethereum/dapp-bin/blob/master/library/iterable_mapping.sol>`_
+benzeri bir kütüphane kullanmayı düşünün, bu sayede anahtarlar arasında gezinebilir ve uygun
+``mapping`` içindeki değerleri silebilirsiniz.
 
-Minor Details
+
+Küçük Detaylar
 =============
 
-- Types that do not occupy the full 32 bytes might contain "dirty higher order bits".
-  This is especially important if you access ``msg.data`` - it poses a malleability risk:
-  You can craft transactions that call a function ``f(uint8 x)`` with a raw byte argument
-  of ``0xff000001`` and with ``0x00000001``. Both are fed to the contract and both will
-  look like the number ``1`` as far as ``x`` is concerned, but ``msg.data`` will
-  be different, so if you use ``keccak256(msg.data)`` for anything, you will get different results.
+- Tam 32 baytı kaplamayan türler "kirli yüksek dereceli bitler" içerebilir. Bu durum
+  özellikle ``msg.data`` türüne eriştiğinizde önemlidir - bu bir değiştirilebilirlik
+  riski oluşturur: Bir ``f(uint8 x)`` fonksiyonunu ``0xff000001`` ve ``0x00000001`` ham
+  bayt argümanı ile çağıran işlemler oluşturabilirsiniz. Her ikisi de sözleşmeye gönderilir
+  ve ``x`` söz konusu olduğunda her ikisi de ``1`` sayısı gibi görünecektir, ancak ``msg.data``
+  farklı olacaktır, bu nedenle herhangi bir şey için ``keccak256(msg.data)`` kullanırsanız,
+  farklı sonuçlar elde edersiniz.
+
 
 ***************
-Recommendations
+Öneriler
 ***************
 
-Take Warnings Seriously
+Uyarıları Ciddiye Alın
 =======================
 
-If the compiler warns you about something, you should change it.
-Even if you do not think that this particular warning has security
-implications, there might be another issue buried beneath it.
-Any compiler warning we issue can be silenced by slight changes to the
-code.
+Derleyici sizi bir konuda uyarıyorsa, bunu değiştirmelisiniz. Bu uyarının güvenlikle
+ilgili olduğunu düşünmeseniz bile, altında başka bir sorun yatıyor olabilir. Verdiğimiz
+herhangi bir derleyici uyarısı, kodda yapılacak küçük değişikliklerle giderilebilir.
 
-Always use the latest version of the compiler to be notified about all recently
-introduced warnings.
+Yeni eklenen tüm uyarılardan haberdar olmak için her zaman derleyicinin en son sürümünü
+kullanın.
 
-Messages of type ``info`` issued by the compiler are not dangerous, and simply
-represent extra suggestions and optional information that the compiler thinks
-might be useful to the user.
+Derleyici tarafından verilen ``info`` türündeki mesajlar tehlikeli değildir ve sadece
+derleyicinin kullanıcı için yararlı olabileceğini düşündüğü ekstra önerileri ve isteğe
+bağlı bilgileri temsil eder.
 
-Restrict the Amount of Ether
+
+Ether Miktarını Kısıtlayın
 ============================
 
-Restrict the amount of Ether (or other tokens) that can be stored in a smart
-contract. If your source code, the compiler or the platform has a bug, these
-funds may be lost. If you want to limit your loss, limit the amount of Ether.
+Akıllı bir sözleşmede saklanabilecek Ether (veya diğer tokenler) miktarını kısıtlayın.
+Kaynak kodunuzda, derleyicide veya platformda bir hata varsa, bu fonlar kaybolabilir.
+Kaybınızı sınırlamak istiyorsanız, Ether miktarını sınırlayın.
 
-Keep it Small and Modular
+Küçük ve Modüler Tutun
 =========================
 
-Keep your contracts small and easily understandable. Single out unrelated
-functionality in other contracts or into libraries. General recommendations
-about source code quality of course apply: Limit the amount of local variables,
-the length of functions and so on. Document your functions so that others
-can see what your intention was and whether it is different than what the code does.
+Sözleşmelerinizi küçük ve kolayca anlaşılabilir tutun. Diğer sözleşmelerdeki veya
+kütüphanelerdeki ilgisiz fonksiyonları ayırın. Kaynak kod kalitesiyle ilgili genel
+tavsiyeler elbette geçerlidir: Yerel değişkenlerin miktarını, fonksiyonların uzunluğunu
+ve benzerlerini sınırlayın. Başkalarının niyetinizin ne olduğunu ve kodun yapıldığından
+farklı olup olmadığını görebilmesi için fonksiyonlarınızı belgeleyin.
 
-Use the Checks-Effects-Interactions Pattern
+Kontroller-Etkiler-Etkileşimler Modelini Kullanın
 ===========================================
 
-Most functions will first perform some checks (who called the function,
-are the arguments in range, did they send enough Ether, does the person
-have tokens, etc.). These checks should be done first.
+Çoğu fonksiyon önce bazı kontroller yapacaktır (fonksiyonu kim çağırdı, argümanlar
+aralıkta mı, yeterince Ether gönderdiler mi, kişinin tokenleri var mı, vb.) Bu kontroller önce yapılmalıdır.
 
-As the second step, if all checks passed, effects to the state variables
-of the current contract should be made. Interaction with other contracts
-should be the very last step in any function.
+İkinci adım olarak, tüm kontroller geçerse, mevcut sözleşmenin durum değişkenlerine
+etkiler yapılmalıdır. Diğer sözleşmelerle etkileşim herhangi bir fonksiyonda en son adım olmalıdır.
 
-Early contracts delayed some effects and waited for external function
-calls to return in a non-error state. This is often a serious mistake
-because of the re-entrancy problem explained above.
+İlk sözleşmeler bazı etkileri geciktirir ve harici fonksiyon çağrılarının hatasız
+bir durumda dönmesini beklerdi. Bu, yukarıda açıklanan yeniden giriş sorunu nedeniyle genellikle ciddi bir hatadır.
 
-Note that, also, calls to known contracts might in turn cause calls to
-unknown contracts, so it is probably better to just always apply this pattern.
+Ayrıca, bilinen sözleşmelere yapılan çağrıların da bilinmeyen sözleşmelere çağrı
+yapılmasına neden olabileceğini unutmayın, bu nedenle bu kalıbı her zaman uygulamak her zaman daha iyidir.
 
-Include a Fail-Safe Mode
+
+Arızaya Karşı Güvenli Mod Ekleyin
 ========================
 
-While making your system fully decentralised will remove any intermediary,
-it might be a good idea, especially for new code, to include some kind
-of fail-safe mechanism:
+Sisteminizi tamamen merkeziyetsiz hale getirmek herhangi bir aracıyı ortadan kaldıracak
+olsa da, özellikle yeni kodlar için bir tür arıza güvenliği mekanizması eklemek iyi bir fikir olabilir:
 
-You can add a function in your smart contract that performs some
-self-checks like "Has any Ether leaked?",
-"Is the sum of the tokens equal to the balance of the contract?" or similar things.
-Keep in mind that you cannot use too much gas for that, so help through off-chain
-computations might be needed there.
+Akıllı sözleşmenize "Herhangi bir Ether sızdı mı?", "Tokenların toplamı sözleşmenin
+bakiyesine eşit mi?" gibi kendi kendine kontroller gerçekleştiren bir fonksiyon ekleyebilirsiniz.
+Bunun için çok fazla gaz kullanamayacağınızı unutmayın, bu nedenle zincir dışı hesaplamalar yoluyla yardım gerekebilir.
 
-If the self-check fails, the contract automatically switches into some kind
-of "failsafe" mode, which, for example, disables most of the features, hands over
-control to a fixed and trusted third party or just converts the contract into
-a simple "give me back my money" contract.
+Kendi kendine kontrol başarısız olursa, sözleşme otomatik olarak bir tür "arıza emniyetli"
+moda geçer; örneğin, özelliklerin çoğunu devre dışı bırakır, kontrolü sabit ve güvenilir
+bir üçüncü tarafa devreder veya sözleşmeyi basit bir "paramı geri ver" sözleşmesine dönüştürür.
 
-Ask for Peer Review
+Peer İncelemesi İsteyin
 ===================
 
-The more people examine a piece of code, the more issues are found.
-Asking people to review your code also helps as a cross-check to find out whether your code
-is easy to understand - a very important criterion for good smart contracts.
+Bir kod parçası ne kadar çok kişi tarafından incelenirse, o kadar çok sorun bulunur.
+İnsanlardan kodunuzu incelemelerini istemek, kodunuzun kolay anlaşılır olup olmadığını
+anlamak için bir çapraz kontrol olarak da yardımcı olur - iyi akıllı sözleşmeler için çok önemli bir kriterdir.
