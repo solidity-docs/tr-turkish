@@ -1,45 +1,46 @@
 ******************
-Using the Compiler
+Derleyicinin Kullanımı
 ******************
 
 .. index:: ! commandline compiler, compiler;commandline, ! solc
 
 .. _commandline-compiler:
 
-Using the Commandline Compiler
+Komut Satırı Derleyicisinin Kullanımı
 ******************************
 
 .. note::
-    This section does not apply to :ref:`solcjs <solcjs>`, not even if it is used in commandline mode.
+    Bu bölüm, komut satırı modunda kullanılsa bile :ref:`solcjs <solcjs>` için geçerli değildir.
 
-Basic Usage
+Temel Kullanım
 -----------
 
-One of the build targets of the Solidity repository is ``solc``, the solidity commandline compiler.
-Using ``solc --help`` provides you with an explanation of all options. The compiler can produce various outputs, ranging from simple binaries and assembly over an abstract syntax tree (parse tree) to estimations of gas usage.
-If you only want to compile a single file, you run it as ``solc --bin sourceFile.sol`` and it will print the binary. If you want to get some of the more advanced output variants of ``solc``, it is probably better to tell it to output everything to separate files using ``solc -o outputDirectory --bin --ast-compact-json --asm sourceFile.sol``.
+Solidity deposunun(repository) derleme kaynaklarından biri de Solidity komut satırı derleyicisi olan ``solc`` dur. ``solc --help`` komutunu kullanmak size tüm seçeneklerin açıklamalarını verir. Derleyici, soyut bir sözdizimi ağacı (parse tree) üzerinde basit binary ve assembly'den gaz kullanımı tahminlerine kadar çeşitli çıktılar üretebilir. Sadece tek bir dosyayı derlemek istiyorsanız, ``solc --bin sourceFile.sol`` şeklinde çalıştırdığınızda binary dosyayı yazdıracaktır. Eğer ``solc``un daha gelişmiş çıktı çeşitlerinden bazılarını elde etmek istiyorsanız, ``solc -o outputDirectory --bin --ast-compact-json --asm sourceFile.sol`` kullanarak her öğeyi ayrı dosyalara çıktı olarak vermesini söylemek muhtemelen daha iyi bir seçenek olacaktır.
 
-Optimizer Options
+Optimize Edici Seçenekleri
 -----------------
 
-Before you deploy your contract, activate the optimizer when compiling using ``solc --optimize --bin sourceFile.sol``.
-By default, the optimizer will optimize the contract assuming it is called 200 times across its lifetime
-(more specifically, it assumes each opcode is executed around 200 times).
-If you want the initial contract deployment to be cheaper and the later function executions to be more expensive,
-set it to ``--optimize-runs=1``. If you expect many transactions and do not care for higher deployment cost and
-output size, set ``--optimize-runs`` to a high number.
-This parameter has effects on the following (this might change in the future):
+Sözleşmenizi deploy etmeden önce, ``solc --optimize --bin sourceFile.sol`` kullanarak
+derleme yaparken optimize ediciyi etkinleştirmelisiniz. Standart olarak optimize edici,
+sözleşmenin ömrü boyunca 200 kez çağrıldığını varsayarak sözleşmeyi optimize edecektir
+(daha spesifik olarak, her bir işlem kodunun yaklaşık 200 kez çalıştırıldığını varsayar).
+İlk sözleşme dağıtımının daha ucuz olmasını ve daha sonraki fonksiyon yürütmelerinin(executions)
+daha pahalı olmasını istiyorsanız, ``--optimize-runs=1`` olarak ayarlayın. Çok sayıda
+işlem bekliyorsanız ve daha yüksek dağıtım maliyeti ve çıktı boyutunu önemsemiyorsanız,
+``--optimize-runs`` değerini yüksek bir sayıya ayarlayın. Bu parametrenin aşağıdaki
+değerler üzerinde etkileri vardır (bu durum gelecekte değişebilir):
 
-- the size of the binary search in the function dispatch routine
-- the way constants like large numbers or strings are stored
+- fonksiyon gönderim prosedüründeki binary aramasının boyutu
+- büyük sayılar veya dizeler gibi sabitlerin saklanma şekli
 
 .. index:: allowed paths, --allow-paths, base path, --base-path, include paths, --include-path
 
-Base Path and Import Remapping
+Base Path ve Import Remapping
 ------------------------------
 
-The commandline compiler will automatically read imported files from the filesystem, but
-it is also possible to provide :ref:`path redirects <import-remapping>` using ``prefix=path`` in the following way:
+Komut satırı derleyicisi içe aktarılan dosyaları dosya sisteminden otomatik olarak
+okuyacaktır, ancak aşağıdaki şekilde ``prefix=path`` kullanarak :ref:`path redirects <import-remapping>`
+sağlamanız da mümkündür:
 
 .. code-block:: bash
 
@@ -48,88 +49,91 @@ it is also possible to provide :ref:`path redirects <import-remapping>` using ``
 This essentially instructs the compiler to search for anything starting with
 ``github.com/ethereum/dapp-bin/`` under ``/usr/local/lib/dapp-bin``.
 
-When accessing the filesystem to search for imports, :ref:`paths that do not start with ./
-or ../ <direct-imports>` are treated as relative to the directories specified using
-``--base-path`` and ``--include-path`` options (or the current working directory if base path is not specified).
-Furthermore, the part of the path added via these options will not appear in the contract metadata.
+İçe aktarmaları aramak için dosya sistemine erişirken, :ref:` ./ veya ../ <direct-imports>`
+ile başlamayan dizinler, ``--base-path`` ve ``--include-path`` seçenekleri kullanılarak
+belirtilen dizinlere (veya temel yol belirtilmemişse geçerli çalışma dizinine) bağlı
+olarak değerlendirilir. Ayrıca, dizinin bu seçenekler aracılığıyla eklenen kısmı
+sözleşme metadatasında görünmeyecektir.
 
-For security reasons the compiler has :ref:`restrictions on what directories it can access <allowed-paths>`.
-Directories of source files specified on the command line and target paths of
-remappings are automatically allowed to be accessed by the file reader, but everything
-else is rejected by default.
-Additional paths (and their subdirectories) can be allowed via the
-``--allow-paths /sample/path,/another/sample/path`` switch.
-Everything inside the path specified via ``--base-path`` is always allowed.
+Güvenlik nedeniyle derleyicinin :ref:`hangi dizinlere erişebileceği konusunda kısıtlamaları
+vardır <allowed-paths>`. Komut satırında belirtilen kaynak dosyaların dizinlerine ve
+yeniden eşlemelerin hedef yollarına dosya okuyucu tarafından erişilmesine otomatik
+olarak izin verilir, ancak diğer her şey varsayılan olarak reddedilir. İlave yollara
+(ve bunların alt dizinlerine) ``--allow-paths /sample/path,/another/sample/path``
+anahtarıyla izin verilebilir. ``--base-path`` ile belirtilen yol içindeki her şeye
+her zaman izin verilir.
 
-The above is only a simplification of how the compiler handles import paths.
-For a detailed explanation with examples and discussion of corner cases please refer to the section on
-:ref:`path resolution <path-resolution>`.
+Yukarıda anlatılanlar, derleyicinin içe aktarma yollarını nasıl ele aldığının
+basitleştirilmiş halidir. Örneklerle birlikte ayrıntılı bir açıklama ve uç noktaların
+tartışılması için lütfen :ref:`path resolution <path-resolution>` bölümüne bakın.
 
 .. index:: ! linker, ! --link, ! --libraries
 .. _library-linking:
 
-Library Linking
+Kütüphane Bağlantıları (Library Linking)
 ---------------
 
-If your contracts use :ref:`libraries <libraries>`, you will notice that the bytecode contains substrings of the form ``__$53aea86b7d70b31448b230b20ae141a537$__``. These are placeholders for the actual library addresses.
-The placeholder is a 34 character prefix of the hex encoding of the keccak256 hash of the fully qualified library name.
-The bytecode file will also contain lines of the form ``// <placeholder> -> <fq library name>`` at the end to help
-identify which libraries the placeholders represent. Note that the fully qualified library name
-is the path of its source file and the library name separated by ``:``.
-You can use ``solc`` as a linker meaning that it will insert the library addresses for you at those points:
+Sözleşmeleriniz :ref:`libraries <libraries>` kullanıyorsa, bytecode'un ``__$53aea86b7d70b31448b230b20ae141a537$__``
+şeklinde alt dizeler içerdiğini fark edeceksiniz. Bunlar gerçek kütüphane adresleri
+için yer tutuculardır. Yer tutucu, tam nitelikli kütüphane adının keccak256 hash'inin
+hex encoding'inin 34 karakterlik bir önekidir. Bayt kodu dosyası, yer tutucuların
+hangi kütüphaneleri temsil ettiğini belirlemeye yardımcı olmak için sonunda ``// <placeholder> -> <fq library name>``
+şeklinde satırlar da içerecektir. Tam nitelikli kütüphane adının, kaynak dosyasının
+yolu ve ``:`` ile ayrılmış kütüphane adı olduğunu unutmayın. Bir bağlayıcı olarak
+``solc`` kullanabilirsiniz, yani bu noktalarda sizin için kütüphane adreslerini ekleyecektir:
 
-Either add ``--libraries "file.sol:Math=0x1234567890123456789012345678901234567890 file.sol:Heap=0xabCD567890123456789012345678901234567890"`` to your command to provide an address for each library (use commas or spaces as separators) or store the string in a file (one library per line) and run ``solc`` using ``--libraries fileName``.
+Her kütüphane için bir adres sağlamak üzere komutunuza ``--libraries "file.sol:Math=0x123456789012345678901234567890 file.sol:Heap=0xabCD567890123456789012345678901234567890"`` ekleyin (ayırıcı olarak virgül veya boşluk kullanın) veya dizeyi bir dosyada saklayın (satır başına bir kütüphane) ve ``--libraries fileName`` kullanarak ``solc`` çalıştırın.
 
 .. note::
-    Starting Solidity 0.8.1 accepts ``=`` as separator between library and address, and ``:`` as a separator is deprecated. It will be removed in the future. Currently ``--libraries "file.sol:Math:0x1234567890123456789012345678901234567890 file.sol:Heap:0xabCD567890123456789012345678901234567890"`` will work too.
+    Solidity 0.8.1'den itibaren ``=`` kütüphane ve adres arasında ayırıcı olarak kabul etmektedir ve ``:`` ayırıcı olarak kullanımdan kaldırılmıştır. Gelecekte kaldırılacaktır. Şu anda ``-libraries "file.sol:Math:0x1234567890123456789012345678901234567890 file.sol:Heap:0xabCD567890123456789012345678901234567890"`` da çalışacaktır.
 
 .. index:: --standard-json, --base-path
 
-If ``solc`` is called with the option ``--standard-json``, it will expect a JSON input (as explained below) on the standard input, and return a JSON output on the standard output. This is the recommended interface for more complex and especially automated uses. The process will always terminate in a "success" state and report any errors via the JSON output.
-The option ``--base-path`` is also processed in standard-json mode.
+Eğer ``solc`` ``--standard-json`` seçeneği ile çağrılırsa, standart girişte bir JSON girdisi (aşağıda açıklandığı gibi) bekleyecek ve standart çıkışta bir JSON çıktısı döndürecektir. Bu, daha karmaşık ve özellikle otomatikleştirilmiş kullanımlar için önerilen arayüzdür. İşlem her zaman "başarılı" durumda sonlanacak ve hataları JSON çıktısı aracılığıyla bildirecektir. ``--base-path`` seçeneği de standart-json modunda işlenir.
 
-If ``solc`` is called with the option ``--link``, all input files are interpreted to be unlinked binaries (hex-encoded) in the ``__$53aea86b7d70b31448b230b20ae141a537$__``-format given above and are linked in-place (if the input is read from stdin, it is written to stdout). All options except ``--libraries`` are ignored (including ``-o``) in this case.
+Eğer ``solc`` ``--link`` seçeneği ile çağrılırsa, tüm girdi dosyaları yukarıda verilen ``__$53aea86b7d70b31448b230b20ae141a537$__``-formatında bağlanmamış binaryler (hex-encoded) olarak yorumlanır ve yerinde bağlanır (eğer girdi stdin`den okunuyorsa, stdout`a yazılır). Bu durumda ``--libraries`` dışındaki tüm seçenekler göz ardı edilir (``-o`` dahil).
 
 .. warning::
-    Manually linking libraries on the generated bytecode is discouraged because it does not update
-    contract metadata. Since metadata contains a list of libraries specified at the time of
-    compilation and bytecode contains a metadata hash, you will get different binaries, depending
-    on when linking is performed.
+    Sözleşme meta verilerini güncellemediğinden, oluşturulan bayt kodu üzerinde
+    kütüphaneleri manuel olarak bağlamak önerilmez. Metadata derleme sırasında
+    belirtilen kütüphanelerin bir listesini içerdiğinden ve bayt kodu bir metadata
+    hash'i içerdiğinden, bağlama işleminin ne zaman yapıldığına bağlı olarak farklı
+    binary dosyaları elde edersiniz.
 
-    You should ask the compiler to link the libraries at the time a contract is compiled by either
-    using the ``--libraries`` option of ``solc`` or the ``libraries`` key if you use the
-    standard-JSON interface to the compiler.
+    Derleyiciye standart-JSON arayüzünü kullanıyorsanız ``solc`` seçeneğinin ``--libraries``
+    seçeneğini veya ``libraries`` anahtarını kullanarak bir sözleşme derlendiğinde
+    derleyiciden kütüphaneleri bağlamasını istemelisiniz.
 
 .. note::
-    The library placeholder used to be the fully qualified name of the library itself
-    instead of the hash of it. This format is still supported by ``solc --link`` but
-    the compiler will no longer output it. This change was made to reduce
-    the likelihood of a collision between libraries, since only the first 36 characters
-    of the fully qualified library name could be used.
+    Kütüphane yer tutucusu eskiden kütüphanenin hash'i yerine kütüphanenin kendisinin
+    tam nitelikli adı olurdu. Bu biçim hala ``solc --link`` tarafından desteklenmektedir
+    ancak derleyici artık bu biçimin çıktısını vermeyecektir. Bu değişiklik, tam nitelikli
+    kütüphane adının yalnızca ilk 36 karakteri kullanılabildiğinden, kütüphaneler arasında
+    bir çakışma olasılığını azaltmak için yapılmıştır.
 
 .. _evm-version:
 .. index:: ! EVM version, compile target
 
-Setting the EVM Version to Target
+EVM Sürümünün Hedefe Ayarlanması
 *********************************
 
-When you compile your contract code you can specify the Ethereum virtual machine
-version to compile for to avoid particular features or behaviours.
+Sözleşme kodunuzu derlerken, belirli özelliklerden veya davranışlardan kaçınmak için
+derlenecek Ethereum sanal makine sürümünü belirtebilirsiniz.
 
 .. warning::
 
-   Compiling for the wrong EVM version can result in wrong, strange and failing
-   behaviour. Please ensure, especially if running a private chain, that you
-   use matching EVM versions.
+   Hatalı EVM sürümü için derleme yapmak yanlış, garip ve başarısız davranışlara
+   neden olabilir. Lütfen, özellikle özel bir zincir çalıştırıyorsanız, uyumlu EVM
+   sürümlerini kullandığınızdan emin olun.
 
-On the command line, you can select the EVM version as follows:
+Komut satırında, EVM sürümünü aşağıdaki gibi seçebilirsiniz:
 
 .. code-block:: shell
 
   solc --evm-version <VERSION> contract.sol
 
-In the :ref:`standard JSON interface <compiler-api>`, use the ``"evmVersion"``
-key in the ``"settings"`` field:
+ref:`standart JSON arayüzü <compiler-api>`de, ``"settings"`` alanında ``"evmVersion"``
+anahtarını kullanın:
 
 .. code-block:: javascript
 
@@ -141,323 +145,322 @@ key in the ``"settings"`` field:
       }
     }
 
-Target Options
+Hedef Seçenekleri
 --------------
 
-Below is a list of target EVM versions and the compiler-relevant changes introduced
-at each version. Backward compatibility is not guaranteed between each version.
+Aşağıda hedef EVM sürümlerinin bir listesi ve her sürümde derleyiciyle ilgili yapılan
+değişiklikler yer almaktadır. Her sürüm arasında geriye dönük uyumluluk garanti edilmez.
 
 - ``homestead``
-   - (oldest version)
+   - (en eski sürüm)
 - ``tangerineWhistle``
-   - Gas cost for access to other accounts increased, relevant for gas estimation and the optimizer.
-   - All gas sent by default for external calls, previously a certain amount had to be retained.
+   - Gaz tahmini ve optimize edici ile ilgili diğer hesaplara erişim için gaz maliyeti arttı.
+   - Harici aramalar için varsayılan olarak gönderilen tüm gaz. Daha önce belirli bir miktarın tutulması gerekiyordu.
 - ``spuriousDragon``
-   - Gas cost for the ``exp`` opcode increased, relevant for gas estimation and the optimizer.
+   - Gaz tahmini ve optimize edici ile ilgili ``exp`` işlem kodu için gaz maliyeti arttı.
 - ``byzantium``
-   - Opcodes ``returndatacopy``, ``returndatasize`` and ``staticcall`` are available in assembly.
-   - The ``staticcall`` opcode is used when calling non-library view or pure functions, which prevents the functions from modifying state at the EVM level, i.e., even applies when you use invalid type conversions.
-   - It is possible to access dynamic data returned from function calls.
-   - ``revert`` opcode introduced, which means that ``revert()`` will not waste gas.
+   - Assembly'de ``returndatacopy``, ``returndatasize`` ve ``staticcall`` işlem kodları mevcuttur.
+   - ``staticcall`` işlem kodu, kütüphane dışı görünüm veya pure fonksiyonları çağırırken kullanılır, bu da fonksiyonların EVM seviyesinde durumu değiştirmesini engeller, yani geçersiz tip dönüşümleri kullandığınızda bile geçerlidir.
+   - Fonksiyon çağrılarından dönen dinamik verilere erişmek mümkündür.
+   - ``revert`` işlem kodu tanıtıldı, bu da ``revert()`` işleminin gaz israfına yol açmayacağı anlamına geliyor.
 - ``constantinople``
-   - Opcodes ``create2`, ``extcodehash``, ``shl``, ``shr`` and ``sar`` are available in assembly.
-   - Shifting operators use shifting opcodes and thus need less gas.
+   - Assembly'de ``create2``, ``extcodehash``, ``shl``, ``shr`` ve ``sar`` işlem kodları mevcuttur.
+   - Shifting operatörleri shifting opcodes kullanır ve bu nedenle daha az gaza ihtiyaç duyar.
 - ``petersburg``
-   - The compiler behaves the same way as with constantinople.
+   - Derleyici istanbul'da olduğu gibi aynı şekilde davranır.
 - ``istanbul``
-   - Opcodes ``chainid`` and ``selfbalance`` are available in assembly.
+   - Assembly'de ``chainid`` ve ``selfbalance`` opcode'ları mevcuttur.
 - ``berlin``
-   - Gas costs for ``SLOAD``, ``*CALL``, ``BALANCE``, ``EXT*`` and ``SELFDESTRUCT`` increased. The
-     compiler assumes cold gas costs for such operations. This is relevant for gas estimation and
-     the optimizer.
+   - ``SLOAD``, ``*CALL``, ``BALANCE``, ``EXT*`` ve ``SELFDESTRUCT`` için gaz maliyetleri arttı. Bu maliyetler derleyici bu tür operasyonlarda soğuk gaz maliyetlerini varsayar. Bu, gaz tahmini için geçerlidir ve optimize edicidir.
 - ``london`` (**default**)
-   - The block's base fee (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ and `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_) can be accessed via the global ``block.basefee`` or ``basefee()`` in inline assembly.
+   - Bloğun taban ücretine (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ ve `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_) global ``block.basefee`` veya inline assembly`de ``basefee()`` aracılığıyla erişilebilir.
 
 
 .. index:: ! standard JSON, ! --standard-json
 .. _compiler-api:
 
-Compiler Input and Output JSON Description
+Derleyici JSON Girdisi ve Çıktısı Tanımı
 ******************************************
 
-The recommended way to interface with the Solidity compiler especially for
-more complex and automated setups is the so-called JSON-input-output interface.
-The same interface is provided by all distributions of the compiler.
+Özellikle daha karmaşık ve otomatik kurulumlar için Solidity derleyicisi ile arayüz
+oluşturmanın önerilen yolu JSON-girdi-çıktı arayüzüdür. Aynı arayüz derleyicinin
+tüm dağıtımları tarafından sağlanır.
 
-The fields are generally subject to change,
-some are optional (as noted), but we try to only make backwards compatible changes.
+Alanlar genellikle değişikliğe tabidir, bazıları isteğe bağlıdır (belirtildiği gibi),
+ancak yalnızca geriye dönük uyumlu değişiklikler yapmaya çalışıyoruz.
 
-The compiler API expects a JSON formatted input and outputs the compilation result in a JSON formatted output.
-The standard error output is not used and the process will always terminate in a "success" state, even
-if there were errors. Errors are always reported as part of the JSON output.
+Derleyici API'si JSON formatında bir girdi bekler ve derleme sonucunu JSON formatında
+bir çıktı olarak verir. Standart hata çıktısı kullanılmaz ve hatalar olsa bile işlem
+her zaman "başarılı" durumda sonlandırılır. Hatalar her zaman JSON çıktısının bir
+parçası olarak rapor edilir.
 
-The following subsections describe the format through an example.
-Comments are of course not permitted and used here only for explanatory purposes.
+Aşağıdaki alt bölümlerde format bir örnek üzerinden açıklanmaktadır.
+Yorumlara elbette izin verilmez ve burada yalnızca açıklama amacıyla kullanılır.
 
-Input Description
+Girdi Açıklaması
 -----------------
 
 .. code-block:: javascript
 
     {
-      // Required: Source code language. Currently supported are "Solidity" and "Yul".
+      // Gerekli: Kaynak kod dili. Şu anda "Solidity" ve "Yul" desteklenmektedir.
       "language": "Solidity",
-      // Required
+      // Gerekli
       "sources":
       {
-        // The keys here are the "global" names of the source files,
-        // imports can use other files via remappings (see below).
+        // Buradaki anahtarlar kaynak dosyaların "global" isimleridir,
+        // içe aktarmalar yeniden eşlemeler yoluyla diğer dosyaları kullanabilir (aşağıya bakın).
         "myFile.sol":
         {
-          // Optional: keccak256 hash of the source file
-          // It is used to verify the retrieved content if imported via URLs.
+          // Opsiyonel: kaynak dosyanın keccak256 hash'i
+          // URL'ler aracılığıyla içe aktarılmışsa alınan içeriği doğrulamak için kullanılır.
           "keccak256": "0x123...",
-          // Required (unless "content" is used, see below): URL(s) to the source file.
-          // URL(s) should be imported in this order and the result checked against the
-          // keccak256 hash (if available). If the hash doesn't match or none of the
-          // URL(s) result in success, an error should be raised.
-          // Using the commandline interface only filesystem paths are supported.
-          // With the JavaScript interface the URL will be passed to the user-supplied
-          // read callback, so any URL supported by the callback can be used.
+          // Gerekli ("content" kullanılmadığı sürece, aşağıya bakın): Kaynak dosyaya giden URL(ler).
+          // URL(ler) bu sırayla içe aktarılmalı ve sonuç keccak256 hash'iyle
+          // (varsa) kontrol edilmelidir. Hash eşleşmezse veya URL(ler)den hiçbiri başarıyla
+          // sonuçlanmazsa, bir hata oluşmalıdır.
+          // Komut satırı arayüzü kullanılarak yalnızca dosya sistemi yolları desteklenir.
+          // JavaScript arayüzü ile URL, kullanıcı tarafından sağlanan okuma geri çağrısına aktarılır,
+          // böylece geri çağrı tarafından desteklenen herhangi bir URL kullanılabilir.
           "urls":
           [
             "bzzr://56ab...",
             "ipfs://Qma...",
             "/tmp/path/to/file.sol"
-            // If files are used, their directories should be added to the command line via
+            // Dosyalar kullanılıyorsa, dizinleri komut satırına şu yolla eklenmelidir
             // `--allow-paths <path>`.
           ]
         },
         "destructible":
         {
-          // Optional: keccak256 hash of the source file
+          // Opsiyonel: kaynak dosyanın keccak256 hash'i
           "keccak256": "0x234...",
-          // Required (unless "urls" is used): literal contents of the source file
+          // Gerekli ("urls" kullanılmadığı sürece): kaynak dosyanın gerçek içeriği
           "content": "contract destructible is owned { function shutdown() { if (msg.sender == owner) selfdestruct(owner); } }"
         }
       },
-      // Optional
+      // Opsiyonel
       "settings":
       {
-        // Optional: Stop compilation after the given stage. Currently only "parsing" is valid here
+        // Opsiyonel: Belirtilen aşamadan sonra derlemeyi durdurun. Şu anda burada sadece "parsing" geçerlidir
         "stopAfter": "parsing",
-        // Optional: Sorted list of remappings
+        // Opsiyonel: Yeniden eşlemelerin sıralanmış listesi
         "remappings": [ ":g=/dir" ],
-        // Optional: Optimizer settings
+        // Opsiyonel: Optimize edici ayarları
         "optimizer": {
-          // Disabled by default.
-          // NOTE: enabled=false still leaves some optimizations on. See comments below.
-          // WARNING: Before version 0.8.6 omitting the 'enabled' key was not equivalent to setting
-          // it to false and would actually disable all the optimizations.
+          // Varsayılan olarak devre dışıdır.
+          // NOT: enabled=false hala bazı optimizasyonları açık bırakır. Aşağıdaki yorumlara bakın.
+          // UYARI: 0.8.6 sürümünden önce 'enabled' anahtarını atlamak, false olarak ayarlamakla eşdeğer
+          // değildi ve aslında tüm optimizasyonları devre dışı bırakıyordu.
           "enabled": true,
-          // Optimize for how many times you intend to run the code.
-          // Lower values will optimize more for initial deployment cost, higher
-          // values will optimize more for high-frequency usage.
+          // Kodu kaç kez çalıştırmayı planladığınıza göre optimize edin.
+          // Düşük değerler ilk dağıtım maliyeti için daha fazla optimizasyon sağlarken, yüksek
+          // değerler yüksek frekanslı kullanım için daha fazla optimizasyon sağlayacaktır.
           "runs": 200,
-          // Switch optimizer components on or off in detail.
-          // The "enabled" switch above provides two defaults which can be
-          // tweaked here. If "details" is given, "enabled" can be omitted.
+          // Optimize edici bileşenleri ayrıntılı olarak açın veya kapatın.
+          // Yukarıdaki "enabled" anahtarı, burada değiştirilebilecek iki
+          // varsayılan değer sağlar. Eğer "details" verilmişse, "enabled" atlanabilir.
           "details": {
-            // The peephole optimizer is always on if no details are given,
-            // use details to switch it off.
+            // Ayrıntı verilmediğinde peephole optimizer her zaman açıktır,
+            // kapatmak için ayrıntıları kullanın.
             "peephole": true,
-            // The inliner is always on if no details are given,
-            // use details to switch it off.
+            // Ayrıntı verilmediğinde inliner her zaman açıktır,,
+            // kapatmak için ayrıntıları kullanın.
             "inliner": true,
-            // The unused jumpdest remover is always on if no details are given,
-            // use details to switch it off.
+            // Kullanılmayan jumpdest kaldırıcı, ayrıntı verilmediğinde her zaman açıktır,
+            // kapatmak için ayrıntıları kullanın.
             "jumpdestRemover": true,
-            // Sometimes re-orders literals in commutative operations.
+            // Bazen değişmeli işlemlerde değişmezleri yeniden sıralar.
             "orderLiterals": false,
-            // Removes duplicate code blocks
+            // Yinelenen kod bloklarını kaldırır
             "deduplicate": false,
-            // Common subexpression elimination, this is the most complicated step but
-            // can also provide the largest gain.
+            // Ortak alt ifade eliminasyonu, bu en karmaşık adımdır ancak
+            // aynı zamanda en büyük kazancı sağlayabilir.
             "cse": false,
-            // Optimize representation of literal numbers and strings in code.
+            // Koddaki değişmez sayıların ve dizelerin gösterimini optimize edin.
             "constantOptimizer": false,
-            // The new Yul optimizer. Mostly operates on the code of ABI coder v2
-            // and inline assembly.
-            // It is activated together with the global optimizer setting
-            // and can be deactivated here.
-            // Before Solidity 0.6.0 it had to be activated through this switch.
+            // Yeni Yul optimize edici. Çoğunlukla ABI coder v2 ve inline assembly kodu
+            // üzerinde çalışır.
+            // Global optimizer ayarı ile birlikte etkinleştirilir ve
+            // buradan devre dışı bırakılabilir.
+            // Solidity 0.6.0'dan önce bu anahtar aracılığıyla etkinleştirilmesi gerekiyordu.
             "yul": false,
-            // Tuning options for the Yul optimizer.
+            // Yul optimize edici için ayarlama seçenekleri.
             "yulDetails": {
-              // Improve allocation of stack slots for variables, can free up stack slots early.
-              // Activated by default if the Yul optimizer is activated.
+              // Değişkenler için yığın yuvalarının tahsisini iyileştirin, yığın yuvalarını erken boşaltabilir.
+              // Yul optimize edici etkinleştirilirse varsayılan olarak etkinleştirilir.
               "stackAllocation": true,
-              // Select optimization steps to be applied.
-              // Optional, the optimizer will use the default sequence if omitted.
+              // Uygulanacak optimizasyon adımlarını seçin.
+              // İsteğe bağlıdır, atlanırsa optimize edici varsayılan sırayı kullanır.
               "optimizerSteps": "dhfoDgvulfnTUtnIf..."
             }
           }
         },
-        // Version of the EVM to compile for.
-        // Affects type checking and code generation. Can be homestead,
+        // Derlenecek EVM sürümü.
+        // Tip denetimini ve kod üretimini etkiler. Yerleşim yeri olabilir,
         // tangerineWhistle, spuriousDragon, byzantium, constantinople, petersburg, istanbul or berlin
         "evmVersion": "byzantium",
-        // Optional: Change compilation pipeline to go through the Yul intermediate representation.
-        // This is false by default.
+        // Opsiyonel: Derleme işlem hattını Yul ara temsilinden geçecek şekilde değiştirin.
+        // Bu varsayılan olarak yanlıştır.
         "viaIR": true,
-        // Optional: Debugging settings
+        // Opsiyonel: Hata ayıklama ayarları
         "debug": {
-          // How to treat revert (and require) reason strings. Settings are
-          // "default", "strip", "debug" and "verboseDebug".
-          // "default" does not inject compiler-generated revert strings and keeps user-supplied ones.
-          // "strip" removes all revert strings (if possible, i.e. if literals are used) keeping side-effects
-          // "debug" injects strings for compiler-generated internal reverts, implemented for ABI encoders V1 and V2 for now.
-          // "verboseDebug" even appends further information to user-supplied revert strings (not yet implemented)
+          // Revert (ve require) sebep string' lerine nasıl işlem yapılır. Ayarlar
+          // "default", "strip", "debug" ve "verboseDebug" şeklindedir.
+          // "default" derleyici tarafından oluşturulan revert stringlerini enjekte etmez ve kullanıcı tarafından sağlananları tutar.
+          // "strip" tüm revert stringlerini (mümkünse, yani değişmezler kullanılıyorsa) yan etkilerini koruyarak kaldırır
+          // "debug" derleyici tarafından oluşturulan dahili geri dönüşler için stringler enjekte eder, şimdilik ABI kodlayıcıları V1 ve V2 için uygulanmaktadır.
+          // "verboseDebug" kullanıcı tarafından sağlanan revert stringlerine daha fazla bilgi ekler (henüz uygulanmadı)
           "revertStrings": "default",
-          // Optional: How much extra debug information to include in comments in the produced EVM
-          // assembly and Yul code. Available components are:
-          // - `location`: Annotations of the form `@src <index>:<start>:<end>` indicating the
-          //    location of the corresponding element in the original Solidity file, where:
-          //     - `<index>` is the file index matching the `@use-src` annotation,
-          //     - `<start>` is the index of the first byte at that location,
-          //     - `<end>` is the index of the first byte after that location.
-          // - `snippet`: A single-line code snippet from the location indicated by `@src`.
-          //     The snippet is quoted and follows the corresponding `@src` annotation.
-          // - `*`: Wildcard value that can be used to request everything.
+          // Opsiyonel: Üretilen EVM assembly ve Yul kodundaki yorumlara ne kadar ekstra
+          // hata ayıklama bilgisi ekleneceği. Mevcut bileşenler şunlardır:
+          // - `location`: Orijinal Solidity dosyasındaki ilgili öğenin konumunu belirten
+          //    `@src <index>:<start>:<end>` biçimindeki ek açıklamalar, burada:
+          //     - `<index>`, `@use-src` ek açıklamasıyla eşleşen dosya dizinidir,
+          //     - `<start>` o konumdaki ilk baytın indeksidir,
+          //     - `<end>` bu konumdan sonraki ilk baytın indeksidir.
+          // - `snippet`: `@src` ile belirtilen konumdan tek satırlık bir kod parçacığı.
+          //     Parçacık alıntılanır ve ilgili `@src` ek açıklamasını takip eder.
+          // - `*`: Her şeyi talep etmek için kullanılabilecek joker karakter değeri.
           "debugInfo": ["location", "snippet"]
         },
-        // Metadata settings (optional)
+        // Metadata ayarları (isteğe bağlı)
         "metadata": {
-          // Use only literal content and not URLs (false by default)
+          // URL'leri değil, yalnızca gerçek içeriği kullan (varsayılan olarak false)
           "useLiteralContent": true,
-          // Use the given hash method for the metadata hash that is appended to the bytecode.
-          // The metadata hash can be removed from the bytecode via option "none".
-          // The other options are "ipfs" and "bzzr1".
-          // If the option is omitted, "ipfs" is used by default.
+          // Bayt koduna eklenen metadata hash'i için verilen hash yöntemini kullanın.
+          // Metadata hash'i "none" seçeneği ile bayt kodundan kaldırılabilir.
+          // Diğer seçenekler "ipfs" ve "bzzr1 "dir.
+          // Seçenek atlanırsa, varsayılan olarak "ipfs" kullanılır.
           "bytecodeHash": "ipfs"
         },
-        // Addresses of the libraries. If not all libraries are given here,
-        // it can result in unlinked objects whose output data is different.
+        // Kütüphanelerin adresleri. Tüm kütüphaneler burada verilmezse,
+        // çıktı verileri farklı olan bağlantısız nesnelerle sonuçlanabilir.
         "libraries": {
-          // The top level key is the the name of the source file where the library is used.
-          // If remappings are used, this source file should match the global path
-          // after remappings were applied.
-          // If this key is an empty string, that refers to a global level.
+          // En üst düzey anahtar, kütüphanenin kullanıldığı kaynak dosyanın adıdır.
+          // Yeniden eşlemeler kullanılıyorsa, bu kaynak dosya yeniden eşlemeler
+          // uygulandıktan sonraki genel yolla eşleşmelidir.
+          // Bu anahtar boş bir string ise, bu global bir seviyeyi ifade eder.
           "myFile.sol": {
             "MyLib": "0x123123..."
           }
         },
-        // The following can be used to select desired outputs based
-        // on file and contract names.
-        // If this field is omitted, then the compiler loads and does type checking,
-        // but will not generate any outputs apart from errors.
-        // The first level key is the file name and the second level key is the contract name.
-        // An empty contract name is used for outputs that are not tied to a contract
-        // but to the whole source file like the AST.
-        // A star as contract name refers to all contracts in the file.
-        // Similarly, a star as a file name matches all files.
-        // To select all outputs the compiler can possibly generate, use
+        // Dosya ve sözleşme adlarına göre istenen çıktıları
+        // seçmek için aşağıdakiler kullanılabilir.
+        // Bu alan atlanırsa, derleyici yükler ve tür denetimi yapar,
+        // ancak hatalar dışında herhangi bir çıktı üretmez.
+        // Birinci seviye anahtar dosya adı, ikinci seviye anahtar ise sözleşme adıdır.
+        // Boş bir sözleşme adı, bir sözleşmeye bağlı olmayan ancak AST gibi
+        // tüm kaynak dosyaya bağlı olan çıktılar için kullanılır.
+        // Sözleşme adı olarak bir yıldız, dosyadaki tüm sözleşmeleri ifade eder.
+        // Benzer şekilde, dosya adı olarak bir yıldız tüm dosyalarla eşleşir.
+        // Derleyicinin üretebileceği tüm çıktıları seçmek için
         // "outputSelection: { "*": { "*": [ "*" ], "": [ "*" ] } }"
-        // but note that this might slow down the compilation process needlessly.
+        // ancak bunun derleme sürecini gereksiz yere yavaşlatabileceğini unutmayın.
         //
-        // The available output types are as follows:
+        // Mevcut çıktı türleri aşağıdaki gibidir:
         //
-        // File level (needs empty string as contract name):
-        //   ast - AST of all source files
+        // Dosya seviyesi (sözleşme adı olarak boş dize gerekir):
+        //   ast - Tüm kaynak dosyaların AST'si
         //
-        // Contract level (needs the contract name or "*"):
+        // Sözleşme seviyesi (sözleşme adına veya "*" işaretine ihtiyaç duyar):
         //   abi - ABI
-        //   devdoc - Developer documentation (natspec)
-        //   userdoc - User documentation (natspec)
+        //   devdoc - Geliştirici dokümantasyonu (natspec)
+        //   userdoc - Kullanıcı dokümantasyonu (natspec)
         //   metadata - Metadata
-        //   ir - Yul intermediate representation of the code before optimization
-        //   irOptimized - Intermediate representation after optimization
-        //   storageLayout - Slots, offsets and types of the contract's state variables.
-        //   evm.assembly - New assembly format
-        //   evm.legacyAssembly - Old-style assembly format in JSON
-        //   evm.bytecode.functionDebugData - Debugging information at function level
-        //   evm.bytecode.object - Bytecode object
-        //   evm.bytecode.opcodes - Opcodes list
-        //   evm.bytecode.sourceMap - Source mapping (useful for debugging)
-        //   evm.bytecode.linkReferences - Link references (if unlinked object)
-        //   evm.bytecode.generatedSources - Sources generated by the compiler
-        //   evm.deployedBytecode* - Deployed bytecode (has all the options that evm.bytecode has)
-        //   evm.deployedBytecode.immutableReferences - Map from AST ids to bytecode ranges that reference immutables
-        //   evm.methodIdentifiers - The list of function hashes
-        //   evm.gasEstimates - Function gas estimates
-        //   ewasm.wast - Ewasm in WebAssembly S-expressions format
-        //   ewasm.wasm - Ewasm in WebAssembly binary format
+        //   ir - Optimizasyondan önce kodun Yul ara temsili
+        //   irOptimized - Optimizasyon sonrası ara temsil
+        //   storageLayout - Sözleşmenin durum değişkenlerinin yuvaları, ofsetleri ve türleri.
+        //   evm.assembly - Yeni assembly formatı
+        //   evm.legacyAssembly - JSON'daki eski tarz assembly formatı
+        //   evm.bytecode.functionDebugData - Fonksiyon düzeyinde hata ayıklama bilgileri
+        //   evm.bytecode.object - Bytecode objesi
+        //   evm.bytecode.opcodes - Opcodes listesi
+        //   evm.bytecode.sourceMap - Kaynak eşlemesi (hata ayıklama için yararlı)
+        //   evm.bytecode.linkReferences - Bağlantı referansları (bağlantısı olmayan nesne ise)
+        //   evm.bytecode.generatedSources - Derleyici tarafından oluşturulan kaynaklar
+        //   evm.deployedBytecode* - Deployed bytecode (evm.bytecode'un sahip olduğu tüm seçeneklere sahiptir)
+        //   evm.deployedBytecode.immutableReferences - AST kimliklerinden değişmezlere referans veren bayt kodu aralıklarına eşleme
+        //   evm.methodIdentifiers - Fonksiyon hash'lerinin listesi
+        //   evm.gasEstimates - Fonksiyon gazı tahminleri
+        //   ewasm.wast - WebAssembly S-expressions biçiminde Ewasm
+        //   ewasm.wasm - WebAssembly binary formatında Ewasm
         //
-        // Note that using a using `evm`, `evm.bytecode`, `ewasm`, etc. will select every
-        // target part of that output. Additionally, `*` can be used as a wildcard to request everything.
+        // Bir `evm`, `evm.bytecode`, `ewasm`, vb. kullanmanın bu çıktının her
+        // hedef parçasını seçeceğini unutmayın. Ayrıca, `*` her şeyi istemek için joker karakter olarak kullanılabilir.
         //
         "outputSelection": {
           "*": {
             "*": [
-              "metadata", "evm.bytecode" // Enable the metadata and bytecode outputs of every single contract.
-              , "evm.bytecode.sourceMap" // Enable the source map output of every single contract.
+              "metadata", "evm.bytecode" // Her bir sözleşmenin metadata ve bytecode çıktılarını etkinleştirin.
+              , "evm.bytecode.sourceMap" // Her bir sözleşmenin kaynak eşleme çıktısını etkinleştirin.
             ],
             "": [
-              "ast" // Enable the AST output of every single file.
+              "ast" // Her bir dosyanın AST çıktısını etkinleştirin.
             ]
           },
-          // Enable the abi and opcodes output of MyContract defined in file def.
+          // Def dosyasında tanımlanan MyContract'ın abi ve opcodes çıktısını etkinleştirin.
           "def": {
             "MyContract": [ "abi", "evm.bytecode.opcodes" ]
           }
         },
-        // The modelChecker object is experimental and subject to changes.
+        // ModelChecker nesnesi deneyseldir ve değişikliklere tabidir.
         "modelChecker":
         {
-          // Chose which contracts should be analyzed as the deployed one.
+          // Hangi sözleşmelerin konuşlandırılmış sözleşme olarak analiz edilmesi gerektiğini seçin.
           "contracts":
           {
             "source1.sol": ["contract1"],
             "source2.sol": ["contract2", "contract3"]
           },
-          // Choose how division and modulo operations should be encoded.
-          // When using `false` they are replaced by multiplication with slack
-          // variables. This is the default.
-          // Using `true` here is recommended if you are using the CHC engine
-          // and not using Spacer as the Horn solver (using Eldarica, for example).
-          // See the Formal Verification section for a more detailed explanation of this option.
+          // Bölme ve modulo işlemlerinin nasıl şifreleneceğini seçin.
+          // `false` kullanıldığında, bunlar slack değişkenlerle çarpılarak
+          // değiştirilir. Bu varsayılandır.
+          // CHC motorunu kullanıyorsanız ve Horn çözücü olarak Spacer kullanmıyorsanız
+          // (örneğin Eldarica kullanıyorsanız) burada `true` kullanılması önerilir.
+          // Bu seçeneğin daha ayrıntılı bir açıklaması için Biçimsel Doğrulama bölümüne bakın.
           "divModNoSlacks": false,
-          // Choose which model checker engine to use: all (default), bmc, chc, none.
+          // Hangi model denetleyici motorunun kullanılacağını seçin: all (varsayılan), bmc, chc, none.
           "engine": "chc",
-          // Choose which types of invariants should be reported to the user: contract, reentrancy.
+          // Kullanıcıya hangi tür değişmezlerin rapor edileceğini seçin: contract, reentrancy.
           "invariants": ["contract", "reentrancy"],
-          // Choose whether to output all unproved targets. The default is `false`.
+          // Kanıtlanmamış tüm hedeflerin çıktısının alınıp alınmayacağını seçin. Varsayılan değer `false`dir.
           "showUnproved": true,
-          // Choose which solvers should be used, if available.
-          // See the Formal Verification section for the solvers description.
+          // Varsa, hangi çözücülerin kullanılması gerektiğini seçin.
+          // Çözücülerin açıklaması için Biçimsel Doğrulama bölümüne bakın.
           "solvers": ["cvc4", "smtlib2", "z3"],
-          // Choose which targets should be checked: constantCondition,
+          // Hangi hedeflerin kontrol edilmesi gerektiğini seçin: constantCondition,
           // underflow, overflow, divByZero, balance, assert, popEmptyArray, outOfBounds.
-          // If the option is not given all targets are checked by default,
-          // except underflow/overflow for Solidity >=0.8.7.
-          // See the Formal Verification section for the targets description.
+          // Seçenek belirtilmezse, Solidity >=0.8.7 için underflow/overflow
+          // hariç tüm hedefler varsayılan olarak kontrol edilir.
+          // Hedeflerin açıklaması için Biçimsel Doğrulama bölümüne bakın.
           "targets": ["underflow", "overflow", "assert"],
-          // Timeout for each SMT query in milliseconds.
-          // If this option is not given, the SMTChecker will use a deterministic
-          // resource limit by default.
-          // A given timeout of 0 means no resource/time restrictions for any query.
+          // Her SMT sorgusu için milisaniye cinsinden zaman aşımı.
+          // Bu seçenek verilmezse, SMTChecker varsayılan olarak
+          // deterministik bir kaynak sınırı kullanacaktır.
+          // Verilen zaman aşımının 0 olması, herhangi bir sorgu için kaynak/zaman kısıtlaması olmadığı anlamına gelir.
           "timeout": 20000
         }
       }
     }
 
 
-Output Description
+Çıktı Açıklaması
 ------------------
 
 .. code-block:: javascript
 
     {
-      // Optional: not present if no errors/warnings/infos were encountered
+      // Opsiyonel: herhangi bir hata/uyarı/bilgi ile karşılaşılmadıysa mevcut değildir
       "errors": [
         {
-          // Optional: Location within the source file.
+          // Opsiyonel: Kaynak dosya içindeki konum.
           "sourceLocation": {
             "file": "sourceFile.sol",
             "start": 0,
             "end": 100
           },
-          // Optional: Further locations (e.g. places of conflicting declarations)
+          // Opsiyonel: Diğer yerler (örn. çelişkili beyanların olduğu yerler)
           "secondarySourceLocations": [
             {
               "file": "sourceFile.sol",
@@ -466,92 +469,92 @@ Output Description
               "message": "Other declaration is here:"
             }
           ],
-          // Mandatory: Error type, such as "TypeError", "InternalCompilerError", "Exception", etc.
-          // See below for complete list of types.
+          // Zorunlu: Hata türü, örneğin "TypeError", "InternalCompilerError", "Exception", vb.
+          // Türlerin tam listesi için aşağıya bakınız.
           "type": "TypeError",
-          // Mandatory: Component where the error originated, such as "general", "ewasm", etc.
+          // Zorunlu: Hatanın kaynaklandığı bileşen, örneğin "general", "ewasm", vb.
           "component": "general",
-          // Mandatory ("error", "warning" or "info", but please note that this may be extended in the future)
+          // Zorunlu (" error", "warning" veya "info", ancak bunun gelecekte genişletilebileceğini lütfen unutmayın)
           "severity": "error",
-          // Optional: unique code for the cause of the error
+          // İsteğe bağlı: hatanın nedeni için benzersiz kod
           "errorCode": "3141",
-          // Mandatory
+          // Zorunlu
           "message": "Invalid keyword",
-          // Optional: the message formatted with source location
+          // Opsiyonel: kaynak konumu ile biçimlendirilmiş mesaj
           "formattedMessage": "sourceFile.sol:100: Invalid keyword"
         }
       ],
-      // This contains the file-level outputs.
-      // It can be limited/filtered by the outputSelection settings.
+      // Bu, dosya düzeyinde çıktıları içerir.
+      // OutputSelection ayarları ile sınırlandırılabilir/filtrelenebilir.
       "sources": {
         "sourceFile.sol": {
-          // Identifier of the source (used in source maps)
+          // Kaynak tanımlayıcısı (kaynak eşlemelerinde kullanılır)
           "id": 1,
-          // The AST object
+          // AST objesi
           "ast": {}
         }
       },
-      // This contains the contract-level outputs.
-      // It can be limited/filtered by the outputSelection settings.
+      // Bu, sözleşme düzeyindeki çıktıları içerir.
+      // OutputSelection ayarları ile sınırlandırılabilir/filtrelenebilir.
       "contracts": {
         "sourceFile.sol": {
-          // If the language used has no contract names, this field should equal to an empty string.
+          // Kullanılan dilde sözleşme adı yoksa, bu alan boş bir dizeye eşit olmalıdır.
           "ContractName": {
-            // The Ethereum Contract ABI. If empty, it is represented as an empty array.
-            // See https://docs.soliditylang.org/en/develop/abi-spec.html
+            // Ethereum Sözleşmesi ABI'si. Boşsa, boş bir dizi olarak gösterilir.
+            // bkz. https://docs.soliditylang.org/en/develop/abi-spec.html
             "abi": [],
-            // See the Metadata Output documentation (serialised JSON string)
+            // Metadata Çıktısı belgelerine bakın (serileştirilmiş JSON stringi)
             "metadata": "{/* ... */}",
-            // User documentation (natspec)
+            // Kullanıcı dokümantasyonu (natspec)
             "userdoc": {},
-            // Developer documentation (natspec)
+            // Geliştirici dokümantasyonu (natspec)
             "devdoc": {},
-            // Intermediate representation (string)
+            // Ara temsil (string)
             "ir": "",
-            // See the Storage Layout documentation.
+            // Depolama Düzeni belgelerine bakın.
             "storageLayout": {"storage": [/* ... */], "types": {/* ... */} },
-            // EVM-related outputs
+            // EVM'ye ilişkin çıktılar
             "evm": {
               // Assembly (string)
               "assembly": "",
-              // Old-style assembly (object)
+              // Eski tarz assembly (object)
               "legacyAssembly": {},
-              // Bytecode and related details.
+              // Bytecode ve ilgili ayrıntılar.
               "bytecode": {
-                // Debugging data at the level of functions.
+                // Fonksiyonlar düzeyinde veri hata ayıklama.
                 "functionDebugData": {
-                  // Now follows a set of functions including compiler-internal and
-                  // user-defined function. The set does not have to be complete.
-                  "@mint_13": { // Internal name of the function
-                    "entryPoint": 128, // Byte offset into the bytecode where the function starts (optional)
-                    "id": 13, // AST ID of the function definition or null for compiler-internal functions (optional)
-                    "parameterSlots": 2, // Number of EVM stack slots for the function parameters (optional)
-                    "returnSlots": 1 // Number of EVM stack slots for the return values (optional)
+                  // Şimdi derleyicinin dahili ve kullanıcı tanımlı fonksiyonlarını içeren bir fonksiyon kümesini takip edin.
+                  // Kümenin eksiksiz olması gerekmez.
+                  "@mint_13": { // Fonksiyonun dahili adı
+                    "entryPoint": 128, // Fonksiyonun başladığı byte offset bytecode (isteğe bağlı)
+                    "id": 13, // Fonksiyon tanımının AST ID'si veya derleyiciye dahili fonksiyonlar için null (isteğe bağlı)
+                    "parameterSlots": 2, // Fonksiyon parametreleri için EVM yığın yuvası sayısı (isteğe bağlı)
+                    "returnSlots": 1 // Dönüş değerleri için EVM yığın yuvası sayısı (isteğe bağlı)
                   }
                 },
-                // The bytecode as a hex string.
+                // Hex string olarak bytecode.
                 "object": "00fe",
-                // Opcodes list (string)
+                // Opcodes listesi (string)
                 "opcodes": "",
-                // The source mapping as a string. See the source mapping definition.
+                // Bir string olarak kaynak eşlemesi. Kaynak eşleme tanımına bakın.
                 "sourceMap": "",
-                // Array of sources generated by the compiler. Currently only
-                // contains a single Yul file.
+                // Derleyici tarafından oluşturulan kaynakların dizisi. Şu anda yalnızca
+                // tek bir Yul dosyası içerir.
                 "generatedSources": [{
                   // Yul AST
                   "ast": {/* ... */},
-                  // Source file in its text form (may contain comments)
+                  // Metin halindeki kaynak dosya (yorum içerebilir)
                   "contents":"{ function abi_decode(start, end) -> data { data := calldataload(start) } }",
-                  // Source file ID, used for source references, same "namespace" as the Solidity source files
+                  // Kaynak dosya ID'si, kaynak referansları için kullanılır, Solidity kaynak dosyalarıyla aynı "ad alanı"
                   "id": 2,
                   "language": "Yul",
                   "name": "#utility.yul"
                 }],
-                // If given, this is an unlinked object.
+                // Verilirse, bu bağlantısız bir nesnedir.
                 "linkReferences": {
                   "libraryFile.sol": {
-                    // Byte offsets into the bytecode.
-                    // Linking replaces the 20 bytes located there.
+                    // Baytların bayt kodu içindeki ofsetleri.
+                    // Bağlantı, burada bulunan 20 baytın yerini alır.
                     "Library1": [
                       { "start": 0, "length": 20 },
                       { "start": 200, "length": 20 }
@@ -560,18 +563,18 @@ Output Description
                 }
               },
               "deployedBytecode": {
-                /* ..., */ // The same layout as above.
+                /* ..., */ // Yukarıdaki ile aynı düzen.
                 "immutableReferences": {
-                  // There are two references to the immutable with AST ID 3, both 32 bytes long. One is
-                  // at bytecode offset 42, the other at bytecode offset 80.
+                  // AST ID 3 ile değişmeze iki referans vardır, her ikisi de 32 bayt uzunluğundadır. Bir tanesi
+                  // bytecode offset 42'de, diğeri bytecode offset 80'de.
                   "3": [{ "start": 42, "length": 32 }, { "start": 80, "length": 32 }]
                 }
               },
-              // The list of function hashes
+              // Fonksiyon hash'lerinin listesi
               "methodIdentifiers": {
                 "delegate(address)": "5c19a95c"
               },
-              // Function gas estimates
+              // Fonksiyon gaz tahminleri
               "gasEstimates": {
                 "creation": {
                   "codeDepositCost": "420000",
@@ -586,11 +589,11 @@ Output Description
                 }
               }
             },
-            // Ewasm related outputs
+            // Ewasm ile ilgili çıktılar
             "ewasm": {
-              // S-expressions format
+              // S-expressions biçimi
               "wast": "",
-              // Binary format (hex string)
+              // Binary formatı (hex string)
               "wasm": ""
             }
           }
@@ -599,130 +602,127 @@ Output Description
     }
 
 
-Error Types
+Hata Türleri
 ~~~~~~~~~~~
 
-1. ``JSONError``: JSON input doesn't conform to the required format, e.g. input is not a JSON object, the language is not supported, etc.
-2. ``IOError``: IO and import processing errors, such as unresolvable URL or hash mismatch in supplied sources.
-3. ``ParserError``: Source code doesn't conform to the language rules.
-4. ``DocstringParsingError``: The NatSpec tags in the comment block cannot be parsed.
-5. ``SyntaxError``: Syntactical error, such as ``continue`` is used outside of a ``for`` loop.
-6. ``DeclarationError``: Invalid, unresolvable or clashing identifier names. e.g. ``Identifier not found``
-7. ``TypeError``: Error within the type system, such as invalid type conversions, invalid assignments, etc.
-8. ``UnimplementedFeatureError``: Feature is not supported by the compiler, but is expected to be supported in future versions.
-9. ``InternalCompilerError``: Internal bug triggered in the compiler - this should be reported as an issue.
-10. ``Exception``: Unknown failure during compilation - this should be reported as an issue.
-11. ``CompilerError``: Invalid use of the compiler stack - this should be reported as an issue.
-12. ``FatalError``: Fatal error not processed correctly - this should be reported as an issue.
-13. ``Warning``: A warning, which didn't stop the compilation, but should be addressed if possible.
-14. ``Info``: Information that the compiler thinks the user might find useful, but is not dangerous and does not necessarily need to be addressed.
+1. ``JSONError``: JSON girdisi gerekli biçime uymuyor, örneğin girdi bir JSON nesnesi değil, dil desteklenmiyor vb.
+2. ``IOError``: Çözümlenemeyen URL veya sağlanan kaynaklardaki hash uyuşmazlığı gibi IO ve içe aktarma işleme hataları.
+3. ``ParserError``: Kaynak kodu dil kurallarına uygun değil.
+4. ``DocstringParsingError``: Yorum bloğundaki NatSpec etiketleri ayrıştırılamıyor.
+5. ``SyntaxError``: Sözdizimsel hata, örneğin ``continue`` bir ``for`` döngüsünün dışında kullanılmıştır.
+6. ``DeclarationError``: Geçersiz, çözümlenemeyen veya çakışan tanımlayıcı adları. ör. ``Identifier not found``
+7. ``TypeError``: Geçersiz tür dönüşümleri, geçersiz atamalar vb. gibi tür sistemi içindeki hatalar.
+8. ``UnimplementedFeatureError``: Özellik derleyici tarafından desteklenmiyor, ancak gelecek sürümlerde desteklenmesi bekleniyor.
+9. ``InternalCompilerError``: Derleyicide tetiklenen dahili hata - bu bir sorun olarak raporlanmalıdır.
+10. ``Exception``: Derleme sırasında bilinmeyen hata - bu bir sorun olarak raporlanmalıdır.
+11. ``CompilerError``: Derleyici yığınının geçersiz kullanımı - bu bir sorun olarak raporlanmalıdır.
+12. ``FatalError``: Ölümcül hata doğru şekilde işlenmedi - bu bir sorun olarak raporlanmalıdır.
+13. ``Warning``: Derlemeyi durdurmayan, ancak mümkünse ele alınması gereken bir uyarı.
+14. ``Info``: Derleyicinin kullanıcının yararlı bulabileceğini düşündüğü, ancak tehlikeli olmayan ve mutlaka ele alınması gerekmeyen bilgiler.
 
 
 .. _compiler-tools:
 
-Compiler Tools
+Derleyici Araçları
 **************
 
 solidity-upgrade
 ----------------
 
-``solidity-upgrade`` can help you to semi-automatically upgrade your contracts
-to breaking language changes. While it does not and cannot implement all
-required changes for every breaking release, it still supports the ones, that
-would need plenty of repetitive manual adjustments otherwise.
+``solidity-upgrade`` sözleşmelerinizi dil değişikliklerine yarı otomatik olarak
+yükseltmenize yardımcı olabilir. Her son sürüm için gerekli tüm değişiklikleri
+uygulamasa ve uygulayamasa da, aksi takdirde çok sayıda tekrarlayan manuel ayarlama
+gerektirecek olanları hala desteklemektedir.
 
 .. note::
 
-    ``solidity-upgrade`` carries out a large part of the work, but your
-    contracts will most likely need further manual adjustments. We recommend
-    using a version control system for your files. This helps reviewing and
-    eventually rolling back the changes made.
+    ''solidity-upgrade'' işin büyük bir kısmını gerçekleştirir, ancak sözleşmelerinizin
+    büyük olasılıkla daha fazla manuel ayarlamaya ihtiyacı olacaktır. Dosyalarınız için
+    bir sürüm kontrol sistemi kullanmanızı öneririz. Bu, yapılan değişikliklerin gözden
+    geçirilmesine ve sonunda geri alınmasına yardımcı olur.
 
 .. warning::
 
-    ``solidity-upgrade`` is not considered to be complete or free from bugs, so
-    please use with care.
+    ``solidity-upgrade`` tam veya hatasız olarak kabul edilmez, bu nedenle lütfen
+    dikkatli kullanın.
 
-How it Works
+Nasıl Çalışır?
 ~~~~~~~~~~~~
 
-You can pass (a) Solidity source file(s) to ``solidity-upgrade [files]``. If
-these make use of ``import`` statement which refer to files outside the
-current source file's directory, you need to specify directories that
-are allowed to read and import files from, by passing
-``--allow-paths [directory]``. You can ignore missing files by passing
-``--ignore-missing``.
+Solidity kaynak dosya(lar)ını ``solidity-upgrade [files]``'a aktarabilirsiniz. Bunlar,
+geçerli kaynak dosyanın dizini dışındaki dosyalara referans veren ``import`` ifadesini
+kullanıyorsa, ``--allow-paths [directory]`` seçeneğini geçerek dosyaların okunmasına
+ve içe aktarılmasına izin verilen dizinleri belirtmeniz gerekir. Eksik dosyaları
+``--ignore-missing`` seçeneğini geçerek yok sayabilirsiniz.
 
-``solidity-upgrade`` is based on ``libsolidity`` and can parse, compile and
-analyse your source files, and might find applicable source upgrades in them.
+``solidity-upgrade``, ``libsolidity`` tabanlıdır ve kaynak dosyalarınızı ayrıştırabilir,
+derleyebilir ve analiz edebilir ve içlerinde uygulanabilir kaynak yükseltmeleri bulabilir.
 
-Source upgrades are considered to be small textual changes to your source code.
-They are applied to an in-memory representation of the source files
-given. The corresponding source file is updated by default, but you can pass
-``--dry-run`` to simulate to whole upgrade process without writing to any file.
+Kaynak yükseltmeleri, kaynak kodunuzda yapılan küçük metinsel değişiklikler olarak
+kabul edilir. Bunlar, verilen kaynak dosyaların bellek içi gösterimine uygulanır.
+İlgili kaynak dosyası varsayılan olarak güncellenir, ancak herhangi bir dosyaya
+yazmadan tüm yükseltme işlemini simüle etmek için ``--dry-run`` geçebilirsiniz.
 
-The upgrade process itself has two phases. In the first phase source files are
-parsed, and since it is not possible to upgrade source code on that level,
-errors are collected and can be logged by passing ``--verbose``. No source
-upgrades available at this point.
+Yükseltme işleminin iki aşaması vardır. İlk aşamada kaynak dosyalar ayrıştırılır
+ve kaynak kodu bu seviyede yükseltmek mümkün olmadığından, hatalar toplanır ve
+``--verbose`` geçilerek günlüğe kaydedilebilir. Bu noktada kaynak yükseltmesi mevcut
+değildir.
 
-In the second phase, all sources are compiled and all activated upgrade analysis
-modules are run alongside compilation. By default, all available modules are
-activated. Please read the documentation on
-:ref:`available modules <upgrade-modules>` for further details.
+İkinci aşamada, tüm kaynaklar derlenir ve tüm etkinleştirilmiş yükseltme analizi
+modülleri derleme ile birlikte çalıştırılır. Varsayılan olarak, mevcut tüm modüller
+etkinleştirilir. Daha fazla ayrıntı için lütfen :ref:`available modules <upgrade-modules>`
+belgesini okuyun.
 
 
-This can result in compilation errors that may
-be fixed by source upgrades. If no errors occur, no source upgrades are being
-reported and you're done.
-If errors occur and some upgrade module reported a source upgrade, the first
-reported one gets applied and compilation is triggered again for all given
-source files. The previous step is repeated as long as source upgrades are
-reported. If errors still occur, you can log them by passing ``--verbose``.
-If no errors occur, your contracts are up to date and can be compiled with
-the latest version of the compiler.
+Bu, kaynak yükseltmeleri ile düzeltilebilecek derleme hatalarına neden olabilir. Hiçbir
+hata oluşmazsa, hiçbir kaynak yükseltmesi bildirilmez ve işiniz biter. Hatalar oluşursa
+ve bazı yükseltme modülleri bir kaynak yükseltmesi bildirirse, ilk bildirilen uygulanır
+ve verilen tüm kaynak dosyaları için derleme yeniden tetiklenir. Kaynak yükseltmeleri
+rapor edildiği sürece önceki adım tekrarlanır. Eğer hala hatalar oluşuyorsa, ``--verbose``
+komutunu geçerek bunları günlüğe kaydedebilirsiniz. Herhangi bir hata oluşmazsa, sözleşmeleriniz
+günceldir ve derleyicinin en son sürümüyle derlenebilir.
 
 .. _upgrade-modules:
 
-Available Upgrade Modules
+Kullanılabilir Yükseltme Modülleri
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +----------------------------+---------+--------------------------------------------------+
-| Module                     | Version | Description                                      |
+| Modil                      | Versiyon| Açıklama                                         |
 +============================+=========+==================================================+
-| ``constructor``            | 0.5.0   | Constructors must now be defined using the       |
-|                            |         | ``constructor`` keyword.                         |
+| ``constructor``            | 0.5.0   | Constructor''lar artık ``constructor`` anahtar   |
+|                            |         | sözcüğü kullanılarak tanımlanmalıdır.            |
 +----------------------------+---------+--------------------------------------------------+
-| ``visibility``             | 0.5.0   | Explicit function visibility is now mandatory,   |
-|                            |         | defaults to ``public``.                          |
+| ``visibility``             | 0.5.0   | Public fonksiyon görünürlüğü artık zorunlu,      |
+|                            |         | varsayılan değer ``public``.                     |
 +----------------------------+---------+--------------------------------------------------+
-| ``abstract``               | 0.6.0   | The keyword ``abstract`` has to be used if a     |
-|                            |         | contract does not implement all its functions.   |
+| ``abstract``               | 0.6.0   | Bir sözleşme tüm fonksiyonlarını uygulamıyorsa   |
+|                            |         | ``abstract`` anahtar sözcüğü kullanılmalıdır.    |
 +----------------------------+---------+--------------------------------------------------+
-| ``virtual``                | 0.6.0   | Functions without implementation outside an      |
-|                            |         | interface have to be marked ``virtual``.         |
+| ``virtual``                | 0.6.0   | Bir arayüz dışında uygulaması olmayan            |
+|                            |         | fonksiyonlar ``virtual`` olarak işaretlenmelidir.|
 +----------------------------+---------+--------------------------------------------------+
-| ``override``               | 0.6.0   | When overriding a function or modifier, the new  |
-|                            |         | keyword ``override`` must be used.               |
+| ``override``               | 0.6.0   | Bir fonksiyon veya modifier geçersiz kılınırken, |
+|                            |         | yeni ``override`` anahtar sözcüğü kullanılmalıdır|
 +----------------------------+---------+--------------------------------------------------+
-| ``dotsyntax``              | 0.7.0   | The following syntax is deprecated:              |
-|                            |         | ``f.gas(...)()``, ``f.value(...)()`` and         |
-|                            |         | ``(new C).value(...)()``. Replace these calls by |
-|                            |         | ``f{gas: ..., value: ...}()`` and                |
+| ``dotsyntax``              | 0.7.0   | Aşağıdaki sözdizimi kullanımdan kaldırılmıştır:  |
+|                            |         | ``f.gas(...)()``, ``f.value(...)()`` ve          |
+|                            |         | ``(new C).value(...)()``. Bu çağrıların yerine   |
+|                            |         | ``f{gas: ..., value: ...}()`` ve                 |
 |                            |         | ``(new C){value: ...}()``.                       |
 +----------------------------+---------+--------------------------------------------------+
-| ``now``                    | 0.7.0   | The ``now`` keyword is deprecated. Use           |
-|                            |         | ``block.timestamp`` instead.                     |
+| ``now``                    | 0.7.0   | ``now`` anahtar sözcüğü kullanımdan  kalktı.     |
+|                            |         | Bunun yerine `block.timestamp`` kullanın.        |
 +----------------------------+---------+--------------------------------------------------+
-| ``constructor-visibility`` | 0.7.0   | Removes visibility of constructors.              |
+| ``constructor-visibility`` | 0.7.0   | Constructor'ların görünürlüğünü kaldırır.        |
 |                            |         |                                                  |
 +----------------------------+---------+--------------------------------------------------+
 
-Please read :doc:`0.5.0 release notes <050-breaking-changes>`,
-:doc:`0.6.0 release notes <060-breaking-changes>`,
-:doc:`0.7.0 release notes <070-breaking-changes>` and :doc:`0.8.0 release notes <080-breaking-changes>` for further details.
+Daha fazla ayrıntı için lütfen :doc:`0.5.0 release notes <050-breaking-changes>`,
+:doc:`0.6.0 release notes <060-breaking-changes>`, :doc:`0.7.0 release notes <070-breaking-changes>`
+ve :doc:`0.8.0 release notes <080-breaking-changes>` bölümlerini okuyun.
 
-Synopsis
+Özet bilgi(Synopsis)
 ~~~~~~~~
 
 .. code-block:: none
@@ -746,17 +746,17 @@ Synopsis
 
 
 
-Bug Reports / Feature Requests
+Hata Raporları / Özellik Talepleri
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you found a bug or if you have a feature request, please
-`file an issue <https://github.com/ethereum/solidity/issues/new/choose>`_ on Github.
+Bir hata bulduysanız veya bir özellik isteğiniz varsa, lütfen Github'da
+`<https://github.com/ethereum/solidity/issues/new/choose> bir sorun gönderin.`_
 
 
-Example
+Örnek
 ~~~~~~~
 
-Assume that you have the following contract in ``Source.sol``:
+``Source.sol`` içinde aşağıdaki sözleşmeye sahip olduğunuzu varsayın:
 
 .. code-block:: Solidity
 
@@ -764,7 +764,7 @@ Assume that you have the following contract in ``Source.sol``:
     // This will not compile after 0.7.0
     // SPDX-License-Identifier: GPL-3.0
     contract C {
-        // FIXME: remove constructor visibility and make the contract abstract
+        // BENİDÜZELT: constructor görünürlüğünü kaldırın ve sözleşmeyi abstract hale getirin
         constructor() internal {}
     }
 
@@ -772,7 +772,7 @@ Assume that you have the following contract in ``Source.sol``:
         uint time;
 
         function f() public payable {
-            // FIXME: change now to block.timestamp
+            // BENİDÜZELT: now'u block.timestamp olarak değiştirin
             time = now;
         }
     }
@@ -780,44 +780,44 @@ Assume that you have the following contract in ``Source.sol``:
     contract E {
         D d;
 
-        // FIXME: remove constructor visibility
+        // BENİDÜZELT: constructor görünürlüğünü kaldır
         constructor() public {}
 
         function g() public {
-            // FIXME: change .value(5) =>  {value: 5}
+            // BENİDÜZELT: .value(5) => {value: 5} olarak değiştirin
             d.f.value(5)();
         }
     }
 
 
 
-Required Changes
+Gerekli Değişiklikler
 ^^^^^^^^^^^^^^^^
 
-The above contract will not compile starting from 0.7.0. To bring the contract up to date with the
-current Solidity version, the following upgrade modules have to be executed:
-``constructor-visibility``, ``now`` and ``dotsyntax``. Please read the documentation on
-:ref:`available modules <upgrade-modules>` for further details.
+Yukarıdaki sözleşme 0.7.0'dan itibaren derlenmeyecektir. Sözleşmeyi mevcut Solidity
+sürümüyle güncel hale getirmek için aşağıdaki yükseltme modüllerinin çalıştırılması
+gerekir: ``constructor-visibility``, ``now`` ve ``dotsyntax``. Daha fazla ayrıntı için
+lütfen :ref:`available modules <upgrade-modules>` belgelendirmesini okuyun.
 
 
-Running the Upgrade
+Yükseltmenin Çalıştırılması
 ^^^^^^^^^^^^^^^^^^^
 
-It is recommended to explicitly specify the upgrade modules by using ``--modules`` argument.
+Yükseltme modüllerinin ``--modules`` argümanı kullanılarak açıkça belirtilmesi önerilir.
 
 .. code-block:: bash
 
     solidity-upgrade --modules constructor-visibility,now,dotsyntax Source.sol
 
-The command above applies all changes as shown below. Please review them carefully (the pragmas will
-have to be updated manually.)
+Yukarıdaki komut aşağıda gösterildiği gibi tüm değişiklikleri uygular. Lütfen bunları
+dikkatlice inceleyin (pragmaların manuel olarak güncellenmesi gerekecektir).
 
 .. code-block:: Solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
     abstract contract C {
-        // FIXME: remove constructor visibility and make the contract abstract
+        // BENİDÜZELT: constructor görünürlüğünü kaldırın ve sözleşmeyi abstract hale getirin
         constructor() {}
     }
 
@@ -825,7 +825,7 @@ have to be updated manually.)
         uint time;
 
         function f() public payable {
-            // FIXME: change now to block.timestamp
+            // BENİDÜZELT: now'u block.timestamp olarak değiştirin
             time = block.timestamp;
         }
     }
@@ -833,7 +833,7 @@ have to be updated manually.)
     contract E {
         D d;
 
-        // FIXME: remove constructor visibility
+        // BENİDÜZELT: constructor görünürlüğünü kaldır
         constructor() {}
 
         function g() public {
