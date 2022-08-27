@@ -1,176 +1,118 @@
 ********************************
-Solidity v0.8.0 Breaking Changes
+Solidity v0.8.0 İşleyişi Bozan Değişiklikler
 ********************************
 
-This section highlights the main breaking changes introduced in Solidity
-version 0.8.0.
-For the full list check
-`the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.8.0>`_.
+Bu bölüm, Solidity 0.8.0 sürümünde sunulan ana işleyişi bozan değişiklikleri vurgular.
+Tam liste için `sürüm değişiklik günlüğü <https://github.com/ethereum/solidity/releases/tag/v0.8.0>`_
+adresini kontrol edin.
 
-Silent Changes of the Semantics
+Semantiğin Sessiz Değişimleri
 ===============================
 
-This section lists changes where existing code changes its behaviour without
-the compiler notifying you about it.
+Bu bölüm, derleyici size bildirmeden mevcut kodun davranışını değiştirdiği değişiklikleri listeler.
 
-* Arithmetic operations revert on underflow and overflow. You can use ``unchecked { ... }`` to use
-  the previous wrapping behaviour.
+* Aritmetik işlemler alttan taşma ve üstten taşma durumunda geri döner. Önceki paketleme davranışını kullanmak için ``unchecked { ... }`` kullanarak önceki paketleme davranışını kullanabilirsiniz.
 
-  Checks for overflow are very common, so we made them the default to increase readability of code,
-  even if it comes at a slight increase of gas costs.
+  Taşma kontrolleri çok yaygındır, bu nedenle gaz maliyetlerinde hafif bir artışa neden olsa bile kodun okunabilirliğini artırmak için bunları varsayılan hale getirdik.
 
-* ABI coder v2 is activated by default.
+* ABI coder v2 varsayılan olarak etkinleştirilmiştir.
 
-  You can choose to use the old behaviour using ``pragma abicoder v1;``.
-  The pragma ``pragma experimental ABIEncoderV2;`` is still valid, but it is deprecated and has no effect.
-  If you want to be explicit, please use ``pragma abicoder v2;`` instead.
+  Eski davranışı kullanmayı ``pragma abicoder v1;`` kullanarak seçebilirsiniz. Pragma ``pragma experimental ABIEncoderV2;`` hala geçerlidir, ancak kullanımdan kaldırılmıştır ve hiçbir etkisi yoktur. Eğer doğrudan belirtmek istiyorsanız, lütfen bunun yerine ``pragma abicoder v2;`` kullanın.
 
-  Note that ABI coder v2 supports more types than v1 and performs more sanity checks on the inputs.
-  ABI coder v2 makes some function calls more expensive and it can also make contract calls
-  revert that did not revert with ABI coder v1 when they contain data that does not conform to the
-  parameter types.
+  ABI coder v2'nin v1'den daha fazla türü desteklediğini ve girdiler üzerinde daha fazla sanity kontrolü gerçekleştirdiğini unutmayın. ABI coder v2 bazı fonksiyon çağrılarını daha pahalı hale getirir ve ayrıca parametre tiplerine uymayan veriler içerdiklerinde ABI coder v1 ile geri dönmeyen sözleşme çağrılarının geri dönmesine neden olabilir.
 
-* Exponentiation is right associative, i.e., the expression ``a**b**c`` is parsed as ``a**(b**c)``.
-  Before 0.8.0, it was parsed as ``(a**b)**c``.
+* Üs alma sağdan ilişkilidir, yani ``a**b**c`` ifadesi ``a**(b**c)`` olarak ayrıştırılır.
+  0.8.0'dan önce ``(a**b)**c`` olarak ayrıştırılıyordu.
 
-  This is the common way to parse the exponentiation operator.
+  Bu, üs alma operatörünü ayrıştırmanın yaygın yoludur.
 
-* Failing assertions and other internal checks like division by zero or arithmetic overflow do
-  not use the invalid opcode but instead the revert opcode.
-  More specifically, they will use error data equal to a function call to ``Panic(uint256)`` with an error code specific
-  to the circumstances.
+* Başarısız iddialar ve sıfıra bölme veya aritmetik taşma gibi diğer dahili kontroller geçersiz işlem kodunu değil, bunun yerine geri döndürme işlem kodunu kullanır. Daha spesifik olarak, ``Panic(uint256)`` fonksiyon çağrısına eşit hata verilerini koşullara özgü bir hata koduyla kullanacaklardır.
 
-  This will save gas on errors while it still allows static analysis tools to distinguish
-  these situations from a revert on invalid input, like a failing ``require``.
+  Bu, hatalarda gaz tasarrufu sağlarken, statik analiz araçlarının bu durumları, başarısız bir ``require`` gibi geçersiz bir girdi üzerindeki bir geri dönüşten ayırt etmesine izin verir.
 
-* If a byte array in storage is accessed whose length is encoded incorrectly, a panic is caused.
-  A contract cannot get into this situation unless inline assembly is used to modify the raw representation of storage byte arrays.
+* Depolama alanındaki uzunluğu yanlış kodlanmış bir bayt dizisine erişilirse paniğe neden olunur.
+  Depolama bayt dizilerinin ham gösterimini değiştirmek için inline assembly kullanılmadığı sürece bir sözleşme bu duruma giremez.
 
-* If constants are used in array length expressions, previous versions of Solidity would use arbitrary precision
-  in all branches of the evaluation tree. Now, if constant variables are used as intermediate expressions,
-  their values will be properly rounded in the same way as when they are used in run-time expressions.
+* Dizi uzunluğu ifadelerinde sabitler kullanılırsa, Solidity'nin önceki sürümleri değerlendirme ağacının(evaluation tree) tüm dallarında(branch) rastgele arbitrary kullanırdı. Artık, sabit değişkenler ara ifadeler olarak kullanılırsa, değerleri çalışma zamanı ifadelerinde kullanıldıklarında olduğu gibi düzgün bir şekilde yuvarlanacaktır.
 
-* The type ``byte`` has been removed. It was an alias of ``bytes1``.
+* ``byte`` türü kaldırıldı. Bu ``bytes1`` türünün bir takma adıydı.
 
-New Restrictions
+Yeni Kısıtlamalar
 ================
 
-This section lists changes that might cause existing contracts to not compile anymore.
+Bu bölümde, mevcut sözleşmelerin artık derlenmemesine neden olabilecek değişiklikler listelenmektedir.
 
-* There are new restrictions related to explicit conversions of literals. The previous behaviour in
-  the following cases was likely ambiguous:
+* Değişmezlerin açık dönüşümleri ile ilgili yeni kısıtlamalar vardır. Aşağıdaki durumlarda önceki davranış muhtemelen belirsizdi:
 
-  1. Explicit conversions from negative literals and literals larger than ``type(uint160).max`` to
-     ``address`` are disallowed.
-  2. Explicit conversions between literals and an integer type ``T`` are only allowed if the literal
-     lies between ``type(T).min`` and ``type(T).max``. In particular, replace usages of ``uint(-1)``
-     with ``type(uint).max``.
-  3. Explicit conversions between literals and enums are only allowed if the literal can
-     represent a value in the enum.
-  4. Explicit conversions between literals and ``address`` type (e.g. ``address(literal)``) have the
-     type ``address`` instead of ``address payable``. One can get a payable address type by using an
-     explicit conversion, i.e., ``payable(literal)``.
+  1. Negatif literallerden ve ``type(uint160).max`` değerinden büyük literallerden ``address`` değerine açık dönüşümlere izin verilmez.
+  2. Literaller ve ``T`` tamsayı tipi arasındaki açık dönüşümlere yalnızca literal ``type(T).min`` ve ``type(T).max`` arasında yer alıyorsa izin verilir. Özellikle, ``uint(-1)`` kullanımlarını ``type(uint).max`` ile değiştirin.
+  3. Literaller ve enumlar arasındaki açık dönüşümlere yalnızca literal enumdaki bir değeri temsil edebiliyorsa izin verilir.
+  4. Değişmezler ve ``address`` türü arasındaki açık dönüşümler (örneğin ``address(literal)``) ``address payable`` yerine ``address`` türüne sahiptir. Açık bir dönüşüm, yani ``payable(literal)`` kullanılarak payable bir adres türü elde edilebilir.
 
-* :ref:`Address literals<address_literals>` have the type ``address`` instead of ``address
-  payable``. They can be converted to ``address payable`` by using an explicit conversion, e.g.
-  ``payable(0xdCad3a6d3569DF655070DEd06cb7A1b2Ccd1D3AF)``.
+* :ref:`Address literals<address_literals>`, ``address payable`` yerine ``address`` türüne sahiptir. Açık bir dönüşüm kullanılarak ``address payable`` türüne dönüştürülebilirler, örneğin ``payable(0xdCad3a6d3569DF655070DEd06cb7A1b2Ccd1D3AF)``.
 
-* There are new restrictions on explicit type conversions. The conversion is only allowed when there
-  is at most one change in sign, width or type-category (``int``, ``address``, ``bytesNN``, etc.).
-  To perform multiple changes, use multiple conversions.
+* Açık tip dönüşümlerinde yeni kısıtlamalar vardır. Dönüşüme yalnızca işaret, genişlik veya tür kategorisinde en fazla bir değişiklik olduğunda izin verilir (``int``, ``adres``, ``bytesNN``, vb.). Birden fazla değişiklik yapmak için birden fazla dönüşüm kullanın.
 
-  Let us use the notation ``T(S)`` to denote the explicit conversion ``T(x)``, where, ``T`` and
-  ``S`` are types, and ``x`` is any arbitrary variable of type ``S``. An example of such a
-  disallowed conversion would be ``uint16(int8)`` since it changes both width (8 bits to 16 bits)
-  and sign (signed integer to unsigned integer). In order to do the conversion, one has to go
-  through an intermediate type. In the previous example, this would be ``uint16(uint8(int8))`` or
-  ``uint16(int16(int8))``. Note that the two ways to convert will produce different results e.g.,
-  for ``-1``. The following are some examples of conversions that are disallowed by this rule.
+  Burada, ``T`` ve ``S`` tipleri ve ``x`` de ``S`` tipindeki herhangi bir arbitrary değişken olmak üzere, ``T(x)`` açık dönüşümünü belirtmek için ``T(S)`` notasyonunu kullanalım. Hem genişliği (8 bitten 16 bite) hem de işareti (işaretli tamsayıdan işaretsiz tamsayıya) değiştirdiği için bu tür bir izin verilmeyen dönüştürmeye örnek olarak ``uint16(int8)`` verilebilir. Dönüştürmeyi yapmak için bir ara türden geçmek gerekir. Önceki örnekte, bu ``uint16(uint8(int8))`` veya ``uint16(int16(int8))`` olacaktır. Dönüştürmenin iki yolunun farklı sonuçlar üreteceğini unutmayın, örneğin ``-1`` için. Aşağıda, bu kural tarafından izin verilmeyen bazı dönüşüm örnekleri verilmiştir.
 
-  - ``address(uint)`` and ``uint(address)``: converting both type-category and width. Replace this by
-    ``address(uint160(uint))`` and ``uint(uint160(address))`` respectively.
-  - ``payable(uint160)``, ``payable(bytes20)`` and ``payable(integer-literal)``: converting both
-    type-category and state-mutability. Replace this by ``payable(address(uint160))``,
-    ``payable(address(bytes20))`` and ``payable(address(integer-literal))`` respectively. Note that
-    ``payable(0)`` is valid and is an exception to the rule.
-  - ``int80(bytes10)`` and ``bytes10(int80)``: converting both type-category and sign. Replace this by
-    ``int80(uint80(bytes10))`` and ``bytes10(uint80(int80)`` respectively.
-  - ``Contract(uint)``: converting both type-category and width. Replace this by
-    ``Contract(address(uint160(uint)))``.
+- ``address(uint)`` ve ``uint(address)``: hem tür kategorisini hem de genişliği dönüştürüyor. Bunu sırasıyla ``address(uint160(uint))`` ve ``uint(uint160(address))`` ile değiştirin.
+  - ``payable(uint160)``, ``payable(bytes20)`` ve ``payable(integer-literal)``: hem tür kategorisi hem de durum değiştirilebilirliği dönüştürülüyor. Bunu sırasıyla ``payable(address(uint160))``, ``payable(address(bytes20))`` ve ``payable(address(integer-literal))`` ile değiştirin. ``payable(0)`` geçerli olduğunu ve kuralın bir istisnası olduğunu unutmayın.
+  - ``int80(bytes10)`` ve ``bytes10(int80)``: hem tür kategorisini hem de işareti dönüştürüyor. Bunu sırasıyla ``int80(uint80(bytes10))`` ve ``bytes10(uint80(int80)`` ile değiştirin.
+  - ``Contract(uint)``: hem tür kategorisini hem de genişliği dönüştürür. Bunu ``Contract(address(uint160(uint)))`` ile değiştirin.
 
-  These conversions were disallowed to avoid ambiguity. For example, in the expression ``uint16 x =
-  uint16(int8(-1))``, the value of ``x`` would depend on whether the sign or the width conversion
-  was applied first.
+  Belirsizliği önlemek için bu dönüşümlere izin verilmemiştir. Örneğin, ``uint16 x = uint16(int8(-1))`` ifadesinde, ``x`` değeri önce işaret veya genişlik dönüşümünün uygulanıp uygulanmadığına bağlı olacaktır.
 
-* Function call options can only be given once, i.e. ``c.f{gas: 10000}{value: 1}()`` is invalid and has to be changed to ``c.f{gas: 10000, value: 1}()``.
+* Fonksiyon çağrı seçenekleri sadece bir kez verilebilir, yani ``c.f{gas: 10000}{value: 1}()`` geçersizdir ve ``c.f{gas: 10000, value: 1}()`` olarak değiştirilmelidir.
 
-* The global functions ``log0``, ``log1``, ``log2``, ``log3`` and ``log4`` have been removed.
+* Global fonksiyonlar ``log0``, ``log1``, ``log2``, ``log3`` ve ``log4`` kaldırılmıştır.
 
-  These are low-level functions that were largely unused. Their behaviour can be accessed from inline assembly.
+  Bunlar büyük ölçüde kullanılmayan düşük seviyeli fonksiyonlardır. Davranışlarına inline assembly'den erişilebilir.
 
-* ``enum`` definitions cannot contain more than 256 members.
+* ``enum`` tanımları 256`dan fazla üye içeremez.
 
-  This will make it safe to assume that the underlying type in the ABI is always ``uint8``.
+  Bu, ABI'deki temel türün her zaman ``uint8`` olduğunu varsaymayı güvenli hale getirecektir.
 
-* Declarations with the name ``this``, ``super`` and ``_`` are disallowed, with the exception of
-  public functions and events. The exception is to make it possible to declare interfaces of contracts
-  implemented in languages other than Solidity that do permit such function names.
+* Public fonksiyonlar ve event`ler haricinde ``this``, ``super`` ve ``_`` isimli tanımlamalara izin verilmez. İstisna, bu tür fonksiyon isimlerine izin veren Solidity dışındaki dillerde uygulanan sözleşmelerin arayüzlerini beyan etmeyi mümkün kılmaktır.
 
-* Remove support for the ``\b``, ``\f``, and ``\v`` escape sequences in code.
-  They can still be inserted via hexadecimal escapes, e.g. ``\x08``, ``\x0c``, and ``\x0b``, respectively.
+* Koddaki ``\b``, ``\f`` ve ``\v`` kaçış dizileri için destek kaldırıldı. Bunlar hala onaltılık kaçış dizileri aracılığıyla eklenebilir, örneğin sırasıyla ``\x08``, ``\x0c`` ve ``\x0b``.
 
-* The global variables ``tx.origin`` and ``msg.sender`` have the type ``address`` instead of
-  ``address payable``. One can convert them into ``address payable`` by using an explicit
-  conversion, i.e., ``payable(tx.origin)`` or ``payable(msg.sender)``.
+* Global değişkenler ``tx.origin`` ve ``msg.sender``, ``address payable`` yerine ``address`` tipine sahiptir. Bunları açık bir dönüşüm kullanarak ``address payable`` türüne dönüştürebilirsiniz, yani ``payable(tx.origin)`` veya ``payable(msg.sender)``.
 
-  This change was done since the compiler cannot determine whether or not these addresses
-  are payable or not, so it now requires an explicit conversion to make this requirement visible.
+  Bu değişiklik, derleyicinin bu adreslerin ödenebilir olup olmadığını belirleyememesi nedeniyle yapılmıştır, bu nedenle artık bu gereksinimi görünür kılmak için açık bir dönüşüm gerektirmektedir. Translated with www.DeepL.com/Translator (free version)
 
-* Explicit conversion into ``address`` type always returns a non-payable ``address`` type. In
-  particular, the following explicit conversions have the type ``address`` instead of ``address
-  payable``:
+* ``address`` türüne açık dönüştürme her zaman ödenebilir olmayan bir ``address`` türü döndürür. Özellikle, aşağıdaki açık dönüşümler ``address payable`` yerine ``address`` türüne sahiptir:
 
-  - ``address(u)`` where ``u`` is a variable of type ``uint160``. One can convert ``u``
-    into the type ``address payable`` by using two explicit conversions, i.e.,
-    ``payable(address(u))``.
-  - ``address(b)`` where ``b`` is a variable of type ``bytes20``. One can convert ``b``
-    into the type ``address payable`` by using two explicit conversions, i.e.,
-    ``payable(address(b))``.
-  - ``address(c)`` where ``c`` is a contract. Previously, the return type of this
-    conversion depended on whether the contract can receive Ether (either by having a receive
-    function or a payable fallback function). The conversion ``payable(c)`` has the type ``address
-    payable`` and is only allowed when the contract ``c`` can receive Ether. In general, one can
-    always convert ``c`` into the type ``address payable`` by using the following explicit
-    conversion: ``payable(address(c))``. Note that ``address(this)`` falls under the same category
-    as ``address(c)`` and the same rules apply for it.
+  - ``address(u)`` burada ``u`` ``uint160`` türünde bir değişkendir. Biri ``u`` türünü iki açık dönüşüm kullanarak ``address payable`` türüne dönüştürebilir, yani ``payable(address(u))``.
+  - ``address(b)`` burada ``b`` ``bytes20`` tipinde bir değişkendir. Biri ``b`` türünü iki açık dönüşüm kullanarak `` address payable`` türüne dönüştürebilir, yani ``payable(address(b))``.
+  - ``address(c)``, burada ``c`` bir sözleşmedir. Önceden, bu dönüşümün dönüş türü, sözleşmenin Ether alıp alamayacağına bağlıydı (bir receive fonksiyonuna veya bir payable fallback fonksiyonuna sahip olarak). ``payable(c)`` dönüşümü ``address payable`` türüne sahiptir ve yalnızca ``c`` sözleşmesi Ether alabildiğinde izin verilir. Genel olarak, aşağıdaki açık dönüşüm kullanılarak ``c`` her zaman ``address payable`` türüne dönüştürülebilir: ``payable(address(c))``. ``address(this)`` türünün ``address(c)`` ile aynı kategoriye girdiğini ve aynı kuralların onun için de geçerli olduğunu unutmayın.
 
-* The ``chainid`` builtin in inline assembly is now considered ``view`` instead of ``pure``.
+* Inline assembly`de yerleşik ``chainid`` artık ``pure`` yerine ``view`` olarak kabul edilmektedir.
 
-* Unary negation cannot be used on unsigned integers anymore, only on signed integers.
+* Tekli negasyon artık işaretsiz tamsayılar üzerinde kullanılamaz, sadece işaretli tamsayılar üzerinde kullanılabilir.
 
-Interface Changes
+Arayüz Değişiklikleri
 =================
 
-* The output of ``--combined-json`` has changed: JSON fields ``abi``, ``devdoc``, ``userdoc`` and
-  ``storage-layout`` are sub-objects now. Before 0.8.0 they used to be serialised as strings.
+* ``--combined-json`` çıktısı değişti: JSON alanları ``abi``, ``devdoc``, ``userdoc`` ve
+  ``storage-layout`` artık alt nesnelerdir. 0.8.0'dan önce string olarak serileştiriliyorlardı.
 
-* The "legacy AST" has been removed (``--ast-json`` on the commandline interface and ``legacyAST`` for standard JSON).
-  Use the "compact AST" (``--ast-compact--json`` resp. ``AST``) as replacement.
+* "Eski AST" kaldırıldı (komut satırı arayüzünde ``--ast-json`` ve standart JSON için ``legacyAST``).
+  Yerine "kompakt AST" (``--ast-compact--json`` resp. ``AST``) kullanın.
 
-* The old error reporter (``--old-reporter``) has been removed.
+* Eski hata raporlayıcı (``--old-reporter``) kaldırıldı.
 
 
-How to update your code
+Kodunuzu nasıl güncelleyebilirsiniz?
 =======================
 
-- If you rely on wrapping arithmetic, surround each operation with ``unchecked { ... }``.
-- Optional: If you use SafeMath or a similar library, change ``x.add(y)`` to ``x + y``, ``x.mul(y)`` to ``x * y`` etc.
-- Add ``pragma abicoder v1;`` if you want to stay with the old ABI coder.
-- Optionally remove ``pragma experimental ABIEncoderV2`` or ``pragma abicoder v2`` since it is redundant.
-- Change ``byte`` to ``bytes1``.
-- Add intermediate explicit type conversions if required.
-- Combine ``c.f{gas: 10000}{value: 1}()`` to ``c.f{gas: 10000, value: 1}()``.
-- Change ``msg.sender.transfer(x)`` to ``payable(msg.sender).transfer(x)`` or use a stored variable of ``address payable`` type.
-- Change ``x**y**z`` to ``(x**y)**z``.
-- Use inline assembly as a replacement for ``log0``, ..., ``log4``.
-- Negate unsigned integers by subtracting them from the maximum value of the type and adding 1 (e.g. ``type(uint256).max - x + 1``, while ensuring that `x` is not zero)
+- Aritmetiği paketlemeye güveniyorsanız, her işlemi ``unchecked { ... }``.
+- İsteğe bağlı: SafeMath veya benzer bir kütüphane kullanıyorsanız, ``x.add(y)`` ifadesini ``x + y``, ``x.mul(y)`` ifadesini ``x * y`` vb. olarak değiştirin.
+- Eski ABI kodlayıcı ile kalmak istiyorsanız ``pragma abicoder v1;`` ekleyin.
+- İsteğe bağlı olarak ``pragma experimental ABIEncoderV2`` veya ``pragma abicoder v2`` gereksiz olduğu için kaldırın.
+- ``byte`` ifadesini ``bytes1`` olarak değiştirin.
+- Gerekirse ara açık tip dönüşümleri ekleyin.
+- ``c.f{gas: 10000}{value: 1}()`` ifadesini ``c.f{gas: 10000, value: 1}()`` olarak birleştirin.
+- ``msg.sender.transfer(x)`` öğesini ``payable(msg.sender).transfer(x)`` olarak değiştirin veya ``address payable`` türünde bir saklı değişken kullanın.
+- ``x**y**z`` ifadesini ``(x**y)**z`` olarak değiştirin.
+- ``log0``, ..., ``log4`` yerine inline assembly kullanın.
+- İşaretsiz tamsayıları, türün maksimum değerinden çıkarıp 1 ekleyerek negatifleştirin (örneğin ``type(uint256).max - x + 1``, `x`in sıfır olmadığından emin olarak)
