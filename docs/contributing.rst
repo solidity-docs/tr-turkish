@@ -1,196 +1,172 @@
 ############
-Contributing
+Katkıda Bulunmak
 ############
 
-Help is always welcome and there are plenty of options how you can contribute to Solidity.
+Yardıma her zaman açığız ve Solidity'ye nasıl katkıda bulunabileceğinize dair pek çok seçenek var.
 
-In particular, we appreciate support in the following areas:
+Özellikle aşağıdaki alanlardaki destek için minnettar olduğumuzu belirtmek isteriz:
 
-* Reporting issues.
-* Fixing and responding to `Solidity's GitHub issues
-  <https://github.com/ethereum/solidity/issues>`_, especially those tagged as
-  `"good first issue" <https://github.com/ethereum/solidity/labels/good%20first%20issue>`_ which are
-  meant as introductory issues for external contributors.
-* Improving the documentation.
-* Translating the documentation into more languages.
-* Responding to questions from other users on `StackExchange
-  <https://ethereum.stackexchange.com>`_ and the `Solidity Gitter Chat
+* Sorunların raporlanması.
+* `Solidity'nin GitHub sorunlarını <https://github.com/ethereum/solidity/issues>`_
+  düzeltmek ve yanıtlamak, özellikle de dışarıdan katkıda bulunanlar için giriş
+  sorunları olarak tasarlanan `"good first issue" <https://github.com/ethereum/solidity/labels/good%20first%20issue> _
+  olarak etiketlenenler.
+* Dokümantasyonun iyileştirilmesi.
+* Dokümantasyonun daha fazla dile çevrilmesi.
+* `StackExchange'de diğer kullanıcıların sorularını yanıtlama
+  <https://ethereum.stackexchange.com>`_ ve `Solidity Gitter Chat
   <https://gitter.im/ethereum/solidity>`_.
-* Getting involved in the language design process by proposing language changes or new features in the `Solidity forum <https://forum.soliditylang.org/>`_ and providing feedback.
+* Solidity forumunda <https://forum.soliditylang.org/>`_ dil değişiklikleri veya yeni özellikler önererek ve geri bildirim sağlayarak dil tasarım sürecine dahil olmak.
 
-To get started, you can try :ref:`building-from-source` in order to familiarize
-yourself with the components of Solidity and the build process. Also, it may be
-useful to become well-versed at writing smart-contracts in Solidity.
+Başlamak için, Solidity bileşenlerine ve derleme sürecine aşina olmak için
+:ref:`building-from-source`u deneyebilirsiniz. Ayrıca, Solidity'de akıllı
+sözleşmeler yazma konusunda uzmanlaşmak da faydalı olabilir.
 
-Please note that this project is released with a `Contributor Code of Conduct <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_. By participating in this project - in the issues, pull requests, or Gitter channels - you agree to abide by its terms.
+Lütfen bu projenin bir `Katılımcı Davranış Kuralları <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_ ile yayınlandığını unutmayın. Bu projeye katılarak - sorunlarda, pull request' lerde veya Gitter kanallarında - şartlarına uymayı kabul etmiş olursunuz.
 
-Team Calls
+Takım Toplantıları
 ==========
 
-If you have issues or pull requests to discuss, or are interested in hearing what
-the team and contributors are working on, you can join our public team calls:
+Tartışmak istediğiniz sorunlar veya pull request'ler varsa ya da ekibin ve katkıda
+bulunanların neler üzerinde çalıştığını duymak istiyorsanız, herkese açık takım toplantılarımıza katılabilirsiniz:
 
-- Mondays at 3pm CET/CEST.
-- Wednesdays at 2pm CET/CEST.
+- Pazartesi günleri saat 15:00 CET/CEST.
+- Çarşamba günleri 14:00 CET/CEST.
 
-Both calls take place on `Jitsi <https://meet.ethereum.org/solidity>`_.
+Her iki çağrı da `Jitsi <https://meet.ethereum.org/solidity>`_ üzerinde gerçekleşir.
 
-How to Report Issues
+Sorunlar Nasıl Rapor Edilir
 ====================
 
-To report an issue, please use the
-`GitHub issues tracker <https://github.com/ethereum/solidity/issues>`_. When
-reporting issues, please mention the following details:
+Bir sorunu bildirmek için lütfen `GitHub sorunları izleyicisini <https://github.com/ethereum/solidity/issues>`_
+kullanın. Sorunları bildirirken lütfen aşağıdaki ayrıntıları belirtin:
 
-* Solidity version.
-* Source code (if applicable).
-* Operating system.
-* Steps to reproduce the issue.
-* Actual vs. expected behaviour.
+* Solidity sürümü.
+* Kaynak kodu (varsa).
+* İşletim sistemi.
+* Sorunu yeniden üretmek için adımlar.
+* Mevcut ve beklenen davranış.
 
-Reducing the source code that caused the issue to a bare minimum is always
-very helpful and sometimes even clarifies a misunderstanding.
+Soruna neden olan kaynak kodunu en aza indirmek her zaman sorunların çözümüne yardımcı
+olur ve hatta bazen bir yanlış anlaşılmayı açıklığa kavuşturur.
 
-Workflow for Pull Requests
+Pull Request'ler için İş Akışı(Workflow)
 ==========================
 
-In order to contribute, please fork off of the ``develop`` branch and make your
-changes there. Your commit messages should detail *why* you made your change
-in addition to *what* you did (unless it is a tiny change).
+Katkıda bulunmak için lütfen ``develop`` dalını forklayın ve değişikliklerinizi
+orada yapın. Commit mesajlarınızda *ne* yaptığınızın yanı sıra *neden* değişiklik
+yaptığınız da belirtilmelidir (çok küçük bir değişiklik olmadığı sürece).
 
-If you need to pull in any changes from ``develop`` after making your fork (for
-example, to resolve potential merge conflicts), please avoid using ``git merge``
-and instead, ``git rebase`` your branch. This will help us review your change
-more easily.
+Fork yaptıktan sonra ``develop``tan herhangi bir değişiklik çekmeniz(pull) gerekiyorsa
+(örneğin, olası merge conflict`leri çözmek için), lütfen ``git merge`` kullanmaktan
+kaçının ve bunun yerine branch`inizi ``git rebase`` yapın. Bu, değişikliğinizi daha
+kolay gözden geçirmemize yardımcı olacaktır.
 
-Additionally, if you are writing a new feature, please ensure you add appropriate
-test cases under ``test/`` (see below).
+Ayrıca, yeni bir özellik yazıyorsanız, lütfen ``test/`` altına uygun test örneklerini
+eklediğinizden emin olun (aşağıya bakınız).
 
-However, if you are making a larger change, please consult with the `Solidity Development Gitter channel
-<https://gitter.im/ethereum/solidity-dev>`_ (different from the one mentioned above, this one is
-focused on compiler and language development instead of language usage) first.
+Bununla birlikte, daha büyük bir değişiklik yapıyorsanız, lütfen önce `Solidity
+Development Gitter kanalına <https://gitter.im/ethereum/solidity-dev>`_ (yukarıda
+bahsedilenden farklı olarak, bu kanal dil kullanımı yerine derleyici ve dil
+geliştirmeye odaklanmıştır) danışın.
 
-New features and bugfixes should be added to the ``Changelog.md`` file: please
-follow the style of previous entries, when applicable.
+Yeni özellikler ve hata düzeltmeleri ``Changelog.md`` dosyasına eklenmelidir:
+lütfen uygun durumlarda önceki girişlerin stilini takip edin.
 
-Finally, please make sure you respect the `coding style
-<https://github.com/ethereum/solidity/blob/develop/CODING_STYLE.md>`_
-for this project. Also, even though we do CI testing, please test your code and
-ensure that it builds locally before submitting a pull request.
+Son olarak, lütfen bu proje için `kodlama stiline <https://github.com/ethereum/solidity/blob/develop/CODING_STYLE.md>`_
+uyduğunuzdan emin olun. Ayrıca, CI testi yapmamıza rağmen, lütfen kodunuzu test edin
+ve bir pull request göndermeden önce yerel olarak derlendiğinden emin olun.
 
-Thank you for your help!
+Yardımlarınız için teşekkür ederiz!
 
-Running the Compiler Tests
+Derleyici Testlerini Çalıştırma
 ==========================
 
-Prerequisites
+Ön Koşullar
 -------------
 
-For running all compiler tests you may want to optionally install a few
-dependencies (`evmone <https://github.com/ethereum/evmone/releases>`_,
-`libz3 <https://github.com/Z3Prover/z3>`_, and
-`libhera <https://github.com/ewasm/hera>`_).
+Tüm derleyici testlerini çalıştırmak için isteğe bağlı olarak birkaç dependencies
+yüklemek isteyebilirsiniz (`evmone <https://github.com/ethereum/evmone/releases>`_,
+`libz3 <https://github.com/Z3Prover/z3>`_ ve `libhera <https://github.com/ewasm/hera>`_).
 
-On macOS some of the testing scripts expect GNU coreutils to be installed.
-This can be easiest accomplished using Homebrew: ``brew install coreutils``.
+macOS üzerinde bazı test betikleri GNU coreutils'in kurulu olmasını beklemektedir.
+Bu en kolay Homebrew kullanılarak gerçekleştirilebilir: ``brew install coreutils``.
 
-On Windows systems make sure that you have a privilege to create symlinks,
-otherwise several tests may fail.
-Administrators should have that privilege, but you may also
-`grant it to other users <https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/create-symbolic-links#policy-management>`_
-or
-`enable Developer Mode <https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development>`_.
+Windows sistemlerinde ortak bağlantı oluşturma ayrıcalığına sahip olduğunuzdan emin
+olun, aksi takdirde bazı testler başarısız olabilir. Yöneticilerin bu ayrıcalığa
+sahip olması gerekir, ancak `diğer kullanıcılara da verebilirsiniz <https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/create-symbolic-links#policy-management>`_ veya
+`Geliştirici Modunu etkinleştirebilirsiniz <https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development>`_.
 
-Running the Tests
+Testleri Çalıştırma
 -----------------
 
-Solidity includes different types of tests, most of them bundled into the
-`Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_ application ``soltest``.
-Running ``build/test/soltest`` or its wrapper ``scripts/soltest.sh`` is sufficient for most changes.
+Solidity, çoğu `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_ uygulaması ``soltest`` içinde paketlenmiş farklı test türleri içerir. Çoğu değişiklik için ``build/test/soltest`` veya onun paketleyicisi olan ``scripts/soltest.sh`` dosyasını çalıştırmak yeterlidir.
 
-The ``./scripts/tests.sh`` script executes most Solidity tests automatically,
-including those bundled into the `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_
-application ``soltest`` (or its wrapper ``scripts/soltest.sh``), as well as command line tests and
-compilation tests.
+./scripts/tests.sh`` betiği, `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_ uygulaması ``soltest`` (veya paketleyicisi ``scripts/soltest.sh``) ile birlikte komut satırı testleri ve derleme testleri de dahil olmak üzere çoğu Solidity testini otomatik olarak yürütür.
 
-The test system automatically tries to discover the location of
-the `evmone <https://github.com/ethereum/evmone/releases>`_ for running the semantic tests.
+Test sistemi, anlamsal testleri çalıştırmak için otomatik olarak `evmone <https://github.com/ethereum/evmone/releases>`_ konumunu keşfetmeye çalışır.
 
-The ``evmone`` library must be located in the ``deps`` or ``deps/lib`` directory relative to the
-current working directory, to its parent or its parent's parent. Alternatively an explicit location
-for the ``evmone`` shared object can be specified via the ``ETH_EVMONE`` environment variable.
+``evmone`` kütüphanesi, geçerli çalışma dizinine, üst dizinine veya üst dizinin üst dizinine göre ``deps`` veya ``deps/lib`` dizininde bulunmalıdır. Alternatif olarak ``evmone`` paylaşımlı nesnesi için açık bir konum ``ETH_EVMONE`` ortam değişkeni aracılığıyla belirtilebilir.
 
-``evmone`` is needed mainly for running semantic and gas tests.
-If you do not have it installed, you can skip these tests by passing the ``--no-semantic-tests``
-flag to ``scripts/soltest.sh``.
+``evmone`` esas olarak semantik ve gaz testlerini çalıştırmak için gereklidir. Eğer yüklü değilse, ``scripts/soltest.sh`` dosyasına ``--no-semantic-tests`` parametresini girerek bu testleri atlayabilirsiniz.
 
-Running Ewasm tests is disabled by default and can be explicitly enabled
-via ``./scripts/soltest.sh --ewasm`` and requires `hera <https://github.com/ewasm/hera>`_
-to be found by ``soltest``.
-The mechanism for locating the ``hera`` library is the same as for ``evmone``, except that the
-variable for specifying an explicit location is called ``ETH_HERA``.
+Ewasm testlerinin çalıştırılması varsayılan olarak devre dışıdır ve ``./scripts/soltest.sh --ewasm`` aracılığıyla açıkça etkinleştirilebilir ve ``hera <https://github.com/ewasm/hera>`_ kütüphanesinin ``soltest`` tarafından bulunmasını gerektirir. ``hera`` kütüphanesini bulma mekanizması ``evmone`` ile aynıdır, ancak açık bir konum belirtmek için kullanılan değişken ``ETH_HERA`` olarak adlandırılır.
 
-The ``evmone`` and ``hera`` libraries should both end with the file name
-extension ``.so`` on Linux, ``.dll`` on Windows systems and ``.dylib`` on macOS.
+``evmone`` ve ``hera`` kütüphanelerinin her ikisi de Linux'ta ``.so``, Windows sistemlerinde ``.dll`` ve macOS'ta ``.dylib`` dosya adı uzantısı ile bitmelidir.
 
-For running SMT tests, the ``libz3`` library must be installed and locatable
-by ``cmake`` during compiler configure stage.
+SMT testlerini çalıştırmak için, ``libz3`` kütüphanesi yüklenmeli ve derleyici yapılandırma aşamasında ``cmake`` tarafından bulunabilmelidir.
 
-If the ``libz3`` library is not installed on your system, you should disable the
-SMT tests by exporting ``SMT_FLAGS=--no-smt`` before running ``./scripts/tests.sh`` or
-running ``./scripts/soltest.sh --no-smt``.
-These tests are ``libsolidity/smtCheckerTests`` and ``libsolidity/smtCheckerTestsJSON``.
+Eğer ``libz3`` kütüphanesi sisteminizde yüklü değilse, ``./scripts/tests.sh`` dosyasını çalıştırmadan önce ``SMT_FLAGS=--no-smt`` komutunu vererek veya ``./scripts/soltest.sh -no smt`` dosyasını çalıştırarak SMT testlerini devre dışı bırakmalısınız. Bu testler ``libsolidity/smtCheckerTests`` ve ``libsolidity/smtCheckerTestsJSON`` testleridir.
 
 .. note ::
 
-    To get a list of all unit tests run by Soltest, run ``./build/test/soltest --list_content=HRF``.
+    Soltest tarafından çalıştırılan tüm birim testlerinin bir listesini almak için ``./build/test/soltest --list_content=HRF`` komutunu çalıştırın.
 
-For quicker results you can run a subset of, or specific tests.
+Daha hızlı sonuç almak için testlerin bir alt kümesini veya belirli testleri çalıştırabilirsiniz.
 
 To run a subset of tests, you can use filters:
 ``./scripts/soltest.sh -t TestSuite/TestName``,
 where ``TestName`` can be a wildcard ``*``.
 
-Or, for example, to run all the tests for the yul disambiguator:
-``./scripts/soltest.sh -t "yulOptimizerTests/disambiguator/*" --no-smt``.
+Ya da örneğin, yul disambiguator ile ilgili tüm testleri çalıştırmak için: ``./scripts/soltest.sh -t "yulOptimizerTests/disambiguator/*" --no-smt``.
 
-``./build/test/soltest --help`` has extensive help on all of the options available.
+``./build/test/soltest --help`` mevcut tüm seçenekler hakkında ayrıntılı bir yardım sağlar.
 
-See especially:
+Özellikle bakınız:
 
-- `show_progress (-p) <https://www.boost.org/doc/libs/release/libs/test/doc/html/boost_test/utf_reference/rt_param_reference/show_progress.html>`_ to show test completion,
-- `run_test (-t) <https://www.boost.org/doc/libs/release/libs/test/doc/html/boost_test/utf_reference/rt_param_reference/run_test.html>`_ to run specific tests cases, and
-- `report-level (-r) <https://www.boost.org/doc/libs/release/libs/test/doc/html/boost_test/utf_reference/rt_param_reference/report_level.html>`_ give a more detailed report.
+- Testin tamamlandığını göstermek için `show_progress (-p) <https://www.boost.org/doc/libs/release/libs/test/doc/html/boost_test/utf_reference/rt_param_reference/show_progress.html>`_,
+- Belirli test durumlarını çalıştırmak için `run_test (-t) <https://www.boost.org/doc/libs/release/libs/test/doc/html/boost_test/utf_reference/rt_param_reference/run_test.html>`_ ve
+- `report-level (-r) <https://www.boost.org/doc/libs/release/libs/test/doc/html/boost_test/utf_reference/rt_param_reference/report_level.html>`_ daha ayrıntılı bir rapor verir.
 
 .. note ::
 
-    Those working in a Windows environment wanting to run the above basic sets
-    without libz3. Using Git Bash, you use: ``./build/test/Release/soltest.exe -- --no-smt``.
-    If you are running this in plain Command Prompt, use ``.\build\test\Release\soltest.exe -- --no-smt``.
+    Windows ortamında çalışanlar yukarıdaki temel setleri libz3 olmadan çalıştırmak
+    isterler. Git Bash kullanarak, şunları kullanabilirsiniz: ``./build/test/Release/soltest.exe -- --no-smt``.
+    Bunu düz Komut İstemi'nde çalıştırıyorsanız, ``.\build\test\Release\soltest.exe -- --no-smt`` kullanın.
 
-If you want to debug using GDB, make sure you build differently than the "usual".
-For example, you could run the following command in your ``build`` folder:
+GDB kullanarak hata ayıklamak istiyorsanız, "normalden" farklı bir şekilde derlediğinizden
+emin olun. Örneğin, ``build`` klasörünüzde aşağıdaki komutu çalıştırabilirsiniz:
 .. code-block:: bash
 
    cmake -DCMAKE_BUILD_TYPE=Debug ..
    make
 
-This creates symbols so that when you debug a test using the ``--debug`` flag,
-you have access to functions and variables in which you can break or print with.
+Bu, ``--debug`` parametresini kullanarak bir testte hata ayıkladığınızda, bozabileceğiniz
+veya yazdırabileceğiniz fonksiyonlara ve değişkenlere erişebilmeniz için semboller oluşturur.
 
-The CI runs additional tests (including ``solc-js`` and testing third party Solidity
-frameworks) that require compiling the Emscripten target.
+CI, Emscripten hedefinin derlenmesini gerektiren ek testler (``solc-js`` ve üçüncü
+taraf Solidity çerçevelerinin test edilmesi dahil) çalıştırır.
 
-Writing and Running Syntax Tests
+Sözdizimi Testleri Yazma ve Çalıştırma
 --------------------------------
 
-Syntax tests check that the compiler generates the correct error messages for invalid code
-and properly accepts valid code.
-They are stored in individual files inside the ``tests/libsolidity/syntaxTests`` folder.
-These files must contain annotations, stating the expected result(s) of the respective test.
-The test suite compiles and checks them against the given expectations.
+Sözdizimi testleri, derleyicinin geçersiz kod için doğru hata mesajlarını oluşturduğunu
+ve geçerli kodu düzgün bir şekilde kabul ettiğini kontrol eder. Bunlar
+``tests/libsolidity/syntaxTests`` klasörü içindeki ayrı dosyalarda saklanır. Bu dosyalar,
+ilgili testin beklenen sonuç(lar)ını belirten ek açıklamalar içermelidir. Test paketi
+bunları derler ve verilen beklentilere göre kontrol eder.
 
-For example: ``./test/libsolidity/syntaxTests/double_stateVariable_declaration.sol``
+Örneğin: ``./test/libsolidity/syntaxTests/double_stateVariable_declaration.sol``
 
 .. code-block:: solidity
 
@@ -199,17 +175,19 @@ For example: ``./test/libsolidity/syntaxTests/double_stateVariable_declaration.s
         uint128 variable;
     }
     // ----
-    // DeclarationError: (36-52): Identifier already declared.
+    // DeclarationError: (36-52): Tanımlayıcı zaten bildirilmiş.
 
-A syntax test must contain at least the contract under test itself, followed by the separator ``// ----``. The comments that follow the separator are used to describe the
-expected compiler errors or warnings. The number range denotes the location in the source where the error occurred.
-If you want the contract to compile without any errors or warning you can leave
-out the separator and the comments that follow it.
+Bir sözdizimi testi, en azından test edilen sözleşmenin kendisini ve ardından ``// ----`` ayırıcısını
+içermelidir. Ayırıcıyı takip eden yorumlar, beklenen derleyici hatalarını veya uyarılarını
+tanımlamak için kullanılır. Sayı aralığı, kaynakta hatanın meydana geldiği konumu belirtir.
+Sözleşmenin herhangi bir hata veya uyarı olmadan derlenmesini istiyorsanız, ayırıcıyı ve onu
+takip eden yorumları dışarıda bırakabilirsiniz.
 
-In the above example, the state variable ``variable`` was declared twice, which is not allowed. This results in a ``DeclarationError`` stating that the identifier was already declared.
+Yukarıdaki örnekte, ``variable`` durum değişkeni iki kez bildirilmiştir, buna izin verilmez. Bu, tanımlayıcının zaten bildirilmiş olduğunu belirten bir ``DeclarationError`` ile sonuçlanır.
 
-The ``isoltest`` tool is used for these tests and you can find it under ``./build/test/tools/``. It is an interactive tool which allows
-editing of failing contracts using your preferred text editor. Let's try to break this test by removing the second declaration of ``variable``:
+Bu testler için ``isoltest`` aracı kullanılır ve bu aracı ``./build/test/tools/`` altında bulabilirsiniz.
+Tercih ettiğiniz metin editörünü kullanarak başarısız sözleşmelerin düzenlenmesine izin veren etkileşimli
+bir araçtır. Şimdi ``variable`` ifadesinin ikinci bildirimini kaldırarak bu testi çözmeye çalışalım:
 
 .. code-block:: solidity
 
@@ -217,9 +195,9 @@ editing of failing contracts using your preferred text editor. Let's try to brea
         uint256 variable;
     }
     // ----
-    // DeclarationError: (36-52): Identifier already declared.
+    // DeclarationError: (36-52): Tanımlayıcı zaten bildirilmiş.
 
-Running ``./build/test/tools/isoltest`` again results in a test failure:
+Tekrar ``./build/test/tools/isoltest`` çalıştırıldığında test başarısız olur:
 
 .. code-block:: text
 
@@ -229,25 +207,24 @@ Running ``./build/test/tools/isoltest`` again results in a test failure:
                 uint256 variable;
             }
 
-        Expected result:
-            DeclarationError: (36-52): Identifier already declared.
-        Obtained result:
-            Success
+          Beklenen sonuç:
+              DeclarationError: (36-52): Tanımlayıcı zaten bildirilmiş.
+          Elde edilen sonuç:
+              Başarılı
 
 
-``isoltest`` prints the expected result next to the obtained result, and also
-provides a way to edit, update or skip the current contract file, or quit the application.
+``isoltest`` elde edilen sonucun yanına beklenen sonucu yazdırır ve ayrıca mevcut sözleşme dosyasını düzenlemek, güncellemek veya atlamak ya da uygulamadan çıkmak için bir yol sağlar.
 
-It offers several options for failing tests:
+Başarısız testler için çeşitli seçenekler sunar:
 
-- ``edit``: ``isoltest`` tries to open the contract in an editor so you can adjust it. It either uses the editor given on the command line (as ``isoltest --editor /path/to/editor``), in the environment variable ``EDITOR`` or just ``/usr/bin/editor`` (in that order).
-- ``update``: Updates the expectations for contract under test. This updates the annotations by removing unmet expectations and adding missing expectations. The test is then run again.
-- ``skip``: Skips the execution of this particular test.
-- ``quit``: Quits ``isoltest``.
+- ``edit``: ``isoltest`` sözleşmeyi bir editörde açmaya çalışır, böylece onu ayarlayabilirsiniz. Ya komut satırında (``isoltest --editor /path/to/editor`` şeklinde), ya ``EDITOR`` ortam değişkeninde ya da sadece ``/usr/bin/editor`` (bu sırayla) verilen editörü kullanır.
+- ``update``: Test edilen sözleşme için beklentileri günceller. Bu, karşılanmamış beklentileri kaldırarak ve eksik beklentileri ekleyerek ek açıklamaları günceller. Test daha sonra tekrar çalıştırılır.
+- ``skip``: Bu belirli testin yürütülmesini atlar.
+- ``quit``: isoltest`` testinden çıkar.
 
-All of these options apply to the current contract, except ``quit`` which stops the entire testing process.
+Bu seçeneklerin tümü, tüm test sürecini durduran ``quit`` dışında mevcut sözleşme için geçerlidir.
 
-Automatically updating the test above changes it to
+Yukarıdaki testin otomatik olarak güncellenmesi onu şu şekilde değiştirir
 
 .. code-block:: solidity
 
@@ -256,7 +233,7 @@ Automatically updating the test above changes it to
     }
     // ----
 
-and re-run the test. It now passes again:
+ve testi yeniden çalıştırır. Şimdi tekrar geçer:
 
 .. code-block:: text
 
@@ -266,23 +243,26 @@ and re-run the test. It now passes again:
 
 .. note::
 
-    Choose a name for the contract file that explains what it tests, e.g. ``double_variable_declaration.sol``.
-    Do not put more than one contract into a single file, unless you are testing inheritance or cross-contract calls.
-    Each file should test one aspect of your new feature.
+    Sözleşme dosyası için neyi test ettiğini açıklayan bir isim seçin, örneğin ``double_variable_declaration.sol``.
+    Kalıtım veya çapraz sözleşme çağrılarını test etmediğiniz sürece, tek bir dosyaya birden fazla sözleşme koymayın.
+    Her dosya yeni özelliğinizin bir yönünü test etmelidir.
 
 
-Running the Fuzzer via AFL
+Fuzzer'ı AFL ile Çalıştırma
 ==========================
 
-Fuzzing is a technique that runs programs on more or less random inputs to find exceptional execution
-states (segmentation faults, exceptions, etc). Modern fuzzers are clever and run a directed search
-inside the input. We have a specialized binary called ``solfuzzer`` which takes source code as input
-and fails whenever it encounters an internal compiler error, segmentation fault or similar, but
-does not fail if e.g., the code contains an error. This way, fuzzing tools can find internal problems in the compiler.
+Fuzzing, istisnai yürütme durumlarını (segmentasyon hataları, istisnalar, vb.) bulmak
+için programları az çok rastgele girdiler üzerinde çalıştıran bir tekniktir. Modern
+fuzzer'lar akıllıdır ve girdi içinde yönlendirilmiş bir arama yaparlar. Kaynak kodunu
+girdi olarak alan ve dahili bir derleyici hatası, segmentasyon hatası veya benzeriyle
+karşılaştığında başarısız olan, ancak örneğin kod bir hata içeriyorsa başarısız olmayan
+``solfuzzer`` adlı özel bir binary'ye sahibiz. Bu şekilde, fuzzing araçları derleyicideki
+dahili sorunları bulabilir.
 
-We mainly use `AFL <https://lcamtuf.coredump.cx/afl/>`_ for fuzzing. You need to download and
-install the AFL packages from your repositories (afl, afl-clang) or build them manually.
-Next, build Solidity (or just the ``solfuzzer`` binary) with AFL as your compiler:
+Biz fuzzing için çoğunlukla `AFL <https://lcamtuf.coredump.cx/afl/>`_ kullanıyoruz. AFL
+paketlerini depolarınızdan indirip kurmanız (afl, afl-clang) ya da elle derlemeniz gerekir.
+Ardından, derleyiciniz olarak AFL ile Solidity'yi (veya sadece ``solfuzzer`` binary'sini)
+derleyin:
 
 .. code-block:: bash
 
@@ -292,7 +272,7 @@ Next, build Solidity (or just the ``solfuzzer`` binary) with AFL as your compile
     cmake .. -DCMAKE_C_COMPILER=path/to/afl-gcc -DCMAKE_CXX_COMPILER=path/to/afl-g++
     make solfuzzer
 
-At this stage you should be able to see a message similar to the following:
+Bu aşamada aşağıdakine benzer bir mesaj görebilmeniz gerekir:
 
 .. code-block:: text
 
@@ -303,7 +283,7 @@ At this stage you should be able to see a message similar to the following:
     [+] Instrumented 1949 locations (64-bit, non-hardened mode, ratio 100%).
     [100%] Linking CXX executable solfuzzer
 
-If the instrumentation messages did not appear, try switching the cmake flags pointing to AFL's clang binaries:
+Program mesajları görünmediyse, AFL'nin clang binary'lerine işaret eden cmake bayraklarını değiştirmeyi deneyin:
 
 .. code-block:: bash
 
@@ -312,7 +292,7 @@ If the instrumentation messages did not appear, try switching the cmake flags po
     cmake .. -DCMAKE_C_COMPILER=path/to/afl-clang -DCMAKE_CXX_COMPILER=path/to/afl-clang++
     make solfuzzer
 
-Otherwise, upon execution the fuzzer halts with an error saying binary is not instrumented:
+Aksi takdirde, yürütme sırasında fuzzer binary'nin enstrümante edilmediğini belirten bir hata ile duracaktır:
 
 .. code-block:: text
 
@@ -334,9 +314,9 @@ Otherwise, upon execution the fuzzer halts with an error saying binary is not in
              Location : check_binary(), afl-fuzz.c:6920
 
 
-Next, you need some example source files. This makes it much easier for the fuzzer
-to find errors. You can either copy some files from the syntax tests or extract test files
-from the documentation or the other tests:
+Ardından, bazı örnek kaynak dosyalara ihtiyacınız var. Bu, fuzzer'ın hataları bulmasını
+çok daha kolay hale getirir. Sözdizimi testlerinden bazı dosyaları kopyalayabilir ya da
+dokümantasyondan veya diğer testlerden test dosyalarını çıkarabilirsiniz:
 
 .. code-block:: bash
 
@@ -347,160 +327,171 @@ from the documentation or the other tests:
     # extract from documentation:
     path/to/solidity/scripts/isolate_tests.py path/to/solidity/docs
 
-The AFL documentation states that the corpus (the initial input files) should not be
-too large. The files themselves should not be larger than 1 kB and there should be
-at most one input file per functionality, so better start with a small number of.
-There is also a tool called ``afl-cmin`` that can trim input files
-that result in similar behaviour of the binary.
+AFL dokümantasyonunda corpus'un (ilk girdi dosyaları) çok büyük olmaması gerektiği
+belirtilmektedir. Dosyaların kendileri 1 kB'den büyük olmamalıdır ve fonksiyonellik
+başına en fazla bir girdi dosyası olmalıdır, bu nedenle az sayıda dosya ile başlamak
+daha iyidir. Binary'nin benzer davranışına neden olan girdi dosyalarını kırpabilen
+``afl-cmin`` adlı bir araç da bulunmaktadır.
 
-Now run the fuzzer (the ``-m`` extends the size of memory to 60 MB):
+Şimdi fuzzer'ı çalıştırın (``-m`` bellek boyutunu 60 MB'a genişletir):
 
 .. code-block:: bash
 
     afl-fuzz -m 60 -i /tmp/test_cases -o /tmp/fuzzer_reports -- /path/to/solfuzzer
 
-The fuzzer creates source files that lead to failures in ``/tmp/fuzzer_reports``.
-Often it finds many similar source files that produce the same error. You can
-use the tool ``scripts/uniqueErrors.sh`` to filter out the unique errors.
+Fuzzer, ``/tmp/fuzzer_reports`` içinde hatalara yol açan kaynak dosyaları oluşturur.
+Genellikle aynı hatayı üreten birçok benzer kaynak dosya bulur. Benzersiz hataları
+filtrelemek için ``scripts/uniqueErrors.sh`` aracını kullanabilirsiniz.
 
 Whiskers
 ========
 
-*Whiskers* is a string templating system similar to `Mustache <https://mustache.github.io>`_. It is used by the
-compiler in various places to aid readability, and thus maintainability and verifiability, of the code.
+*Whiskers*, `Mustache <https://mustache.github.io>`_ benzeri bir dize şablonlama
+sistemidir. Derleyici tarafından çeşitli yerlerde kodun okunabilirliğine ve dolayısıyla
+korunabilirliğine ve doğrulanabilirliğine yardımcı olmak için kullanılır.
 
-The syntax comes with a substantial difference to Mustache. The template markers ``{{`` and ``}}`` are
-replaced by ``<`` and ``>`` in order to aid parsing and avoid conflicts with :ref:`yul`
-(The symbols ``<`` and ``>`` are invalid in inline assembly, while ``{`` and ``}`` are used to delimit blocks).
-Another limitation is that lists are only resolved one depth and they do not recurse. This may change in the future.
+Sözdizimi Mustache'den önemli bir farkla birlikte gelir. Ayrıştırmaya yardımcı olmak
+ve :ref:`yul` ile çakışmaları önlemek için ``{{`` ve ``}}` şablon işaretleyicileri
+``<`` ve ``>`` ile değiştirilir (``<`` ve ``>`` sembolleri inline assembly'de geçersizdir,
+``{`` ve ``}`` ise blokları sınırlandırmak için kullanılır). Bir başka sınırlama da
+listelerin yalnızca bir derinlikte çözümlenebilmesi ve özyinelemeye tabi tutulmamasıdır.
+Bu gelecekte değişebilir.
 
-A rough specification is the following:
+Kaba bir tanımlama aşağıdaki gibidir:
 
-Any occurrence of ``<name>`` is replaced by the string-value of the supplied variable ``name`` without any
-escaping and without iterated replacements. An area can be delimited by ``<#name>...</name>``. It is replaced
-by as many concatenations of its contents as there were sets of variables supplied to the template system,
-each time replacing any ``<inner>`` items by their respective value. Top-level variables can also be used
-inside such areas.
+Herhangi bir ``<name>`` oluşumu, herhangi bir kaçış olmadan ve yinelenen değiştirmeler
+olmadan sağlanan ``name`` değişkeninin dize değeri ile değiştirilir. Bir alan ``<#name>...</name>``
+ile sınırlandırılabilir. Şablon sistemine sağlanan değişken kümeleri kadar içeriğinin
+bir araya getirilmesiyle değiştirilir ve her seferinde herhangi bir ``<inner>` öğesi
+ilgili değeriyle değiştirilir. Üst düzey değişkenler de bu tür alanların içinde kullanılabilir.
 
-There are also conditionals of the form ``<?name>...<!name>...</name>``, where template replacements
-continue recursively either in the first or the second segment depending on the value of the boolean
-parameter ``name``. If ``<?+name>...<!+name>...</+name>`` is used, then the check is whether
-the string parameter ``name`` is non-empty.
+Ayrıca ``<?name>...<!name>...</name>`` biçiminde koşullular da vardır, burada şablon
+değiştirmeleri ``name`` boolean parametresinin değerine bağlı olarak birinci ya da
+ikinci segmentte özyinelemeli olarak devam eder. Eğer ``<?+name>...<!+name>...</+name>``
+kullanılırsa, o zaman ``name`` string parametresinin boş olup olmadığı kontrol edilir.
 
 .. _documentation-style:
 
-Documentation Style Guide
+Dokümantasyon Stil Rehberi
 =========================
 
-In the following section you find style recommendations specifically focusing on documentation
-contributions to Solidity.
+Aşağıdaki bölümde özellikle Solidity'ye yapılan dokümantasyon katkılarına odaklanan
+stil önerileri bulacaksınız.
 
-English Language
+İngilizce Dili
 ----------------
 
-Use English, with British English spelling preferred, unless using project or brand names. Try to reduce the usage of
-local slang and references, making your language as clear to all readers as possible. Below are some references to help:
+Proje veya marka isimleri kullanmadığınız sürece İngilizce kullanın ve İngiliz İngilizcesi
+imla kurallarını tercih edin. Yerel argo ve referansların kullanımını azaltmaya çalışın ve dilinizi tüm okuyucular için mümkün olduğunca anlaşılır hale getirin. Aşağıda size yardımcı olacak bazı referanslar verilmiştir:
 
-* `Simplified technical English <https://en.wikipedia.org/wiki/Simplified_Technical_English>`_
-* `International English <https://en.wikipedia.org/wiki/International_English>`_
-* `British English spelling <https://en.oxforddictionaries.com/spelling/british-and-spelling>`_
+* `Basitleştirilmiş teknik İngilizce <https://en.wikipedia.org/wiki/Simplified_Technical_English>`_
+* `Uluslararası İngilizce <https://en.wikipedia.org/wiki/International_English>`_
+* `İngiliz İngilizcesi yazılışı <https://en.oxforddictionaries.com/spelling/british-and-spelling>`_
 
 
 .. note::
 
-    While the official Solidity documentation is written in English, there are community contributed :ref:`translations`
-    in other languages available. Please refer to the `translation guide <https://github.com/solidity-docs/translation-guide>`_
-    for information on how to contribute to the community translations.
+    Resmi Solidity dokümantasyonu İngilizce olarak yazılmış olsa da, diğer dillerde
+    topluluk katkılı :ref: `translations` mevcuttur. Topluluk çevirilerine nasıl katkıda
+    bulunabileceğiniz hakkında bilgi için lütfen `çeviri kılavuzuna <https://github.com/solidity-docs/translation-guide>`_ bakın.
 
-Title Case for Headings
+Başlıklar için Başlık Düzeni
 -----------------------
 
-Use `title case <https://titlecase.com>`_ for headings. This means capitalise all principal words in
-titles, but not articles, conjunctions, and prepositions unless they start the
-title.
+Başlıklar için `title case <https://titlecase.com>`_ kullanın. Bu, başlıklardaki
+tüm ana sözcüklerin büyük harfle yazılması, ancak başlığa başlamadıkları sürece
+artikellerin, bağlaçların ve edatların büyük harfle yazılmaması anlamına gelir.
 
-For example, the following are all correct:
+Örneğin, aşağıdakilerin hepsi doğrudur:
 
-* Title Case for Headings.
-* For Headings Use Title Case.
-* Local and State Variable Names.
-* Order of Layout.
+* Başlıklar için Başlık Düzeni.
+* Başlıklar İçin Başlık Düzenini Kullanın.
+* Yerel ve Eyalet Değişken Adları.
+* Düzen Sırası.
 
-Expand Contractions
+Genişletme Kısaltmaları
 -------------------
 
-Use expanded contractions for words, for example:
+Örneğin, sözcükler için genişletilmiş kısaltmalar kullanın:
 
-* "Do not" instead of "Don't".
-* "Can not" instead of "Can't".
+* "Don't" yerine "Do not".
+* "Can't" yerine "Can not".
 
-Active and Passive Voice
+Aktif ve Pasif Ses
 ------------------------
 
-Active voice is typically recommended for tutorial style documentation as it
-helps the reader understand who or what is performing a task. However, as the
-Solidity documentation is a mixture of tutorials and reference content, passive
-voice is sometimes more applicable.
+Aktif ses, okuyucunun bir görevi kimin veya neyin gerçekleştirdiğini anlamasına
+yardımcı olduğu için genellikle öğretici tarzı dokümantasyon için önerilir. Ancak,
+Solidity dokümantasyonu öğretici ve referans içeriklerin bir karışımı olduğundan,
+pasif ses bazen daha uygundur.
 
-As a summary:
+Özetlemek gerekirse:
 
-* Use passive voice for technical reference, for example language definition and internals of the Ethereum VM.
-* Use active voice when describing recommendations on how to apply an aspect of Solidity.
+* Teknik referanslar için pasif ses kullanın, örneğin dil tanımı ve Ethereum VM'nin dahili özellikleri.
+* Solidity'nin bir yönünün nasıl uygulanacağına ilişkin önerileri açıklarken aktif ses kullanın.
 
-For example, the below is in passive voice as it specifies an aspect of Solidity:
+Örneğin, aşağıdaki metin Solidity'nin bir yönünü belirttiği için pasif seslidir:
 
-  Functions can be declared ``pure`` in which case they promise not to read
-  from or modify the state.
+  Fonksiyonlar ``pure`` olarak bildirilebilir, bu takdirde durumdan okuma yapmayacaklarına
+  veya durumu değiştirmeyeceklerine söz verirler.
 
-For example, the below is in active voice as it discusses an application of Solidity:
+Örneğin, aşağıda Solidity'nin bir uygulaması tartışılırken aktif ses kullanılmıştır:
 
-  When invoking the compiler, you can specify how to discover the first element
-  of a path, and also path prefix remappings.
+  Derleyiciyi çağırırken, bir yolun ilk öğesinin nasıl bulunacağını ve ayrıca yol
+  öneki yeniden eşlemelerini belirtebilirsiniz.
 
-Common Terms
+Genel Terimler
 ------------
 
-* "Function parameters" and "return variables", not input and output parameters.
+* "Fonksiyon parametreleri" ve "dönüş değişkenleri", girdi ve çıktı parametreleri değil.
 
-Code Examples
+Kod Örnekleri
 -------------
 
-A CI process tests all code block formatted code examples that begin with ``pragma solidity``, ``contract``, ``library``
-or ``interface`` using the ``./test/cmdlineTests.sh`` script when you create a PR. If you are adding new code examples,
-ensure they work and pass tests before creating the PR.
+Bir CI süreci, bir PR oluşturduğunuzda ``./test/cmdlineTests.sh`` betiğini kullanarak
+``pragma solidity``, ``contract``, ``library`` veya ``interface`` ile başlayan tüm kod
+bloğu biçimlendirilmiş kod örneklerini test eder. Yeni kod örnekleri ekliyorsanız, PR
+oluşturmadan önce bunların çalıştığından ve testleri geçtiğinden emin olun.
 
-Ensure that all code examples begin with a ``pragma`` version that spans the largest where the contract code is valid.
-For example ``pragma solidity >=0.4.0 <0.9.0;``.
+Tüm kod örneklerinin, sözleşme kodunun geçerli olduğu en geniş alanı kapsayan bir
+``pragma`` sürümü ile başladığından emin olun. Örneğin ``pragma solidity >=0.4.0 <0.9.0;``.
 
-Running Documentation Tests
+Dokümantasyon Testlerini Çalıştırma
 ---------------------------
 
-Make sure your contributions pass our documentation tests by running ``./docs/docs.sh`` that installs dependencies
-needed for documentation and checks for any problems such as broken links or syntax issues.
+Dokümantasyon için gerekli bağımlılıkları yükleyen ve kırık bağlantılar veya sözdizimi
+sorunları gibi sorunları kontrol eden ``./docs/docs.sh`` dosyasını çalıştırarak katkılarınızın dokümantasyon testlerimizi geçtiğinizden emin olun.
 
-Solidity Language Design
+Solidity Dili Tasarımı
 ========================
 
-To actively get involved in the language design process and share your ideas concerning the future of Solidity,
-please join the `Solidity forum <https://forum.soliditylang.org/>`_.
+Dil tasarım sürecine aktif olarak dahil olmak ve Solidity'nin geleceği ile ilgili
+fikirlerinizi paylaşmak için lütfen `Solidity forum <https://forum.soliditylang.org/>`_'a katılın.
 
-The Solidity forum serves as the place to propose and discuss new language features and their implementation in
-the early stages of ideation or modifications of existing features.
+Solidity forumu, yeni dil özelliklerinin ve bunların uygulanmasının ilk aşamalarında
+veya mevcut özelliklerin modifikasyonlarının önerildiği ve tartışıldığı bir yer olarak
+hizmet vermektedir.
 
-As soon as proposals get more tangible, their
-implementation will also be discussed in the `Solidity GitHub repository <https://github.com/ethereum/solidity>`_
-in the form of issues.
+Öneriler daha somut hale gelir gelmez, bunların uygulanması da `Solidity GitHub repository
+<https://github.com/ethereum/solidity>`_'de sorunlar şeklinde tartışılacaktır.
 
-In addition to the forum and issue discussions, we regularly host language design discussion calls in which selected
-topics, issues or feature implementations are debated in detail. The invitation to those calls is shared via the forum.
+Forum ve sorun tartışmalarına ek olarak, seçilen konuların, sorunların veya özellik
+uygulamalarının ayrıntılı olarak tartışıldığı dil tasarımı tartışma çağrılarına
+düzenli olarak ev sahipliği yapıyoruz. Bu çağrılar için davetiye forum üzerinden
+paylaşılmaktadır.
 
-We are also sharing feedback surveys and other content that is relevant to language design in the forum.
+Ayrıca geri bildirim anketlerini ve dil tasarımıyla ilgili diğer içerikleri de forumda
+paylaşıyoruz.
 
-If you want to know where the team is standing in terms or implementing new features, you can follow the implementation status in the `Solidity Github project <https://github.com/ethereum/solidity/projects/43>`_.
-Issues in the design backlog need further specification and will either be discussed in a language design call or in a regular team call. You can
-see the upcoming changes for the next breaking release by changing from the default branch (`develop`) to the `breaking branch <https://github.com/ethereum/solidity/tree/breaking>`_.
+Ekibin yeni özelliklerin uygulanması konusunda ne durumda olduğunu öğrenmek istiyorsanız,
+`Solidity Github projesi <https://github.com/ethereum/solidity/projects/43>`_ adresinden
+uygulama durumunu takip edebilirsiniz. Tasarım birikimindeki konular daha fazla spesifikasyona
+ihtiyaç duyar ve ya bir dil tasarımı çağrısında ya da normal bir ekip çağrısında tartışılacaktır.
+Varsayılan branch'ten (`develop`) `breaking branch <https://github.com/ethereum/solidity/tree/breaking>`_'e
+geçerek bir sonraki breaking release için gelecek değişiklikleri görebilirsiniz.
 
-For ad-hoc cases and questions you can reach out to us via the `Solidity-dev Gitter channel <https://gitter.im/ethereum/solidity-dev>`_, a
-dedicated chatroom for conversations around the Solidity compiler and language development.
+Geçici durumlar ve sorularınız için, Solidity derleyicisi ve dil geliştirme ile ilgili
+konuşmalar için özel bir sohbet odası olan `Solidity dev Gitter kanalı <https://gitter.im/ethereum/solidity-dev>`_ üzerinden bize ulaşabilirsiniz.
 
-We are happy to hear your thoughts on how we can improve the language design process to be even more collaborative and transparent.
+Dil tasarım sürecini daha işbirlikçi ve şeffaf hale getirmek için neler yapabileceğimiz
+konusundaki düşüncelerinizi duymaktan mutluluk duyarız.
