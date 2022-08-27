@@ -1,86 +1,69 @@
 ####################
-Solidity Brand Guide
+Solidity Marka Kılavuzu
 ####################
 
-This brand guide features information on Solidity's brand policy and
-logo usage guidelines.
+Bu marka rehberi, Solidity'nin marka politikası ve logo kullanım yönergeleri hakkında bilgi içerir.
 
-The Solidity Brand
+Solidity Markası
 ==================
 
-The Solidity programming language is an open-source, community project
-governed by a core team. The core team is sponsored by the `Ethereum
-Foundation <https://ethereum.foundation/>`_.
+Solidity programlama dili, çekirdek bir ekip tarafından yönetilen açık kaynaklı bir topluluk projesidir. Çekirdek ekip `Ethereum Foundation <https://ethereum.foundation/>`_ tarafından desteklenmektedir.
 
-This document aims to provide information about how to best use the
-Solidity brand name and logo.
+Bu belge, Solidity marka adı ve logosunun en iyi şekilde nasıl kullanılacağı hakkında bilgi vermeyi amaçlamaktadır.
 
-We encourage you to read this document carefully before using the
-brand name or the logo. Your cooperation is highly appreciated!
+Marka adını veya logoyu kullanmadan önce bu belgeyi dikkatlice okumanızı öneririz. İşbirliğiniz çok takdir edilmektedir!
 
-Solidity Brand Name
+Solidity Marka Adı
 ===================
 
-"Solidity" should be used to refer to the Solidity programming language
-solely.
+"Solidity" yalnızca Solidity programlama diline atıfta bulunmak için kullanılmalıdır.
 
-Please do not use "Solidity":
+Lütfen "Solidity" i şu şekilde kullanmayın:
 
-- To refer to any other programming language.
+- Başka herhangi bir programlama diline atıfta bulunmak için.
 
-- In a way that is misleading or may imply association of unrelated
-  modules, tools, documentation, or other resources with the Solidity
-  programming language.
+- Yanıltıcı olacak veya ilgisiz modüllerin, araçların, belgelerin veya diğer kaynakların Solidity programlama diliyle ilişkilendirildiğini ima edecek şekilde.
 
-- In ways that confuse the community as to whether the Solidity
-  programming language is open-source and free to use.
+- Solidity programlama dilinin açık kaynaklı ve ücretsiz olup olmadığı konusunda topluluğun kafasını karıştıracak şekilde.
 
-Solidity Logo License
+Solidity Logo Lisansı
 =====================
 
 .. image:: https://i.creativecommons.org/l/by/4.0/88x31.png
   :width: 88
   :alt: Creative Commons License
 
-The Solidity logo is distributed and licensed under a `Creative Commons
-Attribution 4.0 International License <https://creativecommons.org/licenses/by/4.0/>`_.
+Solidity logosu `Creative Commons Attribution 4.0 International License <https://creativecommons.org/licenses/by/4.0/>`_ altında dağıtılmakta ve lisanslanmaktadır.
 
-This is the most permissive Creative Commons license and allows reuse
-and modifications for any purpose.
+Bu, en serbest Creative Commons lisansıdır ve herhangi bir amaç için yeniden kullanıma ve değişikliklere izin verir.
 
-You are free to:
+Bunları yapmakta özgürsünüz:
 
-- **Share** — Copy and redistribute the material in any medium or format.
+- **Paylaş** - Materyali herhangi bir ortamda veya formatta kopyalayın ve yeniden dağıtın.
 
-- **Adapt** — Remix, transform, and build upon the material for any
-  purpose, even commercially.
+- **Uyarlamak** - Ticari olarak bile olsa herhangi bir amaçla materyali yeniden karıştırmak, dönüştürmek ve üzerine inşa etmek.
 
-Under the following terms:
+Aşağıdaki şartlar altında:
 
-- **Attribution** — You must give appropriate credit, provide a link to
-  the license, and indicate if changes were made. You may do so in any
-  reasonable manner, but not in any way that suggests that the Solidity
-  core team endorses you or your use.
+- **Atıf** - Uygun şekilde atıfta bulunmalı, lisansa bir bağlantı vermeli ve değişiklik yapılıp yapılmadığını belirtmelisiniz. Bunu makul herhangi bir şekilde yapabilirsiniz, ancak Solidity çekirdek ekibinin sizi veya kullanımınızı onayladığını gösteren herhangi bir şekilde yapamazsınız.
 
-When using the Solidity logo, please respect the Solidity logo guidelines.
+Solidity logosunu kullanırken lütfen Solidity logo yönergelerine uyun.
 
-Solidity Logo Guidelines
+Solidity Logo Kılavuzu
 ========================
 
 .. image:: logo.svg
   :width: 256
 
-*(Right click on the logo to download it.)*
+*(İndirmek için logoya sağ tıklayın.)*
 
-Please do not:
+Lütfen şunları yapmayınız:
 
-- Change the ratio of the logo (do not stretch it or cut it).
+- Logonun oranını değiştirmek (uzatmayın veya kesmeyin).
 
-- Change the colors of the logo, unless it is absolutely necessary.
+- Kesinlikle gerekli olmadığı sürece logonun renklerini değiştirmek.
 
 Credits
 =======
 
-This document was, in parts, derived from the `Python Software
-Foundation Trademark Usage Policy <https://www.python.org/psf/trademarks/>`_
-and the `Rust Media Guide <https://www.rust-lang.org/policies/media-guide>`_.
+Bu belge kısmen `Python Yazılım Vakfı Ticari Marka Kullanım Politikası <https://www.python.org/psf/trademarks/>`_ ve `Rust Media Guide <https://www.rust-lang.org/policies/media-guide>`_'dan türetilmiştir.
