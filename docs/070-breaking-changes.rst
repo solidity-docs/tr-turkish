@@ -1,133 +1,99 @@
 ********************************
-Solidity v0.7.0 Breaking Changes
+Solidity v0.7.0 İşleyişi Bozan Değişiklikler
 ********************************
 
-This section highlights the main breaking changes introduced in Solidity
-version 0.7.0, along with the reasoning behind the changes and how to update
-affected code.
-For the full list check
-`the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.7.0>`_.
+Bu bölüm, Solidity 0.7.0 sürümünde getirilen ana işleyişi bozan değişiklikleri,
+değişikliklerin arkasındaki gerekçeleri ve etkilenen kodun nasıl güncelleneceğini
+vurgular. Tam liste için `sürüm değişiklik günlüğü <https://github.com/ethereum/solidity/releases/tag/v0.7.0>`_
+adresini kontrol edin.
 
 
-Silent Changes of the Semantics
+Semantiğin Sessiz Değişiklikleri
 ===============================
 
-* Exponentiation and shifts of literals by non-literals (e.g. ``1 << x`` or ``2 ** x``)
-  will always use either the type ``uint256`` (for non-negative literals) or
-  ``int256`` (for negative literals) to perform the operation.
-  Previously, the operation was performed in the type of the shift amount / the
-  exponent which can be misleading.
+* Literallerin literal olmayanlarla üslendirilmesi ve kaydırılması (örneğin ``1 << x``
+  veya ``2 ** x``) işlemi gerçekleştirmek için her zaman ``uint256`` (negatif olmayan
+  literaller için) veya ``int256`` (negatif literaller için) türünü kullanacaktır.
+  Önceden, işlem kaydırma miktarı / üstel türde gerçekleştiriliyordu ve bu da yanıltıcı
+  olabiliyordu.
 
 
-Changes to the Syntax
+Sözdizimindeki Değişiklikler
 =====================
 
-* In external function and contract creation calls, Ether and gas is now specified using a new syntax:
-  ``x.f{gas: 10000, value: 2 ether}(arg1, arg2)``.
-  The old syntax -- ``x.f.gas(10000).value(2 ether)(arg1, arg2)`` -- will cause an error.
+* External fonksiyon ve sözleşme oluşturma çağrılarında, Ether ve gas artık yeni bir sözdizimi kullanılarak belirtiliyor: ``x.f{gaz: 10000, değer: 2 eter}(arg1, arg2)``. Eski sözdizimi -- ``x.f.gas(10000).value(2 ether)(arg1, arg2)`` -- bir hataya neden olacaktır.
 
-* The global variable ``now`` is deprecated, ``block.timestamp`` should be used instead.
-  The single identifier ``now`` is too generic for a global variable and could give the impression
-  that it changes during transaction processing, whereas ``block.timestamp`` correctly
-  reflects the fact that it is just a property of the block.
+* Global değişken ``now`` kullanımdan kaldırılmıştır, bunun yerine ``block.timestamp`` kullanılmalıdır. Tek tanımlayıcı ``now`` global bir değişken için çok geneldir ve işlem sırasında değiştiği izlenimini verebilir, oysa ``block.timestamp`` sadece bloğun bir özelliği olduğu gerçeğini doğru bir şekilde yansıtır.
 
-* NatSpec comments on variables are only allowed for public state variables and not
-  for local or internal variables.
+* Değişkenler üzerindeki NatSpec yorumlarına yalnızca genel durum değişkenleri için izin verilir, yerel veya dahili değişkenler için izin verilmez.
 
-* The token ``gwei`` is a keyword now (used to specify, e.g. ``2 gwei`` as a number)
-  and cannot be used as an identifier.
+* ``gwei`` belirteci artık bir anahtar kelimedir (örneğin ``2 gwei`` bir sayı olarak belirtmek için kullanılır) ve bir tanımlayıcı olarak kullanılamaz.
 
-* String literals now can only contain printable ASCII characters and this also includes a variety of
-  escape sequences, such as hexadecimal (``\xff``) and unicode escapes (``\u20ac``).
+* String değişmezleri artık yalnızca yazdırılabilir ASCII karakterleri içerebilir ve bu aynı zamanda heksadesimal (``\xff``) ve unicode escapes (``\u20ac``) gibi çeşitli kaçış dizilerini de içerir.
 
-* Unicode string literals are supported now to accommodate valid UTF-8 sequences. They are identified
-  with the ``unicode`` prefix: ``unicode"Hello 😃"``.
+* Unicode string literals artık geçerli UTF-8 dizilimlerini barındırmak için desteklenmektedir. Bunlar ``unicode`` öneki ile tanımlanır: ``unicode "Hello 😃"``.
 
-* State Mutability: The state mutability of functions can now be restricted during inheritance:
-  Functions with default state mutability can be overridden by ``pure`` and ``view`` functions
-  while ``view`` functions can be overridden by ``pure`` functions.
-  At the same time, public state variables are considered ``view`` and even ``pure``
-  if they are constants.
+* Durum Değiştirilebilirliği: Fonksiyonların durum değiştirilebilirliği artık kalıtım sırasında kısıtlanabilir: Varsayılan durum değiştirilebilirliğine sahip fonksiyonlar ``pure`` ve ``view`` fonksiyonları tarafından geçersiz kılınabilirken, ``view`` fonksiyonları ``pure`` fonksiyonları tarafından geçersiz kılınabilir. Aynı zamanda, genel durum değişkenleri sabitlerse ``view`` ve hatta ``pure`` olarak kabul edilir.
 
 
 
 Inline Assembly
 ---------------
 
-* Disallow ``.`` in user-defined function and variable names in inline assembly.
-  It is still valid if you use Solidity in Yul-only mode.
+* Inline assembly'de kullanıcı tanımlı fonksiyon ve değişken isimlerinde ``.`` ifadesine izin vermeyin. Solidity'yi Yul-only modunda kullanırsanız bu durum hala geçerlidir.
 
-* Slot and offset of storage pointer variable ``x`` are accessed via ``x.slot``
-  and ``x.offset`` instead of ``x_slot`` and ``x_offset``.
+* ``x`` depolama işaretçisi değişkeninin yuvasına ve ofsetine ``x_slot`` ve ``x_offset`` yerine ``x.slot`` ve ``x.offset`` üzerinden erişilir.
 
-Removal of Unused or Unsafe Features
+Kullanılmayan veya Güvenli Olmayan Özelliklerin Kaldırılması
 ====================================
 
-Mappings outside Storage
+Depolama dışındaki eşleştirmeler(Mappings outside Storage)
 ------------------------
 
-* If a struct or array contains a mapping, it can only be used in storage.
-  Previously, mapping members were silently skipped in memory, which
-  is confusing and error-prone.
+* Bir struct veya dizi bir mapping içeriyorsa, yalnızca depolama alanında kullanılabilir. Önceden, mapping üyeleri bellekte sessizce atlanıyordu, bu da kafa karıştırıcı ve hataya açıktı.
 
-* Assignments to structs or arrays in storage does not work if they contain
-  mappings.
-  Previously, mappings were silently skipped during the copy operation, which
-  is misleading and error-prone.
+* Depolama alanındaki struct veya dizilere yapılan atamalar, mapping içeriyorsa çalışmaz. Önceden, mappingler kopyalama işlemi sırasında sessizce atlanıyordu, bu da yanıltıcı ve hataya açıktı.
 
-Functions and Events
+Fonksiyonlar ve Events
 --------------------
 
-* Visibility (``public`` / ``internal``) is not needed for constructors anymore:
-  To prevent a contract from being created, it can be marked ``abstract``.
-  This makes the visibility concept for constructors obsolete.
+* Görünürlük (``public`` / ``internal``) artık constructor`lar için gerekli değildir: Bir sözleşmenin oluşturulmasını önlemek için, sözleşme ``abstract`` olarak işaretlenebilir. Bu, constructor'lar için görünürlük kavramını geçersiz kılar.
 
-* Type Checker: Disallow ``virtual`` for library functions:
-  Since libraries cannot be inherited from, library functions should not be virtual.
+* Tip Denetleyicisi: Kütüphane fonksiyonları için ``virtual`` işaretine izin vermeyin: Kütüphanelerden miras alınamayacağı için, kütüphane fonksiyonları sanal olmamalıdır.
 
-* Multiple events with the same name and parameter types in the same
-  inheritance hierarchy are disallowed.
+* Aynı kalıtım hiyerarşisinde aynı isme ve parametre türlerine sahip birden fazla event'e izin verilmez.
 
-* ``using A for B`` only affects the contract it is mentioned in.
-  Previously, the effect was inherited. Now, you have to repeat the ``using``
-  statement in all derived contracts that make use of the feature.
+* ``using A for B`` yalnızca içinde bahsedildiği sözleşmeyi etkiler. Önceden, etki kalıtsaldı. Şimdi, özelliği kullanan tüm türetilmiş sözleşmelerde ``using`` ifadesini tekrarlamanız gerekir.
 
-Expressions
+İfadeler
 -----------
 
-* Shifts by signed types are disallowed.
-  Previously, shifts by negative amounts were allowed, but reverted at runtime.
+* İşaretli türlere göre kaydırmalara izin verilmez. Daha önce, negatif miktarlarla kaydırmalara izin veriliyordu, ancak çalışma zamanında geri döndürülüyordu.
 
-* The ``finney`` and ``szabo`` denominations are removed.
-  They are rarely used and do not make the actual amount readily visible. Instead, explicit
-  values like ``1e20`` or the very common ``gwei`` can be used.
+* ``finney`` ve ``szabo`` değerleri kaldırılmıştır. Bunlar nadiren kullanılır ve gerçek miktarı kolayca görünür hale getirmez. Bunun yerine, ``1e20`` veya çok yaygın olan ``gwei`` gibi açık değerler kullanılabilir.
 
 Declarations
 ------------
 
-* The keyword ``var`` cannot be used anymore.
-  Previously, this keyword would parse but result in a type error and
-  a suggestion about which type to use. Now, it results in a parser error.
+* ``var`` anahtar sözcüğü artık kullanılamıyor. Önceden, bu anahtar sözcük ayrıştırılır ancak bir tür hatasına ve hangi türün kullanılacağına ilişkin bir öneriye neden olurdu. Şimdi, bir ayrıştırıcı hatasıyla sonuçlanıyor.
 
-Interface Changes
+Arayüz Değişiklikleri
 =================
 
-* JSON AST: Mark hex string literals with ``kind: "hexString"``.
-* JSON AST: Members with value ``null`` are removed from JSON output.
-* NatSpec: Constructors and functions have consistent userdoc output.
+* JSON AST: Hex string değişmezlerini ``kind: "hexString"`` ile işaretleyin.
+* JSON AST: Değeri ``null`` olan üyeler JSON çıktısından kaldırılır.
+* NatSpec: Constructor ve fonksiyonlar tutarlı userdoc çıktısına sahiptir.
 
 
-How to update your code
+Kodunuzu nasıl güncelleyebilirsiniz?
 =======================
 
-This section gives detailed instructions on how to update prior code for every breaking change.
+Bu bölümde, her işleyişi bozan değişiklik için önceki kodun nasıl güncelleneceğine ilişkin ayrıntılı talimatlar verilmektedir.
 
-* Change ``x.f.value(...)()`` to ``x.f{value: ...}()``. Similarly ``(new C).value(...)()`` to
-  ``new C{value: ...}()`` and ``x.f.gas(...).value(...)()`` to ``x.f{gas: ..., value: ...}()``.
-* Change ``now`` to ``block.timestamp``.
-* Change types of right operand in shift operators to unsigned types. For example change ``x >> (256 - y)`` to
-  ``x >> uint(256 - y)``.
-* Repeat the ``using A for B`` statements in all derived contracts if needed.
-* Remove the ``public`` keyword from every constructor.
-* Remove the ``internal`` keyword from every constructor and add ``abstract`` to the contract (if not already present).
-* Change ``_slot`` and ``_offset`` suffixes in inline assembly to ``.slot`` and ``.offset``, respectively.
+* ``x.f.value(...)()`` ifadesini ``x.f{value: ...}()`` olarak değiştirin. Benzer şekilde ``(new C).value(...)()`` ``new C{value: ...}()`` ve ``x.f.gas(...).value(...)()`` ``x.f{gas: ..., value: ...}()`` olarak değiştirin.
+* ``now`` ifadesini ``block.timestamp`` olarak değiştirin.
+* Kaydırma operatörlerindeki sağ operand tiplerini işaretsiz tipler olarak değiştirin. Örneğin ``x >> (256 - y)`` ifadesini ``x >> uint(256 - y)`` olarak değiştirin.
+* Gerekirse tüm türetilmiş sözleşmelerde ``using A for B`` ifadelerini tekrarlayın.
+* Her constructor`dan ``public`` anahtar sözcüğünü kaldırın.
+* Her constructor`dan ``internal`` anahtar sözcüğünü kaldırın ve sözleşmeye ``abstract`` ekleyin (henüz mevcut değilse).
+* Inline assembly`deki ``_slot`` ve ``_offset`` soneklerini sırasıyla ``.slot`` ve ``.offset`` olarak değiştirin.
