@@ -1,176 +1,124 @@
 ********************************
-Solidity v0.6.0 Breaking Changes
+Solidity v0.6.0 İşleyişi Bozan Değişiklikler
 ********************************
 
-This section highlights the main breaking changes introduced in Solidity
-version 0.6.0, along with the reasoning behind the changes and how to update
-affected code.
-For the full list check
-`the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.6.0>`_.
+Bu bölüm, Solidity 0.6.0 sürümünde getirilen ana işleyişi bozan değişiklikleri,
+değişikliklerin arkasındaki gerekçeleri ve etkilenen kodun nasıl güncelleneceğini
+vurgular. Tam liste için `sürüm değişiklik günlüğü <https://github.com/ethereum/solidity/releases/tag/v0.6.0>`_
+adresini kontrol edin.
 
 
-Changes the Compiler Might not Warn About
+Derleyicinin Uyaramayabileceği Değişiklikler
 =========================================
 
-This section lists changes where the behaviour of your code might
-change without the compiler telling you about it.
+Bu bölümde, kodunuzun davranışının derleyici size haber vermeden değişebileceği değişiklikler listelenmektedir.
 
-* The resulting type of an exponentiation is the type of the base. It used to be the smallest type
-  that can hold both the type of the base and the type of the exponent, as with symmetric
-  operations. Additionally, signed types are allowed for the base of the exponentiation.
+* Bir üs alma işleminin sonuç türü tabanın türüdür. Simetrik işlemlerde olduğu gibi, hem
+  tabanın türünü hem de üssün türünü tutabilen en küçük tür olarak kullanılır. Ayrıca, üs
+  alma işleminin tabanı için işaretli türlere izin verilir.
 
 
-Explicitness Requirements
+Açıklık Gereksinimleri
 =========================
 
-This section lists changes where the code now needs to be more explicit,
-but the semantics do not change.
-For most of the topics the compiler will provide suggestions.
+Bu bölüm, kodun artık daha açık olması gereken, ancak anlamın değişmediği değişiklikleri
+listeler. Konuların çoğu için derleyici öneriler sağlayacaktır.
 
-* Functions can now only be overridden when they are either marked with the
-  ``virtual`` keyword or defined in an interface. Functions without
-  implementation outside an interface have to be marked ``virtual``.
-  When overriding a function or modifier, the new keyword ``override``
-  must be used. When overriding a function or modifier defined in multiple
-  parallel bases, all bases must be listed in parentheses after the keyword
-  like so: ``override(Base1, Base2)``.
+* Fonksiyonlar artık yalnızca ``virtual`` anahtar sözcüğü ile işaretlendiklerinde veya bir arayüzde tanımlandıklarında geçersiz kılınabilir. Bir arayüz dışında uygulaması olmayan fonksiyonlar ``virtual`` olarak işaretlenmelidir. Bir fonksiyon veya modifier geçersiz kılınırken, yeni ``override`` anahtar sözcüğü kullanılmalıdır. Birden fazla paralel tabanda tanımlanmış bir fonksiyon veya modifier geçersiz kılınırken, tüm tabanlar anahtar kelimeden sonra parantez içinde aşağıdaki gibi listelenmelidir: ``override(Base1, Base2)``.
 
-* Member-access to ``length`` of arrays is now always read-only, even for storage arrays. It is no
-  longer possible to resize storage arrays by assigning a new value to their length. Use ``push()``,
-  ``push(value)`` or ``pop()`` instead, or assign a full array, which will of course overwrite the existing content.
-  The reason behind this is to prevent storage collisions of gigantic
-  storage arrays.
+* Dizilerin ``length`` öğesine üye erişimi artık depolama dizileri için bile her zaman salt okunurdur. Depolama dizilerini uzunluklarına yeni bir değer atayarak yeniden boyutlandırmak artık mümkün değildir. Bunun yerine ``push()``, ``push(value)`` veya ``pop()`` kullanın ya da tam bir dizi atayın, bu da elbette mevcut içeriğin üzerine yazacaktır. Bunun arkasındaki neden, devasa depolama dizilerinin depolama çakışmalarını önlemektir.
 
-* The new keyword ``abstract`` can be used to mark contracts as abstract. It has to be used
-  if a contract does not implement all its functions. Abstract contracts cannot be created using the ``new`` operator,
-  and it is not possible to generate bytecode for them during compilation.
+* Yeni anahtar kelime ``abstract`` sözleşmeleri soyut olarak işaretlemek için kullanılabilir. Bir sözleşme tüm fonksiyonlarını uygulamıyorsa kullanılmalıdır. Soyut sözleşmeler ``new`` operatörü kullanılarak oluşturulamaz ve derleme sırasında bunlar için bytecode üretmek mümkün değildir.
 
-* Libraries have to implement all their functions, not only the internal ones.
+* Kütüphaneler sadece internal olanları değil, tüm fonksiyonlarını uygulamak zorundadır.
 
-* The names of variables declared in inline assembly may no longer end in ``_slot`` or ``_offset``.
+* Inline assembly'de bildirilen değişkenlerin adları artık ``_slot`` veya ``_offset`` ile bitemez.
 
-* Variable declarations in inline assembly may no longer shadow any declaration outside the inline assembly block.
-  If the name contains a dot, its prefix up to the dot may not conflict with any declaration outside the inline
-  assembly block.
+* Inline assembly'deki değişken bildirimleri artık inline assembly bloğunun dışındaki herhangi bir bildirimi gölgeleyemez. İsim bir nokta içeriyorsa, noktaya kadar olan öneki, inline assembly bloğu dışındaki herhangi bir bildirimle çakışmayabilir.
 
-* State variable shadowing is now disallowed.  A derived contract can only
-  declare a state variable ``x``, if there is no visible state variable with
-  the same name in any of its bases.
+* Durum değişkeni gölgelemesine artık izin verilmemektedir.  Türetilmiş bir sözleşme, yalnızca tabanlarının hiçbirinde aynı ada sahip görünür bir durum değişkeni yoksa ``x`` durum değişkenini bildirebilir.
 
 
-Semantic and Syntactic Changes
+Semantik ve Sentaktik Değişiklikler
 ==============================
 
-This section lists changes where you have to modify your code
-and it does something else afterwards.
+Bu bölüm, kodunuzu değiştirmeniz gereken ve daha sonra başka bir şey yapan değişiklikleri listeler.
 
-* Conversions from external function types to ``address`` are now disallowed. Instead external
-  function types have a member called ``address``, similar to the existing ``selector`` member.
+* External fonksiyon tiplerinden ``address``e dönüşümlere artık izin verilmiyor. Bunun yerine harici fonksiyon tipleri, mevcut ``selector`` üyesine benzer şekilde ``address`` adlı bir üyeye sahiptir.
 
-* The function ``push(value)`` for dynamic storage arrays does not return the new length anymore (it returns nothing).
+* Dinamik depolama dizileri için ``push(value)`` fonksiyonu artık yeni uzunluğu döndürmüyor (hiçbir şey döndürmüyor).
 
-* The unnamed function commonly referred to as "fallback function" was split up into a new
-  fallback function that is defined using the ``fallback`` keyword and a receive ether function
-  defined using the ``receive`` keyword.
+* Genellikle " fallback fonksiyonu" olarak adlandırılan isimsiz fonksiyon, ``fallback`` anahtar kelimesi kullanılarak tanımlanan yeni bir fallback fonksiyonuna ve ``receive`` anahtar kelimesi kullanılarak tanımlanan bir receive ether fonksiyonuna bölünmüştür.
 
-  * If present, the receive ether function is called whenever the call data is empty (whether
-    or not ether is received). This function is implicitly ``payable``.
+  * Mevcutsa, çağrı verisi boş olduğunda ( ether alınsın ya da alınmasın) ether alma fonksiyonu çağrılır. Bu fonksiyon örtük olarak ``payable``dır.
 
-  * The new fallback function is called when no other function matches (if the receive ether
-    function does not exist then this includes calls with empty call data).
-    You can make this function ``payable`` or not. If it is not ``payable`` then transactions
-    not matching any other function which send value will revert. You should only need to
-    implement the new fallback function if you are following an upgrade or proxy pattern.
+  * Yeni fallback fonksiyonu, başka hiçbir fonksiyon uyuşmadığında çağrılır (eğer receive ether fonksiyonu mevcut değilse, bu boş çağrı verisine sahip çağrıları da içerir). Bu fonksiyonu ``payable`` yapabilir ya da yapmayabilirsiniz. Eğer ``payable`` değilse, değer gönderen başka bir fonksiyonla eşleşmeyen işlemler geri dönecektir. Yeni fallback fonksiyonunu yalnızca bir yükseltme veya proxy modelini takip ediyorsanız uygulamanız gerekir.
 
 
-New Features
+Yeni Özellikler
 ============
 
-This section lists things that were not possible prior to Solidity 0.6.0
-or were more difficult to achieve.
+Bu bölümde Solidity 0.6.0 öncesinde mümkün olmayan veya başarılması daha zor olan şeyler listelenmektedir.
 
-* The :ref:`try/catch statement <try-catch>` allows you to react on failed external calls.
-* ``struct`` and ``enum`` types can be declared at file level.
-* Array slices can be used for calldata arrays, for example ``abi.decode(msg.data[4:], (uint, uint))``
-  is a low-level way to decode the function call payload.
-* Natspec supports multiple return parameters in developer documentation, enforcing the same naming check as ``@param``.
-* Yul and Inline Assembly have a new statement called ``leave`` that exits the current function.
-* Conversions from ``address`` to ``address payable`` are now possible via ``payable(x)``, where
-  ``x`` must be of type ``address``.
+* ref:`try/catch deyimi <try-catch>` başarısız external çağrılara tepki vermenizi sağlar.
+* ``struct`` ve ``enum`` türleri dosya düzeyinde bildirilebilir.
+* Dizi dilimleri calldata dizileri için kullanılabilir, örneğin ``abi.decode(msg.data[4:], (uint, uint))`` fonksiyon çağrısı yükünün kodunu çözmenin düşük seviyeli bir yoludur.
+* Natspec, geliştirici belgelerinde ``@param`` ile aynı adlandırma kontrolünü uygulayarak birden fazla dönüş parametresini destekler.
+* Yul ve Inline Assembly, mevcut fonksiyondan çıkan ``leave`` adlı yeni bir deyime sahiptir.
+* ``address``'den ``address payable``'a dönüşümler artık ``payable(x)`` ile mümkündür, burada ``x`` ``address`` tipinde olmalıdır.
 
 
-Interface Changes
+Arayüz Değişiklikleri
 =================
 
-This section lists changes that are unrelated to the language itself, but that have an effect on the interfaces of
-the compiler. These may change the way how you use the compiler on the command line, how you use its programmable
-interface, or how you analyze the output produced by it.
+Bu bölümde, dilin kendisiyle ilgili olmayan ancak derleyicinin arayüzleri üzerinde
+etkisi olan değişiklikler listelenmektedir. Bunlar derleyiciyi komut satırında nasıl
+kullandığınızı, programlanabilir arayüzünü nasıl kullandığınızı veya derleyici tarafından
+üretilen çıktıyı nasıl analiz ettiğinizi değiştirebilir.
 
-New Error Reporter
+Yeni Hata Raporlayıcısı
 ~~~~~~~~~~~~~~~~~~
 
-A new error reporter was introduced, which aims at producing more accessible error messages on the command line.
-It is enabled by default, but passing ``--old-reporter`` falls back to the the deprecated old error reporter.
+Komut satırında daha erişilebilir hata mesajları üretmeyi amaçlayan yeni bir hata raporlayıcı tanıtıldı. Öntanımlı olarak etkindir, ancak ``--old-reporter`` geçildiğinde kullanımdan kaldırılmış eski hata raporlayıcısına geri dönülür.
 
-Metadata Hash Options
+Metadata Hash Seçenekleri
 ~~~~~~~~~~~~~~~~~~~~~
 
-The compiler now appends the `IPFS <https://ipfs.io/>`_ hash of the metadata file to the end of the bytecode by default
-(for details, see documentation on :doc:`contract metadata <metadata>`). Before 0.6.0, the compiler appended the
-`Swarm <https://ethersphere.github.io/swarm-home/>`_ hash by default, and in order to still support this behaviour,
-the new command line option ``--metadata-hash`` was introduced. It allows you to select the hash to be produced and
-appended, by passing either ``ipfs`` or ``swarm`` as value to the ``--metadata-hash`` command line option.
-Passing the value ``none`` completely removes the hash.
+Derleyici artık metadata dosyasının `IPFS <https://ipfs.io/>`_ hash'ini varsayılan olarak bytecode'un sonuna ekliyor (ayrıntılar için :doc:`contract metadata <metadata>` belgesine bakın). 0.6.0'dan önce derleyici varsayılan olarak `Swarm <https://ethersphere.github.io/swarm-home/>`_ hash'ini ekliyordu ve bu davranışı desteklemeye devam etmek için yeni komut satırı seçeneği ``--metadata-hash`` tanıtıldı. Bu, ``--metadata-hash`` komut satırı seçeneğine değer olarak ``ipfs`` veya ``swarm`` değerlerinden birini geçirerek üretilecek ve eklenecek hash'i seçmenize olanak tanır. ``none`` değerinin geçilmesi hash'i tamamen kaldırır.
 
-These changes can also be used via the :ref:`Standard JSON Interface<compiler-api>` and effect the metadata JSON generated by the compiler.
+Bu değişiklikler :ref:`Standard JSON Interface<compiler-api>` aracılığıyla da kullanılabilir ve derleyici tarafından oluşturulan metadata JSON'u etkiler.
 
-The recommended way to read the metadata is to read the last two bytes to determine the length of the CBOR encoding
-and perform a proper decoding on that data block as explained in the :ref:`metadata section<encoding-of-the-metadata-hash-in-the-bytecode>`.
+Metadata'ları okumak için önerilen yol, CBOR şifrelemesinin uzunluğunu belirlemek için son iki baytı okumak ve :ref:`metadata section<encoding-of-the-metadata-hash-in-the-bytecode>` bölümünde açıklandığı gibi bu veri bloğu üzerinde uygun bir şifre çözme işlemi gerçekleştirmektir.
 
-Yul Optimizer
+Yul Optimize Edici
 ~~~~~~~~~~~~~
 
-Together with the legacy bytecode optimizer, the :doc:`Yul <yul>` optimizer is now enabled by default when you call the compiler
-with ``--optimize``. It can be disabled by calling the compiler with ``--no-optimize-yul``.
-This mostly affects code that uses ABI coder v2.
+Eski bytecode optimizer ile birlikte, :doc:`Yul <yul>` optimizer artık derleyiciyi ``--optimize`` ile çağırdığınızda varsayılan olarak etkinleştirilir. Derleyiciyi ``--no-optimize-yul`` ile çağırarak devre dışı bırakılabilir. Bu çoğunlukla ABI coder v2 kullanan kodları etkiler.
 
-C API Changes
+C API Değişiklikleri
 ~~~~~~~~~~~~~
 
-The client code that uses the C API of ``libsolc`` is now in control of the memory used by the compiler. To make
-this change consistent, ``solidity_free`` was renamed to ``solidity_reset``, the functions ``solidity_alloc`` and
-``solidity_free`` were added and ``solidity_compile`` now returns a string that must be explicitly freed via
-``solidity_free()``.
+``libsolc`` C API`sini kullanan istemci kodu artık derleyici tarafından kullanılan belleğin
+kontrolünü elinde tutmaktadır. Bu değişikliği tutarlı hale getirmek için ``solidity_free``
+fonksiyonu ``solidity_reset`` olarak yeniden adlandırıldı, ``solidity_alloc`` ve ``solidity_free``
+fonksiyonları eklendi ve ``solidity_compile`` artık ``solidity_free()`` ile açıkça serbest bırakılması gereken bir string döndürüyor.
 
 
-How to update your code
+Kodunuzu nasıl güncelleyebilirsiniz?
 =======================
 
-This section gives detailed instructions on how to update prior code for every breaking change.
+Bu bölüm, her işleyişi bozan değişiklik için önceki kodun nasıl güncelleneceğine ilişkin ayrıntılı talimatlar vermektedir.
 
-* Change ``address(f)`` to ``f.address`` for ``f`` being of external function type.
+* ``f`` external fonksiyon tipinde olduğu için ``address(f)`` ifadesini ``f.address`` olarak değiştirin.
 
-* Replace ``function () external [payable] { ... }`` by either ``receive() external payable { ... }``,
-  ``fallback() external [payable] { ... }`` or both. Prefer
-  using a ``receive`` function only, whenever possible.
+* ``fonksiyon () external [payable] { ... }`` yerine ``receive() external payable { ... }``, ``fallback() external [payable] { ... }` veya her ikisiyle. Mümkün olduğunda sadece ``receive`` fonksiyonunu kullanmayı tercih edin.
 
-* Change ``uint length = array.push(value)`` to ``array.push(value);``. The new length can be
-  accessed via ``array.length``.
+* ``uint length = array.push(value)`` ifadesini ``array.push(value);`` olarak değiştirin. Yeni uzunluğa ``array.length`` aracılığıyla erişilebilir.
 
-* Change ``array.length++`` to ``array.push()`` to increase, and use ``pop()`` to decrease
-  the length of a storage array.
+* Bir depolama dizisinin uzunluğunu artırmak için ``array.length++`` öğesini ``array.push()`` olarak değiştirin ve azaltmak için ``pop()`` öğesini kullanın.
 
-* For every named return parameter in a function's ``@dev`` documentation define a ``@return``
-  entry which contains the parameter's name as the first word. E.g. if you have function ``f()`` defined
-  like ``function f() public returns (uint value)`` and a ``@dev`` annotating it, document its return
-  parameters like so: ``@return value The return value.``. You can mix named and un-named return parameters
-  documentation so long as the notices are in the order they appear in the tuple return type.
+* Bir fonksiyonun ``@dev`` dokümantasyonundaki her adlandırılmış geri dönüş parametresi için, parametrenin adını ilk kelime olarak içeren bir ``@return`` girişi tanımlayın. Örneğin, ``f()`` fonksiyonu ``function f() public returns (uint value)`` şeklinde tanımlanmışsa ve ``@dev`` şeklinde bir açıklama varsa, geri dönüş parametrelerini aşağıdaki gibi belgeleyin: ``@return value Dönüş değeri.``. Bildirimler tuple dönüş türünde göründükleri sırada olduğu sürece, adlandırılmış ve adlandırılmamış dönüş parametreleri belgelerini karıştırabilirsiniz.
 
-* Choose unique identifiers for variable declarations in inline assembly that do not conflict
-  with declarations outside the inline assembly block.
+* Inline assembly'deki değişken bildirimleri için inline assembly bloğu dışındaki bildirimlerle çakışmayan benzersiz tanımlayıcılar seçin.
 
-* Add ``virtual`` to every non-interface function you intend to override. Add ``virtual``
-  to all functions without implementation outside interfaces. For single inheritance, add
-  ``override`` to every overriding function. For multiple inheritance, add ``override(A, B, ..)``,
-  where you list all contracts that define the overridden function in the parentheses. When
-  multiple bases define the same function, the inheriting contract must override all conflicting functions.
+* Geçersiz kılmayı düşündüğünüz her arayüz dışı işleve ``virtual`` ekleyin. Arayüzler dışında uygulaması olmayan tüm fonksiyonlara ``virtual`` ekleyin. Tekli kalıtım için, her geçersiz kılma fonksiyonuna ``override`` ekleyin. Çoklu kalıtım için, ``override(A, B, ..)`` ekleyin, burada parantez içinde geçersiz kılınan fonksiyonu tanımlayan tüm sözleşmeleri listelersiniz. Birden fazla taban aynı fonksiyonu tanımladığında, devralan sözleşme çakışan tüm fonksiyonları geçersiz kılmalıdır.
