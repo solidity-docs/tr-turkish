@@ -2,52 +2,50 @@
 .. index: memory layout
 
 ****************
-Layout in Memory
+Bellekteki Düzen
 ****************
 
-Solidity reserves four 32-byte slots, with specific byte ranges (inclusive of endpoints) being used as follows:
+Solidity, belirli bayt aralıklarını (uç noktalar dahil) aşağıdaki şekilde kullanılmak üzere dört adet 32 baytlık yuva ayırır:
 
-- ``0x00`` - ``0x3f`` (64 bytes): scratch space for hashing methods
-- ``0x40`` - ``0x5f`` (32 bytes): currently allocated memory size (aka. free memory pointer)
-- ``0x60`` - ``0x7f`` (32 bytes): zero slot
+- ``0x00`` - ``0x3f`` (64 bytes): Hash metotları için scratch(kazıma) alanı
+- ``0x40`` - ``0x5f`` (32 bytes): Şuan ayrılmış olan bellek boyutu (boş bellek pointer'ı olarak da bilinir)
+- ``0x60`` - ``0x7f`` (32 bytes): zero slot (sıfır yuva)    
 
-Scratch space can be used between statements (i.e. within inline assembly). The zero slot
-is used as initial value for dynamic memory arrays and should never be written to
-(the free memory pointer points to ``0x80`` initially).
+Durumlar arasında (yani assembly içinde) scratch alanı kullanılabilir. Sıfır yuvası, dinamik bellek dizilerinin başlangıç
+değeri olarak kullanılır ve asla başlangıçta ``0x80``'i gösteren boş bellek pointer noktasına yazılmamalıdır.
 
-Solidity always places new objects at the free memory pointer and
-memory is never freed (this might change in the future).
+Solidity her zaman yeni nesneleri boş bellek işaretçisine yerleştirir ve
+hafıza asla serbest bırakılmaz (Bu özellik gelecekte değişebilir).
 
-Elements in memory arrays in Solidity always occupy multiples of 32 bytes (this
-is even true for ``bytes1[]``, but not for ``bytes`` and ``string``).
-Multi-dimensional memory arrays are pointers to memory arrays. The length of a
-dynamic array is stored at the first slot of the array and followed by the array
-elements.
+Solidity'de bulunan bellek dizilerindeki öğeler her zaman 32 baytın katlarını kaplar (Bu 
+``bytes1[]`` için bile doğrudur, ama ``bytes`` ve ``string`` için geçerli değildir).
+Çok boyutlu bellek dizileri, bellek dizilerinin işaretçileridir. Bir dinamik dizinin uzunluğu
+dizinin ilk yuvasında depolanır ve ardından dizinin elemanları gelir.
 
 .. warning::
-  There are some operations in Solidity that need a temporary memory area
-  larger than 64 bytes and therefore will not fit into the scratch space.
-  They will be placed where the free memory points to, but given their
-  short lifetime, the pointer is not updated. The memory may or may not
-  be zeroed out. Because of this, one should not expect the free memory
-  to point to zeroed out memory.
+  Solidity'de 64 bayttan daha büyük bir geçici bellek alanına ihtiyaç 
+  duyan ve bu nedenle scratch alanına sığmayan bazı işlemler vardır.
+  Bu işlemler boş bellek noktalarına yerleştirilecektir, ama kısa ömürleri
+  nedeniyle işaretçi güncellenemez. Bellek sıfırlanmış olabilir ya da
+  olmayabilir. Bu nedenle, boş hafızanın sıfırlanmış hafızayı göstermesi beklenmemelidir.
 
-  While it may seem like a good idea to use ``msize`` to arrive at a
-  definitely zeroed out memory area, using such a pointer non-temporarily
-  without updating the free memory pointer can have unexpected results.
+  Net bir sıfırlanmış bellek alanına ulaşmak için ``msize`` kullanmak
+  iyi bir fikir gibi görünse de, boş bellek işaretçisi güncellenmeden 
+  geçici olmayan bir işaretçi kullanmak beklenmeyen sonuçlara neden olabilir.
 
 
-Differences to Layout in Storage
+Depolama Düzeni Farklılıkları
 ================================
 
-As described above the layout in memory is different from the layout in
-:ref:`storage<storage-inplace-encoding>`. Below there are some examples.
+Yukarıda açıklandığı üzere bellekteki düzen ile depolama düzeni
+(:ref:`storage<storage-inplace-encoding>`) farklıdır.
+Aşağıda bunlara yönelik bazı örnekler bulunmaktadır.
 
-Example for Difference in Arrays
+Dizilerdeki Farklılıklara Bir Örnek
 --------------------------------
 
-The following array occupies 32 bytes (1 slot) in storage, but 128
-bytes (4 items with 32 bytes each) in memory.
+Aşağıdaki dizi, depolamada 32 bayt (1 yuva) yer kaplar, ancak bellekte 128
+bayt (her biri 32 bayt olan 4 öğe) yer kaplar.
 
 .. code-block:: solidity
 
@@ -55,12 +53,11 @@ bytes (4 items with 32 bytes each) in memory.
 
 
 
-Example for Difference in Struct Layout
+Yapı(Struct) Düzeni Farklılıklarına Bir Örnek
 ---------------------------------------
 
-The following struct occupies 96 bytes (3 slots of 32 bytes) in storage,
-but 128 bytes (4 items with 32 bytes each) in memory.
-
+Aşağıdaki struct, depolamada 96 bayt (32 baytlık 3 yuva) kaplar,
+ama bellekte 128 bayt (her biri 32 bayt olan 4 öğe) yer kaplar.
 
 .. code-block:: solidity
 
