@@ -7,7 +7,7 @@ Gizli İhale
 Bu bölümde Ethereum'da tamamiyle gizli bir ihale kontratı oluşturmanın ne 
 kadar kolay olduğunu göstereceğiz. Önce herkesin başkalarının tekliflerini 
 görebildiği açık bir ihale kontratı oluşturup sonrasında ondan teklif süresi
-dolana kadar kimsenin bağkasının teklifini göremediği gizli bir ihale kontratı
+dolana kadar kimsenin başkasının teklifini göremediği gizli bir ihale kontratı
 oluşturacağız.
 
 .. _simple_auction:
