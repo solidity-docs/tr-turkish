@@ -12,7 +12,7 @@ hata ayıklama araçlarına kadar çeşitli amaçlar için kullanılabilir.
 Ayrıca derleyici, bytecode'dan komutu oluşturan kaynak koddaki aralığa kadar bir
 mapping de oluşturabilir. Bu durum bytecode seviyesinde çalışan statik analiz araçları
 ve bir hata ayıklayıcı için kaynak koddaki mevcut konumu görüntülemek veya breakpoint
-işleme açısından önemlidir. Bu mapping aynı zamanda atlama(jump) tipi ve modifier derinliği
+işleme açısından önemlidir. Bu mapping aynı zamanda sıçrama komutu türü ve modifier derinliği
 gibi diğer bilgileri de içerir (aşağıya bakınız).
 
 Her iki tür kaynak mapping'i de kaynak dosyalara başvurmak için tamsayı tanımlayıcıları
