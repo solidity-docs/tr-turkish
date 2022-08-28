@@ -20,7 +20,7 @@ gönderebilcek. Teklifler yanında teklif verenlerin tekliflerine sadık kalmala
 için teklifte belirtilen parayı da içerecek. Eğer en yüksek teklif geçilirse önceki
 en yüksek teklifi veren kişi parasını geri alacak. Teklif süreci bittiğinde kontratlar
 kendi kendilerine çalışamadıklarından hak sahibi parasını almak için kontratı manuel olarak
-çağırmalı.
+çağırılmalıdır.
 
 .. code-block:: solidity
 
