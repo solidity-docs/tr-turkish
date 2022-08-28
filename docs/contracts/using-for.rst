@@ -6,52 +6,42 @@
 Using For
 *********
 
-The directive ``using A for B;`` can be used to attach
-functions (``A``) as member functions to any type (``B``).
-These functions will receive the object they are called on
-as their first parameter (like the ``self`` variable in Python).
+``using A for B;`` yönergesi, (``A``) fonksiyonlarını herhangi bir türe
+(``B``) üye fonksiyonlar olarak eklemek için kullanılabilir. Bu fonksiyonlar,
+çağrıldıkları nesneyi ilk parametreleri olarak alırlar (Python'daki  ``self`` değişkeni gibi).
 
-It is valid either at file level or inside a contract,
-at contract level.
+Dosya seviyesinde veya bir akıllı sözleşme içerisinde, akıllı sözleşme seviyesinde, geçerlidir.
 
-The first part, ``A``, can be one of:
+İlk kısım, ``A``, aşağıdakilerden biri olabilir:
 
-- a list of file-level or library functions (``using {f, g, h, L.t} for uint;``) -
-  only those functions will be attached to the type.
-- the name of a library (``using L for uint;``) -
-  all functions (both public and internal ones) of the library are attached to the type
+- dosya seviyesindeki fonksiyonların bir listesi veya kütüphane fonksiyonları (``using {f, g, h, L.t} for uint;``) -
+  sadece o fonksiyonlar eklenecektir.
+- kütüphanenin adı (``using L for uint;``) - bütün fonksiyonlar (public ve internallerin hepsi) tipe eklenir.
 
-At file level, the second part, ``B``, has to be an explicit type (without data location specifier).
-Inside contracts, you can also use ``using L for *;``,
-which has the effect that all functions of the library ``L``
-are attached to *all* types.
+Dosya seviyesinde, ikinci kısım, ``B``, açık bir tip olmalıdır (veri konumu belirtici olmadan).
+Akıllı sözleşmenin içerisinde, ayrıca şu ifadeyi de kullanabilirsiniz ``using L for *;``, böylece ``L``
+kütüphanesinin bütün fonksiyonları *bütün* tiplere eklenmiş olur.
 
-If you specify a library, *all* functions in the library are attached,
-even those where the type of the first parameter does not
-match the type of the object. The type is checked at the
-point the function is called and function overload
-resolution is performed.
+Bir kütüphane belirtirseniz, kütüphanedeki tüm fonksiyonlar, ilk parametrenin türü 
+nesnenin türüyle eşleşmese bile eklenir. Fonksiyonun çağrıldığı noktada tip kontrol 
+edilir ve fonksiyon aşırı yük çözünürlüğü gerçekleştirilir.
 
-If you use a list of functions (``using {f, g, h, L.t} for uint;``),
-then the type (``uint``) has to be implicitly convertible to the
-first parameter of each of these functions. This check is
-performed even if none of these functions are called.
+Eğer bir fonksiyon listesi kullanırsanız (``using {f, g, h, L.t} for uint;``),
+ardından gelen tip (``uint``) o kütüphanedeki bütün fonksiyonların ilk parametrelerine
+gizlice dönüştürülebilir olmalıdır. Bu kontrol, fonksiyonların hiçbiri çağrılmasa bile
+gerçekleştirilir.
 
-The ``using A for B;`` directive is active only within the current
-scope (either the contract or the current module/source unit),
-including within all of its functions, and has no effect
-outside of the contract or module in which it is used.
+``using A for B;`` direktifi, tüm fonksiyonları dahil olmak üzere yalnızca mevcut kapsamda 
+(sözleşme veya mevcut modül/kaynak birim) etkindir ve kullanıldığı sözleşme veya modül 
+dışında hiçbir etkisi yoktur. 
 
-When the directive is used at file level and applied to a
-user-defined type which was defined at file level in the same file,
-the word ``global`` can be added at the end. This will have the
-effect that the functions are attached to the type everywhere
-the type is available (including other files), not only in the
-scope of the using statement.
+Yönerge dosya düzeyinde kullanıldığında ve aynı dosyada dosya düzeyinde tanımlanmış 
+kullanıcı tanımlı bir türe uygulandığında, sonuna ``global`` sözcüğü eklenebilir. 
+Bu, yalnızca using ifadesinin kapsamında değil, türün kullanılabilir olduğu her yerde 
+(diğer dosyalar dahil) işlevlerin türe eklenmesi etkisine sahip olacaktır.
 
-Let us rewrite the set example from the
-:ref:`libraries` section in this way, using file-level functions
-instead of library functions.
+:ref:`libraries` bölümünde yazdığımız bir örneği dosya seviyesindeki
+fonksiyonlarla yeniden yazalım:
 
 .. code-block:: solidity
 
@@ -59,10 +49,10 @@ instead of library functions.
     pragma solidity ^0.8.13;
 
     struct Data { mapping(uint => bool) flags; }
-    // Now we attach functions to the type.
-    // The attached functions can be used throughout the rest of the module.
-    // If you import the module, you have to
-    // repeat the using directive there, for example as
+    // Şimdi örneğe fonksiyonları ekliyoruz.
+    // Eklenen fonksiyonlar modül boyuna kullanılabilir.
+    // Eğer modülü başka bir dosyadan eklerseniz
+    // using yönergesini orada yeniden kullanmalısınız:
     //   import "flags.sol" as Flags;
     //   using {Flags.insert, Flags.remove, Flags.contains}
     //     for Flags.Data;
@@ -98,16 +88,15 @@ instead of library functions.
         Data knownValues;
 
         function register(uint value) public {
-            // Here, all variables of type Data have
-            // corresponding member functions.
-            // The following function call is identical to
-            // `Set.insert(knownValues, value)`
+            // Burada, Data türündeki tüm değişkenlerin karşılık 
+            // gelen üye işlevleri vardır. Aşağıdaki işlev çağrısı, 
+            // `Set.insert(knownValues, value)` ile aynıdır.
             require(knownValues.insert(value));
         }
     }
 
-It is also possible to extend built-in types in that way.
-In this example, we will use a library.
+Yerleşik türleri bu şekilde genişletmek de mümkündür. 
+Bu örnekte bir kütüphane kullanacağız.
 
 .. code-block:: solidity
 
@@ -135,7 +124,7 @@ In this example, we will use a library.
         }
 
         function replace(uint from, uint to) public {
-            // This performs the library function call
+            // Bu, kütüphane işlev çağrısını gerçekleştirir
             uint index = data.indexOf(from);
             if (index == type(uint).max)
                 data.push(to);
@@ -144,8 +133,7 @@ In this example, we will use a library.
         }
     }
 
-Note that all external library calls are actual EVM function calls. This means that
-if you pass memory or value types, a copy will be performed, even in case of the
-``self`` variable. The only situation where no copy will be performed
-is when storage reference variables are used or when internal library
-functions are called.
+Tüm harici kütüphane çağrılarının gerçek EVM fonksiyon çağrıları olduğunu unutmayın. 
+Bu, bellek veya değer türlerini geçerseniz, ``self`` değişken durumunda bile bir kopyanın 
+gerçekleştirileceği anlamına gelir. Kopyalama yapılmayacak tek durum, depolama referans 
+değişkenlerinin kullanıldığı veya dahili kütüphane fonksiyonlarının çağrıldığı durumlardır.

@@ -3,18 +3,18 @@
 .. _abstract-contract:
 
 ******************
-Abstract Contracts
+Abstract Akıllı Sözleşmeler
 ******************
 
-Contracts must be marked as abstract when at least one of their functions is not implemented or when
-they do not provide arguments for all of their base contract constructors.
-Even if this is not the case, a contract may still be marked abstract, such as when you do not intend
-for the contract to be created directly. Abstract contracts are similar to :ref:`interfaces` but an
-interface is more limited in what it can declare.
+Sözleşmeler, işlevlerinden en az biri uygulanmadığında veya bütün temel sözleme yapıcılar için argüman sağlamadığında abstract olarak işaretlenmelidir.
+Bu durumlardan herhangi biri geçerli değilse bile bir akıllı sözleşme abstract olarak işaretlenebilir.
+Örneğin bir akıllı sözleşmenin direkt olarak oluşturulmasını istemediğiniz durumlarda bunu gerçekleştirebilirsiniz.
+Abstract akıllı sözleşmeler :ref:`interface'lere` oldukça benzerdir ancak interface'ler çok daha kısıtlı bir
+yapıdadır.
 
-An abstract contract is declared using the ``abstract`` keyword as shown in the following example.
-Note that this contract needs to be defined as abstract, because the function ``utterance()`` is declared,
-but no implementation was provided (no implementation body ``{ }`` was given).
+Aşağıdaki örnekte belirtildiği gibi, Abstract akıllı sözleşmeler ``abstract`` olarak işaretlenerek belirtilir.
+Aşağıdaki akıllı sözleşmenin abstract olarak tanımlanması gerektiğine dikkat edin. Çünkü ``utterance()``
+fonksiyonu tanımlanıp kodları yazılmamıştır (``{ }`` arasında kod bulunmamakta).
 
 .. code-block:: solidity
 
@@ -25,8 +25,9 @@ but no implementation was provided (no implementation body ``{ }`` was given).
         function utterance() public virtual returns (bytes32);
     }
 
-Such abstract contracts can not be instantiated directly. This is also true, if an abstract contract itself does implement
-all defined functions. The usage of an abstract contract as a base class is shown in the following example:
+Bu tip abstract akıllı sözleşmeler direkt olarak örneklendirilemez. Bu, abstract sözleşmenin 
+kendisi tanımlanmış tüm işlevleri yerine getiriyorsa da geçerlidir. Abstract bir akıllı sözleşmenin 
+temel sınıf olarak kullanımı aşağıda gösterilmiştir:
 
 .. code-block:: solidity
 
@@ -41,32 +42,30 @@ all defined functions. The usage of an abstract contract as a base class is show
         function utterance() public pure override returns (bytes32) { return "miaow"; }
     }
 
-If a contract inherits from an abstract contract and does not implement all non-implemented
-functions by overriding, it needs to be marked as abstract as well.
+Bir akıllı sözleşme bir abstract akıllı sözleşmeden türetiliyorsa ve abstract akıllı sözleşmedeki bütün kodu yazılmamış
+fonksiyonların kodunu yazmıyorsa, o akıllı sözleşme da abstract olarak belirtilmelidir.
 
-Note that a function without implementation is different from
-a :ref:`Function Type <function_types>` even though their syntax looks very similar.
+Kodu olmayan bir fonksiyonun :ref:`Fonksiyon Tipinden <function_types>` farklı olduğuna dikkat edin,
+her ne kadar yazılışları oldukça benzer olsa da.
 
-Example of function without implementation (a function declaration):
+Kodu olmayan bir fonksiyona örnek olarak (fonksiyon tanımlaması):
 
 .. code-block:: solidity
 
     function foo(address) external returns (address);
 
-Example of a declaration of a variable whose type is a function type:
+Türü bir fonksiyon türü olan bir değişken bildirimi örneği:
 
 .. code-block:: solidity
 
     function(address) external returns (address) foo;
 
-Abstract contracts decouple the definition of a contract from its
-implementation providing better extensibility and self-documentation and
-facilitating patterns like the `Template method <https://en.wikipedia.org/wiki/Template_method_pattern>`_ and removing code duplication.
-Abstract contracts are useful in the same way that defining methods
-in an interface is useful. It is a way for the designer of the
-abstract contract to say "any child of mine must implement this method".
+Abstract akıllı sözleşmeler, daha iyi genişletilebilirlik ve kendi kendine belgeleme sağlayarak 
+ve `Template yöntemi <https://en.wikipedia.org/wiki/Template_method_pattern>`_ gibi kalıpları 
+kolaylaştırarak ve kod tekrarını ortadan kaldırarak bir akıllı sözleşmenin tanımını uygulamasından ayırır.
+Abstract akıllı sözleşmeler, bir arabirimdeki yöntemleri tanımlamanın yararlı olduğu şekilde yararlıdır. Abstract
+akıllı sözleşmenin tasarımcısının “her çocuğum bu yöntemi uygulamalı” demesinin bir yoludur.
 
 .. note::
-
-  Abstract contracts cannot override an implemented virtual function with an
-  unimplemented one.
+  Abstract akıllı sözleşmeler kodu yazılmış bir virtual fonksiyonu kodu yazılmamış bir
+  fonksiyon ile override edemezler.

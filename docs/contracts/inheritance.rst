@@ -1,40 +1,38 @@
 .. index:: ! inheritance, ! base class, ! contract;base, ! deriving
 
 ***********
-Inheritance
+Kalıtım
 ***********
 
-Solidity supports multiple inheritance including polymorphism.
+Solidity polimorfizm dahil birçok kalıtım yöntemini destekler.
 
-Polymorphism means that a function call (internal and external)
-always executes the function of the same name (and parameter types)
-in the most derived contract in the inheritance hierarchy.
-This has to be explicitly enabled on each function in the
-hierarchy using the ``virtual`` and ``override`` keywords.
-See :ref:`Function Overriding <function-overriding>` for more details.
+Polimorfizm, bir fonksiyon çağrısının (dahili ve harici),
+kalıtım hiyerarşisinde aynı fonksiyona sahip birden fazla
+akıllı sözleşmenin olması durumunda, ilk türetilen akıllı sözleşmenin fonksiyonunun
+çalıştırılmasına verilen isimdir.
+Bu, ``virtual`` ve ``override`` anahtar sözcükleri kullanılarak hiyerarşideki
+her işlevde açıkça etkinleştirilmelidir. Daha fazla ayrıntı için
+:ref:`Function Overriding'e <function-overriding>` bakın.
 
-It is possible to call functions further up in the inheritance
-hierarchy internally by explicitly specifying the contract
-using ``ContractName.functionName()`` or using ``super.functionName()``
-if you want to call the function one level higher up in
-the flattened inheritance hierarchy (see below).
+Kalıtım hiyerarşisinden bir fonksiyonu çağırmak isterseniz;
+``ContractName.functionName()`` bu şekilde çağırabilirsiniz. Veya
+kalıtım hiyerarşisinde bir üst akıllı sözleşmede bulunan bir fonksiyonu
+çağırmak isterseniz de; ``super.functionName()`` kullanabilirsiniz.
 
-When a contract inherits from other contracts, only a single
-contract is created on the blockchain, and the code from all the base contracts
-is compiled into the created contract. This means that all internal calls
-to functions of base contracts also just use internal function calls
-(``super.f(..)`` will use JUMP and not a message call).
+Bir akıllı sözleşme başka bir akıllı sözleşmeyi türettiğinde, blockchainde sadece bir adet
+akıllı sözleşme oluşturulur ve tüm ana akıllı sözleşmelerden gelen kodlar oluşturulan
+akıllı sözleşmeye eklenir. Bu demek oluyorki ana akıllı sözleşmelerin fonksiyonlarına
+yapılan bütün internal çağrılar sadece internal fonksiyon çağrılarını
+kullanırlar (``super.f(..)`` sadece JUMP opcode'unu kullanacaktır, mesaj çağrısı yapmayacaktır). 
 
-State variable shadowing is considered as an error.  A derived contract can
-only declare a state variable ``x``, if there is no visible state variable
-with the same name in any of its bases.
+Durum değişkeni gölgeleme bir hata olarak kabul edilir. Bir türetilen akıllı sözleşme
+sadece ve sadece eğer türettiği akıllı sözleşmelerden hiçbiri ``x`` isminde bir değişkeni kullanmıyorsa
+bu isimde bir değişken tanımlayabilir.
 
-The general inheritance system is very similar to
-`Python's <https://docs.python.org/3/tutorial/classes.html#inheritance>`_,
-especially concerning multiple inheritance, but there are also
-some :ref:`differences <multi-inheritance>`.
+Genel kalıtım sistemi `Python'a <https://docs.python.org/3/tutorial/classes.html#inheritance>`_
+oldukça benzer, özellikle de çoklu kalıtım konusunda, fakat ayrıca bazı :ref:`farklılıklar <multi-inheritance>` da bulunmaktadır
 
-Details are given in the following example.
+Aşağıdaki örnekte detaylar açıklanmıştır.
 
 .. code-block:: solidity
 
@@ -48,23 +46,23 @@ Details are given in the following example.
     }
 
 
-    // Use `is` to derive from another contract. Derived
-    // contracts can access all non-private members including
-    // internal functions and state variables. These cannot be
-    // accessed externally via `this`, though.
+    // `is` kullanarak başka bir akıllı sözleşmeyi türetebiliriz.
+    // Türetilen akıllı sözleşmeler private olmayan bütün üyelere
+    // erişebilir, internal fonksiyonlar ve durum değişkenleri
+    // dahil. Bunlara external olarak `this` kullanılarak da erişilemez.
     contract Destructible is Owned {
-        // The keyword `virtual` means that the function can change
-        // its behaviour in derived classes ("overriding").
+        // `virtual` sözcüğü bu fonksiyonun, türetilen
+        // akıllı sözleşmelerde değiştirilebileceğini belirtir ("overriding").
         function destroy() virtual public {
             if (msg.sender == owner) selfdestruct(owner);
         }
     }
 
 
-    // These abstract contracts are only provided to make the
-    // interface known to the compiler. Note the function
-    // without body. If a contract does not implement all
-    // functions it can only be used as an interface.
+    // Abstract akıllı sözleşmeler sadece derleyiciye interface'i
+    // bildirmek için kullanılır. Fonksiyonun kodlarının olmadığına
+    // dikkat edin. Eğer bir akıllı sözleşme bütün fonksiyonlarının içeriğini
+    // bulundurmazsa, sadece interface olarak da kullanılabilir.
     abstract contract Config {
         function lookup(uint id) public virtual returns (address adr);
     }
@@ -76,55 +74,56 @@ Details are given in the following example.
     }
 
 
-    // Multiple inheritance is possible. Note that `Owned` is
-    // also a base class of `Destructible`, yet there is only a single
-    // instance of `Owned` (as for virtual inheritance in C++).
+    // Çoklu türetim de mümkündür. `Owned` akıllı sözleşmesinin
+    // ayrıca `Destructible` akıllı sözleşmesinin ana akıllı sözleşmelerinden
+    // biri olduğunu unutmayın. Ancak `Owned` akıllı sözleşmesinin 
+    // sadece bir adet örneği vardır (C++'daki sanal kalıtım gibi).
     contract Named is Owned, Destructible {
         constructor(bytes32 name) {
             Config config = Config(0xD5f9D8D94886E70b06E474c3fB14Fd43E2f23970);
             NameReg(config.lookup(1)).register(name);
         }
 
-        // Functions can be overridden by another function with the same name and
-        // the same number/types of inputs.  If the overriding function has different
-        // types of output parameters, that causes an error.
-        // Both local and message-based function calls take these overrides
-        // into account.
-        // If you want the function to override, you need to use the
-        // `override` keyword. You need to specify the `virtual` keyword again
-        // if you want this function to be overridden again.
+        // Fonksiyonlar başka bir fonksiyon tarafından aynı isim ve aynı
+        // sayıda/tipte girdi ile override edilebilir. Eğer override eden
+        // fonksiyon farklı sayıda çıktı veriyorsa, bu ortaya bir hata çıkarır.
+        // Hem yerel hem de mesaj-tabanlı fonksiyon çağrıları bu override işlemlerini
+        // hesaba katar. Eğer bir fonksiyonu override etmek istiyorsanız
+        // `override` sözcüğünü kullanmak zorundasınız. Ayrıca fonksiyonunuzun
+        // tekrardan override edilebilir olmasını istiyorsanız, tekrardan
+        // `virtual` olarak belirlemelisiniz.
         function destroy() public virtual override {
             if (msg.sender == owner) {
                 Config config = Config(0xD5f9D8D94886E70b06E474c3fB14Fd43E2f23970);
                 NameReg(config.lookup(1)).unregister();
-                // It is still possible to call a specific
-                // overridden function.
+                // Override edilmiş bir fonksiyonu spesifik olarak
+                // çağırmak mümkündür.
                 Destructible.destroy();
             }
         }
     }
 
 
-    // If a constructor takes an argument, it needs to be
-    // provided in the header or modifier-invocation-style at
-    // the constructor of the derived contract (see below).
+    // Eğer bir constructor parametre alıyorsa, bu
+    // başlıkta veya değiştirici-çağırma-stili ile
+    // türetilen akıllı sözleşmesinin constructor'ında
+    // verilmelidir (aşağıya bakın).
     contract PriceFeed is Owned, Destructible, Named("GoldFeed") {
         function updateInfo(uint newInfo) public {
             if (msg.sender == owner) info = newInfo;
         }
 
-        // Here, we only specify `override` and not `virtual`.
-        // This means that contracts deriving from `PriceFeed`
-        // cannot change the behaviour of `destroy` anymore.
+        // Burada sadece `override` yazıyoruz, `virtual` yazmıyoruz.
+        // Bu, `PriceFeed` akıllı sözleşmesinden türetilen akıllı sözleşmelerin
+        // artık `destroy` fonksiyonunu override edemeyecekleri anlamına geliyor.
         function destroy() public override(Destructible, Named) { Named.destroy(); }
         function get() public view returns(uint r) { return info; }
 
         uint info;
     }
 
-Note that above, we call ``Destructible.destroy()`` to "forward" the
-destruction request. The way this is done is problematic, as
-seen in the following example:
+Yukarıdaki ``Destructible.destroy()`` fonksiyon çağrımızın bazı problemlere
+yol açtığını aşağıdaki örnekte görebilirsiniz.
 
 .. code-block:: solidity
 
@@ -154,9 +153,13 @@ seen in the following example:
         function destroy() public override(Base1, Base2) { Base2.destroy(); }
     }
 
+``Final.destroy()`` çağrısı ``Base2.destroy`` fonksiyonunu çağıracak.
+Çünkü yaptığımız son override'da böyle belirtti. Ancak bu fonksiyon
+``Base1.destroy`` fonksiyonunu bypass eder. 
+
 A call to ``Final.destroy()`` will call ``Base2.destroy`` because we specify it
 explicitly in the final override, but this function will bypass
-``Base1.destroy``. The way around this is to use ``super``:
+``Base1.destroy``. Bunu aşmanın yolu ``super`` kelimesini kullanmaktır:
 
 .. code-block:: solidity
 
@@ -187,33 +190,31 @@ explicitly in the final override, but this function will bypass
         function destroy() public override(Base1, Base2) { super.destroy(); }
     }
 
-If ``Base2`` calls a function of ``super``, it does not simply
-call this function on one of its base contracts.  Rather, it
-calls this function on the next base contract in the final
-inheritance graph, so it will call ``Base1.destroy()`` (note that
-the final inheritance sequence is -- starting with the most
-derived contract: Final, Base2, Base1, Destructible, owned).
-The actual function that is called when using super is
-not known in the context of the class where it is used,
-although its type is known. This is similar for ordinary
-virtual method lookup.
+``Base2``, ``super`` işlevini çağırırsa, bu işlevi temel sözleşmelerinden
+birinde çağırmaz. Bunun yerine, son kalıtım grafiğindeki bir sonraki temel 
+sözleşmede bu işlevi çağırır, bu nedenle ``Base1.destroy()``u çağırır 
+(son kalıtım dizisinin -- en türetilmiş sözleşmeyle başlayarak şöyle 
+olduğuna dikkat edin: Final, Base2, Base1, Destructible, owned). 
+super kullanılırken çağrılan asıl işlev, türü bilinmesine rağmen kullanıldığı 
+sınıf bağlamında bilinmemektedir. Bu, sıradan sanal yöntem araması için benzerdir.
 
 .. index:: ! overriding;function
 
 .. _function-overriding:
 
-Function Overriding
+Fonksiyon Override Etme
 ===================
 
-Base functions can be overridden by inheriting contracts to change their
-behavior if they are marked as ``virtual``. The overriding function must then
-use the ``override`` keyword in the function header.
-The overriding function may only change the visibility of the overridden function from ``external`` to ``public``.
-The mutability may be changed to a more strict one following the order:
-``nonpayable`` can be overridden by ``view`` and ``pure``. ``view`` can be overridden by ``pure``.
-``payable`` is an exception and cannot be changed to any other mutability.
+Temel fonksiyonlar ``virtual`` olarak işaretlenmişse, davranışlarını
+değiştirmek için override edilebilirler. Override eden fonksiyon
+``override`` olarak belirlenmelidir. Override edilen fonksiyonun
+görünürlüğü ``external``'dan ``public``'e dönüştürülebilir.
+Değişebilirlik ise daha fazla kısıtlandırılmış bir yapıya dönüştürülebilir:
+``nonpayable``, ``view`` ve ``pure`` tarafından override edilebilir.
+``view`` ise ``pure`` tarafından override edilebilir. ``payable`` bir istisna
+olarak diğer değişebilirlik türlerine dönüştürülemez.
 
-The following example demonstrates changing mutability and visibility:
+Aşağıdaki örnek değişebilirliği ve görünürlüğü değiştirmeyi açıklıyor:
 
 .. code-block:: solidity
 
@@ -232,12 +233,12 @@ The following example demonstrates changing mutability and visibility:
         function foo() override public pure {}
     }
 
-For multiple inheritance, the most derived base contracts that define the same
-function must be specified explicitly after the ``override`` keyword.
-In other words, you have to specify all base contracts that define the same function
-and have not yet been overridden by another base contract (on some path through the inheritance graph).
-Additionally, if a contract inherits the same function from multiple (unrelated)
-bases, it has to explicitly override it:
+Çoklu kalıtım için, aynı işlevi tanımlayan en çok türetilmiş temel sözleşmeler,
+``override`` anahtar sözcüğünden sonra açıkça belirtilmelidir. Başka bir deyişle, 
+aynı işlevi tanımlayan ve henüz başka bir temel sözleşme tarafından geçersiz 
+kılınmamış tüm temel sözleşmeleri belirtmeniz gerekir (miras grafiği boyunca bir yolda). 
+Ek olarak, bir sözleşme aynı işlevi birden çok (ilgisiz) temelden devralırsa, 
+bunu açıkça geçersiz kılması gerekir:
 
 .. code-block:: solidity
 
@@ -256,15 +257,15 @@ bases, it has to explicitly override it:
 
     contract Inherited is Base1, Base2
     {
-        // Derives from multiple bases defining foo(), so we must explicitly
-        // override it
+        // foo() fonksiyonuna sahip birden fazla temel akıllı sözleşmesi türetir.
+        // Bu yüzden override etmek için açıkça belirtmeliyiz.
         function foo() public override(Base1, Base2) {}
     }
 
-An explicit override specifier is not required if
-the function is defined in a common base contract
-or if there is a unique function in a common base contract
-that already overrides all other functions.
+Fonksiyon, ortak bir temel sözleşmede tanımlanmışsa veya ortak 
+bir temel sözleşmede diğer tüm işlevleri zaten override 
+eden benzersiz bir işlev varsa, açık bir override 
+belirteci gerekli değildir.
 
 .. code-block:: solidity
 
@@ -274,45 +275,42 @@ that already overrides all other functions.
     contract A { function f() public pure{} }
     contract B is A {}
     contract C is A {}
-    // No explicit override required
+    // Açıkça override gerekmemektedir.
     contract D is B, C {}
 
-More formally, it is not required to override a function (directly or
-indirectly) inherited from multiple bases if there is a base contract
-that is part of all override paths for the signature, and (1) that
-base implements the function and no paths from the current contract
-to the base mentions a function with that signature or (2) that base
-does not implement the function and there is at most one mention of
-the function in all paths from the current contract to that base.
+Daha resmi olarak, imza için tüm override etme yollarının 
+parçası olan bir temel sözleşme varsa, birden çok tabandan 
+devralınan bir fonksiyonu (doğrudan veya dolaylı olarak) override 
+etme gerekli değildir ve (1) bu taban fonksiyonu uygular ve mevcut
+akıllı sözleşmeden tabana giden hiçbir yol bu imzaya sahip bir fonksiyondan bahsetmez
+veya (2) bu taban fonksiyonu yerine getirmiyor ve mevcut akıllı sözleşmeden
+o tabana kadar olan tüm yollarda fonksiyondan en fazla bir kez söz ediliyor.
 
-In this sense, an override path for a signature is a path through
-the inheritance graph that starts at the contract under consideration
-and ends at a contract mentioning a function with that signature
-that does not override.
+Bu anlamda, bir imza için override etme yolu, söz konusu 
+akıllı sözleşmede başlayan ve override etmeyen bu imzaya sahip bir 
+işlevden bahseden bir akıllı sözleşmede sona eren miras grafiği boyunca bir yoldur.
 
-If you do not mark a function that overrides as ``virtual``, derived
-contracts can no longer change the behaviour of that function.
-
-.. note::
-
-  Functions with the ``private`` visibility cannot be ``virtual``.
+Override eden bir fonksiyonu ``virtual`` olarak işaretlemezseniz,
+türetilmiş sözleşmeler artık bu fonksiyonun davranışını değiştiremez.
 
 .. note::
 
-  Functions without implementation have to be marked ``virtual``
-  outside of interfaces. In interfaces, all functions are
-  automatically considered ``virtual``.
+  ``private`` görünürlüğe sahip fonksiyonlar ``virtual`` olamaz.
 
 .. note::
 
-  Starting from Solidity 0.8.8, the ``override`` keyword is not
-  required when overriding an interface function, except for the
-  case where the function is defined in multiple bases.
+  Interface dışında olup da kodu olmayan fonksiyonlar ``virtual``
+  olarak işaretlenmelidir. Interface içerisindeki bütün fonksiyonlar
+  otomatikmen ``virtual`` olarak düşünülür.
 
+.. note::
 
-Public state variables can override external functions if the
-parameter and return types of the function matches the getter function
-of the variable:
+  Solidity 0.8.8 itibari ile bir interface fonksiyonunu override
+  ederken ``override`` sözcüğünü kullanmanıza gerek kalmıyor,
+  birden fazla temel akıllı sözleşmede tanımlanan fonksiyonlar dışında.
+
+Public durum değişkenleri parametre ve dönüş tipleri uyuştuğu zaman
+bir external fonksiyonu override edebilir:
 
 .. code-block:: solidity
 
@@ -331,20 +329,21 @@ of the variable:
 
 .. note::
 
-  While public state variables can override external functions, they themselves cannot
-  be overridden.
+  Public durum değişkenleri external fonksiyonları override edebilirken,
+  kendileri override edilemez.
 
 .. index:: ! overriding;modifier
 
 .. _modifier-overriding:
 
-Modifier Overriding
+Modifier Override Etme
 ===================
 
-Function modifiers can override each other. This works in the same way as
-:ref:`function overriding <function-overriding>` (except that there is no overloading for modifiers). The
-``virtual`` keyword must be used on the overridden modifier
-and the ``override`` keyword must be used in the overriding modifier:
+Fonksiyon modifier'ları birbirlerini override edebilirler. Bu aynı
+:ref:`fonksiyon override etmedeki <function-overriding>` gibidir
+(modifierlarda overload etme olmamakla istisnası ile). ``virtual`` sözcüğü
+override edilecek modifier'da kullanılmalı ve override eden modifier'da ise
+``override`` sözcüğü kullanılmalıdır.
 
 .. code-block:: solidity
 
@@ -361,9 +360,8 @@ and the ``override`` keyword must be used in the overriding modifier:
         modifier foo() override {_;}
     }
 
-
-In case of multiple inheritance, all direct base contracts must be specified
-explicitly:
+Çoklu kalıtım durumumnda bütün temel akıllı sözleşmeler açıkça override edilme
+durumunu belirtmelidir.
 
 .. code-block:: solidity
 
@@ -391,27 +389,25 @@ explicitly:
 
 .. _constructor:
 
-Constructors
+Constructor'lar
 ============
 
-A constructor is an optional function declared with the ``constructor`` keyword
-which is executed upon contract creation, and where you can run contract
-initialisation code.
+Constructor isteğe bağlı olarak tanımlanan özel fonksiyonlardan biridir ve
+``constructor`` sözcüğü ile tanımlanır. Bu fonksiyon akıllı sözleşme oluşumu sırasında
+çalıştırılır ve akıllı sözleşme başlatma kodunuz burada bulunmaktadır.
 
-Before the constructor code is executed, state variables are initialised to
-their specified value if you initialise them inline, or their :ref:`default value<default-value>` if you do not.
+Constructor kodu çalıştırılmadan önce durum değişkenleri eğer aynı satırda
+tanımladıysanız gerekli değer atamalarını veya tanımlamadıysanız
+:ref:`default değerlerini<default-value>` alırlar.
 
-After the constructor has run, the final code of the contract is deployed
-to the blockchain. The deployment of
-the code costs additional gas linear to the length of the code.
-This code includes all functions that are part of the public interface
-and all functions that are reachable from there through function calls.
-It does not include the constructor code or internal functions that are
-only called from the constructor.
+Constructor çalıştırıldıktan sonra kodun son hali blockchain'e yüklenir. Bu işlemin
+ücreti ise lineer bir şekilde olup kodun uzunluğuna bağımlıdır. Bu kod dışarıdan
+erişilebilecek ve bir fonksiyon tarafından erişilen bütün fonksiyonları içerir.
+Constructor kodunu veya sadece constructor tarafından erişilen internal fonksiyonları
+içermez.
 
-If there is no
-constructor, the contract will assume the default constructor, which is
-equivalent to ``constructor() {}``. For example:
+Eğer constructor yoksa, default constructor çalıştırılır ``constructor() {}``.
+Örneğin:
 
 .. code-block:: solidity
 
@@ -430,27 +426,28 @@ equivalent to ``constructor() {}``. For example:
         constructor() {}
     }
 
-You can use internal parameters in a constructor (for example storage pointers). In this case,
-the contract has to be marked :ref:`abstract <abstract-contract>`, because these parameters
-cannot be assigned valid values from outside but only through the constructors of derived contracts.
+Constructor'larda internal parametreleri kullanabilirsiniz (örneğin, storage pointer'ları).
+Bu durumda akıllı sözleşme :ref:`abstract <abstract-contract>` olarak işaretlenmelidir. Çünkü bu
+parametrelere dışarıdan geçerli değerler atanamaz, ancak yalnızca türetilmiş sözleşmelerin 
+constructor'ları aracılığıyla atanır.
 
 .. warning ::
-    Prior to version 0.4.22, constructors were defined as functions with the same name as the contract.
-    This syntax was deprecated and is not allowed anymore in version 0.5.0.
-
+    Versiyon 0.4.22 öncesinde constructor'lar akıllı sözleşme ile aynı isme sahip fonksiyonlar
+    olarak kullanılırdı. Ancak bu yazılış biçiminin Versiyon 0.5.0 sonrasında kullanımına izin
+    verilmemektedir.
+    
 .. warning ::
-    Prior to version 0.7.0, you had to specify the visibility of constructors as either
-    ``internal`` or ``public``.
-
+    Versiyon 0.7.0 öncesinde constructor'ların görünürlüğünü ``internal`` veya ``public``
+    olarak belirtmek zorundaydınız.
 
 .. index:: ! base;constructor, inheritance list, contract;abstract, abstract contract
 
-Arguments for Base Constructors
+Temel Constructor'lar için Argümanlar
 ===============================
 
-The constructors of all the base contracts will be called following the
-linearization rules explained below. If the base constructors have arguments,
-derived contracts need to specify all of them. This can be done in two ways:
+Tüm temel akıllı sözleşmelerin constructor'ları, aşağıda açıklanan doğrusallaştırma kurallarına göre çağrılacaktır. 
+Temel akıllı sözleşmelerin argümanları varsa, türetilmiş akıllı sözleşmelerin hepsini belirtmesi gerekir. 
+Bu iki şekilde yapılabilir:
 
 .. code-block:: solidity
 
@@ -462,69 +459,59 @@ derived contracts need to specify all of them. This can be done in two ways:
         constructor(uint x_) { x = x_; }
     }
 
-    // Either directly specify in the inheritance list...
+    // Direkt kalıtım listesinde belirtme...
     contract Derived1 is Base(7) {
         constructor() {}
     }
 
-    // or through a "modifier" of the derived constructor...
+    // veya "modifier" stilinde belirtme...
     contract Derived2 is Base {
         constructor(uint y) Base(y * y) {}
     }
 
-    // or declare abstract...
+    // veya abstract olarak belirtin...
     abstract contract Derived3 is Base {
     }
 
-    // and have the next concrete derived contract initialize it.
+    // ve bir sonraki contractın onu başlatmasını sağlayın.
     contract DerivedFromDerived is Derived3 {
         constructor() Base(10 + 10) {}
     }
 
-One way is directly in the inheritance list (``is Base(7)``).  The other is in
-the way a modifier is invoked as part of
-the derived constructor (``Base(y * y)``). The first way to
-do it is more convenient if the constructor argument is a
-constant and defines the behaviour of the contract or
-describes it. The second way has to be used if the
-constructor arguments of the base depend on those of the
-derived contract. Arguments have to be given either in the
-inheritance list or in modifier-style in the derived constructor.
-Specifying arguments in both places is an error.
+Bir yol doğrudan kalıtım listesindedir (``is Base(7)``). Diğeri, türetilmiş constructor'ın 
+bir parçası olarak bir modifier'ın çağrılma biçimindedir (``Base(y * y)``). 
+Bunu yapmanın ilk yolu, constructor argümanının sabit olması ve akıllı sözleşmenin davranışını 
+tanımlaması veya tanımlaması durumunda daha uygundur. Temel constructor argümanları 
+türetilmiş akıllı sözleşmenin argümanlarına bağlıysa, ikinci yol kullanılmalıdır. 
+Argümanlar ya kalıtım listesinde ya da türetilmiş constructor'da değiştirici-tarzda verilmelidir. 
+Argümanları her iki yerde de belirtmek bir hatadır.
 
-If a derived contract does not specify the arguments to all of its base
-contracts' constructors, it must be declared abstract. In that case, when
-another contract derives from it, that other contract's inheritance list
-or constructor must provide the necessary parameters
-for all base classes that haven't had their parameters specified (otherwise,
-that other contract must be declared abstract as well). For example, in the above
-code snippet, see ``Derived3`` and ``DerivedFromDerived``.
+Türetilmiş bir akıllı sözleşme, temel akıllı sözleşmelerin tüm constructorları için argümanları belirtmiyorsa, 
+özet olarak bildirilmelidir. Bu durumda, ondan başka bir akıllı sözleşme türetildiğinde, diğer 
+akıllı sözleşmenin miras listesi veya constructor'ı, parametreleri belirtilmemiş tüm temel sınıflar 
+için gerekli parametreleri sağlamalıdır (aksi takdirde, diğer akıllı sözleşme da soyut olarak bildirilmelidir). 
+Örneğin, yukarıdaki kod parçacığında, bkz. ``Derived3`` ve ``DerivedFromDerived``.
 
 .. index:: ! inheritance;multiple, ! linearization, ! C3 linearization
 
 .. _multi-inheritance:
 
-Multiple Inheritance and Linearization
+Çoklu Kalıtım ve Doğrusallaştırma
 ======================================
 
-Languages that allow multiple inheritance have to deal with
-several problems.  One is the `Diamond Problem <https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem>`_.
-Solidity is similar to Python in that it uses "`C3 Linearization <https://en.wikipedia.org/wiki/C3_linearization>`_"
-to force a specific order in the directed acyclic graph (DAG) of base classes. This
-results in the desirable property of monotonicity but
-disallows some inheritance graphs. Especially, the order in
-which the base classes are given in the ``is`` directive is
-important: You have to list the direct base contracts
-in the order from "most base-like" to "most derived".
-Note that this order is the reverse of the one used in Python.
+Çoklu kalıtıma izin veren diller birkaç problemle uğraşmak zorundadır. 
+Bunlardan bir tanesi `Elmas Problemi'dir <https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem>`_.
+Solidity Python'a benzer olarak "`C3 Linearization <https://en.wikipedia.org/wiki/C3_linearization>`_"
+kullanarak directed acyclic graph'da (DAG) spesifik bir sırayı zorlar. Bu, istenen monotonluk özelliği 
+ile sonuçlanır, ancak bazı kalıtım grafiklerine izin vermez. Özellikle ``is`` yönergesinde temel 
+sınıfların veriliş sırası önemlidir: Doğrudan temel sözleşmeleri “en temele benzeyen”den 
+“en çok türetilene” doğru sıralamalısınız. Bu sıralamanın Python'da kullanılanın tersi olduğuna dikkat edin.
 
-Another simplifying way to explain this is that when a function is called that
-is defined multiple times in different contracts, the given bases
-are searched from right to left (left to right in Python) in a depth-first manner,
-stopping at the first match. If a base contract has already been searched, it is skipped.
+Bunu açıklamanın bir başka basitleştirici yolu, farklı akıllı sözleşmelerde birden çok kez tanımlanan
+bir fonksiyon çağrıldığında, verilen tabanların sağdan sola (Python'da soldan sağa) derinlemesine 
+ilk olarak aranması ve ilk eşleşmede durdurulmasıdır. . Bir temel akıllı sözleşme zaten aranmışsa, atlanır.
 
-In the following code, Solidity will give the
-error "Linearization of inheritance graph impossible".
+Aşağıdaki kodda Solidity "Linearization of inheritance graph impossible" hatası verecektir.
 
 .. code-block:: solidity
 
@@ -533,19 +520,21 @@ error "Linearization of inheritance graph impossible".
 
     contract X {}
     contract A is X {}
-    // This will not compile
+    // Bu derlenemez
     contract C is A, X {}
 
-The reason for this is that ``C`` requests ``X`` to override ``A``
-(by specifying ``A, X`` in this order), but ``A`` itself
-requests to override ``X``, which is a contradiction that
-cannot be resolved.
+Bunun sebebi ``C`` akıllı sözleşmesinin ``X`` akıllı sözleşmesinin ``A`` akıllı sözleşmesini
+override etmesini istemesidir (``A, X`` sırası ile bunu belirtiyor),
+ancak ``A`` akıllı sözleşmesinin kendisi ``X`` akıllı sözleşmesini override etmeyi talep
+eder ki bu çözülemeyecek bir çelişkidir.
 
-Due to the fact that you have to explicitly override a function
-that is inherited from multiple bases without a unique override,
-C3 linearization is not too important in practice.
+Benzersiz bir override olmadan birden çok tabandan devralınan bir 
+fonksiyonu açıkça override etmek gerektiğinden, pratikte C3 doğrusallaştırması çok önemli değildir.
 
-One area where inheritance linearization is especially important and perhaps not as clear is when there are multiple constructors in the inheritance hierarchy. The constructors will always be executed in the linearized order, regardless of the order in which their arguments are provided in the inheriting contract's constructor.  For example:
+Kalıtım doğrusallaştırmasının özellikle önemli olduğu ve belki de o kadar net olmadığı bir alan, 
+miras hiyerarşisinde birden çok constructor olduğu zamandır. Constructor'lar, argümanlarının devralınan 
+akıllı sözleşmenin constructor'ında sağlandığı sıraya bakılmaksızın her zaman doğrusallaştırılmış sırada 
+yürütülür. Örneğin:
 
 .. code-block:: solidity
 
@@ -560,7 +549,7 @@ One area where inheritance linearization is especially important and perhaps not
         constructor() {}
     }
 
-    // Constructors are executed in the following order:
+    // Constructor'lar aşağıdaki sıra ile çalışır:
     //  1 - Base1
     //  2 - Base2
     //  3 - Derived1
@@ -568,7 +557,7 @@ One area where inheritance linearization is especially important and perhaps not
         constructor() Base1() Base2() {}
     }
 
-    // Constructors are executed in the following order:
+    // Constructor'lar aşağıdaki sıra ile çalışır:
     //  1 - Base2
     //  2 - Base1
     //  3 - Derived2
@@ -585,12 +574,12 @@ One area where inheritance linearization is especially important and perhaps not
     }
 
 
-Inheriting Different Kinds of Members of the Same Name
+Farklı Türden Aynı İsme Sahip Üyeleri Türetme
 ======================================================
 
-It is an error when any of the following pairs in a contract have the same name due to inheritance:
-  - a function and a modifier
-  - a function and an event
-  - an event and a modifier
+Bir akıllı sözleşmede aşağıdaki çiftlerden herhangi birinin miras nedeniyle aynı ada sahip olması bir hatadır:
+  - bir fonksiyon ve bir modifier
+  - bir fonksiyon ve bir event
+  - bir event ve bir modifier
 
-As an exception, a state variable getter can override an external function.
+İstisna olarak, bir durum değişkeninin getirici fonksiyonu bir external fonksiyonu override edebilir.

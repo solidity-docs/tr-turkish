@@ -1,36 +1,36 @@
 .. index:: ! contract;creation, constructor
 
 ******************
-Creating Contracts
+Akıllı Sözleşme Oluşturma
 ******************
 
-Contracts can be created "from outside" via Ethereum transactions or from within Solidity contracts.
+Akıllı sözleşmeler iki şekilde oluşturulabilir; "dışarıdan" bir Ethereum transactionı ile veya
+Solidity kullanarak direkt başka bir akıllı sözleşme içerisinde.
 
-IDEs, such as `Remix <https://remix.ethereum.org/>`_, make the creation process seamless using UI elements.
+`Remix <https://remix.ethereum.org/>`_ gibi IDE'ler oluşturma aşamasını kullanıcı arayüzü kullanarak kolayca gerçekleştirmenize yardımcı olur.
 
-One way to create contracts programmatically on Ethereum is via the JavaScript API `web3.js <https://github.com/ethereum/web3.js>`_.
-It has a function called `web3.eth.Contract <https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#new-contract>`_
-to facilitate contract creation.
+Programlama ile akıllı sözleşme oluşturmanın bir yolu ise `web3.js <https://github.com/ethereum/web3.js>`_ gibi bir JavaScript API kullanımıdır.
+Akıllı sözleşme oluşturmaya yarayan `web3.eth.Contract <https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#new-contract>`_ isimli bir methodu vardır.
 
-When a contract is created, its :ref:`constructor <constructor>` (a function declared with
-the ``constructor`` keyword) is executed once.
+Bir akıllı sözleşme oluşturulduğu zaman :ref:`constructor <constructor>` isimli bir fonksiyon sadece bir kere olmak üzere çalıştırılır.
+Bundan sonra bu fonksiyona erişim mümkün değildir.
 
-A constructor is optional. Only one constructor is allowed, which means
-overloading is not supported.
+Constructor kullanmak zorunlu değildir. Bir akıllı sözleşmede sadece bir adet constructor olabilir ve overloading
+yapılması mümkün değildir.
 
-After the constructor has executed, the final code of the contract is stored on the
-blockchain. This code includes all public and external functions and all functions
-that are reachable from there through function calls. The deployed code does not
-include the constructor code or internal functions only called from the constructor.
+Constructor çalıştırıldıktan sonra akıllı sözleşme kodunun son hali blok zincirinde saklanır. Bu kod
+bütün public ve external fonksiyonları içerir. Deploy edilen kod constructor fonksiyonu ve
+sadece constructor içerisinde çağrılan internal fonksiyonları içermez.
 
 .. index:: constructor;arguments
 
-Internally, constructor arguments are passed :ref:`ABI encoded <ABI>` after the code of
-the contract itself, but you do not have to care about this if you use ``web3.js``.
+Özünde constructor parametreleri :ref:`ABI encoded <ABI>` olarak akıllı sözleşme kodunun sonuna eklenir
+(bytecode halinin), ama eğer ``web3.js`` kullanıyorsanız bunu umursamanıza gerek yok. Çünkü o
+sizin için bu işlemleri gerçekleştiriyor.
 
-If a contract wants to create another contract, the source code
-(and the binary) of the created contract has to be known to the creator.
-This means that cyclic creation dependencies are impossible.
+Eğer bir akıllı sözleşme başka bir akıllı sözleşme oluşturmak istiyorsa, oluşturmak istediği akıllı sözleşmenin
+kaynak kodunu (ve binary halini) bilmelidir. Bu demektir ki döngüsel olarak akıllı sözleşme oluşturmak
+mümkün değildir.
 
 .. code-block:: solidity
 
@@ -39,53 +39,56 @@ This means that cyclic creation dependencies are impossible.
 
 
     contract OwnedToken {
-        // `TokenCreator` is a contract type that is defined below.
-        // It is fine to reference it as long as it is not used
-        // to create a new contract.
+        // `TokenCreator` aşağıda belirtilmiş bir akıllı sözleşme tipidir.
+        // Yeni bir akıllı sözleşme oluşturmak için kullanılmadığı sürece
+        // referans etmekte sorun yoktur.
         TokenCreator creator;
         address owner;
         bytes32 name;
 
-        // This is the constructor which registers the
-        // creator and the assigned name.
+        // Burası constructor fonksiyonumuz. Burada
+        // belirtilen isim ve akıllı sözleşmeyi oluşturan adres
+        // akıllı sözleşmede kaydedilir.
         constructor(bytes32 name_) {
-            // State variables are accessed via their name
-            // and not via e.g. `this.owner`. Functions can
-            // be accessed directly or through `this.f`,
-            // but the latter provides an external view
-            // to the function. Especially in the constructor,
-            // you should not access functions externally,
-            // because the function does not exist yet.
-            // See the next section for details.
+            // State değişkenlerine isimleri kullanılarak
+            // erişilir. `this.owner` şeklinde bir kullanım
+            // ile değil. Fonksiyonlara direkt olarak kendi
+            // isimlerini kullanarak veya `this.f` şeklinde
+            // bir kullanım ile erişebiliriz. Ancak ikinci
+            // şekildeki kullanım external olarak (dışarıdan)
+            // bir görüş sağlar. Özellikle constructorlarda,
+            // fonksiyonlara external olarak erişmemelisiniz.
+            // Çünkü o fonksiyonlar henüz oluşturulmadı, yani
+            // erişilebilir değil.
+            // Daha fazlası için bir sonraki bölüme bakabilirsiniz.
             owner = msg.sender;
 
-            // We perform an explicit type conversion from `address`
-            // to `TokenCreator` and assume that the type of
-            // the calling contract is `TokenCreator`, there is
-            // no real way to verify that.
-            // This does not create a new contract.
+            // Burada `address` tipinden `TokenCreator` tipine
+            // bir explicit (açık) dönüşüm sağlarız ve bu fonksiyonu
+            // çağıran akıllı sözleşmenin bir `TokenCreator` olduğunu varsayarız.
+            // Bunu doğrulamanın gerçek bir yöntemi bulunmamakta.
+            // Bu işlem yeni bir akıllı sözleşme oluşturmaz.
             creator = TokenCreator(msg.sender);
             name = name_;
         }
 
         function changeName(bytes32 newName) public {
-            // Only the creator can alter the name.
-            // We compare the contract based on its
-            // address which can be retrieved by
-            // explicit conversion to address.
+            // Sadece `creator` `name` değişkenini değiştirebilir.
+            // Akıllı sözleşmenin adresini explicit bir dönüşüm ile
+            // elde edebilir ve karşılaştırmamızı yapabiliriz.
             if (msg.sender == address(creator))
                 name = newName;
         }
 
         function transfer(address newOwner) public {
-            // Only the current owner can transfer the token.
+            // Sadece şu anki `owner` token transferi gerçekleştirebilir.
             if (msg.sender != owner) return;
 
-            // We ask the creator contract if the transfer
-            // should proceed by using a function of the
-            // `TokenCreator` contract defined below. If
-            // the call fails (e.g. due to out-of-gas),
-            // the execution also fails here.
+            // `creator` adresindeki akıllı sözleşmenin bir fonksiyonunu
+            // kullanarak, işlemin gerçekleştirilebilirliğini
+            // kontrol edebilir. Eğer bu işlem hata verirse
+            // (örneğin, out-of-gas (gazın tükenmesi)),
+            // işlem burada son bulur.
             if (creator.isTokenTransferOK(owner, newOwner))
                 owner = newOwner;
         }
@@ -97,27 +100,25 @@ This means that cyclic creation dependencies are impossible.
             public
             returns (OwnedToken tokenAddress)
         {
-            // Create a new `Token` contract and return its address.
-            // From the JavaScript side, the return type
-            // of this function is `address`, as this is
-            // the closest type available in the ABI.
+            // Yeni bir `Token` akıllı sözleşmeyi oluşturur ve adresini return eder.
+            // JavaScript tarafında return tipi `address` tipidir.
             return new OwnedToken(name);
         }
 
         function changeName(OwnedToken tokenAddress, bytes32 name) public {
-            // Again, the external type of `tokenAddress` is
-            // simply `address`.
+            // `tokenAddress` isimli parametrenin tipi
+            // `address` tipindendir.
             tokenAddress.changeName(name);
         }
 
-        // Perform checks to determine if transferring a token to the
-        // `OwnedToken` contract should proceed
+        // Bir transferin gerçekleşip gerçekleşmeyeceğini belirler
         function isTokenTransferOK(address currentOwner, address newOwner)
             public
             pure
             returns (bool ok)
         {
-            // Check an arbitrary condition to see if transfer should proceed
+            // Keyfi bir koşul ile işlemin gerçekleşip gerçekleşmeyeceğini
+            // belirler ve sonucu return eder.
             return keccak256(abi.encodePacked(currentOwner, newOwner))[0] == 0x7f;
         }
     }

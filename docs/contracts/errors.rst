@@ -2,26 +2,25 @@
 .. _errors:
 
 *******************************
-Errors and the Revert Statement
+Hata ve Geri Alma Durumları
 *******************************
 
-Errors in Solidity provide a convenient and gas-efficient way to explain to the
-user why an operation failed. They can be defined inside and outside of contracts (including interfaces and libraries).
+Solidity'de hatalar gaz-verimli ve kullanışlı bir şekilde kullanıcılara bir işlemin
+neden başarısız olduğunu söylemeyi sağlar. Akıllı sözleşmenin içerisinde veya dışarısında tanımlanabilirler
+(interface ve kütüphaneler de dahil).
 
-They have to be used together with the :ref:`revert statement <revert-statement>`
-which causes
-all changes in the current call to be reverted and passes the error data back to the
-caller.
+:ref:`Revert ifadesi <revert-statement>` ile kullanılmalıdır. Bu ifade anlık çağrıda yapılan
+bütün değişiklikleri geri alır ve işlemi çağıran kişiye bir hata gönderir.
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity ^0.8.4;
 
-    /// Insufficient balance for transfer. Needed `required` but only
-    /// `available` available.
-    /// @param available balance available.
-    /// @param required requested amount to transfer.
+    /// Transfer için yetersiz bakiye. `required` kadar bakiye
+    /// olmalıyken, `available` kadar bakiye mevcuttur.
+    /// @param available, kullanılabilir bakiye.
+    /// @param required, transfer edilmek istenen miktar.
     error InsufficientBalance(uint256 available, uint256 required);
 
     contract TestToken {
@@ -38,49 +37,49 @@ caller.
         // ...
     }
 
-Errors cannot be overloaded or overridden but are inherited.
-The same error can be defined in multiple places as long as the scopes are distinct.
-Instances of errors can only be created using ``revert`` statements.
+Hatalar overload veya override edilemez ama türetilebilirler.
+Alanları farklı olduğu sürece aynı hata birden fazla kere tanımlanabilir.
+Hata örnekleri sadece ``revert`` ifadesi kullanılarak üretilebilir.
 
-The error creates data that is then passed to the caller with the revert operation
-to either return to the off-chain component or catch it in a :ref:`try/catch statement <try-catch>`.
-Note that an error can only be caught when coming from an external call,
-reverts happening in internal calls or inside the same function cannot be caught.
+Hata, daha sonra zincir dışı bileşene geri dönmek veya onu :ref:`try/catch ifadesiyle <try-catch>`.
+yakalamak için geri alma işlemiyle işlemi çağırana veri iletir. Bir hatanın
+yalnızca harici bir aramadan geldiğinde yakalanabileceğini, dahili aramalarda veya 
+aynı işlevin içinde gerçekleşen geri dönüşlerin yakalanamayacağını unutmayın.
 
-If you do not provide any parameters, the error only needs four bytes of
-data and you can use :ref:`NatSpec <natspec>` as above
-to further explain the reasons behind the error, which is not stored on chain.
-This makes this a very cheap and convenient error-reporting feature at the same time.
+Herhangi bir parametre sağlamazsanız, hata yalnızca dört bayt veriye ihtiyaç duyar
+ve zincirde depolanmayan hatanın ardındaki nedenleri daha fazla açıklamak için
+:ref:`NatSpec'i <natspec>` yukarıdaki gibi kullanabilirsiniz. Bu, bunu aynı zamanda çok ucuz ve 
+kullanışlı bir hata raporlama özelliği yapar.
 
-More specifically, an error instance is ABI-encoded in the same way as
-a function call to a function of the same name and types would be
-and then used as the return data in the ``revert`` opcode.
-This means that the data consists of a 4-byte selector followed by :ref:`ABI-encoded<abi>` data.
-The selector consists of the first four bytes of the keccak256-hash of the signature of the error type.
-
-.. note::
-    It is possible for a contract to revert
-    with different errors of the same name or even with errors defined in different places
-    that are indistinguishable by the caller. For the outside, i.e. the ABI,
-    only the name of the error is relevant, not the contract or file where it is defined.
-
-The statement ``require(condition, "description");`` would be equivalent to
-``if (!condition) revert Error("description")`` if you could define
-``error Error(string)``.
-Note, however, that ``Error`` is a built-in type and cannot be defined in user-supplied code.
-
-Similarly, a failing ``assert`` or similar conditions will revert with an error
-of the built-in type ``Panic(uint256)``.
+Daha spesifik olarak, bir hata örneği, aynı ad ve türdeki bir işleve yapılan bir işlev
+çağrısıyla aynı şekilde ABI ile kodlanır ve daha sonra geri alma işlem kodunda dönüş
+verileri olarak kullanılır. Bu, verilerin 4 baytlık bir fonksiyon selector'ünün ve ardından :ref:`ABI-encoded<abi>`
+verilerden oluştuğu anlamına gelir. Selector, hata türünün imzasının keccak256 hash'inin
+ilk dört baytından oluşur.
 
 .. note::
-    Error data should only be used to give an indication of failure, but
-    not as a means for control-flow. The reason is that the revert data
-    of inner calls is propagated back through the chain of external calls
-    by default. This means that an inner call
-    can "forge" revert data that looks like it could have come from the
-    contract that called it.
+    Bir sözleşmenin aynı adı taşıyan farklı hatalarla veya hatta işlemi çağıran tarafından ayırt edilemeyen 
+    farklı yerlerde tanımlanan hatalarla geri dönmesi mümkündür. 
+    Dışarıdan, yani ABI için, tanımlandığı sözleşme veya dosya değil, yalnızca hatanın adı önemlidir.
 
-Members of Errors
+
+
+``require(condition, "description");`` ifadesi ile
+``if (!condition) revert Error("description")`` ifadesi eğer hata
+``error Error(string)`` bu şekilde tanımlanmışsa, aynı işi yapar.
+``Error`` tipinin bir built-in tipi olduğunu ve kullanıcı tarafından tanımlanamayacağını unutmayın.
+
+Benzer olarak bir ``assert`` ile tespit edilen bir başarısızlık, yine bir built-in
+tipi olan ``Panic(uint256)`` ile geri alınacaktır.
+
+.. note::
+    Hata verileri sadece bir başarısızlığı işaret etmek için kullanılmalıdır,
+    kontrol akışı için kullanılmamalıdır. Bunun nedeni, dahili çağrıların geri
+    alınan verilerinin, varsayılan olarak harici çağrılar zinciri boyunca geri
+    yayılmasıdır. Bu, bir iç çağrının, kendisini çağıran sözleşmeden gelmiş gibi
+    görünen verileri "sahte" hale getirebileceği anlamına gelir.
+
+Hataların Üyeleri
 =================
 
-- ``error.selector``: A ``bytes4`` value containing the error selector.
+- ``error.selector``: Hatanın selector'ünü içeren ``bytes4`` dört baytlık bir değer.
