@@ -28,6 +28,7 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - Symlinks = Kısayol Bağlantısı
 - Components = Bileşen
 - Fork = Çatallamak
+- Jump Type = Sıçrama Komutu Türü
 - Nightly Development Builds = Nightly Geliştirme Yapıları/Derlemeleri
 - Encode = Şifreleme
 - Decode = Şifreyi Çözme
