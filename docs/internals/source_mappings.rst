@@ -1,7 +1,7 @@
 .. index:: source mappings
 
 ***************
-Mapping Kaynakları
+Kaynak Eşlemesi
 ***************
 
 AST çıktısının bir parçası olarak derleyici, AST'deki ilgili node tarafından
