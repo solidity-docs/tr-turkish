@@ -4,6 +4,7 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - Smart Contract = Akıllı Sözleşme
 - Blockchain = Blok Zinciri
 - Binary = Binary
+- Breakpoint = Breakpoint
 - Breaking Changes = İşleyişi Bozan Değişiklikler, Kırılan Değişiklikler veya Önemli Değişikliker 
 - State = Durum
 - Keypair = Anahtar Çifti
@@ -17,6 +18,7 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - EVM (Ethereum Virtual Machine) = ESM (Ethereum Sanal Makinası)
 - Client = İstemci
 - Publish = Yayılan
+- Statement = İfade
 - Repository = Depo
 - Function = Fonksiyon
 - Branch = Kol, Dal
