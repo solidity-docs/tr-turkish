@@ -215,7 +215,7 @@ kafa karıştırabilirler.
         /// Fonksiyon erken çağırıldı.
         /// `time` de tekrar deneyin.
         error TooEarly(uint time);
-        /// Fonsyion geç çağırıldı.
+        /// Fonksyion geç çağırıldı.
         /// `time` dan sonra çağırılamaz.
         error TooLate(uint time);
         /// auctionEnd fonksyionu zaten çağırıldı.
