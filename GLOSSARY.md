@@ -11,6 +11,7 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - Stack = Yığın
 - Execute = Çalıştırmak
 - Timestamp = Zaman Bilgisi
+- Type = Tür/Tip
 - Statement = İfade
 - Opcode = İşlem Kodu
 - Optimizer = Optimize Edici
@@ -30,6 +31,7 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - Symlinks = Kısayol Bağlantısı
 - Components = Bileşen
 - Fork = Çatallamak
+- Pointer = Pointer
 - Jump Type = Sıçrama Komutu Türü
 - Nightly Development Builds = Nightly Geliştirme Yapıları/Derlemeleri
 - Encode = Şifreleme
