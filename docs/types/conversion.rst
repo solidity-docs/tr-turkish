@@ -2,35 +2,27 @@
 
 .. _types-conversion-elementary-types:
 
-Conversions between Elementary Types
+Temel Türler Arası Dönüşümler
 ====================================
 
-Implicit Conversions
+Örtülü Dönüşümler
 --------------------
 
-An implicit type conversion is automatically applied by the compiler in some cases
-during assignments, when passing arguments to functions and when applying operators.
-In general, an implicit conversion between value-types is possible if it makes
-sense semantically and no information is lost.
+Örtülü tür dönüşümü, argümanları fonksiyonlara iletme ya da operatör atamaları sırasında, derleyici tarafından
+otomatik olarak uygulanır. Genel olarak, bilgi kaybı yoksa ve anlamsal açıdan bir sorun yoksa, değer türleri arasında örtülü bir dönüşüm mümkündür. 
 
-For example, ``uint8`` is convertible to
-``uint16`` and ``int128`` to ``int256``, but ``int8`` is not convertible to ``uint256``,
-because ``uint256`` cannot hold values such as ``-1``.
+Örneğin, ``uint8`` türü,
+``uint16`` türüne ve ``int128`` türü, ``int256`` türüne dönüştürülebilirken, ``int8`` türü ``uint256`` türüne dönüştürülemez çünkü  ``uint256``, ``-1`` gibi değerleri tutamaz.
 
-If an operator is applied to different types, the compiler tries to implicitly
-convert one of the operands to the type of the other (the same is true for assignments).
-This means that operations are always performed in the type of one of the operands.
+Bir operatör birbirinden farklı türlere uygulanırsa, derleyici işlenenlerden birini örtük olarak diğerinin türüne dönüştürmeye çalışır (aynısı atamalar için de geçerlidir).
+Bu, işlemlerin her zaman işlenenlerden birinin türünde gerçekleştirildiği anlamına gelir.
 
-For more details about which implicit conversions are possible,
-please consult the sections about the types themselves.
+Hangi örtük dönüşümlerin mümkün olduğu hakkında daha fazla ayrıntı için, lütfen türlerle ilgili bölümlere bakın.
 
-In the example below, ``y`` and ``z``, the operands of the addition,
-do not have the same type, but ``uint8`` can
-be implicitly converted to ``uint16`` and not vice-versa. Because of that,
-``y`` is converted to the type of ``z`` before the addition is performed
-in the ``uint16`` type. The resulting type of the expression ``y + z`` is ``uint16``.
-Because it is assigned to a variable of type ``uint32`` another implicit conversion
-is performed after the addition.
+Aşağıdaki örnekte, toplamanın işlenenleri olarak ``y`` ve ``z``, aynı türe sahip değildir, fakat ``uint8`` örtük olarak
+ ``uint16`` türüne dönüştürülebilirken bunun tersi mümkün değildir. Bu sebeple, ``uint16`` türünde bir dönüştürme yapılmadan önce 
+``y`` türü, ``z`` türüne dönüştürülür.  ``y + z`` ifadesinden elde edilen tür, ``uint16``dır.
+Toplama işleminin sonucu ``uint32`` türünde bir değişkene atandığı için, toplama işleminden sonra yeniden örtük dönüştürme gerçekleşir.
 
 .. code-block:: solidity
 
@@ -39,79 +31,64 @@ is performed after the addition.
     uint32 x = y + z;
 
 
-Explicit Conversions
+Açık Dönüşümler
 --------------------
 
-If the compiler does not allow implicit conversion but you are confident a conversion will work,
-an explicit type conversion is sometimes possible. This may
-result in unexpected behaviour and allows you to bypass some security
-features of the compiler, so be sure to test that the
-result is what you want and expect!
+Derleyici örtük dönüştürmeye izin vermiyorsa ancak bir dönüştürmenin işe yarayacağından eminseniz, bazen açık bir tür dönüştürme mümkündür. Bu, beklenmeyen davranışlara neden olabilir ve derleyicinin bazı güvenlik özelliklerini atlamanıza izin verir, bu nedenle sonucun istediğiniz ve beklediğiniz gibi olduğunu test ettiğinizden emin olun!
 
-Take the following example that converts a negative ``int`` to a ``uint``:
+Negatif değere sahip bir ``int`` değişkenini, ``uint`` değişkenine dönüştüren aşağıdaki örneği ele alalım:
 
 .. code-block:: solidity
 
     int  y = -3;
     uint x = uint(y);
 
-At the end of this code snippet, ``x`` will have the value ``0xfffff..fd`` (64 hex
-characters), which is -3 in the two's complement representation of 256 bits.
+Bu kod bloğunun sonunda ``x``, ``0xfffff..fd`` (64 adet onaltılık karaker) değerine sahip olacaktır, bu, iki'nin 256 bitlik tümleyen (two's complement) temsili olan -3'tür.
 
-If an integer is explicitly converted to a smaller type, higher-order bits are
-cut off:
+Bir tam sayı, kendisinden daha küçük bir türe açık şekilde dönüştürülürse, daha yüksek dereceli bitler kesilir.
 
 .. code-block:: solidity
 
     uint32 a = 0x12345678;
-    uint16 b = uint16(a); // b will be 0x5678 now
+    uint16 b = uint16(a); // b, 0x5678 olacaktır
 
-If an integer is explicitly converted to a larger type, it is padded on the left (i.e., at the higher order end).
-The result of the conversion will compare equal to the original integer:
+Bir tam sayı, kendisinden daha büyük bir türe açık şekilde dönüştürülürse, elde edilen ortak tümleyenin solu yani daha yüksek dereceli ucu doldurulur. Dönüşümün sonucu orijinal tam sayıya eşit olacaktır:
 
 .. code-block:: solidity
 
     uint16 a = 0x1234;
-    uint32 b = uint32(a); // b will be 0x00001234 now
+    uint32 b = uint32(a); // b, 0x00001234 olacaktır
     assert(a == b);
 
-Fixed-size bytes types behave differently during conversions. They can be thought of as
-sequences of individual bytes and converting to a smaller type will cut off the
-sequence:
+Sabit boyutlu bayt dizisi türleri, dönüşümler sırasında farklı davranır. Bireysel bayt dizileri olarak düşünülebilirler ve daha küçük bir türe dönüştürmek diziyi kesecektir:
 
 .. code-block:: solidity
 
     bytes2 a = 0x1234;
-    bytes1 b = bytes1(a); // b will be 0x12
+    bytes1 b = bytes1(a); // b, 0x12 olacaktır
 
-If a fixed-size bytes type is explicitly converted to a larger type, it is padded on
-the right. Accessing the byte at a fixed index will result in the same value before and
-after the conversion (if the index is still in range):
+
+Sabit boyutlu bir bayt dizisi türü, daha büyük bir türe açıkça dönüştürülürse, elde edilen ortak tümleyen sağ tarafta doldurulur. Sabit bir dizindeki bayt dizisine erişmek, dönüştürmeden önce ve sonra aynı değerle sonuçlanır (dizin hala aralıktaysa):
 
 .. code-block:: solidity
 
     bytes2 a = 0x1234;
-    bytes4 b = bytes4(a); // b will be 0x12340000
+    bytes4 b = bytes4(a); // b, 0x12340000 olacaktır
     assert(a[0] == b[0]);
     assert(a[1] == b[1]);
 
-Since integers and fixed-size byte arrays behave differently when truncating or
-padding, explicit conversions between integers and fixed-size byte arrays are only allowed,
-if both have the same size. If you want to convert between integers and fixed-size byte arrays of
-different size, you have to use intermediate conversions that make the desired truncation and padding
-rules explicit:
+Tamsayılar ve sabit boyutlu bayt dizileri, kesme veya doldurma sırasında farklı davrandığından, tamsayılar ve sabit boyutlu bayt dizileri arasındaki açık dönüştürmelere yalnızca, her ikisi de aynı boyuta sahipse izin verilir. Farklı boyuttaki tamsayılar ve sabit boyutlu bayt dizileri arasında dönüştürmek istiyorsanız, istenen kesme ve doldurma kurallarını açık hale getiren ara dönüşümleri kullanmanız gerekir:
 
 .. code-block:: solidity
 
     bytes2 a = 0x1234;
-    uint32 b = uint16(a); // b will be 0x00001234
-    uint32 c = uint32(bytes4(a)); // c will be 0x12340000
-    uint8 d = uint8(uint16(a)); // d will be 0x34
-    uint8 e = uint8(bytes1(a)); // e will be 0x12
+    uint32 b = uint16(a); // b, 0x00001234 olacaktır
+    uint32 c = uint32(bytes4(a)); // c, 0x12340000 olacaktır
+    uint8 d = uint8(uint16(a)); // d, 0x34 olacaktır
+    uint8 e = uint8(bytes1(a)); // e, 0x12 olacaktır
 
-``bytes`` arrays and ``bytes`` calldata slices can be converted explicitly to fixed bytes types (``bytes1``/.../``bytes32``).
-In case the array is longer than the target fixed bytes type, truncation at the end will happen.
-If the array is shorter than the target type, it will be padded with zeros at the end.
+``bytes`` dizileri ve ``bytes`` çağrı verisi (calldata) dilimleri, sabit bayt türlerine(``bytes1``/.../``bytes32``) açıkça dönüştürülebilir.
+Dizinin hedef sabit bayt türünden daha uzun olması durumunda, sonunda kesme gerçekleşir. Dizi hedef türden daha kısaysa, sonunda sıfırlarla doldurulur.
 
 .. code-block:: solidity
 
@@ -122,72 +99,64 @@ If the array is shorter than the target type, it will be padded with zeros at th
         bytes s = "abcdefgh";
         function f(bytes calldata c, bytes memory m) public view returns (bytes16, bytes3) {
             require(c.length == 16, "");
-            bytes16 b = bytes16(m);  // if length of m is greater than 16, truncation will happen
-            b = bytes16(s);  // padded on the right, so result is "abcdefgh\0\0\0\0\0\0\0\0"
-            bytes3 b1 = bytes3(s); // truncated, b1 equals to "abc"
-            b = bytes16(c[:8]);  // also padded with zeros
+            bytes16 b = bytes16(m);  // 'm'in uzunluğu 16'dan büyükse, kesme gerçekleşecektir
+            b = bytes16(s);  // sağa genişletilir, sonuç "abcdefgh\0\0\0\0\0\0\0\0" olacaktır
+            bytes3 b1 = bytes3(s); // kesilir, b1, "abc"ye eşittir
+            b = bytes16(c[:8]);  // sıfırlar ile genişletilir
             return (b, b1);
         }
     }
 
 .. _types-conversion-literals:
 
-Conversions between Literals and Elementary Types
+İfadeler (Literals) ve Temel Türler Arasındaki Dönüşümler
 =================================================
 
-Integer Types
+Tamsayı Türleri
 -------------
 
-Decimal and hexadecimal number literals can be implicitly converted to any integer type
-that is large enough to represent it without truncation:
+Ondalık ve onaltılık sayı ifadeleri, onu kesmeden temsil edecek kadar büyük herhangi bir tamsayı türüne örtük olarak dönüştürülebilir:
 
 .. code-block:: solidity
 
-    uint8 a = 12; // fine
-    uint32 b = 1234; // fine
-    uint16 c = 0x123456; // fails, since it would have to truncate to 0x3456
+    uint8 a = 12; // uygun
+    uint32 b = 1234; // uygun
+    uint16 c = 0x123456; // hatalı, çünkü 0x3456 olacak şekilde kesilmek zorundadır
 
-.. note::
-    Prior to version 0.8.0, any decimal or hexadecimal number literals could be explicitly
-    converted to an integer type. From 0.8.0, such explicit conversions are as strict as implicit
-    conversions, i.e., they are only allowed if the literal fits in the resulting range.
+.. not::
+    0.8.0 sürümünden önce, herhangi bir ondalık veya onaltılık sayı ifadeleri bir tamsayı türüne açıkça dönüştürülebilirdi. 0.8.0'dan itibaren, bu tür açık dönüştürmeler, örtülü dönüştürmeler kadar katıdır, yani, yalnızca ifade elde edilen aralığa uyuyorsa bunlara izin verilir.  
 
-Fixed-Size Byte Arrays
+Sabit Boyutlu Bayt Dizileri
 ----------------------
 
-Decimal number literals cannot be implicitly converted to fixed-size byte arrays. Hexadecimal
-number literals can be, but only if the number of hex digits exactly fits the size of the bytes
-type. As an exception both decimal and hexadecimal literals which have a value of zero can be
-converted to any fixed-size bytes type:
+Ondalık sayı ifadeleri örtük olarak sabit boyutlu bayt dizilerine dönüştürülemez. Onaltılık sayı ifadeleri olabilir, ancak yalnızca onaltılık basamak sayısı bayt türünün boyutuna tam olarak uyuyorsa. Bir istisna olarak, sıfır değerine sahip hem ondalık hem de onaltılık ifadeler herhangi bir sabit boyutlu bayt türüne dönüştürülebilir:
 
 .. code-block:: solidity
 
-    bytes2 a = 54321; // not allowed
-    bytes2 b = 0x12; // not allowed
-    bytes2 c = 0x123; // not allowed
-    bytes2 d = 0x1234; // fine
-    bytes2 e = 0x0012; // fine
-    bytes4 f = 0; // fine
-    bytes4 g = 0x0; // fine
+    bytes2 a = 54321; // izin verilmez
+    bytes2 b = 0x12; //  izin verilmez
+    bytes2 c = 0x123; // izin verilmez
+    bytes2 d = 0x1234; // uygun
+    bytes2 e = 0x0012; // uygun
+    bytes4 f = 0; // uygun
+    bytes4 g = 0x0; // uygun
 
-String literals and hex string literals can be implicitly converted to fixed-size byte arrays,
-if their number of characters matches the size of the bytes type:
+String ifadeleri ve onaltılı string ifadeleri, karakter sayıları bayt türünün boyutuyla eşleşiyorsa, örtük olarak sabit boyutlu bayt dizilerine dönüştürülebilir:
 
 .. code-block:: solidity
 
-    bytes2 a = hex"1234"; // fine
-    bytes2 b = "xy"; // fine
-    bytes2 c = hex"12"; // not allowed
-    bytes2 d = hex"123"; // not allowed
-    bytes2 e = "x"; // not allowed
-    bytes2 f = "xyz"; // not allowed
+    bytes2 a = hex"1234"; // uygun
+    bytes2 b = "xy"; // uygun
+    bytes2 c = hex"12"; // izin verilmez
+    bytes2 d = hex"123"; // izin verilmez
+    bytes2 e = "x"; // izin verilmez
+    bytes2 f = "xyz"; // izin verilmez
 
-Addresses
+Adresler
 ---------
 
-As described in :ref:`address_literals`, hex literals of the correct size that pass the checksum
-test are of ``address`` type. No other literals can be implicitly converted to the ``address`` type.
+ :ref:`adres_ifadeleri <_address_literals:>` bölümünde açıklandığı gibi, sağlama toplamı (checksum) testini geçen doğru boyuttaki onaltılık ifadeler ``address`` türündedir. Başka hiçbir ifade ``address`` türüne örtük olarak dönüştürülemez.
 
-Explicit conversions from ``bytes20`` or any integer type to ``address`` result in ``address payable``.
+``bytes20`` değişkeninden ya da herhangi bir tam sayı türünden ``adress`` değişkenine yapılacak açık dönüştürmeler, ``address payable`` ile sonuçlanır.
 
-An ``address a`` can be converted to ``address payable`` via ``payable(a)``.
+``address a``'dan  ``address payable``'a yapılacak bir dönüşüm, ``payable(a)`` kullanılarak gerçekleştirilebilir.

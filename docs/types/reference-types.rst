@@ -2,67 +2,43 @@
 
 .. _reference-types:
 
-Reference Types
+Referans Türleri
 ===============
 
-Values of reference type can be modified through multiple different names.
-Contrast this with value types where you get an independent copy whenever
-a variable of value type is used. Because of that, reference types have to be handled
-more carefully than value types. Currently, reference types comprise structs,
-arrays and mappings. If you use a reference type, you always have to explicitly
-provide the data area where the type is stored: ``memory`` (whose lifetime is limited
-to an external function call), ``storage`` (the location where the state variables
-are stored, where the lifetime is limited to the lifetime of a contract)
-or ``calldata`` (special data location that contains the function arguments).
+Referans türünün değerleri, birden çok farklı adla değiştirilebilir. Bunu, bir değer türü değişkeni kullanıldığında bağımsız bir kopya aldığınız değer türleriyle karşılaştırın. Bu nedenle referans türleri, değer türlerinden daha dikkatli ele alınmalıdır. Şu anda referans türleri yapılar, diziler ve eşlemelerden oluşmaktadır. Bir referans türü kullanıyorsanız, her zaman türün depolandığı veri alanını açıkça sağlamanız gerekir: ``memory`` (ömrü, harici bir fonksiyon çağrısıyla sınırlıdır), ``storage`` (durum değişkenlerinin ömrünün, bir sözleşmenin ömrüyle sınırlı olduğu durumlarda saklanır) veya ``calldata`` (fonksiyon argümanlarını içeren özel veri konumu).
 
-An assignment or type conversion that changes the data location will always incur an automatic copy operation,
-while assignments inside the same data location only copy in some cases for storage types.
+Veri konumunu değiştiren bir atama veya tür dönüştürme işlemi her zaman otomatik bir kopyalama işlemine neden olurken, aynı veri konumu içindeki atamalar yalnızca bazı durumlarda depolama türleri için kopyalanır.
 
 .. _data-location:
 
-Data location
+Veri Konumu
 -------------
 
-Every reference type has an additional
-annotation, the "data location", about where it is stored. There are three data locations:
-``memory``, ``storage`` and ``calldata``. Calldata is a non-modifiable,
-non-persistent area where function arguments are stored, and behaves mostly like memory.
+Her referans türünün, nerede depolandığı hakkında "veri konumu" olan ek bir açıklaması vardır. Üç veri konumu vardır: ``memory``, ``storage`` ve ``calldata``. Çağrı verileri (calldata), fonksiyon bağımsız değişkenlerinin depolandığı ve çoğunlukla bellek gibi davrandığı, değiştirilemeyen, kalıcı olmayan bir alandır.
 
-.. note::
-    If you can, try to use ``calldata`` as data location because it will avoid copies and
-    also makes sure that the data cannot be modified. Arrays and structs with ``calldata``
-    data location can also be returned from functions, but it is not possible to
-    allocate such types.
 
-.. note::
-    Prior to version 0.6.9 data location for reference-type arguments was limited to
-    ``calldata`` in external functions, ``memory`` in public functions and either
-    ``memory`` or ``storage`` in internal and private ones.
-    Now ``memory`` and ``calldata`` are allowed in all functions regardless of their visibility.
+.. not::
+    Yapabiliyorsanız, veri konumu olarak ``calldata`` kullanmayı deneyin, çünkü bu kopyaları önler ve ayrıca verilerin değiştirilememesini sağlar. "calldata" veri konumuna sahip diziler ve yapılar da fonksiyonlarla döndürülebilir, ancak bu türlerin atanması mümkün değildir.
 
-.. note::
-    Prior to version 0.5.0 the data location could be omitted, and would default to different locations
-    depending on the kind of variable, function type, etc., but all complex types must now give an explicit
-    data location.
+.. not::
+    0.6.9 sürümünden önce, referans türü argümanlar için veri konumu, harici fonksiyonlarda ``calldata``, genel fonksiyonlarda ``memory`` ve dahili ve özel fonksiyonlarda ``memory`` veya ``storage`` ile sınırlıydı. . Artık ``memory``e ve ``calldata``ya, görünürlüklerinden bağımsız olarak tüm fonksiyonlarda izin verilir.
+   
+.. not::
+    0.5.0 sürümünden önce, veri konumu atlanabilir ve değişkenin türüne, fonksiyon türüne vb. bağlı olarak varsayılan olarak farklı konumlara atanırdı, ancak tüm karmaşık türler şimdi açık bir veri konumu vermelidir.
 
 .. _data-location-assignment:
 
-Data location and assignment behaviour
+Veri Konumu ve Atama Davranışı
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Veri konumları yalnızca verilerin kalıcılığı için değil, aynı zamanda atamaların anlamı için de önemlidir:
 
 Data locations are not only relevant for persistency of data, but also for the semantics of assignments:
 
-* Assignments between ``storage`` and ``memory`` (or from ``calldata``)
-  always create an independent copy.
-* Assignments from ``memory`` to ``memory`` only create references. This means
-  that changes to one memory variable are also visible in all other memory
-  variables that refer to the same data.
-* Assignments from ``storage`` to a **local** storage variable also only
-  assign a reference.
-* All other assignments to ``storage`` always copy. Examples for this
-  case are assignments to state variables or to members of local
-  variables of storage struct type, even if the local variable
-  itself is just a reference.
+* ``storage`` ve ``memory`` (veya ``calldata``) arasındaki atamalar her zaman bağımsız bir kopya oluşturur.
+* ``memory``den ``memory``ye (bellekten belleğe) yapılan atamalar yalnızca referans oluşturur. Bu, bir bellek değişkeninde (``memory``) yapılan değişikliklerin aynı verilere atıfta bulunan diğer tüm bellek değişkenlerinde de görülebileceği anlamına gelir.
+* ``storage``dan (depolamadan), **local** (yerel) depolama değişkenine yapılan atamalar da yalnızca bir referans atar.
+*  Diğer tüm atamalar ``storage``a her zaman kopyalanır. Bu duruma örnek olarak, yerel değişkenin kendisi yalnızca bir başvuru olsa bile, durum değişkenlerine veya depolama yapısı türünün yerel değişkenlerinin üyelerine atamalar verilebilir.
 
 .. code-block:: solidity
 
@@ -70,26 +46,23 @@ Data locations are not only relevant for persistency of data, but also for the s
     pragma solidity >=0.5.0 <0.9.0;
 
     contract C {
-        // The data location of x is storage.
-        // This is the only place where the
-        // data location can be omitted.
+        // x'in veri konumu depolamadır.
+        // Bu, veri konumunun atlanabileceği tek yerdir.
         uint[] x;
 
-        // The data location of memoryArray is memory.
+        // memoryArray öğesinin veri konumu bellektir.
         function f(uint[] memory memoryArray) public {
-            x = memoryArray; // works, copies the whole array to storage
-            uint[] storage y = x; // works, assigns a pointer, data location of y is storage
-            y[7]; // fine, returns the 8th element
-            y.pop(); // fine, modifies x through y
-            delete x; // fine, clears the array, also modifies y
-            // The following does not work; it would need to create a new temporary /
-            // unnamed array in storage, but storage is "statically" allocated:
+            x = memoryArray; // çalışır ve tüm diziyi depoya kopyalar
+            uint[] storage y = x; // çalışır ve bir işaretçi atar. y'nin veri konumu depolamadır
+            y[7]; // 8. öğeyi döndürür
+            y.pop(); // x'i y ile değiştirir
+            delete x; // diziyi temizler, ayrıca y'yi değiştirir
+            // Aşağıdakiler çalışmıyor; depolamada yeni bir geçici adsız dizi oluşturması gerekir, ancak depolama "statik olarak" tahsis edilir: /
             // y = memoryArray;
-            // This does not work either, since it would "reset" the pointer, but there
-            // is no sensible location it could point to.
+            // İşaretçiyi "sıfırlayacağı" için bu da işe yaramaz, ancak işaret edebileceği mantıklı bir konum yoktur.
             // delete y;
-            g(x); // calls g, handing over a reference to x
-            h(x); // calls h and creates an independent, temporary copy in memory
+            g(x); // g'yi çağırır, x'e bir referans verir
+            h(x); // h'yi çağırır ve bellekte bağımsız, geçici bir kopya oluşturur
         }
 
         function g(uint[] storage) internal pure {}
@@ -100,39 +73,25 @@ Data locations are not only relevant for persistency of data, but also for the s
 
 .. _arrays:
 
-Arrays
+Diziler
 ------
 
-Arrays can have a compile-time fixed size, or they can have a dynamic size.
+Diziler, derleme zamanında sabit bir boyuta sahip olabilir veya dinamik bir boyuta sahip olabilir.
 
-The type of an array of fixed size ``k`` and element type ``T`` is written as ``T[k]``,
-and an array of dynamic size as ``T[]``.
+Sabit boyutlu bir dizinin türü ``k`` ve öğe türü ``T``, ``T[k]`` olarak yazılır ve dinamik boyut dizisi ``T[]`` olarak yazılır.
 
-For example, an array of 5 dynamic arrays of ``uint`` is written as
-``uint[][5]``. The notation is reversed compared to some other languages. In
-Solidity, ``X[3]`` is always an array containing three elements of type ``X``,
-even if ``X`` is itself an array. This is not the case in other languages such
-as C.
+Örneğin, ``uint``in 5 dinamik dizisinden oluşan bir dizi ``uint[][5]`` olarak yazılır. Notasyon, diğer bazı dillere kıyasla tersine çevrilir. Solidity'de, ``X[3]`` her zaman ``X`` türünde üç öğe içeren bir dizidir, ``X``in kendisi bir dizi olsa bile. C gibi diğer dillerde durum böyle değildir.
 
-Indices are zero-based, and access is in the opposite direction of the
-declaration.
+Endeksler sıfır tabanlıdır ve erişim bildirimin tersi yönündedir.
 
-For example, if you have a variable ``uint[][5] memory x``, you access the
-seventh ``uint`` in the third dynamic array using ``x[2][6]``, and to access the
-third dynamic array, use ``x[2]``. Again,
-if you have an array ``T[5] a`` for a type ``T`` that can also be an array,
-then ``a[2]`` always has type ``T``.
+Örneğin, bir ``uint[][5] memory x`` değişkeniniz varsa, ``x[2][6]`` kullanarak üçüncü dinamik dizi içerisindeki yedinci ``uint``'e erişirsiniz ve üçüncü dinamik diziye erişmek için ``x[2]`` kullanırsınız. Yine, aynı zamanda bir dizi de olabilen bir ``T`` türü için bir ``T[5] a`` diziniz varsa, o zaman ``a[2]`` her zaman ``T`` tipine sahiptir.
 
-Array elements can be of any type, including mapping or struct. The general
-restrictions for types apply, in that mappings can only be stored in the
-``storage`` data location and publicly-visible functions need parameters that are :ref:`ABI types <ABI>`.
+Dizi öğeleri, eşleme veya yapı dahil olmak üzere herhangi bir türde olabilir. Türler için genel kısıtlamalar geçerlidir, çünkü eşlemeler yalnızca "depolama" veri konumunda depolanabilir ve genel olarak görülebilen fonksiyonlar :ref:`ABI types <ABI>` olan parametrelere ihtiyaç duyar.
 
-It is possible to mark state variable arrays ``public`` and have Solidity create a :ref:`getter <visibility-and-getters>`.
-The numeric index becomes a required parameter for the getter.
+Durum değişkeni dizilerini ``public`` olarak işaretlemek ve Solidity'nin bir :ref:`alıcı <visibility-and-getters>` oluşturmasını sağlamak mümkündür. Sayısal dizin, alıcı için gerekli bir parametre haline gelir.
 
-Accessing an array past its end causes a failing assertion. Methods ``.push()`` and ``.push(value)`` can be used
-to append a new element at the end of the array, where ``.push()`` appends a zero-initialized element and returns
-a reference to it.
+Sonunu aşan bir diziye erişmek, başarısız bir onaylamaya neden olur. ``.push()`` ve ``.push(value)`` yöntemleri dizinin sonuna yeni bir öğe eklemek için kullanılabilir; burada ``.push()`` sıfır başlatılmış bir öğe ekler ve ona bir referans döndürür.
+
 
 .. index:: ! string, ! bytes
 
@@ -140,46 +99,33 @@ a reference to it.
 
 .. _bytes:
 
-``bytes`` and ``string`` as Arrays
+Diziler olarak ``bytes`` ve ``string``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Variables of type ``bytes`` and ``string`` are special arrays. The ``bytes`` type is similar to ``bytes1[]``,
-but it is packed tightly in calldata and memory. ``string`` is equal to ``bytes`` but does not allow
-length or index access.
+``bytes`` ve ``string`` türündeki değişkenler özel dizilerdir. ``bytes`` türü ``bytes1[]`` ile benzerdir, ancak çağrı verileri ve bellekte sıkıca paketlenmiştir. ``string``, ``bytes`` değerine eşittir ancak uzunluk veya dizin erişimine izin vermez.
 
-Solidity does not have string manipulation functions, but there are
-third-party string libraries. You can also compare two strings by their keccak256-hash using
-``keccak256(abi.encodePacked(s1)) == keccak256(abi.encodePacked(s2))`` and
-concatenate two strings using ``string.concat(s1, s2)``.
+Solidity'nin string işleme fonksiyonları yoktur, ancak üçüncü taraf string kitaplıkları vardır. Ayrıca,
+``keccak256(abi.encodePacked(s1)) == keccak256(abi.encodePacked(s2))`` 
+kullanarak iki dizgiyi keccak256-hash ile karşılaştırabilir ve ``string.concat(s1, s2)`` kullanarak iki dizgiyi birleştirebilirsiniz.
 
-You should use ``bytes`` over ``bytes1[]`` because it is cheaper,
-since using ``bytes1[]`` in ``memory`` adds 31 padding bytes between the elements. Note that in ``storage``, the
-padding is absent due to tight packing, see :ref:`bytes and string <bytes-and-string>`. As a general rule,
-use ``bytes`` for arbitrary-length raw byte data and ``string`` for arbitrary-length
-string (UTF-8) data. If you can limit the length to a certain number of bytes,
-always use one of the value types ``bytes1`` to ``bytes32`` because they are much cheaper.
+``bytes1[]`` yerine ``bytes`` kullanmalısınız çünkü daha ucuzdur, çünkü ``memory``de ``bytes1[]`` kullanmak, öğeler arasında 31 dolgu bayt ekler. ``storage``"da, sıkı paketleme nedeniyle dolgu bulunmadığına dikkat edin, bkz. :ref:`bayt ve string <bytes-and-string>`. Genel bir kural olarak, rastgele uzunluktaki ham bayt verileri için ``bytes`` ve rastgele uzunluktaki string (UTF-8) verileri için ``string`` kullanın. Uzunluğu belirli bir bayt sayısıyla sınırlayabiliyorsanız, her zaman ``bytes1`` ile ``bytes32`` arasındaki değer türlerinden birini kullanın çünkü bunlar çok daha ucuzdur.
 
-.. note::
-    If you want to access the byte-representation of a string ``s``, use
-    ``bytes(s).length`` / ``bytes(s)[7] = 'x';``. Keep in mind
-    that you are accessing the low-level bytes of the UTF-8 representation,
-    and not the individual characters.
+
+.. not::
+
+    ``s`` stringinin bayt temsiline erişmek istiyorsanız, ``bytes(s).length`` / ``bytes(s)[7] = 'x';`` yapısını kullanın. Tek tek karakterlere değil, UTF-8 temsilinin düşük seviyeli baytlarına eriştiğinizi unutmayın.
 
 .. index:: ! bytes-concat, ! string-concat
 
 .. _bytes-concat:
 .. _string-concat:
 
-The functions ``bytes.concat`` and ``string.concat``
+``bytes.concat`` ve ``string.concat`` Fonksiyonları
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can concatenate an arbitrary number of ``string`` values using ``string.concat``.
-The function returns a single ``string memory`` array that contains the contents of the arguments without padding.
-If you want to use parameters of other types that are not implicitly convertible to ``string``, you need to convert them to ``string`` first.
+``string.concat`` kullanarak rastgele sayıda ``string`` değerini birleştirebilirsiniz. Fonksiyon, bağımsız değişkenlerin içeriğini doldurmadan içeren tek bir ``string memory`` dizisi döndürür. Örtülü olarak ``string``e dönüştürülemeyen diğer türlerin parametrelerini kullanmak istiyorsanız, önce bunları ``string``e dönüştürmeniz gerekir.
 
-Analogously, the ``bytes.concat`` function can concatenate an arbitrary number of ``bytes`` or ``bytes1 ... bytes32`` values.
-The function returns a single ``bytes memory`` array that contains the contents of the arguments without padding.
-If you want to use string parameters or other types that are not implicitly convertible to ``bytes``, you need to convert them to ``bytes`` or ``bytes1``/.../``bytes32`` first.
+Benzer şekilde, ``bytes.concat`` fonksiyonu, rastgele sayıda ``bytes`` veya ``bytes1 ... bytes32`` değerlerini birleştirebilir. Fonksiyon, bağımsız değişkenlerin içeriğini doldurmadan içeren tek bir ``bytes memory`` dizisi döndürür. String parametreleri veya örtük olarak ``bytes``a dönüştürülemeyen diğer türleri kullanmak istiyorsanız, önce bunları ``bytes`` veya ``bytes1``/.../``bytes32``ye dönüştürmeniz gerekir.
 
 
 .. code-block:: solidity
@@ -198,21 +144,16 @@ If you want to use string parameters or other types that are not implicitly conv
         }
     }
 
-If you call ``string.concat`` or ``bytes.concat`` without arguments they return an empty array.
+``string.concat``ı veya ``bytes.concat``ı, argüman olmadan çağırırsanız, boş bir dizi döndürürler.
 
 .. index:: ! array;allocating, new
 
-Allocating Memory Arrays
+Bellek Dizilerini Ayırma
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Memory arrays with dynamic length can be created using the ``new`` operator.
-As opposed to storage arrays, it is **not** possible to resize memory arrays (e.g.
-the ``.push`` member functions are not available).
-You either have to calculate the required size in advance
-or create a new memory array and copy every element.
+Dinamik uzunluktaki bellek dizileri ``new`` operatörü kullanılarak oluşturulabilir. Depolama dizilerinin aksine, bellek dizilerini yeniden boyutlandırmak **değildir** (ör. ``.push`` üye fonksiyonları kullanılamaz). Gereken boyutu önceden hesaplamanız veya yeni bir bellek dizisi oluşturmanız ve her öğeyi kopyalamanız gerekir.
 
-As all variables in Solidity, the elements of newly allocated arrays are always initialized
-with the :ref:`default value<default-value>`.
+Solidity'deki tüm değişkenler gibi, yeni tahsis edilen dizilerin öğeleri her zaman :ref:`varsayılan değer<varsayılan-değer>` ile başlatılır.
 
 .. code-block:: solidity
 
@@ -231,27 +172,18 @@ with the :ref:`default value<default-value>`.
 
 .. index:: ! array;literals, ! inline;arrays
 
-Array Literals
+Dizi İfadeleri
 ^^^^^^^^^^^^^^
 
-An array literal is a comma-separated list of one or more expressions, enclosed
-in square brackets (``[...]``). For example ``[1, a, f(3)]``. The type of the
-array literal is determined as follows:
+Bir dizi ifadesi, köşeli parantezler (``[...]``) içine alınmış bir veya daha fazla ifadenin virgülle ayrılmış bir listesidir. Örneğin ``[1, a, f(3)]``. Dizi ifadesinin türü şu şekilde belirlenir:
 
-It is always a statically-sized memory array whose length is the
-number of expressions.
+Her zaman uzunluğu ifade sayısı olan statik olarak boyutlandırılmış bir bellek dizisidir.
 
-The base type of the array is the type of the first expression on the list such that all
-other expressions can be implicitly converted to it. It is a type error
-if this is not possible.
+Dizinin temel türü, diğer tüm ifadelerin dolaylı olarak kendisine dönüştürülebileceği şekilde listedeki ilk ifadenin türüdür. Bu mümkün değilse bir tür hatasıdır.
 
-It is not enough that there is a type all the elements can be converted to. One of the elements
-has to be of that type.
+Tüm öğelerin dönüştürülebileceği bir türün olması yeterli değildir. Öğelerden birinin bu türden olması gerekir.
 
-In the example below, the type of ``[1, 2, 3]`` is
-``uint8[3] memory``, because the type of each of these constants is ``uint8``. If
-you want the result to be a ``uint[3] memory`` type, you need to convert
-the first element to ``uint``.
+Aşağıdaki örnekte, ``[1, 2, 3]`` türü ``uint8[3] memory``dir, çünkü bu sabitlerin her birinin türü ``uint8``dir. Sonucun ``uint[3] memory`` türünde olmasını istiyorsanız, ilk öğeyi ``uint``e dönüştürmeniz gerekir.
 
 .. code-block:: solidity
 
@@ -267,13 +199,9 @@ the first element to ``uint``.
         }
     }
 
-The array literal ``[1, -1]`` is invalid because the type of the first expression
-is ``uint8`` while the type of the second is ``int8`` and they cannot be implicitly
-converted to each other. To make it work, you can use ``[int8(1), -1]``, for example.
+Birinci ifadenin türü ``uint8`` iken ikincinin türü ``int8`` olduğundan ve bunlar örtük olarak birbirine dönüştürülemediğinden ``[1, -1]`` dizisi ifadesi geçersizdir. Çalışması için örneğin ``[int8(1), -1]`` kullanabilirsiniz.
 
-Since fixed-size memory arrays of different type cannot be converted into each other
-(even if the base types can), you always have to specify a common base type explicitly
-if you want to use two-dimensional array literals:
+Farklı türdeki sabit boyutlu bellek dizileri birbirine dönüştürülemediğinden (temel türler yapabilse bile), iki boyutlu dizi ifadelerini kullanmak istiyorsanız, her zaman ortak bir temel türü açıkça belirtmeniz gerekir:
 
 .. code-block:: solidity
 
@@ -283,34 +211,30 @@ if you want to use two-dimensional array literals:
     contract C {
         function f() public pure returns (uint24[2][4] memory) {
             uint24[2][4] memory x = [[uint24(0x1), 1], [0xffffff, 2], [uint24(0xff), 3], [uint24(0xffff), 4]];
-            // The following does not work, because some of the inner arrays are not of the right type.
+            // Aşağıdakiler çalışmaz, çünkü bazı iç diziler doğru tipte değildir.
             // uint[2][4] memory x = [[0x1, 1], [0xffffff, 2], [0xff, 3], [0xffff, 4]];
             return x;
         }
     }
 
-Fixed size memory arrays cannot be assigned to dynamically-sized
-memory arrays, i.e. the following is not possible:
+Sabit boyutlu bellek dizileri, dinamik olarak boyutlandırılmış bellek dizilerine atanamaz, yani aşağıdakiler mümkün değildir:
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.4.0 <0.9.0;
 
-    // This will not compile.
+    // Bu derleme gerçekleşmeyecek.
     contract C {
         function f() public {
-            // The next line creates a type error because uint[3] memory
-            // cannot be converted to uint[] memory.
+            // Sonraki satır bir tür hatası oluşturur çünkü uint[3] belleği, uint[] belleğine dönüştürülemez.
             uint[] memory x = [uint(1), 3, 4];
         }
     }
 
-It is planned to remove this restriction in the future, but it creates some
-complications because of how arrays are passed in the ABI.
+İleride bu kısıtlamanın kaldırılması planlanıyor ancak dizilerin ABI'dan geçirilme şekli nedeniyle bazı komplikasyonlar yaratıyor.
 
-If you want to initialize dynamically-sized arrays, you have to assign the
-individual elements:
+Dinamik olarak boyutlandırılmış dizileri başlatmak istiyorsanız, tek tek öğeleri atamanız gerekir:
 
 .. code-block:: solidity
 
@@ -330,45 +254,27 @@ individual elements:
 
 .. _array-members:
 
-Array Members
+Dizi Üyeleri
 ^^^^^^^^^^^^^
 
 **length**:
-    Arrays have a ``length`` member that contains their number of elements.
-    The length of memory arrays is fixed (but dynamic, i.e. it can depend on
-    runtime parameters) once they are created.
+    Diziler, eleman sayısını içeren bir ``length`` (uzunluk) üyesine sahiptir.Bellek dizilerinin uzunluğu, oluşturulduktan sonra sabittir (ancak dinamiktir, yani çalışma zamanı parametrelerine bağlı olabilir).
 **push()**:
-     Dynamic storage arrays and ``bytes`` (not ``string``) have a member function
-     called ``push()`` that you can use to append a zero-initialised element at the end of the array.
-     It returns a reference to the element, so that it can be used like
-     ``x.push().t = 2`` or ``x.push() = b``.
+    Dinamik depolama dizileri ve ``bytes`` (``string`` değil), dizinin sonuna sıfır başlatılmış bir öğe eklemek için kullanabileceğiniz ``push()`` adlı üye fonksiyonuna sahiptir.
+    Öğeye bir başvuru döndürür, böylece ``x.push().t = 2`` veya ``x.push() = b`` gibi kullanılabilir.
 **push(x)**:
-     Dynamic storage arrays and ``bytes`` (not ``string``) have a member function
-     called ``push(x)`` that you can use to append a given element at the end of the array.
-     The function returns nothing.
+    Dinamik depolama dizileri ve ``bytes`` (``string`` değil), dizinin sonuna belirli bir öğeyi eklemek için kullanabileceğiniz ``push(x)`` adlı bir üye fonksiyonuna sahiptir. Fonksiyon hiçbir şey döndürmez.
 **pop()**:
-     Dynamic storage arrays and ``bytes`` (not ``string``) have a member
-     function called ``pop()`` that you can use to remove an element from the
-     end of the array. This also implicitly calls :ref:`delete<delete>` on the removed element. The function returns nothing.
+    Dinamik depolama dizileri ve ``bytes`` (``string`` değil), dizinin sonundan bir öğeyi kaldırmak için kullanabileceğiniz ``pop()`` adlı bir üye fonksiyonuna sahiptir. Bu ayrıca kaldırılan öğede örtük olarak :ref:`delete<delete>` öğesini çağırır. Fonksiyon hiçbir şey döndürmez.
 
-.. note::
-    Increasing the length of a storage array by calling ``push()``
-    has constant gas costs because storage is zero-initialised,
-    while decreasing the length by calling ``pop()`` has a
-    cost that depends on the "size" of the element being removed.
-    If that element is an array, it can be very costly, because
-    it includes explicitly clearing the removed
-    elements similar to calling :ref:`delete<delete>` on them.
+.. not::
+    ``pop()`` kullanarak uzunluk azaltılırken kaldırılan öğenin "boyutuna" bağlı olarak bir ücreti varken, bir depolama dizisinin uzunluğunu ``push()`` çağırarak artırmanın sabit gaz maliyetleri vardır çünkü başlarken depolama sıfırdır. Kaldırılan öğe bir diziyse, çok maliyetli olabilir, çünkü :ref:`delete<delete>` çağrılmasına benzer şekilde kaldırılan öğelerin açıkça temizlenmesini içerir.
 
-.. note::
-    To use arrays of arrays in external (instead of public) functions, you need to
-    activate ABI coder v2.
+.. not::
+    Dizi dizilerini harici (genel yerine) fonksiyonlarda kullanmak için ABI kodlayıcı v2'yi etkinleştirmeniz gerekir.
 
-.. note::
-    In EVM versions before Byzantium, it was not possible to access
-    dynamic arrays return from function calls. If you call functions
-    that return dynamic arrays, make sure to use an EVM that is set to
-    Byzantium mode.
+.. not::
+    "Byzantium" öncesi EVM sürümlerinde fonksiyon çağrılarından dönen dinamik dizilere erişim mümkün değildi. Dinamik diziler döndüren fonksiyonları çağırırsanız, Byzantium moduna ayarlanmış bir EVM kullandığınızdan emin olun.
 
 .. code-block:: solidity
 
@@ -377,18 +283,15 @@ Array Members
 
     contract ArrayContract {
         uint[2**20] aLotOfIntegers;
-        // Note that the following is not a pair of dynamic arrays but a
-        // dynamic array of pairs (i.e. of fixed size arrays of length two).
-        // Because of that, T[] is always a dynamic array of T, even if T
-        // itself is an array.
-        // Data location for all state variables is storage.
+        // Aşağıdakilerin bir çift dinamik dizi değil, dinamik bir çift dizisi (yani, iki uzunluktaki sabit boyutlu diziler) olduğuna dikkat edin.
+        // Bu nedenle, T[], T'nin kendisi bir dizi olsa bile, her zaman dinamik bir T dizisidir.
+        // Tüm durum değişkenleri için veri konumu depolamadır.
         bool[2][] pairsOfFlags;
 
-        // newPairs is stored in memory - the only possibility
-        // for public contract function arguments
+        // newPairs bellekte saklanır - tek olasılık
+        // açık (public) sözleşme fonksiyonları argümanları için
         function setAllFlagPairs(bool[2][] memory newPairs) public {
-            // assignment to a storage array performs a copy of ``newPairs`` and
-            // replaces the complete array ``pairsOfFlags``.
+            // bir depolama dizisine atama, "``newPairs``in bir kopyasını gerçekleştirir ve ``pairsOfFlags`` dizisinin tamamının yerini alır.
             pairsOfFlags = newPairs;
         }
 
@@ -399,25 +302,22 @@ Array Members
         StructType s;
 
         function f(uint[] memory c) public {
-            // stores a reference to ``s`` in ``g``
+            // ``g`` içindeki ``s`` referansını saklar
             StructType storage g = s;
-            // also changes ``s.moreInfo``.
+            // ayrıca ``s.moreInfo``yu da değiştirir.
             g.moreInfo = 2;
-            // assigns a copy because ``g.contents``
-            // is not a local variable, but a member of
-            // a local variable.
+            // ``g.contents`` yerel bir değişken değil, yerel bir değişkenin üyesi olduğu için bir kopya atar.
             g.contents = c;
         }
 
         function setFlagPair(uint index, bool flagA, bool flagB) public {
-            // access to a non-existing index will throw an exception
+            // var olmayan bir dizine erişim bir istisna atar
             pairsOfFlags[index][0] = flagA;
             pairsOfFlags[index][1] = flagB;
         }
 
         function changeFlagArraySize(uint newSize) public {
-            // using push and pop is the only way to change the
-            // length of an array
+            // bir dizinin uzunluğunu değiştirmenin tek yolu push ve pop kullanmaktır
             if (newSize < pairsOfFlags.length) {
                 while (pairsOfFlags.length > newSize)
                     pairsOfFlags.pop();
@@ -428,7 +328,7 @@ Array Members
         }
 
         function clear() public {
-            // these clear the arrays completely
+            // bunlar dizileri tamamen temizler
             delete pairsOfFlags;
             delete aLotOfIntegers;
             // identical effect here
@@ -438,8 +338,7 @@ Array Members
         bytes byteData;
 
         function byteArrays(bytes memory data) public {
-            // byte arrays ("bytes") are different as they are stored without padding,
-            // but can be treated identical to "uint8[]"
+            // bayt dizileri ("bayts"), dolgu olmadan depolandıkları için farklıdır, ancak "uint8[]" ile aynı şekilde ele alınabilirler.
             byteData = data;
             for (uint i = 0; i < 7; i++)
                 byteData.push();
@@ -453,14 +352,13 @@ Array Members
         }
 
         function createMemoryArray(uint size) public pure returns (bytes memory) {
-            // Dynamic memory arrays are created using `new`:
+            // Dinamik bellek dizileri `new` kullanılarak oluşturulur:
             uint[2][] memory arrayOfPairs = new uint[2][](size);
 
-            // Inline arrays are always statically-sized and if you only
-            // use literals, you have to provide at least one type.
+            // Satır içi diziler her zaman statik olarak boyutlandırılmıştır ve yalnızca değişmez değerler kullanıyorsanız, en az bir tür sağlamanız gerekir.
             arrayOfPairs[0] = [uint(1), 2];
 
-            // Create a dynamic byte array:
+            // Dinamik bir bayt dizisi oluşturun:
             bytes memory b = new bytes(200);
             for (uint i = 0; i < b.length; i++)
                 b[i] = bytes1(uint8(i));
@@ -470,13 +368,9 @@ Array Members
 
 .. index:: ! array;dangling storage references
 
-Dangling References to Storage Array Elements
+Depolama Dizisi Öğelerine Sarkan Referanslar
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-When working with storage arrays, you need to take care to avoid dangling references.
-A dangling reference is a reference that points to something that no longer exists or has been
-moved without updating the reference. A dangling reference can for example occur, if you store a
-reference to an array element in a local variable and then ``.pop()`` from the containing array:
+Depolama dizileriyle çalışırken, sarkan referanslardan kaçınmaya özen göstermeniz gerekir. Sarkan referans, artık var olmayan veya referans güncellenmeden taşınmış bir şeye işaret eden bir referanstır. Örneğin, bir dizi öğesine bir başvuruyu yerel bir değişkende saklarsanız ve ardından içeren diziden ``.pop()`` depolarsanız, sarkan bir başvuru oluşabilir:
 
 .. code-block:: solidity
 
@@ -487,28 +381,21 @@ reference to an array element in a local variable and then ``.pop()`` from the c
         uint[][] s;
 
         function f() public {
-            // Stores a pointer to the last array element of s.
+            // s öğesinin son dizi öğesine bir işaretçi depolar.
             uint[] storage ptr = s[s.length - 1];
-            // Removes the last array element of s.
+            // s öğesinin son dizi öğesini kaldırır.
             s.pop();
-            // Writes to the array element that is no longer within the array.
+            // Artık dizi içinde olmayan dizi öğesine yazar.
             ptr.push(0x42);
-            // Adding a new element to ``s`` now will not add an empty array, but
-            // will result in an array of length 1 with ``0x42`` as element.
+            // Şimdi ``s`` öğesine yeni bir öğe eklemek boş bir dizi eklemez, ancak öğe olarak ``0x42`` olan 1 uzunluğunda bir diziyle sonuçlanır.
             s.push();
             assert(s[s.length - 1][0] == 0x42);
         }
     }
 
-The write in ``ptr.push(0x42)`` will **not** revert, despite the fact that ``ptr`` no
-longer refers to a valid element of ``s``. Since the compiler assumes that unused storage
-is always zeroed, a subsequent ``s.push()`` will not explicitly write zeroes to storage,
-so the last element of ``s`` after that ``push()`` will have length ``1`` and contain
-``0x42`` as its first element.
+``ptr.push(0x42)`` içindeki yazma, ``ptr``nin artık geçerli bir ``s`` öğesini ifade etmemesine rağmen **dönmeyecek**. Derleyici kullanılmayan depolamanın her zaman sıfırlandığını varsaydığından, sonraki bir ``s.push()``, depolamaya açıkça sıfır yazmaz, bu nedenle ``push()``dan sonraki ``s``nin son öğesi ``1`` uzunluğa sahip ve ilk öğesi olarak ``0x42`` içeriyor.
 
-Note that Solidity does not allow to declare references to value types in storage. These kinds
-of explicit dangling references are restricted to nested reference types. However, dangling references
-can also occur temporarily when using complex expressions in tuple assignments:
+Solidity'nin, depolamadaki değer türlerine referansların bildirilmesine izin vermediğini unutmayın. Bu tür açık sarkan başvurular, iç içe geçmiş başvuru türleriyle sınırlıdır. Ancak, tanımlama grubu atamalarında karmaşık ifadeler kullanılırken geçici olarak sarkan referanslar da oluşabilir:
 
 .. code-block:: solidity
 
@@ -519,7 +406,7 @@ can also occur temporarily when using complex expressions in tuple assignments:
         uint[] s;
         uint[] t;
         constructor() {
-            // Push some initial values to the storage arrays.
+            // Bazı başlangıç değerlerini depolama dizilerine aktarın.
             s.push(0x07);
             t.push(0x03);
         }
@@ -530,32 +417,26 @@ can also occur temporarily when using complex expressions in tuple assignments:
         }
 
         function f() public returns (uint[] memory) {
-            // The following will first evaluate ``s.push()`` to a reference to a new element
-            // at index 1. Afterwards, the call to ``g`` pops this new element, resulting in
-            // the left-most tuple element to become a dangling reference. The assignment still
-            // takes place and will write outside the data area of ``s``.
+            // Aşağıdakiler ilk önce ``s.push()`` öğesini dizin 1'deki yeni bir öğeye yapılan bir başvuruya göre değerlendirecektir.
+            // Daha sonra, ``g`` çağrısı bu yeni öğeyi açar ve en soldaki demet öğesinin sarkan bir referans haline gelmesine neden olur.
+            // Atama hala devam ediyor ve ``s`` veri alanının dışına yazacak.
             (s.push(), g()[0]) = (0x42, 0x17);
-            // A subsequent push to ``s`` will reveal the value written by the previous
-            // statement, i.e. the last element of ``s`` at the end of this function will have
-            // the value ``0x42``.
+            // Daha sonra ``s``ye basılması (push edilmesi/pushlanması), önceki ifade tarafından yazılan değeri ortaya çıkaracaktır, yani bu fonksiyonun sonunda "s"nin son elemanı "0x42" değerine sahip olacaktır.
             s.push();
             return s;
         }
     }
 
-It is always safer to only assign to storage once per statement and to avoid
-complex expressions on the left-hand-side of an assignment.
+Her ifade için depolamaya yalnızca bir kez atama yapmak ve atamanın sol tarafında karmaşık ifadelerden kaçınmak her zaman daha güvenlidir.
 
-You need to take particular care when dealing with references to elements of
-``bytes`` arrays, since a ``.push()`` on a bytes array may switch :ref:`from short
-to long layout in storage<bytes-and-string>`.
+Bir bayt dizisindeki bir ``.push()``, :ref:`depolamada kısa düzenden uzun düzene <bytes-and-string>` geçebileceğinden, ``bytes`` dizilerinin öğelerine yapılan başvurularla uğraşırken özellikle dikkatli olmanız gerekir.
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.0 <0.9.0;
 
-    // This will report a warning
+    // Bu bir uyarı bildirir
     contract C {
         bytes x = "012345678901234567890123456789";
 
@@ -565,75 +446,53 @@ to long layout in storage<bytes-and-string>`.
         }
     }
 
-Here, when the first ``x.push()`` is evaluated, ``x`` is still stored in short
-layout, thereby ``x.push()`` returns a reference to an element in the first storage slot of
-``x``. However, the second ``x.push()`` switches the bytes array to large layout.
-Now the element that ``x.push()`` referred to is in the data area of the array while
-the reference still points at its original location, which is now a part of the length field
-and the assignment will effectively garble the length of ``x``.
-To be safe, only enlarge bytes arrays by at most one element during a single
-assignment and do not simultaneously index-access the array in the same statement.
+Burada, ilk ``x.push()`` değerlendirildiğinde, ``x`` hala kısa düzende saklanır, bu nedenle ``x.push()``, ``x``in ilk depolama yuvasındaki bir öğeye bir referans döndürür. Ancak, ikinci ``x.push()`` bayt dizisini büyük düzene geçirir. Şimdi ``x.push()`` öğesinin atıfta bulunduğu öğe dizinin veri alanındayken, başvuru hala uzunluk alanının bir parçası olan orijinal konumunu işaret eder ve atama, ``x`` dizisinin uzunluğunu etkin bir şekilde bozar.
 
-While the above describes the behaviour of dangling storage references in the
-current version of the compiler, any code with dangling references should be
-considered to have *undefined behaviour*. In particular, this means that
-any future version of the compiler may change the behaviour of code that
-involves dangling references.
+Güvende olmak için, tek bir atama sırasında bayt dizilerini yalnızca en fazla bir öğeyle büyütün ve aynı ifadede diziye aynı anda dizin erişimi yapmayın.
 
-Be sure to avoid dangling references in your code!
+Yukarıda, derleyicinin geçerli sürümündeki sarkan depolama referanslarının davranışı açıklanırken, sarkan referanslara sahip herhangi bir kodun *tanımsız davranışa* sahip olduğu düşünülmelidir. Özellikle bu, derleyicinin gelecekteki herhangi bir sürümünün, sarkan referanslar içeren kodun davranışını değiştirebileceği anlamına gelir.
+
+Kodunuzda sarkan referanslardan kaçındığınızdan emin olun!
 
 .. index:: ! array;slice
 
 .. _array-slices:
 
-Array Slices
+Dizi Dilimleri
 ------------
 
+Dizi dilimleri, bir dizinin bitişik kısmındaki bir görünümdür. ``x[start:end]`` olarak yazılırlar, burada ``start`` ve
+``end``, uint256 türüyle sonuçlanan (veya dolaylı olarak ona dönüştürülebilir) ifadelerdir. Dilimin ilk öğesi ``x[start]`` ve son öğesi ``x[end - 1]``dir.
 
-Array slices are a view on a contiguous portion of an array.
-They are written as ``x[start:end]``, where ``start`` and
-``end`` are expressions resulting in a uint256 type (or
-implicitly convertible to it). The first element of the
-slice is ``x[start]`` and the last element is ``x[end - 1]``.
+``start``, ``end``den büyükse veya ``end``, dizinin uzunluğundan büyükse, bir istisna atılır.
 
-If ``start`` is greater than ``end`` or if ``end`` is greater
-than the length of the array, an exception is thrown.
+Hem ``start`` hem de ``end`` isteğe bağlıdır: ``start`` varsayılanları  ``0`` ve ``end`` varsayılanları dizinin uzunluğudur.
 
-Both ``start`` and ``end`` are optional: ``start`` defaults
-to ``0`` and ``end`` defaults to the length of the array.
+Dizi dilimlerinin herhangi bir üyesi yoktur. Altta yatan türdeki dizilere örtük olarak dönüştürülebilirler ve dizin erişimini desteklerler. Dizin erişimi, temel alınan dizide mutlak değil, dilimin başlangıcına göredir.
 
-Array slices do not have any members. They are implicitly
-convertible to arrays of their underlying type
-and support index access. Index access is not absolute
-in the underlying array, but relative to the start of
-the slice.
+Dizi dilimlerinin bir tür adı yoktur, yani hiçbir değişken tür olarak dizi dilimlerine sahip olamaz, yalnızca ara ifadelerde bulunurlar.
 
-Array slices do not have a type name which means
-no variable can have an array slices as type,
-they only exist in intermediate expressions.
+.. not::
+    Şu anda dizi dilimleri yalnızca çağrı verisi dizileri için uygulanmaktadır.
 
-.. note::
-    As of now, array slices are only implemented for calldata arrays.
-
-Array slices are useful to ABI-decode secondary data passed in function parameters:
+Dizi dilimleri, fonksiyon parametrelerinde iletilen ikincil verilerin ABI kodunu çözmek için kullanışlıdır:
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.5 <0.9.0;
     contract Proxy {
-        /// @dev Address of the client contract managed by proxy i.e., this contract
+        /// @dev, proxy (vekil) tarafından yönetilen alıcı (client) sözleşmesinin adresi, yani bu sözleşme
         address client;
 
         constructor(address client_) {
             client = client_;
         }
 
-        /// Forward call to "setOwner(address)" that is implemented by client
-        /// after doing basic validation on the address argument.
+        /// Adres bağımsız değişkeninde temel doğrulama yaptıktan sonra istemci tarafından uygulanan "setOwner(address)" çağrısını yönlendirin.
         function forward(bytes calldata payload) external {
             bytes4 sig = bytes4(payload[:4]);
-            // Due to truncating behaviour, bytes4(payload) performs identically.
+            // Kesme davranışı nedeniyle, bytes4(payload) aynı şekilde çalışır.
             // bytes4 sig = bytes4(payload);
             if (sig == bytes4(keccak256("setOwner(address)"))) {
                 address owner = abi.decode(payload[4:], (address));
@@ -650,29 +509,26 @@ Array slices are useful to ABI-decode secondary data passed in function paramete
 
 .. _structs:
 
-Structs
+Yapılar
 -------
 
-Solidity provides a way to define new types in the form of structs, which is
-shown in the following example:
+Solidity, aşağıdaki örnekte gösterildiği gibi, yapılar biçiminde yeni türleri tanımlamanın bir yolunu sağlar:
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.6.0 <0.9.0;
 
-    // Defines a new type with two fields.
-    // Declaring a struct outside of a contract allows
-    // it to be shared by multiple contracts.
-    // Here, this is not really needed.
+    // İki alanlı yeni bir tür tanımlar.
+    // Bir sözleşmenin dışında bir yapı bildirmek, birden fazla sözleşme tarafından paylaşılmasına izin verir.
+    // Burada, bu gerçekten gerekli değil.
     struct Funder {
         address addr;
         uint amount;
     }
 
     contract CrowdFunding {
-        // Structs can also be defined inside contracts, which makes them
-        // visible only there and in derived contracts.
+        // Yapılar, sözleşmelerin içinde de tanımlanabilir, bu da onları yalnızca orada ve türetilmiş sözleşmelerde görünür kılar.
         struct Campaign {
             address payable beneficiary;
             uint fundingGoal;
@@ -686,8 +542,7 @@ shown in the following example:
 
         function newCampaign(address payable beneficiary, uint goal) public returns (uint campaignID) {
             campaignID = numCampaigns++; // campaignID is return variable
-            // We cannot use "campaigns[campaignID] = Campaign(beneficiary, goal, 0, 0)"
-            // because the right hand side creates a memory-struct "Campaign" that contains a mapping.
+            // "campaigns[campaignID] = Campaign(beneficiary, goal, 0, 0)" kullanamayız çünkü sağ taraf bir eşleme içeren bir bellek yapısı "Campaign" oluşturur.
             Campaign storage c = campaigns[campaignID];
             c.beneficiary = beneficiary;
             c.fundingGoal = goal;
@@ -695,9 +550,8 @@ shown in the following example:
 
         function contribute(uint campaignID) public payable {
             Campaign storage c = campaigns[campaignID];
-            // Creates a new temporary memory struct, initialised with the given values
-            // and copies it over to storage.
-            // Note that you can also use Funder(msg.sender, msg.value) to initialise.
+            // Verilen değerlerle başlatılan yeni bir geçici bellek yapısı oluşturur ve bunu depoya kopyalar.
+            // Başlatmak için Funder(msg.sender, msg.value) öğesini de kullanabileceğinizi unutmayın.
             c.funders[c.numFunders++] = Funder({addr: msg.sender, amount: msg.value});
             c.amount += msg.value;
         }
@@ -713,26 +567,14 @@ shown in the following example:
         }
     }
 
-The contract does not provide the full functionality of a crowdfunding
-contract, but it contains the basic concepts necessary to understand structs.
-Struct types can be used inside mappings and arrays and they can themselves
-contain mappings and arrays.
 
-It is not possible for a struct to contain a member of its own type,
-although the struct itself can be the value type of a mapping member
-or it can contain a dynamically-sized array of its type.
-This restriction is necessary, as the size of the struct has to be finite.
+Sözleşme, bir kitle fonlaması sözleşmesinin tam işlevselliğini sağlamaz, ancak yapıları anlamak için gerekli temel kavramları içerir. Yapı türleri eşlemeler ve diziler içinde kullanılabilir ve kendileri eşlemeler ve diziler içerebilir.
 
-Note how in all the functions, a struct type is assigned to a local variable
-with data location ``storage``.
-This does not copy the struct but only stores a reference so that assignments to
-members of the local variable actually write to the state.
+Bir yapının kendi türünden bir üye içermesi mümkün değildir, ancak yapının kendisi bir eşleme üyesinin değer türü olabilir veya kendi türünde dinamik olarak boyutlandırılmış bir dizi içerebilir. Yapının boyutunun sonlu olması gerektiğinden bu kısıtlama gereklidir.
 
-Of course, you can also directly access the members of the struct without
-assigning it to a local variable, as in
-``campaigns[campaignID].amount = 0``.
 
-.. note::
-    Until Solidity 0.7.0, memory-structs containing members of storage-only types (e.g. mappings)
-    were allowed and assignments like ``campaigns[campaignID] = Campaign(beneficiary, goal, 0, 0)``
-    in the example above would work and just silently skip those members.
+
+Tüm fonksiyonlarda, veri konumu ``storage`` olan yerel bir değişkene bir yapı türünün nasıl atandığına dikkat edin. Bu, yapıyı kopyalamaz, ancak yalnızca bir referansı saklar, böylece yerel değişkenin üyelerine yapılan atamalar aslında duruma yazılır.
+
+.. not::
+    Solidity 0.7.0'a kadar, yalnızca depolama türlerinin üyelerini (ör. eşlemeler) içeren bellek yapılarına izin veriliyordu ve ``campaigns[campaignID] = Campaign(beneficiary, goal, 0, 0)`` gibi atamalar işe yarıyordu ve bunları sessizce atlıyordu.

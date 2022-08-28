@@ -1,44 +1,24 @@
 .. index:: !mapping
 .. _mapping-types:
 
-Mapping Types
+Eşleme Türleri
 =============
 
-Mapping types use the syntax ``mapping(KeyType => ValueType)`` and variables
-of mapping type are declared using the syntax ``mapping(KeyType => ValueType) VariableName``.
-The ``KeyType`` can be any
-built-in value type, ``bytes``, ``string``, or any contract or enum type. Other user-defined
-or complex types, such as mappings, structs or array types are not allowed.
-``ValueType`` can be any type, including mappings, arrays and structs.
+Eşleme türleri ``mapping(KeyType => ValueType)`` sözdizimi yapısını kullanır ve eşleme türünün değişlenleri, ``mapping(KeyType => ValueType) VariableName``sözdizimi kullanılarak bildirilir.
 
-You can think of mappings as `hash tables <https://en.wikipedia.org/wiki/Hash_table>`_, which are virtually initialised
-such that every possible key exists and is mapped to a value whose
-byte-representation is all zeros, a type's :ref:`default value <default-value>`.
-The similarity ends there, the key data is not stored in a
-mapping, only its ``keccak256`` hash is used to look up the value.
+``KeyType``, herhangi bir yerleşik değer türü, ``bytes``, ``string``, herhangi bir sözleşme ya da numaralandırma türü olabilir. Eşlemeler, yapılar veya dizi türleri gibi diğer kullanıcı tanımlı veya karmaşık türlere izin verilmez. ``ValueType``, eşlemeleri, dizileri ve yapıları içeren herhangi bir tür olabilir.  
 
-Because of this, mappings do not have a length or a concept of a key or
-value being set, and therefore cannot be erased without extra information
-regarding the assigned keys (see :ref:`clearing-mappings`).
 
-Mappings can only have a data location of ``storage`` and thus
-are allowed for state variables, as storage reference types
-in functions, or as parameters for library functions.
-They cannot be used as parameters or return parameters
-of contract functions that are publicly visible.
-These restrictions are also true for arrays and structs that contain mappings.
+Eşlemeleri, olası her anahtarın var olduğu ve bir türün :ref:`varsayılan değeri <default-value>` olan bayt temsilinin tamamı sıfır olan bir değere eşlendiği şekilde sanal olarak başlatılan `karma tablolar <https://en.wikipedia.org/wiki/Hash_table>`_ olarak düşünebilirsiniz. Benzerlik burada sona eriyor, anahtar veriler bir eşlemede saklanmıyor, değeri aramak için yalnızca ``keccak256`` karma değeri kullanılıyor.
 
-You can mark state variables of mapping type as ``public`` and Solidity creates a
-:ref:`getter <visibility-and-getters>` for you. The ``KeyType`` becomes a parameter for the getter.
-If ``ValueType`` is a value type or a struct, the getter returns ``ValueType``.
-If ``ValueType`` is an array or a mapping, the getter has one parameter for
-each ``KeyType``, recursively.
+Bu nedenle, eşlemelerin bir uzunluğu veya ayarlanan bir anahtar veya değer kavramı yoktur ve bu nedenle atanan anahtarlarla ilgili ek bilgi olmadan silinemezler (bkz. :ref:`eşlemeleri-silme`).
 
-In the example below, the ``MappingExample`` contract defines a public ``balances``
-mapping, with the key type an ``address``, and a value type a ``uint``, mapping
-an Ethereum address to an unsigned integer value. As ``uint`` is a value type, the getter
-returns a value that matches the type, which you can see in the ``MappingUser``
-contract that returns the value at the specified address.
+Eşlemeler yalnızca ``storage`` veri konumuna sahip olabilir ve bu nedenle, fonksiyonlardaki depolama referans türleri olarak veya kitaplık fonksiyonları için parametreler olarak durum değişkenleri için izin verilir. Bunlar, genel olarak görülebilen sözleşme fonksiyonlarının parametreleri veya dönüş parametreleri olarak kullanılamazlar. Bu kısıtlamalar, eşlemeler içeren diziler ve yapılar için de geçerlidir.
+
+Eşleme türündeki durum değişkenlerini ``public`` olarak işaretleyebilirsiniz ve Solidity sizin için bir :ref:`alıcı <visibility-and-getters>` oluşturur. ``KeyType``, alıcı için bir parametre olur. ``ValueType`` bir değer türü veya yapıysa, alıcı ``ValueType`` değerini döndürür. ``ValueType`` bir dizi veya eşleme ise, alıcının her bir ``KeyType`` için yinelemeli olarak bir parametresi vardır.
+
+Aşağıdaki örnekte, ``MappingExample`` sözleşmesi, anahtar türü bir ``address`` olan genel bir ``balances`` eşlemesini ve bir Ethereum adresini işaretsiz bir tamsayı değerine eşleyen bir ``uint`` değer türünü tanımlar. ``uint`` bir değer türü olduğundan, alıcı, belirtilen adreste değeri döndüren ``MappingUser`` sözleşmesinde görebileceğiniz türle eşleşen bir değer döndürür.
+
 
 .. code-block:: solidity
 
@@ -61,10 +41,10 @@ contract that returns the value at the specified address.
         }
     }
 
-The example below is a simplified version of an
-`ERC20 token <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol>`_.
-``_allowances`` is an example of a mapping type inside another mapping type.
-The example below uses ``_allowances`` to record the amount someone else is allowed to withdraw from your account.
+
+Aşağıdaki örnek, bir `ERC20 tokenin <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol>`_ basitleştirilmiş bir versiyonudur. ``_allowances``, başka bir eşleme türü içindeki eşleme türüne bir örnektir. 
+
+Aşağıdaki örnekte, başka birinin hesabınızdan çekmesine izin verilen tutarı kaydetmek için ``_allowances`` kullanılmıştır.
 
 .. code-block:: solidity
 
@@ -113,14 +93,11 @@ The example below uses ``_allowances`` to record the amount someone else is allo
 .. index:: !iterable mappings
 .. _iterable-mappings:
 
-Iterable Mappings
+Yinelenebilir Eşlemeler
 -----------------
 
-You cannot iterate over mappings, i.e. you cannot enumerate their keys.
-It is possible, though, to implement a data structure on
-top of them and iterate over that. For example, the code below implements an
-``IterableMapping`` library that the ``User`` contract then adds data to, and
-the ``sum`` function iterates over to sum all the values.
+Eşlemeleri yineleyemezsiniz, yani anahtarlarını numaralandıramazsınız. Yine de bunların üzerine bir veri yapısı uygulamak ve bunun üzerinde yineleme yapmak mümkündür. Örneğin, aşağıdaki kod, ``User`` sözleşmesinin daha sonra veri eklediği bir ``IterableMapping`` kitaplığı uygular ve ``sum`` fonksiyonu tüm değerleri toplamak için yinelenir.
+
 
 .. code-block:: solidity
     :force:
@@ -193,23 +170,23 @@ the ``sum`` function iterates over to sum all the values.
         }
     }
 
-    // How to use it
+    // Nasıl kullanılır
     contract User {
-        // Just a struct holding our data.
+        // Sadece verilerimizi tutan bir yapı.
         itmap data;
-        // Apply library functions to the data type.
+        // Veri türüne kitaplık fonksiyonlarını uygulayın.
         using IterableMapping for itmap;
 
-        // Insert something
+        // Bir şeyleri ekle
         function insert(uint k, uint v) public returns (uint size) {
-            // This calls IterableMapping.insert(data, k, v)
+            // Bu, IterableMapping.insert(data, k, v)'yi çağırır.
             data.insert(k, v);
-            // We can still access members of the struct,
-            // but we should take care not to mess with them.
+            // Yapının üyelerine hala erişebiliriz,
+            // ama bunlarla uğraşmamaya özen göstermeliyiz.
             return data.size;
         }
 
-        // Computes the sum of all stored data.
+        // Depolanan tüm verilerin toplamını hesaplar.
         function sum() public view returns (uint s) {
             for (
                 Iterator i = data.iterateStart();
