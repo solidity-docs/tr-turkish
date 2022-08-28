@@ -42,7 +42,7 @@ ofsetini kullanamazsınız, ancak komut ofsetini kullanmanız gerekir (push komu
 tek bir bayttan daha uzundur). ``s``, ``l`` ve ``f`` alanları yukarıdaki gibidir.
 ``j`` alanı ``i``, ``o`` ya da ``-`` olabilir, bu da bir atlama(jump) talimatının bir
 fonksiyona mı girdiğini, bir fonksiyondan mı döndüğünü ya da örneğin bir döngünün
-parçası olarak normal bir atlama(jump) mı olduğunu gösterir. Son kısım olan ``m``, "
+parçası olarak normal bir sıçrama komutu türü mü olduğunu gösterir. Son kısım olan ``m``, "
 modifier derinliğini" ifade eden bir tamsayıdır. Bu derinlik, placeholder(yer tutucu) ifade (``_``)
 bir modifier'a her girildiğinde artırılır ve tekrar bırakıldığında azaltılır.
 Bu, hata ayıklayıcıların aynı modifier'ın iki kez kullanılması veya tek bir modifier'da
