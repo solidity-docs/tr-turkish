@@ -6,7 +6,7 @@
 Oylama
 ******
 
-Birazdan göreceğini kontrat biraz karışık ancak 
+Birazdan göreceğiniz sözleşme biraz karışık ancak 
 Solidity'nin bir çok özelliğini görebilirsiniz. 
 Göreceğiniz kontrat bir oylama kontratıdır. Elektronik
 oy kullanmada asıl problem oy hakkının doğru kişilere
