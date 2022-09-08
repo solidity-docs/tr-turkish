@@ -7,7 +7,7 @@ Modüler Kontratlar
 Kontratları oluştururken modüler bir yaklaşım izlemek kodların karışıklığını
 azaltıp, okunabilirliğini arttırır. Bu durumda hataların ve açıkların daha
 kolay bir şekilde bulunmasını sağlar. 
-Eğer her modülün nasıl davranacığının izole bir şekilde tanımlar ve kontrol ederseniz,
+Eğer her modülün nasıl davranacağını izole bir şekilde tanımlar ve kontrol ederseniz,
 sadece bütün kontratta olup biten yerine o kontratlar arasındaki ilişkileri inceleyebilirsiniz.
 Aşağıdaki örnekte kontrat adresler arasında gönderilenin beklenen şekilde olup olmadığını
 görmek için ``Balances`` :ref:`library <libraries>` kütüphanesinin ``move`` metodunu kullanır. 
