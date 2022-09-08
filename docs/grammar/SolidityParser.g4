@@ -124,7 +124,7 @@ parameterList: parameters+=parameterDeclaration (Comma parameters+=parameterDecl
 //@doc:inline
 parameterDeclaration: type=typeName location=dataLocation? name=identifier?;
 /**
- * Bir constructor tanımı.
+ * Constructor'ın tanımı:
  * Her zaman bir uygulama sağlamalıdır.
  * Internal veya Public görünürlük belirtmenin kullanımdan kaldırıldığını unutmayın.
  */
