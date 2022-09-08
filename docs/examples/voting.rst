@@ -112,7 +112,7 @@ oyu almış teklifi geri döndürecek.
             // Delege atamasını `to` da delege atandıysa
             // aktarır
             // Genelde bu tür döngüler oldukça tehlikelidir,
-            // çünkü eğer çok fazla çalışırlar bloktaki
+            // çünkü eğer çok fazla çalışırlarsa bloktaki
             // kullanılabilir gas'ten daha fazlasına ihtiyaç duyabilir.
             // Bu durumda, delege atama çalışmayacaktır
             // ama başka durumlarda bu tür döngüler
