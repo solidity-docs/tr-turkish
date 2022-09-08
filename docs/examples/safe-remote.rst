@@ -17,7 +17,7 @@ malın üç katını (yatırdığı iki kat ve alıcının yatırdığı malın 
 arkaplanındaki fikir iki tarafında problemi çözmeleri için gönüllü olmaları yoksa ikisinin parası
 da içeride sonsuza kadar kitli kalacak
 
-Bu kontrat tabii ki bu problemi çözmüyor ama makinemli yapıları kontatta nasıl kullanabileceğinize
+Bu kontrat tabi ki bu problemi çözmüyor ama makine benzeri  yapıları sözleşmede nasıl kullanabileceğinize
 dair genel bir bakış sağlıyor.
 
 .. code-block:: solidity
