@@ -34,13 +34,13 @@ Farklı türlerin geçersiz değerleri temizlemek için farklı kuralları vard�
 +---------------+---------------+-------------------+
 |bool           |0 ya da 1      |1                  |
 +---------------+---------------+-------------------+
-|işaretli tam   |işareti        |şu anda sessizce   |
-|sayılar        |uzatılmış      |kapsar; gelecekte  |
-|               |kelime         |istisnalar         |
-|               |               |atılacaktır        |
+|işaretli tam   |işareti        |sessizce doğru     |
+|sayılar        |uzatılmış      |formata getirir;   |
+|               |kelime         |gelecekte istisnala|
+|               |               |r atılacaktır      |
 +---------------+---------------+-------------------+
-|işaretsiz  tam |daha yüksek bit|şu anda sessizce   |
-|sayılar        |değerleri      |kapsar; gelecekte  |
-|               |sıfırlandı     |istisnalar         |
-|               |               |atılacaktır        |
+|işaretsiz  tam |daha yüksek bit|sessizce doğru     |
+|sayılar        |değerleri      |formata getirir;   |
+|               |sıfırlandı     |gelecekte istisnala|
+|               |               |r atılacaktır      |
 +---------------+---------------+-------------------+
