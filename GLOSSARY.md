@@ -4,7 +4,7 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - Smart Contract = Akıllı Sözleşme
 - Blockchain = Blok Zinciri
 - Binary = Binary
-- Breakpoint = Breakpoint
+- Breakpoint = Kesme Noktası
 - Breaking Changes = İşleyişi Bozan Değişiklikler, Kırılan Değişiklikler veya Önemli Değişikliker 
 - State = Durum
 - Keypair = Anahtar Çifti
