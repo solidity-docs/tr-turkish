@@ -1,27 +1,24 @@
 .. index:: purchase, remote purchase, escrow
 
 ********************
-Safe Remote Purchase
+Güvenli Uzaktan Alışveriş
 ********************
 
-Purchasing goods remotely currently requires multiple parties that need to trust each other.
-The simplest configuration involves a seller and a buyer. The buyer would like to receive
-an item from the seller and the seller would like to get money (or an equivalent)
-in return. The problematic part is the shipment here: There is no way to determine for
-sure that the item arrived at the buyer.
+Uzaktan bir mal satın almak birden fazla tarafın birbirine güvenmesini gerektirir.
+En basit durumda bir satıcı bir de alıcı olur. Alıcı ürünü satıcıdan almak ister, satıcı da 
+karılığında parayı (ya da eş değeri bir şeyi) almak. Burada problemli kısım kargolama: Kesin olarak
+malın alıcıya ulaştığından emin olmanın yolu yok. 
 
-There are multiple ways to solve this problem, but all fall short in one or the other way.
-In the following example, both parties have to put twice the value of the item into the
-contract as escrow. As soon as this happened, the money will stay locked inside
-the contract until the buyer confirms that they received the item. After that,
-the buyer is returned the value (half of their deposit) and the seller gets three
-times the value (their deposit plus the value). The idea behind
-this is that both parties have an incentive to resolve the situation or otherwise
-their money is locked forever.
+Bu problemmi çözmenin birden fazla yolu var ama hepsinin bir şekilde bir eksiği oluyor.
+Aşağıdaki örnekte, iki taraf da kontrata malın değerinin iki katını yatırırlar. Yatırma 
+gerçekleştiği anda alıcı onaylayana kadar iki tafaında parası içeride kitli kalır. Alıcı
+satın almayı onayladığında malın değeri (yatırdığının yarısı) karşı tarafa geçer ve satıcı
+malın üç katını (yatırdığı iki kat ve alıcının yatırdığı malın değeri) geri çeker. Bu sistemin
+arkaplanındaki fikir iki tarafında problemi çözmeleri için gönüllü olmaları yoksa ikisinin parası
+da içeride sonsuza kadar kitli kalacak
 
-This contract of course does not solve the problem, but gives an overview of how
-you can use state machine-like constructs inside a contract.
-
+Bu kontrat tabi ki bu problemi çözmüyor ama makine benzeri  yapıları sözleşmede nasıl kullanabileceğinize
+dair genel bir bakış sağlıyor.
 
 .. code-block:: solidity
 
@@ -33,7 +30,7 @@ you can use state machine-like constructs inside a contract.
         address payable public buyer;
 
         enum State { Created, Locked, Release, Inactive }
-        // The state variable has a default value of the first member, `State.created`
+        // state değişkeni varsayılan olarak ilk üyedir,  `State.created`
         State public state;
 
         modifier condition(bool condition_) {
@@ -41,13 +38,13 @@ you can use state machine-like constructs inside a contract.
             _;
         }
 
-        /// Only the buyer can call this function.
+        /// Bu fonksiyonu sadece alıcı çağırabilir
         error OnlyBuyer();
-        /// Only the seller can call this function.
+        /// BU fonksyionu sadece satıcı çağırabilir.
         error OnlySeller();
-        /// The function cannot be called at the current state.
+        /// Bu fonksiyon şu an çağırılamaz.
         error InvalidState();
-        /// The provided value has to be even.
+        /// Girilen değer çift olmalı.
         error ValueNotEven();
 
         modifier onlyBuyer() {
@@ -73,9 +70,9 @@ you can use state machine-like constructs inside a contract.
         event ItemReceived();
         event SellerRefunded();
 
-        // Ensure that `msg.value` is an even number.
-        // Division will truncate if it is an odd number.
-        // Check via multiplication that it wasn't an odd number.
+        // `msg.value` in çift olduğundan emin ol.
+        // Eğer tek sayı ise bölme kırpılmış bir sonuç olacak.
+        // Çarpma ile tek sayı olmadığını kontrol et.
         constructor() payable {
             seller = payable(msg.sender);
             value = msg.value / 2;
@@ -83,9 +80,9 @@ you can use state machine-like constructs inside a contract.
                 revert ValueNotEven();
         }
 
-        /// Abort the purchase and reclaim the ether.
-        /// Can only be called by the seller before
-        /// the contract is locked.
+        /// Satın almayı iptal et ve etheri geri al.
+        /// Sadece satıcı tarafından kontrat kitlenmeden
+        /// önce çağırılabilir.
         function abort()
             external
             onlySeller
@@ -93,17 +90,17 @@ you can use state machine-like constructs inside a contract.
         {
             emit Aborted();
             state = State.Inactive;
-            // We use transfer here directly. It is
-            // reentrancy-safe, because it is the
-            // last call in this function and we
-            // already changed the state.
+            // Burada transfer'i direkt olarak kullanıyoruz.
+            // Tekrar giriş (reentrancy) saldırılarına karşı güvenli
+            // çünkü fonksiyondaki son çağrı (call) ve durumu (state)
+            // zaten değiştirdik.
             seller.transfer(address(this).balance);
         }
 
-        /// Confirm the purchase as buyer.
-        /// Transaction has to include `2 * value` ether.
-        /// The ether will be locked until confirmReceived
-        /// is called.
+        /// Alıcı olarak satın almayı onayla.
+        /// İşlem `2 * value` kadar ether içermeli.
+        /// Ether confirmReceived fonksiyonu çağırılana
+        /// kadar kitli kalacak. 
         function confirmPurchase()
             external
             inState(State.Created)
@@ -115,33 +112,33 @@ you can use state machine-like constructs inside a contract.
             state = State.Locked;
         }
 
-        /// Confirm that you (the buyer) received the item.
-        /// This will release the locked ether.
+        /// Malı teslim aldığını onayla (alıcı)
+        /// Kitli etheri serbest bırakacak.
         function confirmReceived()
             external
             onlyBuyer
             inState(State.Locked)
         {
             emit ItemReceived();
-            // It is important to change the state first because
-            // otherwise, the contracts called using `send` below
-            // can call in again here.
+            // Durumu (state) önceden değiştirmek oldukça önemli
+            // yoksa aşağıdaki `send` i kontratlar burada tekrar 
+            // bu fonksiyonu çağırabilir. (tekrar giriş saldırısı - reentrancy attack) 
             state = State.Release;
 
             buyer.transfer(value);
         }
 
-        /// This function refunds the seller, i.e.
-        /// pays back the locked funds of the seller.
+        /// Bu fonksiyon satıcıya iade eder
+        /// (satıcının kitli parasını geri öder)
         function refundSeller()
             external
             onlySeller
             inState(State.Release)
         {
             emit SellerRefunded();
-            // It is important to change the state first because
-            // otherwise, the contracts called using `send` below
-            // can call in again here.
+            // Durumu (state) önceden değiştirmek oldukça önemli
+            // yoksa aşağıdaki `send` i kontratlar burada tekrar 
+            // bu fonksiyonu çağırabilir. (tekrar giriş saldırısı - reentrancy attack) 
             state = State.Inactive;
 
             seller.transfer(3 * value);
