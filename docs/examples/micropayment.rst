@@ -314,7 +314,7 @@ Kanalın Zaman Aşımına Uğraması
 
 Bob istediği zaman ödeme kanalını kapatabilir anca kapatmazsa Alice'in bir 
 şekilde parasını geri alması gerekiyor. Bunun için kontrata bir *zaman aşımı* 
-süresi girilir. Süre dolduğun, Alice ``claimTimeout`` fonksiyonunu çağırarak
+süresi girilir. Süre dolduğunda, Alice ``claimTimeout`` fonksiyonunu çağırarak
 içerideki parasını geri alabilir. ``claimTimeout`` fonksyionunu tam kontratta görebilirsiniz.
 
 Bu fonksiyon çağırıldıktan sonra Bob artık sistemden Ether alamaz dolayısıyla Bob'un zamman aşımına
