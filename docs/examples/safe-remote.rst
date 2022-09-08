@@ -80,7 +80,7 @@ dair genel bir bakış sağlıyor.
                 revert ValueNotEven();
         }
 
-        /// Satın almayı iptaş et ve etheri geri al.
+        /// Satın almayı iptal et ve etheri geri al.
         /// Sadece satıcı tarafından kontrat kitlenmeden
         /// önce çağırılabilir.
         function abort()
