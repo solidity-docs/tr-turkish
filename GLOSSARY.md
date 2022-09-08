@@ -29,6 +29,9 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - Interface = Arayüz
 - Formula = Formula (Homebrew'e Özel Bir Kavram)
 - Symlinks = Kısayol Bağlantısı
+- Sequence = Sıra
+- Parser = Çözümleyici
+- Aliases = Takma Adlar
 - Components = Bileşen
 - Fork = Çatallamak
 - Pointer = Pointer
