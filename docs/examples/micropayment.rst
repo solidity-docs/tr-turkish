@@ -159,7 +159,7 @@ Tam Kontrat
             payable(msg.sender).transfer(amount);
         }
 
-        /// kontratı yok eder ve kalan parayı geri alır
+        /// sözleşmeyi yok eder ve kalan parayı geri alır
         function shutdown() external {
             require(msg.sender == owner);
             selfdestruct(payable(msg.sender));
