@@ -39,7 +39,7 @@ Farklı türlerin geçersiz değerleri temizlemek için farklı kuralları vard�
 |               |kelime         |istisnalar         |
 |               |               |atılacaktır        |
 +---------------+---------------+-------------------+
-|işaretsiz  tam |daha yüksek bit|şu anda sessizce   |
+|işaretsiz  tam |daha yüksek bit|sessizce doğru formata|
 |sayılar        |değerleri      |kapsar; gelecekte  |
 |               |sıfırlandı     |istisnalar         |
 |               |               |atılacaktır        |
