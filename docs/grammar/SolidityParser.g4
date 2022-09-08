@@ -251,7 +251,7 @@ structMember: type=typeName name=identifier Semicolon;
  */
 enumDefinition:	Enum name=identifier LBrace enumValues+=identifier (Comma enumValues+=identifier)* RBrace;
 /**
- * Kullanıcı tanımlı bir değer tipinin tanımı. Bir kaynak birim içinde üst seviyede veya bir sözleşme, kütüphane veya arayüz içinde oluşabilir.
+ * Kullanıcı tanımlı bir değer türünün tanımı. Bir kaynak birim içinde üst seviyede veya bir sözleşme, kütüphane veya arayüz içinde oluşabilir.
  */
 userDefinedValueTypeDefinition:
 	Type name=identifier Is elementaryTypeName[true] Semicolon;
