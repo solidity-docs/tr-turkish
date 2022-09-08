@@ -307,7 +307,7 @@ taşığı için en güncel mesajı gönderir. Eğer gönderici bu mesajı çağ
 ile çağırıp, ödemeleri gerekenden daha düşük bir para göndererek hile yapabilirlerdi.
 
 Fonksiyon verilen parametreler ile imzalanmış mesajı doğrular. Eğer her şey uygunsa, alıcıya kendi payına düşen
-Ether miktraı gönderilir ve göndericiye kalan miktar ``selfdestruct`` ile gönderilir. Tam kontratta ``close`` fonksiyonunu görebilirsiniz.
+Ether miktarı gönderilir ve göndericiye kalan miktar ``selfdestruct`` ile gönderilir. Tam kontratta ``close`` fonksiyonunu görebilirsiniz.
 
 Kanalın Zaman Aşımına Uğraması
 -------------------
