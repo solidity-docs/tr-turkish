@@ -82,7 +82,7 @@ oyu almış teklifi geri döndürecek.
             // gelirse işlem iptal olur ve Ether
             // harcamaları eski haline gelir
             // Eskiden bu durumda bütün gas harcanırdı 
-            // ancak artık harcanmıyor.
+            // ama artık harcanmıyor.
             // Çoğu zaman fonksiyonun doğru çağrılıp
             // çağrılmadığını anlamak için `require`
             // kullanılırsa iyi olur
