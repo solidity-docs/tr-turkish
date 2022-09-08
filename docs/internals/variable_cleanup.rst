@@ -39,8 +39,15 @@ Farklı türlerin geçersiz değerleri temizlemek için farklı kuralları vard�
 |               |kelime         |gelecekte istisnala|
 |               |               |r atılacaktır      |
 +---------------+---------------+-------------------+
+<<<<<<< HEAD
 |işaretsiz  tam |daha yüksek bit|sessizce doğru     |
 |sayılar        |değerleri      |formata getirir;   |
 |               |sıfırlandı     |gelecekte istisnala|
 |               |               |r atılacaktır      |
+=======
+|işaretsiz  tam |daha yüksek bit|sessizce doğru formata|
+|sayılar        |değerleri      |getirilir; gelecekte  |
+|               |sıfırlandı     |istisnalar         |
+|               |               |atılacaktır        |
+>>>>>>> f0d03ffa18439f5a640fb0c0455e5b3d1f3e316d
 +---------------+---------------+-------------------+
