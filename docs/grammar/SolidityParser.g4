@@ -395,7 +395,7 @@ identifier: Identifier | From | Error | Revert | Global;
 literal: stringLiteral | numberLiteral | booleanLiteral | hexStringLiteral | unicodeStringLiteral;
 booleanLiteral: True | False;
 /**
- * Tam bir dize literali, bir veya birkaç ardışık tırnaklı dizeden oluşur.
+ * Tam bir dize literali, bir veya birkaç ardışık alıntılanmış dizeden oluşur.
  */
 stringLiteral: (NonEmptyStringLiteral | EmptyStringLiteral)+;
 /**
