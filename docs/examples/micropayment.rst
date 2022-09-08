@@ -165,7 +165,7 @@ Tam Kontrat
             selfdestruct(payable(msg.sender));
         }
 
-        /// imza metodları
+        /// imza methodları
         function splitSignature(bytes memory sig)
             internal
             pure
