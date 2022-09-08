@@ -412,7 +412,7 @@ unicodeStringLiteral: UnicodeStringLiteral+;
  */
 numberLiteral: (DecimalNumber | HexNumber) NumberUnit?;
 /**
- * Kıvırcık parantezli bir ifade bloğu. Kendi alanını açar.
+ * Kıvrımlı parantezli ifadeler bloğu. Kendi kapsamını açar.
  */
 block:
 	LBrace ( statement | uncheckedBlock )* RBrace;
