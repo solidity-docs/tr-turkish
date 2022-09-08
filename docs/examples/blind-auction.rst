@@ -86,11 +86,11 @@ kendi kendilerine çalışamadıklarından hak sahibi parasını almak için kon
             // geri çevir.
             if (block.timestamp > auctionEndTime)
                 revert AuctionAlreadyEnded();
-            // Eğer teklif daha yüksek değilse
-            // parayı geri gönder (revert içindeki 
-            // ifade bütün yapılan değişiklikleri
-            // eski haline çevirecek ve gönderilen
-            // parayı geri gönderecek).
+            // Teklif daha yüksek değilse,
+            // parayı geri gönderin (revert ifadesi 
+            // parayı almış olması da dahil olmak
+            // üzere bu fonksiyon yürütmesindeki tüm
+            // değişiklikleri geri alacaktır).
             if (msg.value <= highestBid)
                 revert BidNotHighEnough(highestBid);
 
