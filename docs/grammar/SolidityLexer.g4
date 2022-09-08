@@ -1,7 +1,7 @@
 lexer grammar SolidityLexer;
 
 /**
- * Keywords reserved for future use in Solidity.
+ * Anahtar kelimeler Solidity için gelecekte kullanılmak üzere ayrılmıştır.
  */
 ReservedKeywords:
 	'after' | 'alias' | 'apply' | 'auto' | 'byte' | 'case' | 'copyof' | 'default' | 'define' | 'final'
@@ -35,7 +35,7 @@ Fallback: 'fallback';
 False: 'false';
 Fixed: 'fixed' | ('fixed' [1-9][0-9]* 'x' [1-9][0-9]*);
 /**
- * Bytes types of fixed length.
+ * Sabit uzunluktaki bayt tipleri.
  */
 FixedBytes:
 	'bytes1' | 'bytes2' | 'bytes3' | 'bytes4' | 'bytes5' | 'bytes6' | 'bytes7' | 'bytes8' |
@@ -43,9 +43,9 @@ FixedBytes:
 	'bytes17' | 'bytes18' | 'bytes19' | 'bytes20' | 'bytes21' | 'bytes22' | 'bytes23' | 'bytes24' |
 	'bytes25' | 'bytes26' | 'bytes27' | 'bytes28' | 'bytes29' | 'bytes30' | 'bytes31' | 'bytes32';
 For: 'for';
-From: 'from'; // not a real keyword
+From: 'from'; // gerçek bir anahtar kelime değil
 Function: 'function';
-Global: 'global'; // not a real keyword
+Global: 'global'; // gerçek bir anahtar kelime değil
 Hex: 'hex';
 If: 'if';
 Immutable: 'immutable';
@@ -60,7 +60,7 @@ Memory: 'memory';
 Modifier: 'modifier';
 New: 'new';
 /**
- * Unit denomination for numbers.
+ * Sayılar için birim gösterimi.
  */
 NumberUnit: 'wei' | 'gwei' | 'ether' | 'seconds' | 'minutes' | 'hours' | 'days' | 'weeks' | 'years';
 Override: 'override';
@@ -74,8 +74,8 @@ Return: 'return';
 Returns: 'returns';
 Revert: 'revert'; // not a real keyword
 /**
- * Sized signed integer types.
- * int is an alias of int256.
+ * Boyutlandırılmış işaretli tamsayı(int) türleri.
+ * int, int256'nın takma adıdır.
  */
 SignedIntegerType:
 	'int' | 'int8' | 'int16' | 'int24' | 'int32' | 'int40' | 'int48' | 'int56' | 'int64' |
@@ -91,8 +91,8 @@ Type: 'type';
 Ufixed: 'ufixed' | ('ufixed' [1-9][0-9]+ 'x' [1-9][0-9]+);
 Unchecked: 'unchecked';
 /**
- * Sized unsigned integer types.
- * uint is an alias of uint256.
+ * Boyutlandırılmış işaretsiz tamsayı(uint) türleri.
+ * uint, uint256'nın takma adıdır.
  */
 UnsignedIntegerType:
 	'uint' | 'uint8' | 'uint16' | 'uint24' | 'uint32' | 'uint40' | 'uint48' | 'uint56' | 'uint64' |
@@ -162,32 +162,33 @@ DoubleQuote: '"';
 SingleQuote: '\'';
 
 /**
- * A non-empty quoted string literal restricted to printable characters.
+ * Yazdırılabilir karakterlerle sınırlandırılmış, boş olmayan alıntılanmış bir string literali.
  */
 NonEmptyStringLiteral: '"' DoubleQuotedStringCharacter+ '"' | '\'' SingleQuotedStringCharacter+ '\'';
 /**
- * An empty string literal
+ * Boş bir string literali
  */
 EmptyStringLiteral: '"' '"' | '\'' '\'';
 
-// Note that this will also be used for Yul string literals.
+// Bunun Yul string literalleri için de kullanılacağını unutmayın.
 //@doc:inline
 fragment DoubleQuotedStringCharacter: DoubleQuotedPrintable | EscapeSequence;
-// Note that this will also be used for Yul string literals.
+// Bunun Yul string literalleri için de kullanılacağını unutmayın.
 //@doc:inline
 fragment SingleQuotedStringCharacter: SingleQuotedPrintable | EscapeSequence;
 /**
- * Any printable character except single quote or back slash.
+ * Tek tırnak veya ters eğik çizgi dışında yazdırılabilir herhangi bir karakter.
  */
 fragment SingleQuotedPrintable: [\u0020-\u0026\u0028-\u005B\u005D-\u007E];
 /**
- * Any printable character except double quote or back slash.
+ * Çift tırnak veya ters eğik çizgi dışında yazdırılabilir herhangi bir karakter.
  */
 fragment DoubleQuotedPrintable: [\u0020-\u0021\u0023-\u005B\u005D-\u007E];
 /**
-  * Escape sequence.
-  * Apart from common single character escape sequences, line breaks can be escaped
-  * as well as four hex digit unicode escapes \\uXXXX and two digit hex escape sequences \\xXX are allowed.
+  * Kaçış sırası.
+  * Yaygın tek karakterli kaçış sıralarının yanı sıra, satır sonları da kaçabilir
+  * ve dört onaltılık basamaklı unicode kaçışlarına \\uXXXX ve iki basamaklı onaltılık
+  * kaçış sıralarına \\xXX izin verilir.
   */
 fragment EscapeSequence:
 	'\\' (
@@ -196,7 +197,7 @@ fragment EscapeSequence:
 		| 'x' HexCharacter HexCharacter
 	);
 /**
- * A single quoted string literal allowing arbitrary unicode characters.
+ * Rastgele unicode karakterlere izin veren tek tırnaklı bir string literal.
  */
 UnicodeStringLiteral:
 	'unicode"' DoubleQuotedUnicodeStringCharacter* '"'
@@ -206,13 +207,13 @@ fragment DoubleQuotedUnicodeStringCharacter: ~["\r\n\\] | EscapeSequence;
 //@doc:inline
 fragment SingleQuotedUnicodeStringCharacter: ~['\r\n\\] | EscapeSequence;
 
-// Note that this will also be used for Yul hex string literals.
+// Bunun Yul hex dize literalleri için de kullanılacağını unutmayın.
 /**
- * Hex strings need to consist of an even number of hex digits that may be grouped using underscores.
+ * Onaltılı dizelerin, alt çizgi kullanılarak gruplandırılabilen çift sayıda onaltılı rakamlardan oluşması gerekir.
  */
 HexString: 'hex' (('"' EvenHexDigits? '"') | ('\'' EvenHexDigits? '\''));
 /**
- * Hex numbers consist of a prefix and an arbitrary number of hex digits that may be delimited by underscores.
+ * Onaltılı sayılar bir önek ve alt çizgilerle sınırlandırılabilen rastgele sayıda onaltılı rakamlardan oluşur.
  */
 HexNumber: '0' 'x' HexDigits;
 //@doc:inline
@@ -223,9 +224,9 @@ fragment EvenHexDigits: HexCharacter HexCharacter ('_'? HexCharacter HexCharacte
 fragment HexCharacter: [0-9A-Fa-f];
 
 /**
- * A decimal number literal consists of decimal digits that may be delimited by underscores and
- * an optional positive or negative exponent.
- * If the digits contain a decimal point, the literal has fixed point type.
+ * Bir ondalık sayı literali, alt çizgilerle sınırlandırılabilen ondalık basamaklardan ve
+ * isteğe bağlı bir pozitif veya negatif üstel sayıdan oluşur.
+ * Rakamlar bir ondalık nokta içeriyorsa, literal sabit nokta tipine sahiptir.
  */
 DecimalNumber: (DecimalDigits | (DecimalDigits? '.' DecimalDigits)) ([eE] '-'? DecimalDigits)?;
 //@doc:inline
@@ -233,8 +234,8 @@ fragment DecimalDigits: [0-9] ('_'? [0-9])* ;
 
 
 /**
- * An identifier in solidity has to start with a letter, a dollar-sign or an underscore and
- * may additionally contain numbers after the first symbol.
+ * Solidity'de bir tanımlayıcı bir harf, bir dolar işareti veya bir alt çizgi ile
+ * başlamalıdır ve ilk sembolden sonra ek olarak sayılar içerebilir.
  */
 Identifier: IdentifierStart IdentifierPart*;
 //@doc:inline
@@ -279,7 +280,7 @@ YulTrue: 'true';
 YulHex: 'hex';
 
 /**
- * Builtin functions in the EVM Yul dialect.
+ * EVM Yul diyalektinde bulunan dahili fonksiyonlar.
  */
 YulEVMBuiltin:
 	'stop' | 'add' | 'sub' | 'mul' | 'div' | 'sdiv' | 'mod' | 'smod' | 'exp' | 'not'
@@ -304,9 +305,9 @@ YulComma: ',';
 YulArrow: '->';
 
 /**
- * Yul identifiers consist of letters, dollar signs, underscores and numbers, but may not start with a number.
- * In inline assembly there cannot be dots in user-defined identifiers. Instead see yulPath for expressions
- * consisting of identifiers with dots.
+ * Yul tanımlayıcıları harflerden, dolar işaretlerinden, alt çizgilerden ve sayılardan oluşur, ancak bir sayı ile başlamayabilir.
+ * Satır içi assembly'de kullanıcı tanımlı tanımlayıcılarda nokta olamaz. Bunun yerine noktalı
+ * tanımlayıcılardan oluşan ifadeler için yulPath bölümüne bakın.
  */
 YulIdentifier: YulIdentifierStart YulIdentifierPart*;
 //@doc:inline
@@ -314,17 +315,17 @@ fragment YulIdentifierStart: [a-zA-Z$_];
 //@doc:inline
 fragment YulIdentifierPart: [a-zA-Z0-9$_];
 /**
- * Hex literals in Yul consist of a prefix and one or more hexadecimal digits.
+ * Yul'daki onaltılık değişmezler bir önek ve bir veya daha fazla onaltılık basamaktan oluşur.
  */
 YulHexNumber: '0' 'x' [0-9a-fA-F]+;
 /**
- * Decimal literals in Yul may be zero or any sequence of decimal digits without leading zeroes.
+ * Yul'daki ondalık literaller sıfır veya başlarında sıfır olmayan herhangi bir ondalık basamak sırası olabilir.
  */
 YulDecimalNumber: '0' | ([1-9] [0-9]*);
 /**
- * String literals in Yul consist of one or more double-quoted or single-quoted strings
- * that may contain escape sequences and printable characters except unescaped line breaks or
- * unescaped double-quotes or single-quotes, respectively.
+ * Yul’da bulunan string literalleri, kaçış sıralarını ve yazılmamış satır sonları
+ * veya kaçış sırasız çift tırnaklar veya tek tırnaklar dışındaki yazdırılabilir
+ * karakterleri içerebilen bir veya daha fazla çift tırnaklı veya tek tırnaklı stringlerden oluşur.
  */
 YulStringLiteral:
 	'"' DoubleQuotedStringCharacter* '"'
@@ -339,8 +340,8 @@ YulLINE_COMMENT: '//' ~[\r\n]* -> channel(HIDDEN) ;
 mode PragmaMode;
 
 /**
- * Pragma token. Can contain any kind of symbol except a semicolon.
- * Note that currently the solidity parser only allows a subset of this.
+ * Pragma belirteci. Noktalı virgül hariç her türlü sembolü içerebilir.
+ * Şu andaki solidity çözümleyicisinin bunun yalnızca bir alt kümesine izin verdiğini unutmayın.
  */
 //@doc:name pragma-token
 //@doc:no-diagram
