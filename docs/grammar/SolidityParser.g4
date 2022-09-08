@@ -317,7 +317,7 @@ errorDefinition:
  */
 usingDirective: Using (identifierPath | (LBrace identifierPath (Comma identifierPath)* RBrace)) For (Mul | typeName) Global? Semicolon;
 /**
- * Bir tür adı bir temel tür, bir fonksiyon türü, bir mapping türü, bir kullanıcı tanımlı tür olabilir
+ * Bir türün adı, temel tür,  fonksiyon türü, mapping türü,  kullanıcı tanımlı tür olabilir.
  * (örneğin bir sözleşme veya struct) veya bir dizi türü.
  */
 typeName: elementaryTypeName[true] | functionTypeName | mappingType | identifierPath | typeName LBrack expression? RBrack;
