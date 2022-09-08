@@ -11,7 +11,7 @@ Sözleşmelerden Para Çekme
 *************************
 
 Bir etkiden sonra önerilen fon gönderme yöntemi, para çekme
-modelini kullanmaktır. Bir etki sonucunda, en sezgisel Ether
+modelini kullanmaktır. Bir etki sonucunda, anlaşılması en kolay Ether
 gönderme yöntemi doğrudan ``transfer`` çağrısı olsa da,
 potansiyel güvenlik riski oluşturduğundan bu önerilmez. Bu
 konuda daha fazla bilgiye :ref:`Güvenlikle İlgili
