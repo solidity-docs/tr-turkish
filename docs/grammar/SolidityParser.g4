@@ -489,7 +489,7 @@ assemblyFlags: AssemblyBlockLParen AssemblyFlagString (AssemblyBlockComma Assemb
 //@doc:inline
 variableDeclarationList: variableDeclarations+=variableDeclaration (Comma variableDeclarations+=variableDeclaration)*;
 /**
- * Değişken tanımlamalarında kullanılacak değişken adlarının bir demeti.
+ * Değişken tanımlamalarında kullanılacak bir dizi değişken adı.
  * Boş alanlar içerebilir.
  */
 variableDeclarationTuple:
