@@ -114,7 +114,7 @@ oyu almış teklifi geri döndürecek.
             // Genelde bu tür döngüler oldukça tehlikelidir,
             // çünkü eğer çok fazla çalışırlar bloktaki
             // kullanılabilir gas'ten daha fazlasına ihtiyaç duyabilir.
-            // Bu durumda, delege atama çalışmayacak
+            // Bu durumda, delege atama çalışmayacaktır
             // ama başka durumlarda bu tür döngüler
             // kontratın tamamiyle kitlenmesine sebep olabilir.
             while (voters[to].delegate != address(0)) {
