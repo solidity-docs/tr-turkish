@@ -427,7 +427,7 @@ Tam Kontrat
 
 Önceki bölümlerdekinin aksine, ödeme kanalındaki mesajlar anında alınmamakta.
 Alıcı mesajların takibini yapıp zamanı geldiğinde ödeme kanalını kapatır. Yani bu durumda 
-alıcının mesajları kendisinin doğrulaması oldukça önemli. Yoksa alıcının ödemesini kesin alacğaının
+alıcının mesajları kendisinin doğrulaması oldukça önemli. Yoksa alıcının ödemesini kesin alacağının
 bir garantisi yok. 
 
 Alıcı her mesajı aşağıdaki işlemler ile doğrulamalı:
