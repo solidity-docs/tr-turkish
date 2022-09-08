@@ -317,7 +317,7 @@ Bob istediği zaman ödeme kanalını kapatabilir anca kapatmazsa Alice'in bir
 süresi girilir. Süre dolduğunda, Alice ``claimTimeout`` fonksiyonunu çağırarak
 içerideki parasını geri alabilir. ``claimTimeout`` fonksyionunu tam kontratta görebilirsiniz.
 
-Bu fonksiyon çağırıldıktan sonra Bob artık sistemden Ether alamaz dolayısıyla Bob'un zamman aşımına
+Bu fonksiyon çağırıldıktan sonra Bob artık sistemden Ether alamaz dolayısıyla Bob'un zaman aşımına
 uğramadan parasını alması oldukça önemli.
 
 Tam Kontrat
