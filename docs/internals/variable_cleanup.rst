@@ -1,52 +1,46 @@
 .. index: variable cleanup
 
 *********************
-Cleaning Up Variables
+Değişkenlerin Temizlenmesi
 *********************
 
-When a value is shorter than 256 bit, in some cases the remaining bits
-must be cleaned.
-The Solidity compiler is designed to clean such remaining bits before any operations
-that might be adversely affected by the potential garbage in the remaining bits.
-For example, before writing a value to  memory, the remaining bits need
-to be cleared because the memory contents can be used for computing
-hashes or sent as the data of a message call.  Similarly, before
-storing a value in the storage, the remaining bits need to be cleaned
-because otherwise the garbled value can be observed.
+Bir değer 256 bitten daha kısa olduğunda, bazı durumlarda kalan bitlerin temizlenmesi
+gerekir. Solidity derleyicisi, kalan bitlerdeki potansiyel çöplerden olumsuz etkilenebilecek
+herhangi bir işlemden önce bu tür kalan bitleri temizlemek üzere tasarlanmıştır. Örnek vermek
+gerekirse, belleğe bir değer yazmadan öncede kalan bitlerin temizlenmesi gerekir çünkü bellek
+içeriği hash değerlerinin hesaplanması için kullanılabilir veya bir mesaj çağrısının verisi olarak gönderilebilir.
+Benzer şekilde, bir değeri depolamadan öncede aynı durum geçerlidir çünkü aksi takdirde bozuk değer
+gözlemlenebilir.
 
-Note that access via inline assembly is not considered such an operation:
-If you use inline assembly to access Solidity variables
-shorter than 256 bits, the compiler does not guarantee that
-the value is properly cleaned up.
+Satır içi(inline) assembly yoluyla erişimin böyle bir işlem olarak kabul edilmediğini unutmayın:
+Eğer 256 bitten kısa Solidity değişkenlerine erişmek için satır içi (inline) assembly kullanırsanız,
+derleyici değerin düzgün bir şekilde temizlendiğini garanti etmez.
 
-Moreover, we do not clean the bits if the immediately
-following operation is not affected.  For instance, since any non-zero
-value is considered ``true`` by ``JUMPI`` instruction, we do not clean
-the boolean values before they are used as the condition for
-``JUMPI``.
+Dahası, hemen ardından gelen işlem tarafından etkilenmiyorsa bitleri temizlemeyiz. Örneğin, sıfır
+olmayan herhangi bir değer ``JUMPI`` komutu tarafından ``true`` olarak kabul edildiğinden, boolean
+değerlerini ``JUMPI`` için koşul olarak kullanılmadan önce temizlemiyoruz.
 
-In addition to the design principle above, the Solidity compiler
-cleans input data when it is loaded onto the stack.
+Yukarıdaki tasarım prensibine ek olarak, Solidity derleyicisi girdi verilerini yığına(stack) yüklendiğinde temizler.
 
-Different types have different rules for cleaning up invalid values:
+Farklı türlerin geçersiz değerleri temizlemek için farklı kuralları vardır:
 
 +---------------+---------------+-------------------+
-|Type           |Valid Values   |Invalid Values Mean|
+| Tür           | Geçerli       | Geçersiz          |
+|               | Değerler      | Değerlerin        |
+|               |               | Anlamları         |
 +===============+===============+===================+
-|enum of n      |0 until n - 1  |exception          |
-|members        |               |                   |
+|n üyeli bir    |0'dan n - 1'e  |istisna            |
+|enum           |kadar          |                   |
 +---------------+---------------+-------------------+
-|bool           |0 or 1         |1                  |
+|bool           |0 ya da 1      |1                  |
 +---------------+---------------+-------------------+
-|signed integers|sign-extended  |currently silently |
-|               |word           |wraps; in the      |
-|               |               |future exceptions  |
-|               |               |will be thrown     |
-|               |               |                   |
-|               |               |                   |
+|işaretli tam   |işareti        |sessizce doğru     |
+|sayılar        |uzatılmış      |formata getirir;   |
+|               |kelime         |gelecekte istisnala|
+|               |               |r atılacaktır      |
 +---------------+---------------+-------------------+
-|unsigned       |higher bits    |currently silently |
-|integers       |zeroed         |wraps; in the      |
-|               |               |future exceptions  |
-|               |               |will be thrown     |
+|işaretsiz  tam |daha yüksek bit|sessizce doğru     |
+|sayılar        |değerleri      |formata getirir;   |
+|               |sıfırlandı     |gelecekte istisnala|
+|               |               |r atılacaktır      |
 +---------------+---------------+-------------------+
