@@ -10,7 +10,7 @@
 Kontrol Yapıları
 ===================
 
-Süslü parantez dillerinden(C, C++, Java, ya da C# gibi) bilinen kontrol yapılarının çoğu Solidity'de mevcuttur:
+Kıvrımlı parantez dilleri olarak (C, C++, Java, ya da C# gibi) bilinen kontrol yapılarının çoğu Solidity'de mevcuttur:
 
 C veya JavaScript'te kullanılan standart semantik ile ``if``, ``else``, ``while``, ``do``, ``for``, ``break``, ``continue``, ``return`` yapıları vardır. 
 
