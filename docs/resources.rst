@@ -49,7 +49,7 @@ Editör Entegrasyonları
         Sözdizimi vurgulama, derleme ve çalışma zamanı ortamı (Backend node ve VM uyumlu) içeren Atom editörü için eklenti.
 
     * `Atom Solidity Linter <https://atom.io/packages/linter-solidity>`_
-        Atom editörü için Solidity linting sağlayan eklenti.
+        Solidity linting sağlayan Atom editörü için eklenti.
 
     * `Atom Solium Linter <https://atom.io/packages/linter-solium>`_
         Solium'u (şimdi Ethlint) temel olarak kullanan Atom için yapılandırılabilir Solidity linter.
