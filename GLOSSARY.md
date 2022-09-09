@@ -19,6 +19,7 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - EVM (Ethereum Virtual Machine) = ESM (Ethereum Sanal Makinası)
 - Client = İstemci
 - Publish = Yayılan
+- Greedy = Aç Gözlü
 - Statement = İfade
 - Repository = Depo
 - Function = Fonksiyon
