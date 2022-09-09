@@ -13,8 +13,10 @@ Bu dokümanların çevirisi tamamlanırken, çevrilmiş bir sürümünü bu adre
 
 ## Denetleyiciler
 - @muratartan
-- @cemdemircioglu
+- @cdemircioglu
 - @sevvalmutlu
+- @ilketh
+- @prism0x
 
 Katkıda bulunmak için lütfen [Discord Grubumuz'dan](https://discord.gg/b94AvkPuuP) bilgi alın.
 
