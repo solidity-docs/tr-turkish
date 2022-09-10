@@ -5,7 +5,8 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - Blockchain = Blok Zinciri
 - Binary = Binary
 - Breakpoint = Kesme Noktası
-- Breaking Changes = İşleyişi Bozan Değişiklikler, Kırılan Değişiklikler veya Önemli Değişikliker 
+- Breaking Changes = İşleyişi Bozan Değişiklikler, Kırılan Değişiklikler veya Önemli Değişikliker
+- Currently Silently Wraps = Sessizce Doğru Formata Getirilir 
 - State = Durum
 - Keypair = Anahtar Çifti
 - Stack = Yığın
