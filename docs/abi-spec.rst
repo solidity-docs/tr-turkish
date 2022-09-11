@@ -531,6 +531,7 @@ Geri döndürülen veri, ``InsufficientBalance(uint256,uint256)`` fonksiyonuna
 yani ``0xcf479181``, ``uint256(0)``, ``uint256(amount)``.
 
 ``0x00000000`` ve ``0xffffff`` hata(error) selektörleri gelecekte kullanılmak üzere saklanmıştır.
+"0x00000000" ve "0xffffffff" hata seçicileri ileride kullanılmak üzere ayrılmıştır.
 
 .. warning::
     Hata verilerine asla güvenmeyin.
