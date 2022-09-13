@@ -14,7 +14,7 @@ adresini kontrol edin.
    belirleyicilerini içerecek şekilde değiştirmek yeterlidir. Aşağıdaki :ref:`Interoperability With Older Contracts <interoperability>`
    bölümüne bakınız.
 
-Yalnızca Semantik Değişiklikleri
+Yalnızca Anlamsal (Semantik) Değişiklikleri
 =====================
 
 Bu bölümde yalnızca semantik olan, dolayısıyla mevcut kodda yeni ve farklı davranışları gizleme potansiyeli olan değişiklikler listelenmektedir.
