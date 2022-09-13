@@ -90,7 +90,7 @@ Modifiers
 - ``view`` fonksiyonlar için: Durum değişikliğine izin vermez.
 - ``payable`` fonksiyonlar için: Bir çağrıyla birlikte Ether almalarını sağlar.
 - ``constant`` durum değişkenleri için: Atamaya izin vermez (başlatma dışında), depolama yuvasını işgal etmez.
-- ``immutable`` durum değişkenleri için: Başlatılma sırasında tam olarak bir atamaya izin verir ve daha sonra sabit bir şekilde kalır. Kodda saklanır.
+- ``immutable`` durum değişkenleri için: Başlatılma sırasında bir defa atamaya izin verir ve daha sonra sabit bir şekilde kalır. Kodda saklanır.
 - ``anonymous`` event'ler için: Event imzasını başlık olarak saklamaz
 - ``indexed`` event parametreleri için: Parametreyi başlık olarak saklar
 - ``virtual`` fonksiyonlar ve modifier'lar için: Türetilmiş sözleşmelerde modifier'ların fonksiyonlarının değiştirilmesine izin verir.
