@@ -18,7 +18,7 @@ Global Değişkenlere
 - ``abi.encodePacked(...) returns (bytes memory)``: Verilen argümanların :ref:`ABI formatında paketlenmiş veri <abi_packed_mode>` işlemini gerçekleştirir. Paketli ABI formatındaki verinin belirsiz olabileceğine dikkat edin!
 - ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: ABI, verilen bağımsız değişkenleri ikinciden başlayarak ABI olarak formatlar ve verilen dört baytlık seçicinin önüne ekler.
 - ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``: Şuna eşdeğerdir ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)``
-- ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``: ABI, ``functionPointer`` çağrısını veri grupları içinde bulunan argümanlarla şifreler. Tam bir tür denetimi gerçekleştirerek türlerin fonksiyon imzasıyla eşleşmesini sağlar. Sonuç ``abi.encodeWithSelector(functionPointer.selector, (...))`` değerine eşittir
+- ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``: ABI, ``functionPointer`` çağrısını veri grupları içinde bulunan argümanlarla ABI olarak formatlar. Argümanlardaki tüm veri tipleri, fonksiyonun imzasi ile eşleşmesi kontrol edilir. Sonuç ``abi.encodeWithSelector(functionPointer.selector, (...))`` değerine eşittir
 - ``bytes.concat(...) returns (bytes memory)``: :ref:`Değişken sayıda bayt ve bytes1, ..., bytes32 argümanlarını bir bayt dizisine birleştirir<bytes-concat>`
 - ``string.concat(...) returns (string memory)``: :ref:`Değişken sayıda string argümanını tek bir string dizisinde birleştirir<string-concat>`
 - ``block.basefee`` (``uint``): mevcut bloğun baz ücreti (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ ve `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_)
