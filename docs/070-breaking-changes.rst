@@ -72,7 +72,7 @@ Fonksiyonlar ve Events
 
 * ``finney`` ve ``szabo`` değerleri kaldırılmıştır. Bunlar nadiren kullanılır ve gerçek miktarı kolayca görünür hale getirmez. Bunun yerine, ``1e20`` veya çok yaygın olan ``gwei`` gibi açık değerler kullanılabilir.
 
-Declarations
+Bildiriler
 ------------
 
 * ``var`` anahtar sözcüğü artık kullanılamıyor. Önceden, bu anahtar sözcük ayrıştırılır ancak bir tür hatasına ve hangi türün kullanılacağına ilişkin bir öneriye neden olurdu. Şimdi, bir ayrıştırıcı hatasıyla sonuçlanıyor.
