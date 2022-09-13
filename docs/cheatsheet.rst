@@ -39,7 +39,7 @@ Global Değişkenlere
 - ``require(bool condition)``: koşul "yanlış" ise yürütmeyi durdurur ve durum değişikliklerini geri alır (harici bileşende hatalı biçimlendirilmiş giriş veya hata için kullanın)
 - ``require(bool condition, string memory message)``: koşul "yanlış" ise yürütmeyi iptal eder ve durum değişikliklerini geri alır (harici bileşende hatalı biçimlendirilmiş giriş veya hata için kullanın). Ayrıca hata mesajıda verir.
 - ``revert()``: yürütmeyi iptal eder ve durum değişikliklerini geri alır
-- ``revert(string memory message)``: açıklayıcı bir string sağlayarak yürütmeyi iptal eder ve durum değişikliklerini geri alır
+- ``revert(string memory message)``: açıklayıcı bir string geri döndürerek yürütmeyi iptal eder ve durum değişikliklerini geri alır
 - ``blockhash(uint blockNumber) returns (bytes32)``: verilen bloğun hash'i - yalnızca en son 256 blok için çalışır
 - ``keccak256(bytes memory) returns (bytes32)``: girdinin Keccak-256 hash'ini hesaplar
 - ``sha256(bytes memory) returns (bytes32)``: cgirdinin SHA-256 hash'ini hesaplar
