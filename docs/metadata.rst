@@ -67,7 +67,7 @@ Meta veri dosyası aşağıdaki formattadır. Fakat aşağıdaki örnek okuması
             "peephole": true,
             // inliner'ın varsayılanı "true"dur
             "inliner": true,
-            // jumpdestRemover'ın varayılanı "true"dur
+            // jumpdestRemover'ın varsayılanı "true"dur
             "jumpdestRemover": true,
             "orderLiterals": false,
             "deduplicate": false,
