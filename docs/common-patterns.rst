@@ -112,7 +112,7 @@ kısıtlayamayacağınızı unutmayın. Şifreleme kullanarak bunu
 bir miktar zorlaştırabilirsiniz ancak sözleşmenizin veri
 okumasına izin verilmişse diğer herkes de okuyacaktır.
 
-Sözleşme durumunuza okuma erişimini **diğer sözleşmeler**
+Sözleşme durum degişkenlerinin okuma erişimini **diğer sözleşmeler**
 ile kısıtlayabilirsiniz. Bu aslında, durum değişkenlerinizi
 ``public`` olarak bildirmediğiniz sürece varsayılandır.
 
