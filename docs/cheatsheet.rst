@@ -16,7 +16,7 @@ Global Değişkenlere
 - ``abi.decode(bytes memory encodedData, (...)) returns (...)``: ABI formatında gönderilen verinin ayrıştırılması sırasında, tipler ikinci argüman olarak parantez içinde verilir. Örneğin: ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
 - ``abi.encode(...) returns (bytes memory)``: ABI formatında verileri düzenler
 - ``abi.encodePacked(...) returns (bytes memory)``: Verilen argümanların :ref:`ABI formatında paketlenmiş veri <abi_packed_mode>` işlemini gerçekleştirir. Paketli ABI formatındaki verinin belirsiz olabileceğine dikkat edin!
-- ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: ABI, verilen bağımsız değişkenleri ikinciden başlayarak şifreler ve verilen dört baytlık seçicinin önüne ekler.
+- ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: ABI, verilen bağımsız değişkenleri ikinciden başlayarak ABI olarak formatlar ve verilen dört baytlık seçicinin önüne ekler.
 - ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``: Şuna eşdeğerdir ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)``
 - ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``: ABI, ``functionPointer`` çağrısını veri grupları içinde bulunan argümanlarla şifreler. Tam bir tür denetimi gerçekleştirerek türlerin fonksiyon imzasıyla eşleşmesini sağlar. Sonuç ``abi.encodeWithSelector(functionPointer.selector, (...))`` değerine eşittir
 - ``bytes.concat(...) returns (bytes memory)``: :ref:`Değişken sayıda bayt ve bytes1, ..., bytes32 argümanlarını bir bayt dizisine birleştirir<bytes-concat>`
