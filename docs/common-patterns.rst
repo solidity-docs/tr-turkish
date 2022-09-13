@@ -61,7 +61,7 @@ zengin olan kişinin fonlarını alırsınız.
         }
     }
 
-Bu, daha sezgisel olan gönderme modelinin zıttıdır:
+Akla daha yatkın olan gönderme modeli aşağıdaki gibidir ama güvenlik açığı içerir:
 
 .. code-block:: solidity
 
