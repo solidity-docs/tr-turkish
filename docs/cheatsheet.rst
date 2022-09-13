@@ -27,7 +27,7 @@ Global Değişkenlere
 - ``block.difficulty`` (``uint``): mevcut blok zorluğu
 - ``block.gaslimit`` (``uint``): mevcut blok gas sınırı
 - ``block.number`` (``uint``): mevcut blok numarası
-- ``block.timestamp`` (``uint``): unix döneminden bu yana saniye biçimindeki mevcut blok zaman bilgisi
+- ``block.timestamp`` (``uint``): unix bazlı epoch (1/1/1970) gününden bu yana saniye biçiminde formatlanmış mevcut bloğun yaratılış zaman bilgisi
 - ``gasleft() returns (uint256)``: kalan gas
 - ``msg.data`` (``bytes calldata``): bütün calldata
 - ``msg.sender`` (``address``): mesajın göndericisi (mevcut çağırma için)
