@@ -1,85 +1,71 @@
 **********
-Cheatsheet
+Kopya Kağıdı
 **********
 
 .. index:: operator; precedence
 
-Order of Precedence of Operators
+Operatörlerin Öncelik Sırası
 ================================
 .. include:: types/operator-precedence-table.rst
 
 .. index:: assert, block, coinbase, difficulty, number, block;number, timestamp, block;timestamp, msg, data, gas, sender, value, gas price, origin, revert, require, keccak256, ripemd160, sha256, ecrecover, addmod, mulmod, cryptography, this, super, selfdestruct, balance, codehash, send
 
-Global Variables
+Global Değişkenlere
 ================
 
-- ``abi.decode(bytes memory encodedData, (...)) returns (...)``: :ref:`ABI <ABI>`-decodes
-  the provided data. The types are given in parentheses as second argument.
-  Example: ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
-- ``abi.encode(...) returns (bytes memory)``: :ref:`ABI <ABI>`-encodes the given arguments
-- ``abi.encodePacked(...) returns (bytes memory)``: Performs :ref:`packed encoding <abi_packed_mode>` of
-  the given arguments. Note that this encoding can be ambiguous!
-- ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: :ref:`ABI <ABI>`-encodes
-  the given arguments starting from the second and prepends the given four-byte selector
-- ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``: ABI-encodes a call to ``functionPointer`` with the arguments found in the
-  tuple. Performs a full type-check, ensuring the types match the function signature. Result equals ``abi.encodeWithSelector(functionPointer.selector, (...))``
-- ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``: Equivalent
-  to ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature)), ...)``
-- ``bytes.concat(...) returns (bytes memory)``: :ref:`Concatenates variable number of
-  arguments to one byte array<bytes-concat>`
-- ``string.concat(...) returns (string memory)``: :ref:`Concatenates variable number of
-  arguments to one string array<string-concat>`
-- ``block.basefee`` (``uint``): current block's base fee (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ and `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_)
-- ``block.chainid`` (``uint``): current chain id
-- ``block.coinbase`` (``address payable``): current block miner's address
-- ``block.difficulty`` (``uint``): current block difficulty
-- ``block.gaslimit`` (``uint``): current block gaslimit
-- ``block.number`` (``uint``): current block number
-- ``block.timestamp`` (``uint``): current block timestamp in seconds since Unix epoch
-- ``gasleft() returns (uint256)``: remaining gas
-- ``msg.data`` (``bytes``): complete calldata
-- ``msg.sender`` (``address``): sender of the message (current call)
-- ``msg.sig`` (``bytes4``): first four bytes of the calldata (i.e. function identifier)
-- ``msg.value`` (``uint``): number of wei sent with the message
-- ``tx.gasprice`` (``uint``): gas price of the transaction
-- ``tx.origin`` (``address``): sender of the transaction (full call chain)
-- ``assert(bool condition)``: abort execution and revert state changes if condition is ``false`` (use for internal error)
-- ``require(bool condition)``: abort execution and revert state changes if condition is ``false`` (use
-  for malformed input or error in external component)
-- ``require(bool condition, string memory message)``: abort execution and revert state changes if
-  condition is ``false`` (use for malformed input or error in external component). Also provide error message.
-- ``revert()``: abort execution and revert state changes
-- ``revert(string memory message)``: abort execution and revert state changes providing an explanatory string
-- ``blockhash(uint blockNumber) returns (bytes32)``: hash of the given block - only works for 256 most recent blocks
-- ``keccak256(bytes memory) returns (bytes32)``: compute the Keccak-256 hash of the input
-- ``sha256(bytes memory) returns (bytes32)``: compute the SHA-256 hash of the input
-- ``ripemd160(bytes memory) returns (bytes20)``: compute the RIPEMD-160 hash of the input
-- ``ecrecover(bytes32 hash, uint8 v, bytes32 r, bytes32 s) returns (address)``: recover address associated with
-  the public key from elliptic curve signature, return zero on error
-- ``addmod(uint x, uint y, uint k) returns (uint)``: compute ``(x + y) % k`` where the addition is performed with
-  arbitrary precision and does not wrap around at ``2**256``. Assert that ``k != 0`` starting from version 0.5.0.
-- ``mulmod(uint x, uint y, uint k) returns (uint)``: compute ``(x * y) % k`` where the multiplication is performed
-  with arbitrary precision and does not wrap around at ``2**256``. Assert that ``k != 0`` starting from version 0.5.0.
-- ``this`` (current contract's type): the current contract, explicitly convertible to ``address`` or ``address payable``
-- ``super``: the contract one level higher in the inheritance hierarchy
-- ``selfdestruct(address payable recipient)``: destroy the current contract, sending its funds to the given address
-- ``<address>.balance`` (``uint256``): balance of the :ref:`address` in Wei
-- ``<address>.code`` (``bytes memory``): code at the :ref:`address` (can be empty)
-- ``<address>.codehash`` (``bytes32``): the codehash of the :ref:`address`
-- ``<address payable>.send(uint256 amount) returns (bool)``: send given amount of Wei to :ref:`address`,
-  returns ``false`` on failure
-- ``<address payable>.transfer(uint256 amount)``: send given amount of Wei to :ref:`address`, throws on failure
-- ``type(C).name`` (``string``): the name of the contract
-- ``type(C).creationCode`` (``bytes memory``): creation bytecode of the given contract, see :ref:`Type Information<meta-type>`.
-- ``type(C).runtimeCode`` (``bytes memory``): runtime bytecode of the given contract, see :ref:`Type Information<meta-type>`.
-- ``type(I).interfaceId`` (``bytes4``): value containing the EIP-165 interface identifier of the given interface, see :ref:`Type Information<meta-type>`.
-- ``type(T).min`` (``T``): the minimum value representable by the integer type ``T``, see :ref:`Type Information<meta-type>`.
-- ``type(T).max`` (``T``): the maximum value representable by the integer type ``T``, see :ref:`Type Information<meta-type>`.
+- ``abi.decode(bytes memory encodedData, (...)) returns (...)``: ABI formatında gönderilen verinin ayrıştırılması sırasında, tipler ikinci argüman olarak parantez içinde verilir. Örneğin: ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
+- ``abi.encode(...) returns (bytes memory)``: ABI formatında verileri düzenler
+- ``abi.encodePacked(...) returns (bytes memory)``: Verilen argümanların :ref:`ABI formatında paketlenmiş veri <abi_packed_mode>` işlemini gerçekleştirir. Paketli ABI formatındaki verinin belirsiz olabileceğine dikkat edin!
+- ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: ABI, verilen bağımsız değişkenleri ikinciden başlayarak ABI olarak formatlar ve verilen dört baytlık seçicinin önüne ekler.
+- ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``: Şuna eşdeğerdir ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)``
+- ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``: ABI, ``functionPointer`` çağrısını veri grupları içinde bulunan argümanlarla ABI olarak formatlar. Argümanlardaki tüm veri tipleri, fonksiyonun imzasi ile eşleşmesi kontrol edilir. Sonuç ``abi.encodeWithSelector(functionPointer.selector, (...))`` değerine eşittir
+- ``bytes.concat(...) returns (bytes memory)``: :ref:`Değişken sayıda bayt ve bytes1, ..., bytes32 argümanlarını bir bayt dizisine birleştirir<bytes-concat>`
+- ``string.concat(...) returns (string memory)``: :ref:`Değişken sayıda string argümanını tek bir string dizisinde birleştirir<string-concat>`
+- ``block.basefee`` (``uint``): mevcut bloğun baz ücreti (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ ve `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_)
+- ``block.chainid`` (``uint``): mevcut bloğun zincir kimliği
+- ``block.coinbase`` (``address payable``): mevcut blok madencisinin adresi
+- ``block.difficulty`` (``uint``): mevcut blok zorluğu
+- ``block.gaslimit`` (``uint``): mevcut blok gas sınırı
+- ``block.number`` (``uint``): mevcut blok numarası
+- ``block.timestamp`` (``uint``): unix bazlı epoch (1/1/1970) gününden bu yana saniye biçiminde formatlanmış mevcut bloğun yaratılış zaman bilgisi
+- ``gasleft() returns (uint256)``: kalan gas
+- ``msg.data`` (``bytes calldata``): bütün calldata
+- ``msg.sender`` (``address``): mesajın göndericisi (mevcut çağırma için)
+- ``msg.sig`` (``bytes4``): calldata'nın ilk 4 byte değeri (yani fonksiyon tanımlayıcısı)
+- ``msg.value`` (``uint``): mesaj ile birlikte gönderilen wei miktarı
+- ``tx.gasprice`` (``uint``): işlemin gas fiyatı
+- ``tx.origin`` (``address``): işlemin göndericisi (tam çağrı zinciri)
+- ``assert(bool condition)``: koşul "yanlış" ise yürütmeyi iptal edilir ve durum değişikliklerini geri alır (dahili hata için kullanın)
+- ``require(bool condition)``: koşul "yanlış" ise yürütmeyi durdurur ve durum değişikliklerini geri alır (harici bileşende hatalı biçimlendirilmiş giriş veya hata için kullanın)
+- ``require(bool condition, string memory message)``: koşul "yanlış" ise yürütmeyi iptal eder ve durum değişikliklerini geri alır (harici bileşende hatalı biçimlendirilmiş giriş veya hata için kullanın). Ayrıca hata mesajıda verir.
+- ``revert()``: yürütmeyi iptal eder ve durum değişikliklerini geri alır
+- ``revert(string memory message)``: açıklayıcı bir string geri döndürerek yürütmeyi iptal eder ve durum değişikliklerini geri alır
+- ``blockhash(uint blockNumber) returns (bytes32)``: verilen bloğun hash'i - yalnızca en son 256 blok için çalışır
+- ``keccak256(bytes memory) returns (bytes32)``: girdinin Keccak-256 hash'ini hesaplar
+- ``sha256(bytes memory) returns (bytes32)``: cgirdinin SHA-256 hash'ini hesaplar
+- ``ripemd160(bytes memory) returns (bytes20)``: girdinin RIPEMD-160 hash'ini hesaplar
+- ``ecrecover(bytes32 hash, uint8 v, bytes32 r, bytes32 s) returns (address)``: eliptik eğri imzasından açık anahtarla ilişkili adresi kurtarır veya hata durumunda sıfır döndürür.
+- ``addmod(uint x, uint y, uint k) returns (uint)``: toplama işleminin isteğe bağlı kesinlikte gerçekleştirildiği ve ``2**256``da kapsamadığı ``(x + y) % k`` değerini hesaplar. Sürüm 0.5.0'den başlayarak "k!= 0" olduğunu iddia eder.
+- ``mulmod(uint x, uint y, uint k) returns (uint)``: çarpmanın isteğe bağlı kesinlikte gerçekleştirildiği ve ``2**256`` değerinde kapsamadığı ``(x * y) % k`` değerini hesaplar. Sürüm 0.5.0'dan başlayarak ``k != 0`` olduğunu iddia eder.
+- ``this`` (mevcut sözleşme tipi): mevcut sözleşme, açıkça "adres" veya "ödenecek adres"e dönüştürülebilir
+- ``super``: kalıtım(miras) hiyerarşisinde bir seviye daha yüksek sözleşme
+- ``selfdestruct(address payable recipient)``: mevcut sözleşmeyi imha edin, fonlarını verilen adrese gönderin
+- ``<address>.balance`` (``uint256``): Wei biçimindeki :ref:`address` bakiyesi
+- ``<address>.code`` (``bytes memory``): ref:`address` adresindeki kod (boş olabilir)
+- ``<address>.codehash`` (``bytes32``): ref:`address` kod hash'i
+- ``<address payable>.send(uint256 amount) returns (bool)``: verilen Wei miktarını :ref:`address` 'ine gönderir, başarısız olması durumunda ``false`` döndürür
+- ``<address payable>.transfer(uint256 amount)``: verilen Wei miktarını :ref:`address` ‘ine gönderir, başarısız olması durumunda geri döner
+- ``type(C).name`` (``string``): sözleşmenin ismi
+- ``type(C).creationCode`` (``bytes memory``): verilen sözleşmenin bayt kodu oluşturma, bkz. :ref:`Type Information<meta-type>`.
+- ``type(C).runtimeCode`` (``bytes memory``): verilen sözleşmenin çalışma zamanı bayt kodu, bkz. :ref:`Type Information<meta-type>`.
+- ``type(I).interfaceId`` (``bytes4``): verilen arayüzün EIP-165 arayüz tanımlayıcısını içeren değer, bkz. :ref:`Type Information<meta-type>`.
+- ``type(T).min`` (``T``): ``T`` tipi tarafından temsil edilebilen en küçük değer, bkz. :ref:`Type Information<meta-type>`.
+- ``type(T).max`` (``T``): ``T`` tipi tarafından temsil edilebilen en büyük değer, bkz. :ref:`Type Information<meta-type>`.
 
 
 .. index:: visibility, public, private, external, internal
 
-Function Visibility Specifiers
+Fonksiyon Görünürlük Belirteçleri
 ==============================
 
 .. code-block:: solidity
@@ -89,10 +75,10 @@ Function Visibility Specifiers
         return true;
     }
 
-- ``public``: visible externally and internally (creates a :ref:`getter function<getter-functions>` for storage/state variables)
-- ``private``: only visible in the current contract
-- ``external``: only visible externally (only for functions) - i.e. can only be message-called (via ``this.func``)
-- ``internal``: only visible internally
+- ``public``: harici ve dahili olarak görünür (depolama/durum değişkenleri için bir :ref:`alıcı fonksiyon<getter-functions>` oluşturur)
+- ``private``: sadece mevcut sözleşmede görünür
+- ``external``: yalnızca harici olarak görünür (yalnızca fonksiyonlar için) - yani yalnızca mesajla çağrılabilir (``this.func`` aracılığıyla)
+- ``internal``: sadece dahili olarak görünür
 
 
 .. index:: modifiers, pure, view, payable, constant, anonymous, indexed
@@ -100,22 +86,20 @@ Function Visibility Specifiers
 Modifiers
 =========
 
-- ``pure`` for functions: Disallows modification or access of state.
-- ``view`` for functions: Disallows modification of state.
-- ``payable`` for functions: Allows them to receive Ether together with a call.
-- ``constant`` for state variables: Disallows assignment (except initialisation), does not occupy storage slot.
-- ``immutable`` for state variables: Allows exactly one assignment at construction time and is constant afterwards. Is stored in code.
-- ``anonymous`` for events: Does not store event signature as topic.
-- ``indexed`` for event parameters: Stores the parameter as topic.
-- ``virtual`` for functions and modifiers: Allows the function's or modifier's
-  behaviour to be changed in derived contracts.
-- ``override``: States that this function, modifier or public state variable changes
-  the behaviour of a function or modifier in a base contract.
+- ``pure`` fonksiyonlar için: Durumun değiştirilmesine veya erişime izin vermez.
+- ``view`` fonksiyonlar için: Durum değişikliğine izin vermez.
+- ``payable`` fonksiyonlar için: Bir çağrıyla birlikte Ether almalarını sağlar.
+- ``constant`` durum değişkenleri için: Atamaya izin vermez (başlatma dışında), depolama yuvasını işgal etmez.
+- ``immutable`` durum değişkenleri için: Başlatılma sırasında bir defa atamaya izin verir ve daha sonra sabit bir şekilde kalır. Kodda saklanır.
+- ``anonymous`` event'ler için: Event imzasını başlık olarak saklamaz
+- ``indexed`` event parametreleri için: Parametreyi başlık olarak saklar
+- ``virtual`` fonksiyonlar ve modifier'lar için: Türetilmiş sözleşmelerde modifier'ların fonksiyonlarının değiştirilmesine izin verir.
+- ``override``: Bu fonksiyon, modifier veya genel durum değişkeninin, bir temel sözleşmedeki bir fonksiyonun veya modifier'ın davranışını değiştirdiğini ifade etmektedir.
 
-Reserved Keywords
+Ayrılmış Anahtar Kelimeler
 =================
 
-These keywords are reserved in Solidity. They might become part of the syntax in the future:
+Bu anahtar kelimeler Solidity'de ayrılmıştır. Gelecekte sözdiziminin(syntax) bir parçası olabilirler:
 
 ``after``, ``alias``, ``apply``, ``auto``, ``byte``, ``case``, ``copyof``, ``default``,
 ``define``, ``final``, ``implements``, ``in``, ``inline``, ``let``, ``macro``, ``match``,
