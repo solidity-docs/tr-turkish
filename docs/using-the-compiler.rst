@@ -688,7 +688,7 @@ Kullanılabilir Yükseltme Modülleri
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +----------------------------+---------+--------------------------------------------------+
-| Modil                      | Versiyon| Açıklama                                         |
+| Modül                      | Versiyon| Açıklama                                         |
 +============================+=========+==================================================+
 | ``constructor``            | 0.5.0   | Constructor''lar artık ``constructor`` anahtar   |
 |                            |         | sözcüğü kullanılarak tanımlanmalıdır.            |
