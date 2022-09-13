@@ -219,7 +219,7 @@ kısıtlamaları oldukça okunur hale getirir.
             // yalnızca örnek bir koşul
             if (uint160(owner) & 0 == 1)
                 // Sürüm 0.4.0 öncesinde bu, Solidity
-                // için iade yapmıyordu.
+                // iade yapmıyordu.
                 return;
             // fazla ödenen ücretleri iade et
         }
