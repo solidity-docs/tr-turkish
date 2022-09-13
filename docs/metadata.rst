@@ -74,7 +74,7 @@ Meta veri dosyası aşağıdaki formattadır. Fakat aşağıdaki örnek okuması
             "cse": false,
             "constantOptimizer": false,
             "yul": true,
-            // Opsyionel: Yalnızca "yul" "true" ise mevcut
+            // Opsiyonel: Yalnızca "yul" "true" ise mevcut
             "yulDetails": {
               "stackAllocation": false,
               "optimizerSteps": "dhfoDgvulfnTUtnIf..."
