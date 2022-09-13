@@ -13,7 +13,7 @@ Operatörlerin Öncelik Sırası
 Global Değişkenlere
 ================
 
-- ``abi.decode(bytes memory encodedData, (...)) returns (...)``: ABI verilen verinin şifresini çözerken, tipler ikinci argüman olarak parantez içinde verilir. Örneğin: ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
+- ``abi.decode(bytes memory encodedData, (...)) returns (...)``: ABI formatında gönderilen verinin ayrıştırılması sırasında, tipler ikinci argüman olarak parantez içinde verilir. Örneğin: ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
 - ``abi.encode(...) returns (bytes memory)``: ABI verilen argümanları şifreler
 - ``abi.encodePacked(...) returns (bytes memory)``: Verilen argümanların :ref:`paketlenmiş şifreleme <abi_packed_mode>` işlemini gerçekleştirir. Paketli şifrelemenin belirsiz olabileceğine dikkat edin!
 - ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: ABI, verilen bağımsız değişkenleri ikinciden başlayarak şifreler ve verilen dört baytlık seçicinin önüne ekler.
