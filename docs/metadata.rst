@@ -63,7 +63,7 @@ Meta veri dosyası aşağıdaki formattadır. Fakat aşağıdaki örnek okuması
           "enabled": true,
           "runs": 500,
           "details": {
-            // peephole'ün varayılanı "true"dur
+            // peephole'ün varsayılanı "true"dur
             "peephole": true,
             // inliner'ın varayılanı "true"dur
             "inliner": true,
