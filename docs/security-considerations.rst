@@ -20,7 +20,7 @@ hesabınızı bu web hizmetini kullanarak yönetiyorsanız, daha dikkatli olmal�
 
 Bu bölüm bazı tuzakları ve genel güvenlik önerilerini listeleyecektir, ancak elbette
 asla eksiksiz olamaz.  Ayrıca, akıllı sözleşme kodunuz hatasız olsa bile derleyicide
-ya da platformun kendisinde bir hata bulunabileceğini unutmayın. Derleyicinin herkesçe
+ya da platformun kendisinde bir hata bulunabileceğini unutmayın. Derleyicinin herkes tarafından
 bilinen güvenlikle ilgili bazı hatalarının bir listesi, makine tarafından da okunabilen
 :ref: `bilinen hataların listesi<known_bugs>` bölümünde bulunabilir. Solidity derleyicisinin
 kod oluşturucusunu kapsayan bir hata ödül programı olduğunu unutmayın.
