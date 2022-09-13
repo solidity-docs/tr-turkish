@@ -78,7 +78,7 @@ Bu bölümde, mevcut sözleşmelerin artık derlenmemesine neden olabilecek değ
 
 * Global değişkenler ``tx.origin`` ve ``msg.sender``, ``address payable`` yerine ``address`` tipine sahiptir. Bunları açık bir dönüşüm kullanarak ``address payable`` türüne dönüştürebilirsiniz, yani ``payable(tx.origin)`` veya ``payable(msg.sender)``.
 
-  Bu değişiklik, derleyicinin bu adreslerin ödenebilir olup olmadığını belirleyememesi nedeniyle yapılmıştır, bu nedenle artık bu gereksinimi görünür kılmak için açık bir dönüşüm gerektirmektedir. Translated with www.DeepL.com/Translator (free version)
+  Bu değişiklik, derleyicinin bu adreslerin ödenebilir olup olmadığını belirleyememesi nedeniyle yapılmıştır, bu nedenle artık bu gereksinimi görünür kılmak için açık bir dönüşüm gerektirmektedir. 
 
 * ``address`` türüne açık dönüştürme her zaman ödenebilir olmayan bir ``address`` türü döndürür. Özellikle, aşağıdaki açık dönüşümler ``address payable`` yerine ``address`` türüne sahiptir:
 
