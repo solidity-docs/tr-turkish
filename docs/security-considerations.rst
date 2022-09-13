@@ -9,7 +9,7 @@ kimsenin bu yazılımı **öngörülmeyen** bir şekilde kullanamayacağını ko
 
 Solidity'de durum daha da önemlidir çünkü akıllı sözleşmeleri tokenları ya da muhtemelen
 daha değerli şeyleri yönetmek için kullanabilirsiniz. Dahası, bir akıllı sözleşme her
-yürütüldüğünde herkese görünür bir şekilde gerçekleşir ve buna ek olarak kaynak koduna
+yürütüldüğünde herkese görünür bir şekilde gerçekleşir ve buna ek olarak kaynak kodu
 da genellikle erişilebilirdir.
 
 Elbette her zaman ne kadar tehlikede olduğunu göz önünde bulundurmanız gerekir: Bir
