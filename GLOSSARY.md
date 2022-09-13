@@ -32,6 +32,9 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - Formula = Formula (Homebrew'e Özel Bir Kavram)
 - Symlinks = Kısayol Bağlantısı
 - Sequence = Sıra
+- Pitfalls = Tuzaklar
+- Authorization = Doğrulama / Yetkilendirme
+- Arbitrarily = Keyfi
 - Parser = Çözümleyici
 - Pad = Dolgu
 - Aliases = Takma Adlar
