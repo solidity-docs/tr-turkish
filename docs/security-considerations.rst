@@ -93,7 +93,7 @@ yapmasına izin verecektir:
         }
     }
 
-Re-entrancy'den kaçınmak için, aşağıda daha ayrıntılı olarak açıklandığı gibi
+Yeniden Giriş'den(Re-entrancy) kaçınmak için, aşağıda daha ayrıntılı olarak açıklandığı gibi
 Checks-Effects-Interactions kalıbını kullanabilirsiniz:
 
 .. code-block:: solidity
