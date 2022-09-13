@@ -94,7 +94,7 @@ Bu örnekte, bir saldırgan, ``richest``'ın başarısız olan bir receive veya 
 bir sözleşmenin adresi olmasına sebep olarak (örneğin, ``revert()`` kullanarak veya yalnızca, onlara 
 aktarılan 2300 gas ücretinden daha fazlasını tüketerek) sözleşmeyi kullanılamayacak bir duruma düşürebilir.
 Bu şekilde, fonları "zehirlenmiş" sözleşmeye iletmek için ``transfer`` her çağrıldığında başarısız olur,
-dolayısıyla ``becomeRichest`` fonksiyonu da başarısız olur ve sözleşme sonsuza kadar sıkışık kalır.
+dolayısıyla ``becomeRichest`` fonksiyonu da başarısız olur ve sözleşme sonsuza kadar kilitli / takılı kalır.
 
 Bunun aksine, ilk örnekten "çekme" modelini kullanırsanız saldırgan sözleşmenin kalanındaki işleyişin
 değil, yalnızca kendi çekim işleminin başarısız olmasına sebep olabilir.
