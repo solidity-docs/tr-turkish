@@ -2,7 +2,7 @@
 Solidity v0.5.0 İşleyişi Bozan Değişiklikler
 ********************************
 
-Bu bölüm, Solidity 0.5.0 sürümünde getirilen ana işleyişi bozan değişiklikleri,
+Bu bölüm, Solidity 0.5.0 sürümünde getirilen değişikliklerin, eski sürümlerdeki ana işleyişi bozan kısımlarını
 değişikliklerin arkasındaki gerekçeleri ve etkilenen kodun nasıl güncelleneceğini
 vurgular. Tam liste için `sürüm değişiklik günlüğü <https://github.com/ethereum/solidity/releases/tag/v0.5.0>`_
 adresini kontrol edin.
