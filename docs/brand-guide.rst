@@ -18,7 +18,7 @@ Solidity Marka Adı
 
 "Solidity" yalnızca Solidity programlama diline atıfta bulunmak için kullanılmalıdır.
 
-Lütfen "Solidity" i şu şekilde kullanmayın:
+Lütfen "Solidity" i aşağıdaki şekillerde kullanmayın:
 
 - Başka herhangi bir programlama diline atıfta bulunmak için.
 
