@@ -18,7 +18,7 @@ Semantiğin Sessiz Değişiklikleri
   olabiliyordu.
 
 
-Sözdizimindeki Değişiklikler
+Söz dizimindeki Değişiklikler
 =====================
 
 * External fonksiyon ve sözleşme oluşturma çağrılarında, Ether ve gas artık yeni bir sözdizimi kullanılarak belirtiliyor: ``x.f{gaz: 10000, değer: 2 eter}(arg1, arg2)``. Eski sözdizimi -- ``x.f.gas(10000).value(2 ether)(arg1, arg2)`` -- bir hataya neden olacaktır.
