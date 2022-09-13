@@ -192,7 +192,7 @@ Yul'un EVM diyalektinde, değişmezler aşağıdaki gibi 256 bitlik sözcükleri
   en önemli 8 biti ilk bayttakilerden oluşan 256 bitlik bir kelimeyi temsil eder, 
   yani baytlar soldan okumalı (big-endian) biçiminde yorumlanır.
 
-- Bir onaltılık dize, önce her bir bitişik onaltılık basamak çifti 
+- Bir onaltılık string, önce her bir bitişik onaltılık basamak çifti 
   bir bayt olarak görüntülenecek şekilde bir bayt dizisi olarak görüntülenir. 
   Bayt dizisi 32 baytı (yani 64 onaltılık basamak) geçmemelidir ve yukarıdaki gibi işlem görür.
 
