@@ -54,7 +54,7 @@ zengin olan kişinin fonlarını alırsınız.
 
         function withdraw() public {
             uint amount = pendingWithdrawals[msg.sender];
-            // Re-entrancy saldırılarını önlemek için gönderim
+            // Tekrar girme(re-entrancy), saldırılarını önlemek için gönderim
             // öncesinde geri ödemeyi sıfırlamayı unutmayın
             pendingWithdrawals[msg.sender] = 0;
             payable(msg.sender).transfer(amount);
