@@ -54,7 +54,7 @@ Depolama dışındaki eşleştirmeler(Mappings outside Storage)
 
 * Depolama alanındaki struct veya dizilere yapılan atamalar, mapping içeriyorsa çalışmaz. Önceden, mappingler kopyalama işlemi sırasında sessizce atlanıyordu, bu da yanıltıcı ve hataya açıktı.
 
-Fonksiyonlar ve Events
+Fonksiyonlar ve Event'ler
 --------------------
 
 * Görünürlük (``public`` / ``internal``) artık constructor`lar için gerekli değildir: Bir sözleşmenin oluşturulmasını önlemek için, sözleşme ``abstract`` olarak işaretlenebilir. Bu, constructor'lar için görünürlük kavramını geçersiz kılar.
