@@ -1,304 +1,198 @@
 ********************************
-Solidity v0.5.0 Breaking Changes
+Solidity v0.5.0 İşleyişi Bozan Değişiklikler
 ********************************
 
-This section highlights the main breaking changes introduced in Solidity
-version 0.5.0, along with the reasoning behind the changes and how to update
-affected code.
-For the full list check
-`the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.5.0>`_.
+Bu bölüm, Solidity 0.5.0 sürümünde getirilen değişikliklerin, eski sürümlerdeki ana işleyişi bozan kısımlarını
+değişikliklerin arkasındaki gerekçeleri ve etkilenen kodun nasıl güncelleneceğini
+vurgular. Tam liste için `sürüm değişiklik günlüğü <https://github.com/ethereum/solidity/releases/tag/v0.5.0>`_
+adresini kontrol edin.
 
 .. note::
-   Contracts compiled with Solidity v0.5.0 can still interface with contracts
-   and even libraries compiled with older versions without recompiling or
-   redeploying them.  Changing the interfaces to include data locations and
-   visibility and mutability specifiers suffices. See the
-   :ref:`Interoperability With Older Contracts <interoperability>` section below.
+   Solidity v0.5.0 ile derlenen sözleşmeler, eski sürümlerle derlenen sözleşmelerle
+   ve hatta kütüphanelerle yeniden derlenmeden veya yeniden dağıtılmadan arayüz
+   oluşturmaya devam edebilir.  Arayüzleri veri konumlarını, görünürlük ve değişebilirlik
+   belirleyicilerini içerecek şekilde değiştirmek yeterlidir. Aşağıdaki :ref:`Interoperability With Older Contracts <interoperability>`
+   bölümüne bakınız.
 
-Semantic Only Changes
+Yalnızca Anlamsal (Semantik) Değişiklikleri
 =====================
 
-This section lists the changes that are semantic-only, thus potentially
-hiding new and different behavior in existing code.
+Bu bölümde yalnızca semantik olan, dolayısıyla mevcut kodda yeni ve farklı davranışları gizleme potansiyeli olan değişiklikler listelenmektedir.
 
-* Signed right shift now uses proper arithmetic shift, i.e. rounding towards
-  negative infinity, instead of rounding towards zero.  Signed and unsigned
-  shift will have dedicated opcodes in Constantinople, and are emulated by
-  Solidity for the moment.
+* İşaretli sağa kaydırma artık uygun aritmetik kaydırma kullanır, yani sıfıra doğru yuvarlamak yerine negatif sonsuza doğru yuvarlar.  İşaretli ve işaretsiz kaydırma Constantinople'da özel işlem kodlarına sahip olacak ve şu an için Solidity tarafından taklit edilmektedir.
 
-* The ``continue`` statement in a ``do...while`` loop now jumps to the
-  condition, which is the common behavior in such cases. It used to jump to the
-  loop body. Thus, if the condition is false, the loop terminates.
+* Bir ``do...while`` döngüsündeki ``continue`` deyimi artık bu tür durumlarda yaygın davranış olan koşula atlıyor. Eskiden döngü gövdesine atlıyordu. Böylece, koşul yanlışsa, döngü sonlandırılır.
 
-* The functions ``.call()``, ``.delegatecall()`` and ``.staticcall()`` do not
-  pad anymore when given a single ``bytes`` parameter.
+* ``.call()``, ``.delegatecall()`` ve ``.staticcall()`` fonksiyonları, tek bir ``bytes`` parametresi verildiğinde artık dolgu yapmıyor.
 
-* Pure and view functions are now called using the opcode ``STATICCALL``
-  instead of ``CALL`` if the EVM version is Byzantium or later. This
-  disallows state changes on the EVM level.
+* Pure ve view fonksiyonları artık EVM sürümü Byzantium veya üstü ise ``CALL`` yerine ``STATICCALL`` opcode`u kullanılarak çağrılmaktadır. Bu, EVM düzeyinde durum değişikliklerine izin vermez.
 
-* The ABI encoder now properly pads byte arrays and strings from calldata
-  (``msg.data`` and external function parameters) when used in external
-  function calls and in ``abi.encode``. For unpadded encoding, use
-  ``abi.encodePacked``.
+* ABI kodlayıcı artık harici fonksiyon çağrılarında ve ``abi.encode`` içinde kullanıldığında çağrı verilerinden (``msg.data`` ve harici fonksiyon parametreleri) bayt dizilerini ve dizeleri düzgün bir şekilde doldurur. Dolgusuz kodlama için ``abi.encodePacked`` kullanın.
 
-* The ABI decoder reverts in the beginning of functions and in
-  ``abi.decode()`` if passed calldata is too short or points out of bounds.
-  Note that dirty higher order bits are still simply ignored.
+* ABI dekoderi, fonksiyonların başında ve ``abi.decode()`` içinde, aktarılan calldata çok kısaysa veya sınırların dışına işaret ediyorsa geri döner. Yüksek dereceli kirli bitlerin hala basitçe göz ardı edildiğini unutmayın.
 
-* Forward all available gas with external function calls starting from
-  Tangerine Whistle.
+* Tangerine Whistle'dan başlayarak harici fonksiyon çağrıları ile mevcut tüm gazı iletin.
 
-Semantic and Syntactic Changes
+Semantik ve Sentaktik Değişiklikler
 ==============================
 
-This section highlights changes that affect syntax and semantics.
+Bu bölümde sözdizimi ve anlambilimi etkileyen değişiklikler vurgulanmaktadır.
 
-* The functions ``.call()``, ``.delegatecall()``, ``staticcall()``,
-  ``keccak256()``, ``sha256()`` and ``ripemd160()`` now accept only a single
-  ``bytes`` argument. Moreover, the argument is not padded. This was changed to
-  make more explicit and clear how the arguments are concatenated. Change every
-  ``.call()`` (and family) to a ``.call("")`` and every ``.call(signature, a,
-  b, c)`` to use ``.call(abi.encodeWithSignature(signature, a, b, c))`` (the
-  last one only works for value types).  Change every ``keccak256(a, b, c)`` to
-  ``keccak256(abi.encodePacked(a, b, c))``. Even though it is not a breaking
-  change, it is suggested that developers change
-  ``x.call(bytes4(keccak256("f(uint256)")), a, b)`` to
-  ``x.call(abi.encodeWithSignature("f(uint256)", a, b))``.
+* ``.call()``, ``.delegatecall()``, ``staticcall()``, ``keccak256()``, ``sha256()`` ve ``ripemd160()`` fonksiyonları artık sadece tek bir ``bytes`` argümanı kabul etmektedir. Ayrıca, argüman doldurulmamıştır. Bu, argümanların nasıl birleştirildiğini daha açık ve net hale getirmek için değiştirildi. Her ``.call()`` (ve ailesi) ``.call("")`` olarak ve her ``.call(signature, a, b, c)`` ``.call(abi.encodeWithSignature(signature, a, b, c))`` olarak değiştirildi (sonuncusu yalnızca değer türleri için çalışır).  Her ``keccak256(a, b, c)`` ifadesini ``keccak256(abi.encodePacked(a, b, c))`` olarak değiştirin. İşleyişi bozan bir değişiklik olmasa da, geliştiricilerin ``x.call(bytes4(keccak256("f(uint256)"), a, b)`` öğesini ``x.call(abi.encodeWithSignature("f(uint256)", a, b))`` olarak değiştirmeleri önerilir.
 
-* Functions ``.call()``, ``.delegatecall()`` and ``.staticcall()`` now return
-  ``(bool, bytes memory)`` to provide access to the return data.  Change
-  ``bool success = otherContract.call("f")`` to ``(bool success, bytes memory
-  data) = otherContract.call("f")``.
+* Geri dönüş verilerine erişim sağlamak için ``.call()``, ``.delegatecall()`` ve ``.staticcall()`` fonksiyonları artık ``(bool, bytes memory)`` döndürmektedir.  ``bool success = otherContract.call("f")`` ifadesini ``(bool success, bytes memory data) = otherContract.call("f")`` olarak değiştirin.
 
-* Solidity now implements C99-style scoping rules for function local
-  variables, that is, variables can only be used after they have been
-  declared and only in the same or nested scopes. Variables declared in the
-  initialization block of a ``for`` loop are valid at any point inside the
-  loop.
+* Solidity artık fonksiyon yerel değişkenleri için C99 tarzı kapsam kurallarını uygulamaktadır, yani değişkenler yalnızca bildirildikten sonra ve yalnızca aynı veya iç içe kapsamlarda kullanılabilir. Bir ``for`` döngüsünün başlatma bloğunda bildirilen değişkenler, döngü içindeki herhangi bir noktada geçerlidir.
 
-Explicitness Requirements
+Açıklık Gereksinimleri
 =========================
 
-This section lists changes where the code now needs to be more explicit.
-For most of the topics the compiler will provide suggestions.
+Bu bölüm, kodun artık daha açık olması gereken değişiklikleri listeler.
+Konuların çoğu için derleyici öneriler sağlayacaktır.
 
-* Explicit function visibility is now mandatory.  Add ``public`` to every
-  function and constructor, and ``external`` to every fallback or interface
-  function that does not specify its visibility already.
+* Açık fonksiyon görünürlüğü artık zorunludur.  Her fonksiyona ve constructor'a ``public`` ve görünürlüğünü zaten belirtmeyen her fallback veya arayüz fonksiyonuna ``external`` ekleyin.
 
-* Explicit data location for all variables of struct, array or mapping types is
-  now mandatory. This is also applied to function parameters and return
-  variables.  For example, change ``uint[] x = z`` to ``uint[] storage x =
-  z``, and ``function f(uint[][] x)`` to ``function f(uint[][] memory x)``
-  where ``memory`` is the data location and might be replaced by ``storage`` or
-  ``calldata`` accordingly.  Note that ``external`` functions require
-  parameters with a data location of ``calldata``.
+* struct, array veya mapping türlerindeki tüm değişkenler için açık veri konumu artık zorunludur. Bu aynı zamanda fonksiyon parametrelerine ve dönüş değişkenlerine de uygulanır.  Örneğin, ``uint[] x = z`` ifadesini ``uint[] storage x = z`` olarak ve ``function f(uint[][] x)`` ifadesini ``function f(uint[][] memory x)`` olarak değiştirin; burada ``memory`` veri konumudur ve uygun şekilde ``storage`` veya ``calldata`` ile değiştirilebilir.  ``external`` fonksiyonlarının ``calldata`` veri konumuna sahip parametreler gerektirdiğini unutmayın.
 
-* Contract types do not include ``address`` members anymore in
-  order to separate the namespaces.  Therefore, it is now necessary to
-  explicitly convert values of contract type to addresses before using an
-  ``address`` member.  Example: if ``c`` is a contract, change
-  ``c.transfer(...)`` to ``address(c).transfer(...)``,
-  and ``c.balance`` to ``address(c).balance``.
+* Sözleşme türleri, isim alanlarını ayırmak için artık ``address`` üyelerini içermemektedir.  Bu nedenle, artık bir ``address`` üyesini kullanmadan önce sözleşme türünün değerlerini açıkça adreslere dönüştürmek gerekmektedir.  Örnek: ``c`` bir sözleşme ise, ``c.transfer(...)`` değerini ``address(c).transfer(...)`` olarak ve ``c.balance`` değerini ``address(c).balance`` olarak değiştirin.
 
-* Explicit conversions between unrelated contract types are now disallowed. You can only
-  convert from a contract type to one of its base or ancestor types. If you are sure that
-  a contract is compatible with the contract type you want to convert to, although it does not
-  inherit from it, you can work around this by converting to ``address`` first.
-  Example: if ``A`` and ``B`` are contract types, ``B`` does not inherit from ``A`` and
-  ``b`` is a contract of type ``B``, you can still convert ``b`` to type ``A`` using ``A(address(b))``.
-  Note that you still need to watch out for matching payable fallback functions, as explained below.
+* İlişkisiz sözleşme türleri arasında açık dönüşümlere artık izin verilmemektedir. Bir sözleşme türünden yalnızca temel veya ata türlerinden birine dönüştürebilirsiniz. Bir sözleşmenin, miras almamasına rağmen dönüştürmek istediğiniz sözleşme türüyle uyumlu olduğundan eminseniz, önce ``address`` türüne dönüştürerek bunu aşabilirsiniz. Örnek: ``A`` ve ``B`` sözleşme türleriyse, ``B`` ``A`` türünden miras almıyorsa ve ``b`` ``B`` türünde bir sözleşmeyse, ``A(adres(b))`` kullanarak ``b`` türünü ``A`` türüne dönüştürebilirsiniz. Aşağıda açıklandığı gibi, eşleşen payable fallback fonksiyonlarına dikkat etmeniz gerektiğini unutmayın.
 
-* The ``address`` type  was split into ``address`` and ``address payable``,
-  where only ``address payable`` provides the ``transfer`` function.  An
-  ``address payable`` can be directly converted to an ``address``, but the
-  other way around is not allowed. Converting ``address`` to ``address
-  payable`` is possible via conversion through ``uint160``. If ``c`` is a
-  contract, ``address(c)`` results in ``address payable`` only if ``c`` has a
-  payable fallback function. If you use the :ref:`withdraw pattern<withdrawal_pattern>`,
-  you most likely do not have to change your code because ``transfer``
-  is only used on ``msg.sender`` instead of stored addresses and ``msg.sender``
-  is an ``address payable``.
+* ``address`` türü ``address`` ve ``address payable`` olarak ikiye ayrılmıştır, burada sadece ``address payable`` ``transfer`` fonksiyonunu sağlamaktadır.  Bir ``address payable`` doğrudan bir ``address``e dönüştürülebilir, ancak bunun tersine izin verilmez. ``address``'i ``address payable``'a dönüştürmek ``uint160`` vasıtasıyla dönüşüm yoluyla mümkündür. Eğer ``c`` bir sözleşme ise, ``address(c)`` sadece ``c`` bir payable fallback fonksiyonuna sahipse ``address payable`` ile sonuçlanır. Eğer :ref:`withdraw pattern<withdrawal_pattern>` kullanıyorsanız, büyük olasılıkla kodunuzu değiştirmeniz gerekmez çünkü ``transfer`` saklanan adresler yerine sadece ``msg.sender`` üzerinde kullanılır ve ``msg.sender`` bir ``address payable``dır.
 
-* Conversions between ``bytesX`` and ``uintY`` of different size are now
-  disallowed due to ``bytesX`` padding on the right and ``uintY`` padding on
-  the left which may cause unexpected conversion results.  The size must now be
-  adjusted within the type before the conversion.  For example, you can convert
-  a ``bytes4`` (4 bytes) to a ``uint64`` (8 bytes) by first converting the
-  ``bytes4`` variable to ``bytes8`` and then to ``uint64``. You get the
-  opposite padding when converting through ``uint32``. Before v0.5.0 any
-  conversion between ``bytesX`` and ``uintY`` would go through ``uint8X``. For
-  example ``uint8(bytes3(0x291807))`` would be converted to ``uint8(uint24(bytes3(0x291807)))``
-  (the result is ``0x07``).
+* Farklı boyuttaki ``bytesX`` ve ``uintY`` arasındaki dönüşümler, sağdaki ``bytesX`` dolgusu ve soldaki ``uintY`` dolgusu nedeniyle artık izin verilmiyor ve bu da beklenmedik dönüşüm sonuçlarına neden olabilir.  Boyut artık dönüştürmeden önce tür içinde ayarlanmalıdır.  Örneğin, ``bytes4`` (4 bayt) değişkenini önce ``bytes8`` değişkenine ve ardından ``uint64`` değişkenine dönüştürerek bir ``bytes4`` (4 bayt) değişkenini bir ``uint64`` (8 bayt) değişkenine dönüştürebilirsiniz. ``uint32`` üzerinden dönüştürme yaparken ters dolgu elde edersiniz. v0.5.0`dan önce ``bytesX`` ve ``uintY`` arasındaki herhangi bir dönüşüm ``uint8X`` üzerinden giderdi. Örneğin ``uint8(bytes3(0x291807))``, ``uint8(uint24(bytes3(0x291807)))``'e dönüştürülürdü (sonuç ``0x07``dir).
 
-* Using ``msg.value`` in non-payable functions (or introducing it via a
-  modifier) is disallowed as a security feature. Turn the function into
-  ``payable`` or create a new internal function for the program logic that
-  uses ``msg.value``.
+* Payable olmayan fonksiyonlarda ``msg.value`` kullanımına (veya bir modifier aracılığıyla tanıtılmasına) güvenlik özelliği olarak izin verilmez. Fonksiyonu ``payable`` haline getirin veya ``msg.value`` kullanan program mantığı için yeni bir dahili fonksiyon oluşturun.
 
-* For clarity reasons, the command line interface now requires ``-`` if the
-  standard input is used as source.
+* Anlaşılabilirlik nedeniyle, standart girdi kaynak olarak kullanıldığında komut satırı arayüzü artık ``-`` gerektirmektedir. Translated with www.DeepL.com/Translator (free version)
 
-Deprecated Elements
+Kullanımdan Kaldırılan Öğeler
 ===================
 
-This section lists changes that deprecate prior features or syntax.  Note that
-many of these changes were already enabled in the experimental mode
-``v0.5.0``.
+Bu bölümde, önceki özellikleri veya sözdizimini kullanımdan kaldıran değişiklikler listelenmektedir.  Bu değişikliklerin çoğunun ``v0.5.0`` deneysel modunda zaten etkin olduğunu unutmayın.
 
-Command Line and JSON Interfaces
+Komut Satırı ve JSON Arayüzleri
 --------------------------------
 
-* The command line option ``--formal`` (used to generate Why3 output for
-  further formal verification) was deprecated and is now removed.  A new
-  formal verification module, the SMTChecker, is enabled via ``pragma
-  experimental SMTChecker;``.
+* Komut satırı seçeneği ``--formal`` (daha fazla biçimsel doğrulama için Why3 çıktısı oluşturmak için kullanılır) kullanımdan kaldırılmıştır ve artık silinmektedir.  Yeni bir biçimsel doğrulama modülü olan SMTChecker, ``pragma experimental SMTChecker;`` ile etkinleştirilmiştir.
 
-* The command line option ``--julia`` was renamed to ``--yul`` due to the
-  renaming of the intermediate language ``Julia`` to ``Yul``.
+* Komut satırı seçeneği ``--julia``, ara dil ``Julia``nın ``Yul`` olarak yeniden adlandırılması nedeniyle ``--yul`` olarak yeniden adlandırıldı.
 
-* The ``--clone-bin`` and ``--combined-json clone-bin`` command line options
-  were removed.
+* ``--clone-bin`` ve ``--combined-json clone-bin`` komut satırı seçenekleri kaldırıldı.
 
-* Remappings with empty prefix are disallowed.
+* Boş önek içeren yeniden eşlemelere izin verilmiyor.
 
-* The JSON AST fields ``constant`` and ``payable`` were removed. The
-  information is now present in the ``stateMutability`` field.
+* JSON AST alanları ``constant`` ve ``payable`` kaldırıldı. Bu bilgiler artık ``stateMutability`` alanında bulunmaktadır.
 
-* The JSON AST field ``isConstructor`` of the ``FunctionDefinition``
-  node was replaced by a field called ``kind`` which can have the
-  value ``"constructor"``, ``"fallback"`` or ``"function"``.
+* ``FunctionDefinition`` node'unun JSON AST alanı ``isConstructor``, ``"constructor"``, ``"fallback"`` veya ``"function"`` değerine sahip olabilen ``kind`` adlı bir alanla değiştirildi.
 
-* In unlinked binary hex files, library address placeholders are now
-  the first 36 hex characters of the keccak256 hash of the fully qualified
-  library name, surrounded by ``$...$``. Previously,
-  just the fully qualified library name was used.
-  This reduces the chances of collisions, especially when long paths are used.
-  Binary files now also contain a list of mappings from these placeholders
-  to the fully qualified names.
+* Bağlantısız ikili hex dosyalarında, kütüphane adres yer tutucuları artık ``$...$`` ile çevrelenmiş tam nitelikli kütüphane adının keccak256 hash'inin ilk 36 hex karakteridir. Önceden, sadece tam nitelikli kütüphane adı kullanılıyordu. Bu, özellikle uzun yollar kullanıldığında çakışma olasılığını azaltır. Binary dosyalar artık bu yer tutuculardan tam nitelikli adlara bir eşleme listesi de içeriyor.
 
-Constructors
+Constructor'lar
 ------------
 
-* Constructors must now be defined using the ``constructor`` keyword.
+* Constructor'lar artık ``constructor`` anahtar sözcüğü kullanılarak tanımlanmalıdır.
 
-* Calling base constructors without parentheses is now disallowed.
+* Temel constructor'ların parantezler olmadan çağrılmasına artık izin verilmemektedir.
 
-* Specifying base constructor arguments multiple times in the same inheritance
-  hierarchy is now disallowed.
+* Aynı kalıtım hiyerarşisinde temel constructor argümanlarının birden fazla kez belirtilmesine artık izin verilmemektedir.
 
-* Calling a constructor with arguments but with wrong argument count is now
-  disallowed.  If you only want to specify an inheritance relation without
-  giving arguments, do not provide parentheses at all.
+* Argümanları olan ancak argüman sayısı yanlış olan bir constructor çağrılmasına artık izin verilmemektedir.  Argüman vermeden yalnızca bir kalıtım ilişkisi belirtmek istiyorsanız, parantezleri hiç sağlamayın.
 
-Functions
+Fonksiyonlar
 ---------
 
-* Function ``callcode`` is now disallowed (in favor of ``delegatecall``). It
-  is still possible to use it via inline assembly.
+* Fonksiyon ``callcode`` artık izin verilmiyor (``delegatecall`` lehine). Inline assembly ile kullanmak hala mümkündür.
 
-* ``suicide`` is now disallowed (in favor of ``selfdestruct``).
+* ``suicide`` artık izin verilmiyor (``selfdestruct`` lehine).
 
-* ``sha3`` is now disallowed (in favor of ``keccak256``).
+* ``sha3`` artık izin verilmiyor (``keccak256`` lehine).
 
-* ``throw`` is now disallowed (in favor of ``revert``, ``require`` and
-  ``assert``).
+* ``throw`` artık izin verilmiyor (``revert``, ``require`` ve ``assert`` lehine).
 
-Conversions
+Dönüşümler
 -----------
 
-* Explicit and implicit conversions from decimal literals to ``bytesXX`` types
-  is now disallowed.
+* Ondalık değişmezlerden ``bytesXX`` türlerine açık ve örtük dönüşümlere artık izin verilmiyor.
 
-* Explicit and implicit conversions from hex literals to ``bytesXX`` types
-  of different size is now disallowed.
+* Onaltılık değişmezlerden farklı boyuttaki ``bytesXX`` türlerine açık ve örtük dönüşümlere artık izin verilmiyor.
 
-Literals and Suffixes
+Literaller ve Sonekler
 ---------------------
 
-* The unit denomination ``years`` is now disallowed due to complications and
-  confusions about leap years.
+* Artık yıllarla ilgili karmaşıklıklar ve karışıklıklar nedeniyle ``years`` birim gösterimine artık izin verilmemektedir.
 
-* Trailing dots that are not followed by a number are now disallowed.
+* Bir sayı tarafından takip edilmeyen sondaki noktalara artık izin verilmemektedir.
 
-* Combining hex numbers with unit denominations (e.g. ``0x1e wei``) is now
-  disallowed.
+* Onaltılık sayıların birim değerleriyle birleştirilmesine (örneğin ``0x1e wei``) artık izin verilmemektedir.
 
-* The prefix ``0X`` for hex numbers is disallowed, only ``0x`` is possible.
+* Onaltılık sayılar için ``0X`` önekine izin verilmez, sadece ``0x`` mümkündür.
 
-Variables
+Değişkenler
 ---------
 
-* Declaring empty structs is now disallowed for clarity.
+* Anlaşılabilirlik için boş structların tanımlanmasına artık izin verilmiyor.
 
-* The ``var`` keyword is now disallowed to favor explicitness.
+* ``var`` anahtar sözcüğüne artık netlik için izin verilmiyor.
 
-* Assignments between tuples with different number of components is now
-  disallowed.
+* Farklı sayıda bileşene sahip tuple'lar arasındaki atamalara artık izin verilmiyor.
 
-* Values for constants that are not compile-time constants are disallowed.
+* Derleme zamanı sabitleri olmayan sabitler için değerlere izin verilmez.
 
-* Multi-variable declarations with mismatching number of values are now
-  disallowed.
+* Uyumsuz sayıda değere sahip çok değişkenli bildirimlere artık izin verilmemektedir.
 
-* Uninitialized storage variables are now disallowed.
+* Başlatılmamış depolama değişkenlerine artık izin verilmemektedir.
 
-* Empty tuple components are now disallowed.
+* Boş tuple bileşenlerine artık izin verilmiyor.
 
-* Detecting cyclic dependencies in variables and structs is limited in
-  recursion to 256.
+* Değişkenler ve struct'lardaki döngüsel bağımlılıkların algılanması özyinelemede 256 ile sınırlandırılmıştır.
 
-* Fixed-size arrays with a length of zero are now disallowed.
+* Uzunluğu sıfır olan sabit boyutlu dizilere artık izin verilmemektedir.
 
-Syntax
+Sözdizimi
 ------
 
-* Using ``constant`` as function state mutability modifier is now disallowed.
+* Fonksiyon durumu değişebilirlik değiştiricisi olarak ``constant`` kullanımına artık izin verilmemektedir.
 
-* Boolean expressions cannot use arithmetic operations.
+* Boolean ifadeler aritmetik işlemler kullanamaz.
 
-* The unary ``+`` operator is now disallowed.
+* Unary ``+`` operatörüne artık izin verilmiyor.
 
-* Literals cannot anymore be used with ``abi.encodePacked`` without prior
-  conversion to an explicit type.
+* Harfler artık önceden açık bir türe dönüştürülmeden ``abi.encodePacked`` ile kullanılamaz.
 
-* Empty return statements for functions with one or more return values are now
-  disallowed.
+* Bir veya daha fazla dönüş değeri olan fonksiyonlar için boş dönüş ifadelerine artık izin verilmemektedir.
 
-* The "loose assembly" syntax is now disallowed entirely, that is, jump labels,
-  jumps and non-functional instructions cannot be used anymore. Use the new
-  ``while``, ``switch`` and ``if`` constructs instead.
+* " loose assembly" sözdizimine artık tamamen izin verilmiyor, yani atlama etiketleri, atlamalar ve işlevsel olmayan talimatlar artık kullanılamaz. Bunun yerine yeni ``while``, ``switch`` ve ``if`` yapılarını kullanın.
 
-* Functions without implementation cannot use modifiers anymore.
+* Uygulaması olmayan fonksiyonlar artık modifier kullanamaz.
 
-* Function types with named return values are now disallowed.
+* Adlandırılmış dönüş değerlerine sahip fonksiyon tiplerine artık izin verilmemektedir.
 
-* Single statement variable declarations inside if/while/for bodies that are
-  not blocks are now disallowed.
+* Blok olmayan if/while/for gövdeleri içindeki tek deyimli değişken bildirimlerine artık izin verilmiyor.
 
-* New keywords: ``calldata`` and ``constructor``.
+* Yeni anahtar kelimeler: ``calldata`` ve ``constructor``.
 
-* New reserved keywords: ``alias``, ``apply``, ``auto``, ``copyof``,
+* Yeni ayrılmış anahtar sözcükler: ``alias``, ``apply``, ``auto``, ``copyof``,
   ``define``, ``immutable``, ``implements``, ``macro``, ``mutable``,
   ``override``, ``partial``, ``promise``, ``reference``, ``sealed``,
-  ``sizeof``, ``supports``, ``typedef`` and ``unchecked``.
+  ``sizeof``, ``supports``, ``typedef`` ve ``unchecked``.
+
 
 .. _interoperability:
 
-Interoperability With Older Contracts
+Eski Sözleşmelerle Birlikte Çalışabilirlik
 =====================================
 
-It is still possible to interface with contracts written for Solidity versions prior to
-v0.5.0 (or the other way around) by defining interfaces for them.
-Consider you have the following pre-0.5.0 contract already deployed:
+Solidity'nin v0.5.0'dan önceki sürümleri için yazılmış sözleşmeler için arayüzler
+tanımlayarak (veya tam tersi şekilde) arayüz oluşturmak hala mümkündür. Aşağıdaki
+0.5.0 öncesi sözleşmenin zaten dağıtılmış olduğunu düşünün:
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity ^0.4.25;
-    // This will report a warning until version 0.4.25 of the compiler
-    // This will not compile after 0.5.0
+    // Bu, derleyicinin 0.4.25 sürümüne kadar bir uyarı bildirecektir
+    // Bu 0.5.0'dan sonra derlenmeyecektir
     contract OldContract {
         function someOldFunction(uint8 a) {
             //...
@@ -309,7 +203,7 @@ Consider you have the following pre-0.5.0 contract already deployed:
         // ...
     }
 
-This will no longer compile with Solidity v0.5.0. However, you can define a compatible interface for it:
+Bu artık Solidity v0.5.0 ile derlenmeyecektir. Ancak, bunun için uyumlu bir arayüz tanımlayabilirsiniz:
 
 .. code-block:: solidity
 
@@ -320,14 +214,16 @@ This will no longer compile with Solidity v0.5.0. However, you can define a comp
         function anotherOldFunction() external returns (bool);
     }
 
-Note that we did not declare ``anotherOldFunction`` to be ``view``, despite it being declared ``constant`` in the original
-contract. This is due to the fact that starting with Solidity v0.5.0 ``staticcall`` is used to call ``view`` functions.
-Prior to v0.5.0 the ``constant`` keyword was not enforced, so calling a function declared ``constant`` with ``staticcall``
-may still revert, since the ``constant`` function may still attempt to modify storage. Consequently, when defining an
-interface for older contracts, you should only use ``view`` in place of ``constant`` in case you are absolutely sure that
-the function will work with ``staticcall``.
+Orijinal sözleşmede ``constant`` olarak tanımlanmasına rağmen ``anotherOldFunction``
+fonksiyonunu ``view`` olarak tanımlamadığımıza dikkat edin. Bunun nedeni Solidity v0.5.0`dan
+itibaren ``view`` fonksiyonlarını çağırmak için ``staticcall`` kullanılmasıdır. v0.5.0 öncesinde
+``constant`` anahtar sözcüğü zorunlu değildi, bu nedenle ``constant`` olarak bildirilen bir
+fonksiyonu ``staticcall`` ile çağırmak yine de geri dönebilir, çünkü ``constant`` fonksiyonu
+hala depolamayı değiştirmeye çalışabilir. Sonuç olarak, eski sözleşmeler için bir arayüz
+tanımlarken, ``constant`` yerine sadece fonksiyonun ``staticcall`` ile çalışacağından kesinlikle
+emin olduğunuz durumlarda ``view`` kullanmalısınız.
 
-Given the interface defined above, you can now easily use the already deployed pre-0.5.0 contract:
+Yukarıda tanımlanan arayüz göz önüne alındığında, artık halihazırda dağıtılmış olan 0.5.0 öncesi sözleşmeyi kolayca kullanabilirsiniz:
 
 .. code-block:: solidity
 
@@ -346,9 +242,7 @@ Given the interface defined above, you can now easily use the already deployed p
         }
     }
 
-Similarly, pre-0.5.0 libraries can be used by defining the functions of the library without implementation and
-supplying the address of the pre-0.5.0 library during linking (see :ref:`commandline-compiler` for how to use the
-commandline compiler for linking):
+Benzer şekilde, 0.5.0 öncesi kütüphaneler, kütüphanenin fonksiyonları uygulanmadan tanımlanarak ve linking sırasında 0.5.0 öncesi kütüphanenin adresi verilerek kullanılabilir (linking için komut satırı derleyicisinin nasıl kullanılacağını öğrenmek için :ref:`commandline-compiler` bölümüne bakınız):
 
 .. code-block:: solidity
 
@@ -367,19 +261,18 @@ commandline compiler for linking):
     }
 
 
-Example
+Örnek
 =======
 
-The following example shows a contract and its updated version for Solidity
-v0.5.0 with some of the changes listed in this section.
+Aşağıdaki örnekte bir sözleşme ve bu bölümde listelenen bazı değişikliklerle Solidity v0.5.0 için güncellenmiş sürümü gösterilmektedir.
 
-Old version:
+Eski versiyon:
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity ^0.4.25;
-    // This will not compile after 0.5.0
+    // Bu 0.5.0'dan sonra derlenmeyecektir
 
     contract OtherContract {
         uint x;
@@ -393,56 +286,56 @@ Old version:
         OtherContract other;
         uint myNumber;
 
-        // Function mutability not provided, not an error.
+        // Fonksiyon değişebilirliği sağlanmadı, hata değil.
         function someInteger() internal returns (uint) { return 2; }
 
-        // Function visibility not provided, not an error.
-        // Function mutability not provided, not an error.
+        // Fonksiyon görünürlüğü sağlanmadı, hata değil.
+        // Fonksiyon değişebilirliği sağlanmadı, hata değil.
         function f(uint x) returns (bytes) {
-            // Var is fine in this version.
+            // Var bu versiyonda sorunsuz çalışıyor.
             var z = someInteger();
             x += z;
-            // Throw is fine in this version.
+            // Throw bu versiyonda sorunsuz çalışıyor.
             if (x > 100)
                 throw;
             bytes memory b = new bytes(x);
             y = -3 >> 1;
-            // y == -1 (wrong, should be -2)
+            // y == -1 (yanlış, -2 olmalı)
             do {
                 x += 1;
                 if (x > 10) continue;
-                // 'Continue' causes an infinite loop.
+                // 'Continue' sonsuz döngüye neden olur.
             } while (x < 11);
-            // Call returns only a Bool.
+            // Çağrı yalnızca bir Bool döndürür.
             bool success = address(other).call("f");
             if (!success)
                 revert();
             else {
-                // Local variables could be declared after their use.
+                // Yerel değişkenler kullanımlarından sonra bildirilebilir.
                 int y;
             }
             return b;
         }
 
-        // No need for an explicit data location for 'arr'
+        // 'arr' için açık bir veri konumuna gerek yok
         function g(uint[] arr, bytes8 x, OtherContract otherContract) public {
             otherContract.transfer(1 ether);
 
-            // Since uint32 (4 bytes) is smaller than bytes8 (8 bytes),
-            // the first 4 bytes of x will be lost. This might lead to
-            // unexpected behavior since bytesX are right padded.
+            // uint32 (4 bayt) bytes8'den (8 bayt) daha küçük olduğundan,
+            // x'in ilk 4 baytı kaybolacaktır. Bu durum, bytesX sağa doğru
+            // doldurulduğundan beklenmedik davranışlara yol açabilir.
             uint32 y = uint32(x);
             myNumber += y + msg.value;
         }
     }
 
-New version:
+Yeni versiyon:
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity ^0.5.0;
-    // This will not compile after 0.6.0
+    // Bu 0.6.0'dan sonra derlenmeyecektir
 
     contract OtherContract {
         uint x;
@@ -456,27 +349,27 @@ New version:
         OtherContract other;
         uint myNumber;
 
-        // Function mutability must be specified.
+        // Fonksiyon değişebilirliği belirtilmelidir.
         function someInteger() internal pure returns (uint) { return 2; }
 
-        // Function visibility must be specified.
-        // Function mutability must be specified.
+        // Fonksiyon görünürlüğü belirtilmelidir.
+        // Fonksiyon değişebilirliği belirtilmelidir.
         function f(uint x) public returns (bytes memory) {
-            // The type must now be explicitly given.
+            // Tür şimdi açıkça verilmelidir.
             uint z = someInteger();
             x += z;
-            // Throw is now disallowed.
+            // Throw'a artık izin verilmiyor.
             require(x <= 100);
             int y = -3 >> 1;
             require(y == -2);
             do {
                 x += 1;
                 if (x > 10) continue;
-                // 'Continue' jumps to the condition below.
+                // 'Continue' ile aşağıdaki koşula atlanır.
             } while (x < 11);
 
-            // Call returns (bool, bytes).
-            // Data location must be specified.
+            // Çağrı (bool, bayt) döndürür.
+            // Veri konumu belirtilmelidir.
             (bool success, bytes memory data) = address(other).call("f");
             if (!success)
                 revert();
@@ -484,38 +377,38 @@ New version:
         }
 
         using AddressMakePayable for address;
-        // Data location for 'arr' must be specified
+        // 'arr' için veri konumu belirtilmelidir
         function g(uint[] memory /* arr */, bytes8 x, OtherContract otherContract, address unknownContract) public payable {
-            // 'otherContract.transfer' is not provided.
-            // Since the code of 'OtherContract' is known and has the fallback
-            // function, address(otherContract) has type 'address payable'.
+            // 'otherContract.transfer' sağlanmamıştır.
+            // 'OtherContract' kodu bilindiğinden ve fallback fonksiyonuna sahip olduğundan,
+            // address(otherContract) 'address payable' tipine sahiptir.
             address(otherContract).transfer(1 ether);
 
-            // 'unknownContract.transfer' is not provided.
-            // 'address(unknownContract).transfer' is not provided
-            // since 'address(unknownContract)' is not 'address payable'.
-            // If the function takes an 'address' which you want to send
-            // funds to, you can convert it to 'address payable' via 'uint160'.
-            // Note: This is not recommended and the explicit type
-            // 'address payable' should be used whenever possible.
-            // To increase clarity, we suggest the use of a library for
-            // the conversion (provided after the contract in this example).
+            // 'unknownContract.transfer' sağlanmadı.
+            // 'address(unknownContract).transfer',
+            // 'address(unknownContract)' 'address payable' olmadığı için sağlanmamıştır.
+            // Fonksiyon para göndermek istediğiniz bir 'address' alırsa,
+            // bunu 'uint160' aracılığıyla 'address payable'a dönüştürebilirsiniz.
+            // Not: Bu tavsiye edilmez ve mümkün olduğunda açık
+            // 'address payable' türü kullanılmalıdır.
+            // Anlaşılabilirliği artırmak için, dönüşüm işleminde bir
+            // kütüphane kullanılmasını öneriyoruz (bu örnekte sözleşmeden sonra verilmiştir).
             address payable addr = unknownContract.makePayable();
             require(addr.send(1 ether));
 
-            // Since uint32 (4 bytes) is smaller than bytes8 (8 bytes),
-            // the conversion is not allowed.
-            // We need to convert to a common size first:
-            bytes4 x4 = bytes4(x); // Padding happens on the right
-            uint32 y = uint32(x4); // Conversion is consistent
-            // 'msg.value' cannot be used in a 'non-payable' function.
-            // We need to make the function payable
+            // uint32 (4 bayt), bytes8'den (8 bayt) daha küçük
+            // olduğu için dönüştürmeye izin verilmez.
+            // Önce ortak bir boyuta dönüştürmemiz gerekiyor:
+            bytes4 x4 = bytes4(x); // Dolgu sağ tarafta gerçekleşir
+            uint32 y = uint32(x4); // Dönüşüm tutarlıdır
+            // 'msg.value' bir 'non-payable' fonksiyonunda kullanılamaz.
+            // Fonksiyonu ödenebilir hale getirmemiz gerekiyor
             myNumber += y + msg.value;
         }
     }
 
-    // We can define a library for explicitly converting ``address``
-    // to ``address payable`` as a workaround.
+    // Geçici bir çözüm olarak ``address`` i açıkça
+    // ``address payable`` a dönüştürmek için bir kütüphane tanımlayabiliriz.
     library AddressMakePayable {
         function makePayable(address x) internal pure returns (address payable) {
             return address(uint160(x));
