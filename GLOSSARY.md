@@ -33,6 +33,7 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - Symlinks = Kısayol Bağlantısı
 - Sequence = Sıra
 - Parser = Çözümleyici
+- Pad = Dolgu
 - Aliases = Takma Adlar
 - Components = Bileşen
 - Fork = Çatallamak
