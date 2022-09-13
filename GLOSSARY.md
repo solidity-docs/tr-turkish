@@ -32,6 +32,9 @@ Solidity Dokümantasyonları İçin Kavram Dizini
 - Formula = Formula (Homebrew'e Özel Bir Kavram)
 - Symlinks = Kısayol Bağlantısı
 - Sequence = Sıra
+- Slot = Yuva
+- Offset = Ofset
+- Inheritance = Miras/Kalıtım
 - Pitfalls = Tuzaklar
 - Authorization = Doğrulama / Yetkilendirme
 - Arbitrarily = Keyfi
