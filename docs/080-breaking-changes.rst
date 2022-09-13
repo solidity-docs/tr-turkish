@@ -105,7 +105,7 @@ Arayüz Değişiklikleri
 Kodunuzu nasıl güncelleyebilirsiniz?
 =======================
 
-- Aritmetiği paketlemeye güveniyorsanız, her işlemi ``unchecked { ... }``.
+- Aritmetik paketlemeye güveniyorsanız, her işlemi ``unchecked { ... }``.
 - İsteğe bağlı: SafeMath veya benzer bir kütüphane kullanıyorsanız, ``x.add(y)`` ifadesini ``x + y``, ``x.mul(y)`` ifadesini ``x * y`` vb. olarak değiştirin.
 - Eski ABI kodlayıcı ile kalmak istiyorsanız ``pragma abicoder v1;`` ekleyin.
 - İsteğe bağlı olarak ``pragma experimental ABIEncoderV2`` veya ``pragma abicoder v2`` gereksiz olduğu için kaldırın.
