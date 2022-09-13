@@ -1250,7 +1250,7 @@ Solidity modunda Yul optimizer, normal optimizer ile birlikte etkinleştirilir.
 Optimizasyon Adım Sırası
 --------------------------
 
-Varsayılan olarak Yul optimizer, önceden tanımlanmış optimizasyon adımları dizisini oluşturulan assembly'ye uygular. 
+Varsayılan olarak Yul optimizer(optimize edici), önceden tanımlanmış optimizasyon adımları dizisini oluşturulan assembly'ye uygular. 
 Bu sırayı geçersiz kılabilir ve ``--yul-optimizations`` seçeneğini kullanarak kendinizinkini uygulatabilirsiniz:
 
 .. code-block:: sh
