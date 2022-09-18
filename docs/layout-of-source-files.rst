@@ -45,7 +45,7 @@ veya kontrol eder. Bir pragma yönergesi her zaman bir kaynak dosya için yereld
 Sürüm Pragması
 --------------
 
-Uyumsuz değişiklikler getirebilecek gelecekteki derleyici sürümleriyle derlemeyi reddetmek için kaynak dosyalarına bir sürüm pragması eklenebilir (ve eklenmelidir). Bunları mutlak minimumda tutmaya ve anlambilimdeki değişikliklerin sözdiziminde de değişiklik gerektireceği şekilde tanıtmaya çalışıyoruz, ancak bu her zaman mümkün değildir. Bu nedenle, en azından kırıcı değişiklikler içeren sürümler için değişiklik günlüğünü okumak her zaman iyi bir fikirdir. Bu sürümler her zaman ``0.x.0`` veya ``x.0.0`` biçiminde sürümlere sahiptir.
+Uyumsuz değişiklikler getirebilecek gelecekteki derleyici sürümleriyle derlemeyi önlemek için kaynak dosyalarına bir sürüm pragması eklenebilir (ve eklenmelidir). Bunları mutlak minimumda tutmaya ve anlambilimdeki değişikliklerin sözdiziminde de değişiklik gerektireceği şekilde tanıtmaya çalışıyoruz, ancak bu her zaman mümkün değildir. Bu nedenle, en azından kırıcı değişiklikler içeren sürümler için değişiklik günlüğünü okumak her zaman iyi bir fikirdir. Bu sürümler her zaman ``0.x.0`` veya ``x.0.0`` biçiminde sürümlere sahiptir.
 
 Sürüm pragması aşağıdaki gibi kullanılır: ``pragma solidity ^0.5.2;``
 
