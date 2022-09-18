@@ -30,7 +30,7 @@ Bu bölüm, derleyici size bildirmeden mevcut kodun davranışını değiştirdi
 
   Bu, hatalarda gaz tasarrufu sağlarken, statik analiz araçlarının bu durumları, başarısız bir ``require`` gibi geçersiz bir girdi üzerindeki bir geri dönüşten ayırt etmesine izin verir.
 
-* Depolama alanındaki uzunluğu yanlış kodlanmış bir bayt dizisine erişilirse paniğe neden olunur.
+* Depolama alanında uzunluğu yanlış kodlanmış bir bayt dizisine erişilmesi paniğe neden olunur.
   Depolama bayt dizilerinin ham gösterimini değiştirmek için inline assembly kullanılmadığı sürece bir sözleşme bu duruma giremez.
 
 * Dizi uzunluğu ifadelerinde sabitler kullanılırsa, Solidity'nin önceki sürümleri değerlendirme ağacının(evaluation tree) tüm dallarında(branch) rastgele arbitrary kullanırdı. Artık, sabit değişkenler ara ifadeler olarak kullanılırsa, değerleri çalışma zamanı ifadelerinde kullanıldıklarında olduğu gibi düzgün bir şekilde yuvarlanacaktır.
