@@ -85,7 +85,7 @@ Derleyici Testlerini Çalıştırma
 Ön Koşullar
 -------------
 
-Tüm derleyici testlerini çalıştırmak için isteğe bağlı olarak birkaç dependencies
+Tüm derleyici testlerini çalıştırmak için isteğe bağlı olarak birkaç bağlayıcı faktör yüklemek isteyebilirsiniz.
 yüklemek isteyebilirsiniz (`evmone <https://github.com/ethereum/evmone/releases>`_,
 `libz3 <https://github.com/Z3Prover/z3>`_ ve `libhera <https://github.com/ewasm/hera>`_).
 
