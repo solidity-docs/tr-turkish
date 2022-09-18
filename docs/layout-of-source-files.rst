@@ -24,7 +24,7 @@ açık kaynak değilse, lütfen ``UNLICENSED`` özel değerini kullanın.
 Solidity, ` npm önerisine <https://docs.npmjs.com/cli/v7/configuring-npm/package-json#license>`_  uyar.
 
 Bu açıklamayı eklemeniz, elbette ki sizi, her kaynak dosyada belirli bir lisans adından veya
-Her kaynak dosyada belirli bir lisans başlığından veya orijinal telif hakkı sahibinden bahsetme zorunluluğu gibi lisanslama ile ilgili yükümlülükler.
+telif hakkının orijinal sahibinden bahsetme zorunluluğu gibi, lisans konusuyla ilgili diğer yükümlülüklerden muaf tutmaz.
 The comment is recognized by the compiler anywhere in the file at the
 file level, but it is recommended to put it at the top of the file.
 
