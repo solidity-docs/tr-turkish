@@ -58,7 +58,7 @@ bunlar `npm<https://docs.npmjs.com/cli/v6/using-npm/semver>`_ tarafından kullan
  Sürüm pragmasının kullanılması, derleyicinin sürümünü _*değiştirmez*._
 Derleyicinin özelliklerini etkinleştirme veya devre dışı bırakma işlevine de sahip _*değildir*._
 Yalnızca, derleyiciye kendi sürümünün, pragmanın gerektirdiği sürüm ile uyumlu olup olmadığını kontrol
-pragma tarafından gerekli kılınmıştır. Eşleşmezse, derleyici şu sorunları verir bir hata.
+etmesi için yönerge verir. Sürümler uyumlu değilse derleyici hata verir.
 
 ABI Kodlayıcı Pragması
 ----------------
