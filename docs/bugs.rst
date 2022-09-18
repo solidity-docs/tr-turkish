@@ -3,82 +3,63 @@
 .. _known_bugs:
 
 ##################
-List of Known Bugs
+Bilinen Bugların Listesi
 ##################
 
-Below, you can find a JSON-formatted list of some of the known security-relevant bugs in the
-Solidity compiler. The file itself is hosted in the `Github repository
-<https://github.com/ethereum/solidity/blob/develop/docs/bugs.json>`_.
-The list stretches back as far as version 0.3.0, bugs known to be present only
-in versions preceding that are not listed.
+Aşağıda, Solidity derleyicisindeki güvenlikle ilgili bilinen bazı hataların JSON
+biçimli bir listesini bulabilirsiniz. Dosyanın kendisi `Github repository <https://github.com/ethereum/solidity/blob/develop/docs/bugs.json>`_'de
+barındırılmaktadır. Liste 0.3.0 sürümüne kadar uzanmaktadır, yalnızca bundan önceki
+sürümlerde mevcut olduğu bilinen hatalar listelenmemiştir.
 
-There is another file called `bugs_by_version.json
-<https://github.com/ethereum/solidity/blob/develop/docs/bugs_by_version.json>`_,
-which can be used to check which bugs affect a specific version of the compiler.
+Hangi hataların derleyicinin belirli bir sürümünü etkilediğini kontrol etmek için kullanılabilecek `bugs_by_version.json <https://github.com/ethereum/solidity/blob/develop/docs/bugs_by_version.json>`_ adlı başka bir dosya daha vardır.
 
-Contract source verification tools and also other tools interacting with
-contracts should consult this list according to the following criteria:
+Sözleşme kaynağı doğrulama araçları ve ayrıca sözleşmelerle etkileşime giren diğer araçlar aşağıdaki kriterlere göre bu listeye başvurmalıdır:
 
-- It is mildly suspicious if a contract was compiled with a nightly
-  compiler version instead of a released version. This list does not keep
-  track of unreleased or nightly versions.
-- It is also mildly suspicious if a contract was compiled with a version that was
-  not the most recent at the time the contract was created. For contracts
-  created from other contracts, you have to follow the creation chain
-  back to a transaction and use the date of that transaction as creation date.
-- It is highly suspicious if a contract was compiled with a compiler that
-  contains a known bug and the contract was created at a time where a newer
-  compiler version containing a fix was already released.
+- Bir sözleşmenin yayınlanmış bir sürüm yerine gecelik bir derleyici sürümüyle derlenmiş olması biraz şüphelidir. Bu liste yayınlanmamış veya gecelik sürümlerin kaydını tutmaz.
+- Bir sözleşmenin, sözleşmenin oluşturulduğu sırada en yeni sürüm olmayan bir sürümle derlenmiş olması da hafif derecede şüphelidir. Diğer sözleşmelerden oluşturulan sözleşmeler için, oluşturma zincirini bir işleme kadar takip etmeniz ve oluşturma tarihi olarak bu işlemin tarihini kullanmanız gerekir.
+- Bir sözleşmenin bilinen bir hata içeren bir derleyici ile derlenmiş olması ve sözleşmenin, düzeltme içeren daha yeni bir derleyici sürümünün zaten yayınlanmış olduğu bir zamanda oluşturulmuş olması son derece şüphelidir.
 
-The JSON file of known bugs below is an array of objects, one for each bug,
-with the following keys:
+Aşağıdaki bilinen hataların JSON dosyası, her hata için bir tane olmak üzere aşağıdaki anahtarlara sahip bir nesne dizisidir:
 
 uid
-    Unique identifier given to the bug in the form of ``SOL-<year>-<number>``.
-    It is possible that multiple entries exists with the same uid. This means
-    multiple version ranges are affected by the same bug.
+    Hataya ``SOL-<year>-<number>`` şeklinde verilen benzersiz tanımlayıcı. Aynı uid
+    ile birden fazla giriş olması mümkündür. Bu, birden fazla sürüm aralığının aynı
+    hatadan etkilendiği anlamına gelir.
 name
-    Unique name given to the bug
+    Hataya verilen benzersiz isim
 summary
-    Short description of the bug
+    Hatanın kısa açıklaması
 description
-    Detailed description of the bug
+    Hatanın ayrıntılı açıklaması
 link
-    URL of a website with more detailed information, optional
+    Daha ayrıntılı bilgi içeren bir web sitesinin URL'si, isteğe bağlı
 introduced
-    The first published compiler version that contained the bug, optional
+    Hatayı içeren ilk yayınlanan derleyici sürümü, isteğe bağlıdır
 fixed
-    The first published compiler version that did not contain the bug anymore
+    Artık hata içermeyen ilk yayınlanan derleyici sürümü
 publish
-    The date at which the bug became known publicly, optional
+    Hatanın kamuoyu tarafından bilindiği tarih, isteğe bağlıdır
 severity
-    Severity of the bug: very low, low, medium, high. Takes into account
-    discoverability in contract tests, likelihood of occurrence and
-    potential damage by exploits.
+    Hatanın ciddiyeti: çok düşük, düşük, orta, yüksek. Sözleşme testlerinde
+    keşfedilebilirliği, ortaya çıkma olasılığını ve istismarların potansiyel
+    zararını dikkate alır.
 conditions
-    Conditions that have to be met to trigger the bug. The following
-    keys can be used:
-    ``optimizer``, Boolean value which
-    means that the optimizer has to be switched on to enable the bug.
-    ``evmVersion``, a string that indicates which EVM version compiler
-    settings trigger the bug. The string can contain comparison
-    operators. For example, ``">=constantinople"`` means that the bug
-    is present when the EVM version is set to ``constantinople`` or
-    later.
-    If no conditions are given, assume that the bug is present.
+    Hatayı tetiklemek için karşılanması gereken koşullar. Aşağıdaki anahtarlar
+    kullanılabilir: ``optimizer``, hatayı etkinleştirmek için optimize edicinin
+    açık olması gerektiği anlamına gelen Boolean değeri. ``evmVersion``, hangi
+    EVM sürümü derleyici ayarlarının hatayı tetiklediğini gösteren bir dize. Dize
+    karşılaştırma operatörleri içerebilir. Örneğin, ``">=constantinople"``, hatanın
+    EVM sürümü ``constantinople`` veya üstü olarak ayarlandığında mevcut olduğu
+    anlamına gelir. Herhangi bir koşul belirtilmezse, hatanın mevcut olduğu varsayılır.
 check
-    This field contains different checks that report whether the smart contract
-    contains the bug or not. The first type of check are Javascript regular
-    expressions that are to be matched against the source code ("source-regex")
-    if the bug is present.  If there is no match, then the bug is very likely
-    not present. If there is a match, the bug might be present.  For improved
-    accuracy, the checks should be applied to the source code after stripping
-    comments.
-    The second type of check are patterns to be checked on the compact AST of
-    the Solidity program ("ast-compact-json-path"). The specified search query
-    is a `JsonPath <https://github.com/json-path/JsonPath>`_ expression.
-    If at least one path of the Solidity AST matches the query, the bug is
-    likely present.
+    Bu alan, akıllı sözleşmenin hatayı içerip içermediğini bildiren farklı kontroller
+    içerir. İlk kontrol türü, hatanın mevcut olması durumunda kaynak kodla ("source-regex")
+    eşleştirilecek Javascript düzenli ifadeleridir.  Eşleşme yoksa, hata büyük olasılıkla 
+    mevcut değildir. Eğer bir eşleşme varsa, hata mevcut olabilir.  Daha iyi tutarlılık
+    için, kontroller yorumlar çıkarıldıktan sonra kaynak koda uygulanmalıdır. İkinci kontrol
+    türü, Solidity programının kompakt AST'sinde ("ast-compact-json-path") kontrol edilecek
+    kalıplardır. Belirtilen arama sorgusu bir `JsonPath <https://github.com/json-path/JsonPath>`_
+    ifadesidir. Solidity AST'nin en az bir yolu sorguyla eşleşiyorsa, hata muhtemelen mevcuttur.
 
 .. literalinclude:: bugs.json
    :language: js
