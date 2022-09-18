@@ -52,7 +52,7 @@ Sürüm pragması aşağıdaki gibi kullanılır: ``pragma solidity ^0.5.2;``
 Yukarıdaki satırı içeren bir kaynak dosyası, 0.5.2'den eski sürümlü bir derleyiciyle derleme yapmadığı gibi, 0.6.0'dan yeni sürümlü bir derleyicide de çalışmaz (bu ikinci koşul ``^`` kullanılarak eklenir). ``0.6.0`` sürümüne kadar işleyişi bozan bir değişiklik olmayacağından, kodunuzun amaçladığınız şekilde derleme yaptığından emin olabilirsiniz. Derleyicinin tam sürümü sabit olmadığından hata düzeltme sürümlerinin kullanılması da mümkün olacaktır.
 
 Derleyici sürümü için daha karmaşık kurallar belirlemek mümkündür,
-bunlar `npm<https://docs.npmjs.com/cli/v6/using-npm/semver>`_ tarafından kullanılan aynı sözdizimini takip eder.
+bunlar `npm<https://docs.npmjs.com/cli/v6/using-npm/semver>`_ tarafından kullanılan sözdizimin aynısına uyar.
 
 .. note::
   Version pragmasının kullanılması *derleyicinin sürümünü değiştirmez*.
