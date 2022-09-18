@@ -28,7 +28,7 @@ telif hakkının orijinal sahibinden bahsetme zorunluluğu gibi, lisans konusuyl
 Derleyici, açıklamayı, dosya düzeyinde dosyanın herhangi bir yerinde algılayabilir
 ancak dosyanın üst kısmına eklenmesi önerilir.
 
-SPDX lisans tanımlayıcılarının nasıl kullanılacağı hakkında daha fazla bilgi `SPDX web sitesi <https://spdx.org/ids-how>`_ adresinde bulunabilir.
+SPDX lisans tanımlayıcılarının nasıl kullanılacağı hakkında daha fazla bilgi `SPDX web sitesinde <https://spdx.org/ids-how>`_ bulunabilir.
 
 .. index:: ! pragma
 
