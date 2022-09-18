@@ -74,7 +74,7 @@ Bu bölümde, mevcut sözleşmelerin artık derlenmemesine neden olabilecek değ
 
 * Public fonksiyonlar ve event`ler haricinde ``this``, ``super`` ve ``_`` isimli açıklamalara izin verilmez. İstisna, bu tür fonksiyon isimlerine izin veren Solidity dışındaki dillerde uygulanan sözleşmelerin arayüzlerini açıklamayı mümkün kılmaktır.
 
-* Koddaki ``\b``, ``\f`` ve ``\v`` kaçış dizileri için destek kaldırıldı. Bunlar hala onaltılık kaçış dizileri aracılığıyla eklenebilir, örneğin sırasıyla ``\x08``, ``\x0c`` ve ``\x0b``.
+* Koddaki ``\b``, ``\f`` ve ``\v`` kaçış dizileri için destek kaldırılmıştır. Bunlar, onaltılık kaçış dizileri aracılığıyla eklenmeye devam edebilir; örneğin, sırasıyla ``\x08``, ``\x0c`` ve ``\x0b``.
 
 * Global değişkenler ``tx.origin`` ve ``msg.sender``, ``address payable`` yerine ``address`` tipine sahiptir. Bunları açık bir dönüşüm kullanarak ``address payable`` türüne dönüştürebilirsiniz, yani ``payable(tx.origin)`` veya ``payable(msg.sender)``.
 
