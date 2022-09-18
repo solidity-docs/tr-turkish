@@ -37,7 +37,7 @@ SPDX lisans tanımlayıcılarının nasıl kullanılacağı hakkında daha fazla
 Pragmalar
 =======
 ``Pragma`` anahtar sözcüğü, belirli derleyici özelliklerini veya kontrollerini etkinleştirmek için
-veya kontrol eder. Bir pragma yönergesi her zaman bir kaynak dosya için yereldir, bu nedenle tüm projenizde etkinleştirmek istiyorsanız pragmayı tüm dosyalarınıza eklemeniz gerekir. Eğer :ref:`import<import>` başka bir dosyayı içe aktarırsanız, bu dosyadaki pragma içe aktarılan dosyaya otomatik olarak uygulanmaz *değildir*.
+kullanılır. Bir pragma yönergesi, her zaman bir kaynak dosya için yereldir, bu nedenle pragmayı tüm projenizde etkinleştirmek istiyorsanız tüm dosyalarınıza eklemeniz gerekir. Başka bir dosyayı :ref:`içe aktarırsanız<import>` o dosyadaki pragma, içe aktarılan dosyaya otomatik olarak _*uygulanmaz*._
 .. index:: ! pragma, version
 
 .. _version_pragma:
