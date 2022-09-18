@@ -112,7 +112,7 @@ Kodunuzu nasıl güncelleyebilirsiniz?
 - ``byte`` ifadesini ``bytes1`` olarak değiştirin.
 - Gerekirse ara açık tip dönüşümleri ekleyin.
 - ``c.f{gas: 10000}{value: 1}()`` ifadesini ``c.f{gas: 10000, value: 1}()`` olarak birleştirin.
-- ``msg.sender.transfer(x)`` öğesini ``payable(msg.sender).transfer(x)`` olarak değiştirin veya ``address payable`` türünde bir saklı değişken kullanın.
+- ``msg.sender.transfer(x)`` öğesini ``payable(msg.sender).transfer(x)`` olarak değiştirin veya ``address payable`` türü saklanmış bir değişken kullanın.
 - ``x**y**z`` ifadesini ``(x**y)**z`` olarak değiştirin.
 - ``log0``, ..., ``log4`` yerine inline assembly kullanın.
 - İşaretsiz tamsayıları, türün maksimum değerinden çıkarıp 1 ekleyerek negatifleştirin (örneğin ``type(uint256).max - x + 1``, `x`in sıfır olmadığından emin olarak)
