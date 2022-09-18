@@ -20,7 +20,7 @@ sağlanan dizeyi :ref:`bytecode metadata <metadata>` içine dahil eder.
 
 Bir lisans belirtmek istemiyorsanız veya kaynak kodu
 açık kaynak değilse, lütfen ``UNLICENSED`` özel değerini kullanın.
-UNLICENSED`` (kullanıma izin verilmez, SPDX lisans listesinde bulunmaz) değerinin ``UNLICENSE`` (herkese tüm hakları verir) değerinden farklı olduğunu unutmayın.
+``UNLICENSED`` (kullanıma izin verilmez, SPDX lisans listesinde bulunmaz) değerinin, ``UNLICENSE`` (herkese tüm hakları verir) değerinden farklı olduğunu unutmayın.
 Solidity, <https://docs.npmjs.com/cli/v7/configuring-npm/package-json#license>`_ npm önerisini takip eder.
 
 Bu yorumu yapmak elbette sizi diğer yorumlardan muaf tutmaz.
