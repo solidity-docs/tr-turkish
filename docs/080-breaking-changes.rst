@@ -42,7 +42,7 @@ Yeni Kısıtlamalar
 
 Bu bölümde, mevcut sözleşmelerin artık derlenmemesine neden olabilecek değişiklikler listelenmektedir.
 
-* Değişmezlerin açık dönüşümleri ile ilgili yeni kısıtlamalar vardır. Aşağıdaki durumlarda önceki davranış muhtemelen belirsizdi:
+* Literallerin açık dönüşümleri ile ilgili yeni kısıtlamalar vardır. Aşağıdaki durumlarda önceki davranış muhtemelen belirsizdi:
 
   1. Negatif literallerden ve ``type(uint160).max`` değerinden büyük literallerden ``address`` değerine açık dönüşümlere izin verilmez.
   2. Literaller ve ``T`` tamsayı tipi arasındaki açık dönüşümlere yalnızca literal ``type(T).min`` ve ``type(T).max`` arasında yer alıyorsa izin verilir. Özellikle, ``uint(-1)`` kullanımlarını ``type(uint).max`` ile değiştirin.
