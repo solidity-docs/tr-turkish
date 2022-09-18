@@ -611,7 +611,7 @@ ona başvurmak mümkün olmasa bile bir tanımlayıcı (identifier) atayamazsın
 Resmi Şartname
 --------------------
 
-AST'nin çeşitli düğümlerinde aşırı yüklenmiş bir E değerlendirme fonksiyonu 
+AST'nin çeşitli düğümlerinde(node) aşırı yüklenmiş bir E değerlendirme fonksiyonu 
 sağlayarak resmi olarak Yul'u tanımlarız. Gömülü fonksiyonların yan etkileri olabileceğinden, 
 E iki durum nesnesini (state object) ve AST düğümünü alır ve iki yeni durum 
 nesnesi ve değişken sayıda başka değer döndürür. 
