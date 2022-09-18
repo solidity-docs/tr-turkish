@@ -67,7 +67,7 @@ ABI Kodlayıcı Pragması
 ABI kodlayıcı ve kod çözücünün iki uygulaması arasında seçim yapın.
 
 Yeni ABI kodlayıcı (v2) keyfi olarak iç içe geçmiş dizileri ve yapıları kodlama ve kod çözme yapabilmektedir
-diziler ve yapılar. Daha az optimal kod üretebilir ve eski kodlayıcı kadar test edilmemiştir, ancak Solidity 0.6.0'dan itibaren deneysel olmayan olarak kabul edilir. Yine de ``pragma abicoder v2;`` kullanarak açıkça etkinleştirmeniz gerekir. Solidity 0.8.0'dan itibaren varsayılan olarak etkinleştirileceğinden, ``pragma abicoder v1;`` kullanarak eski kodlayıcıyı seçme seçeneği vardır.
+. Daha az optimal kod üretebilir ve eski kodlayıcı kadar test edilmemiştir, ancak Solidity 0.6.0'dan itibaren deneysel olmayan olarak kabul edilir. Yine de ``pragma abicoder v2;`` kullanarak açıkça etkinleştirmeniz gerekir. Solidity 0.8.0'dan itibaren varsayılan olarak etkinleştirileceğinden, ``pragma abicoder v1;`` kullanarak eski kodlayıcıyı seçme seçeneği vardır.
 
 Yeni kodlayıcı tarafından desteklenen türler, eskisi tarafından desteklenenlerin katı bir üst kümesidir. Bunu kullanan sözleşmeler, sınırlama olmaksızın kullanmayanlarla etkileşime girebilir. Bunun tersi ancak ``abicoder v2`` olmayan sözleşme, yalnızca yeni kodlayıcı tarafından desteklenen kod çözme türlerini gerektirecek çağrılar yapmaya çalışmadığı sürece mümkündür. Derleyici bunu algılayabilir ve bir hata verecektir. Sözleşmeniz için ``abicoder v2``yi etkinleştirmeniz hatanın ortadan kalkması için yeterlidir.
 
