@@ -107,7 +107,7 @@ Kodunuzu nasıl güncelleyebilirsiniz?
 
 - Aritmetik paketlemeye güveniyorsanız, her işlemi ``unchecked { ... }``.
 - İsteğe bağlı: SafeMath veya benzer bir kütüphane kullanıyorsanız, ``x.add(y)`` ifadesini ``x + y``, ``x.mul(y)`` ifadesini ``x * y`` vb. olarak değiştirin.
-- Eski ABI kodlayıcı ile kalmak istiyorsanız ``pragma abicoder v1;`` ekleyin.
+- Eski ABI kodlayıcı ile devam etmek istiyorsanız ``pragma abicoder v1;`` ekleyin.
 - İsteğe bağlı olarak ``pragma experimental ABIEncoderV2`` veya ``pragma abicoder v2`` gereksiz olduğu için kaldırın.
 - ``byte`` ifadesini ``bytes1`` olarak değiştirin.
 - Gerekirse ara açık tip dönüşümleri ekleyin.
