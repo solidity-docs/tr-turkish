@@ -45,7 +45,7 @@ kullanılır. Bir pragma yönergesi, her zaman bir kaynak dosya için yereldir, 
 Sürüm Pragması
 --------------
 
-Uyumsuz değişiklikler getirebilecek gelecekteki derleyici sürümleriyle derlemeyi önlemek için kaynak dosyalarına bir sürüm pragması eklenebilir (ve eklenmelidir). Bunları mutlak minimumda tutmaya ve anlambilimdeki değişikliklerin sözdiziminde de değişiklik gerektireceği şekilde tanıtmaya çalışıyoruz, ancak bu her zaman mümkün değildir. Bu nedenle, en azından kırıcı değişiklikler içeren sürümler için değişiklik günlüğünü okumak her zaman iyi bir fikirdir. Bu sürümler her zaman ``0.x.0`` veya ``x.0.0`` biçiminde sürümlere sahiptir.
+Uyumsuz değişiklikler getirebilecek gelecekteki derleyici sürümleriyle derlemeyi önlemek için kaynak dosyalarına bir sürüm pragması eklenebilir (ve eklenmelidir). Bunları mutlak minimumda tutmaya ve anlambilimdeki değişikliklerin sözdiziminde de değişiklik gerektireceği şekilde tanıtmaya çalışıyoruz, ancak bu her zaman mümkün olmayabilir. Bu nedenle, en azından işleyişi bozan değişiklikler içeren sürümler için değişiklik günlüğünü okumak her zaman iyi bir fikirdir. Bu sürümler her zaman ``0.x.0`` veya ``x.0.0`` biçiminde versiyonlara sahiptir.
 
 Sürüm pragması aşağıdaki gibi kullanılır: ``pragma solidity ^0.5.2;``
 
@@ -64,58 +64,59 @@ ABI Kodlayıcı Pragması
 ----------------
 
 ``pragma abicoder v1`` veya ``pragma abicoder v2`` kullanarak ABI kodlayıcı ile
-ABI kodlayıcı ve kod çözücünün iki uygulaması arasında seçim yapın.
+kod çözücü iki uygulama arasında seçim yapabilirsiniz.
 
 Yeni ABI kodlayıcı (v2) keyfi olarak iç içe geçmiş dizileri ve yapıları kodlama ve kod çözme yapabilmektedir
 . Daha az optimal kod üretebilir ve eski kodlayıcı kadar test edilmemiştir, ancak Solidity 0.6.0'dan itibaren deneysel olmayan olarak kabul edilir. Yine de ``pragma abicoder v2;`` kullanarak açıkça etkinleştirmeniz gerekir. Solidity 0.8.0'dan itibaren varsayılan olarak etkinleştirileceğinden, ``pragma abicoder v1;`` kullanarak eski kodlayıcıyı seçme seçeneği vardır.
 
-Yeni kodlayıcı tarafından desteklenen türler, eskisi tarafından desteklenenlerin katı bir üst kümesidir. Bunu kullanan sözleşmeler, sınırlama olmaksızın kullanmayanlarla etkileşime girebilir. Bunun tersi ancak ``abicoder v2`` olmayan sözleşme, yalnızca yeni kodlayıcı tarafından desteklenen kod çözme türlerini gerektirecek çağrılar yapmaya çalışmadığı sürece mümkündür. Derleyici bunu algılayabilir ve bir hata verecektir. Sözleşmeniz için ``abicoder v2``yi etkinleştirmeniz hatanın ortadan kalkması için yeterlidir.
+Yeni kodlayıcı tarafından desteklenen türler, eskisi tarafından desteklenenlerin katı bir üst kümesidir. Bunu kullanan sözleşmeler, kullanmayanlarla sınırlama olmadan etkileşime girebilir. Bunun tersi ancak, ``abicoder v2`` dışı sözleşme, yalnızca yeni kodlayıcı tarafından desteklenen kod çözme türlerini gerektirecek çağrılarda bulunmaya çalışmadığı sürece mümkündür. Aksi halde, derleyici bu çağrıları tespit ederek hata verebilir. Sözleşmeniz için ``abicoder v2``yi etkinleştirmeniz hatanın ortadan kalkması için yeterlidir.
 
 .. note::
-  Bu pragma, etkinleştirildiği dosyada tanımlanan tüm kodlar için, bu kodun sonunda nerede sonlandığına bakılmaksızın geçerlidir. Bu, kaynak dosyası ABI coder v1 ile derlenmek üzere seçilen bir sözleşmenin
-yine de başka bir sözleşmeden miras alarak yeni kodlayıcıyı kullanan kod içerebilir. Yeni türler harici işlev imzalarında değil de yalnızca dahili olarak kullanılıyorsa buna izin verilir.
+  Bu pragma, en nihayetinde kodun nerede sonlandığına bakılmaksızın, etkinleştirildiği dosyada tanımlanan tüm kodlar için geçerlidir. Yani, kaynak dosyası ABI coder v1 ile derlenmek üzere seçilen bir sözleşme, başka bir
+sözleşmeden kalıt alarak, yeni kodlayıcıyı kullanan kod içermeye devam edebilir. Bu, yeni türlerin, externaş fonksiyon imzalarında değil, yalnızca dahili olarak kullanılması halinde mümkündür.
 
 .. note::
   
-Solidity 0.7.4'e kadar, ``pragma experimental ABIEncoderV2`` kullanarak ABI kodlayıcı v2'yi seçmek mümkündü, ancak varsayılan olduğu için kodlayıcı v1'i açıkça seçmek mümkün değildi.
+Solidity 0.7.4'e kadar, ``pragma experimental ABIEncoderV2`` kullanarak ABI kodlayıcı v2'yi seçmek mümkündü, ancak varsayılan olduğu için kodlayıcı v1'i açık bir şekilde seçmek mümkün değildi.
 .. index:: ! pragma, deneysel
 
 .. _experimental_pragma:
 Deneysel Pragma
 -------------------
 
-İkinci pragma deneysel pragmadır. Derleyicinin veya dilin henüz varsayılan olarak etkinleştirilmemiş özelliklerini etkinleştirmek için kullanılabilir.aşağıdaki deneysel pragmalar şu anda desteklenmektedir:
+İkinci pragma deneysel pragmadır. Derleyicinin veya dilin henüz varsayılan olarak etkinleştirilmemiş özelliklerini etkinleştirmek için kullanılabilir. Şu anda, aşağıdaki deneysel pragmalar desteklenmektedir:
 
 
 ABIEncoderV2
 ~~~~~~~~~~~~
 
-Çünkü ABI kodlayıcı v2 artık deneysel olarak kabul edilmiyor,
-``pragma abicoder v2`` aracılığıyla seçilebilir (lütfen yukarıya bakın)
-Solidity 0.7.4'ten beri.
+ABI kodlayıcı v2 artık deneysel kabul edilmediğinden
+Solidity 0.7.4 sonrasında ``pragma abicoder v2`` aracılığıyla seçilebilir (lütfen
+ yukarıya bakın).
 .. _smt_checker:
 
 SMTChecker
 ~~~~~~~~~~
 
-Solidity derleyicisi oluşturulduğunda bu bileşen etkinleştirilmelidir
-ve bu nedenle tüm Solidity ikili dosyalarında mevcut değildir. :ref:`build instructions<smt_solvers_build>` bu seçeneğin nasıl etkinleştirileceğini açıklar. çoğu sürümde Ubuntu PPA sürümleri için etkinleştirilmiştir,
-ancak Docker görüntüleri, Windows ikili dosyaları veya statik olarak oluşturulmuş Linux ikili dosyaları için değil. Yerel olarak yüklenmiş bir SMT çözücünüz varsa ve solc-js'yi node üzerinden (tarayıcı üzerinden değil) çalıştırıyorsanız, solc-js için `smtCallback <https://github.com/ethereum/solc js#example-usage-with-smtsolver-callback>`_ aracılığıyla etkinleştirilebilir.
+Bu bileşeni, Solidity derleyicisi oluşturulduğunda etkinleştirmek gerektiği için
+tüm Solidity binary'lerinde mevcut değildir. :ref:`build yönergeleri<smt_solvers_build>` bu seçeneğin nasıl etkinleştirileceğini açıklar. Çoğu sürümde Ubuntu PPA sürümleri için etkinleştirilmiş olsa da
+Docker görüntüleri, Windows binary'leri veya statik olarak oluşturulmuş Linux binary'leri için etkin değildir. Yerel olarak yüklenmiş bir SMT çözücünüz varsa ve solc-js'yi node üzerinden (tarayıcı üzerinden değil) çalıştırıyorsanız `smtCallback <https://github.com/ethereum/solc js#example-usage-with-smtsolver-callback>`_ kullanarak solc-js için etkinleştirebilirsiniz.
 
-Eğer ``pragma experimental SMTChecker;`` kullanırsanız, o zaman ek:ref:`safety warnings<formal_verification>` alırsınız.
-SMT çözücü. Bileşen henüz Solidity dilinin tüm özelliklerini desteklememektedir ve muhtemelen birçok uyarı vermektedir. Desteklenmeyen özellikleri bildirmesi durumunda, analiz tam olarak sağlıklı olmayabilir.
+Eğer ``pragma experimental SMTChecker;`` kullanırsanız bir SMT çözücü sorgulatarak ek:ref:`güvenlik uyarıları<formal_verification>` alırsınız.
+Bileşen henüz Solidity dilinin tüm özelliklerini desteklememekte ve muhtemelen çok sayıda uyarı vermektedir. Desteklenmeyen özellikleri bildirmesi durumunda, analiz tamamen sağlıklı olmayabilir.
+
 
 .. index:: kaynak dosya, ! içe aktarma, modül, kaynak birim
 .. _import:
 
-Diğer Kaynak Dosyaları İçe Aktarma
+Diğer Kaynak Dosyalarını İçe Aktarma
 ============================
 
 Sözdizimi ve Anlambilim
 --------------------
 
-Solidity, kodunuzu modüler hale getirmenize yardımcı olmak için import deyimlerini destekler
-JavaScript'te mevcut olanlara benzerdir (ES6'dan itibaren). Ancak, Solidity `default export <https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export#Description>`_ kavramını desteklemez.
+Solidity, kodunuzu modüler hale getirmenize yardımcı olmak için Javascript'te mevcut olanlara (ES6'dan sonrası)
+benzer import ifadelerini destekler. Ancak, Solidity `varsayılan export <https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export#Description>`_ kavramını desteklemez.
 
 Genel düzeyde, aşağıdaki formdaki içe aktarma deyimlerini kullanabilirsiniz:
 
@@ -123,11 +124,11 @@ Genel düzeyde, aşağıdaki formdaki içe aktarma deyimlerini kullanabilirsiniz
 
     import "filename";
 
-Filename kısmı *import path* olarak adlandırılır.
+``filename`` kısmı *import path* olarak adlandırılır.
 Bu deyim, "filename "deki tüm global sembolleri (ve orada içe aktarılan sembolleri) geçerli global kapsama içe aktarır (ES6'dakinden farklıdır, ancak Solidity için geriye dönük olarak uyumludur).
 Bu formun kullanılması tavsiye edilmez, çünkü isim alanını tahmin edilemeyecek şekilde kirletir.
-"filename" içine yeni üst düzey öğeler eklerseniz, bunlar otomatik olarak "filename "den bu şekilde içe aktarılan tüm dosyalarda görünür. Belirli öğeleri içe aktarmak daha iyidir
-sembolleri açıkça.
+"filename" içine yeni üst düzey öğeler eklerseniz, bunlar otomatik olarak "filename "den bu şekilde içe aktarılan tüm dosyalarda görünür. Belirli sembolleri açık bir şekilde içe aktarmak
+daha iyidir.
 
 Aşağıdaki örnek, üyeleri ``"filename"`` içindeki tüm global semboller olan yeni bir global sembol ``symbolName`` oluşturur:
 
@@ -144,7 +145,7 @@ Bu sözdiziminin ES6'nın bir parçası olmayan, ancak muhtemelen yararlı olan 
 
 bu da ``import * as symbolName from "filename";`` ile eşdeğerdir.
 
-Bir adlandırma çakışması varsa, içe aktarma sırasında sembolleri yeniden adlandırabilirsiniz. Örneğin, aşağıdaki kod sırasıyla ``"filename"`` içinden ``symbol1`` ve ``symbol2``ye referans veren yeni global semboller ``alias`` ve ``symbol2`` oluşturur.
+Bir adlandırma çakışması varsa içe aktarma sırasında sembolleri yeniden adlandırabilirsiniz. Örneğin, aşağıdaki kod sırasıyla ``"filename"`` içinden ``symbol1`` ve ``symbol2`` yi referans veren yeni global semboller ``alias`` ve ``symbol2`` oluşturur.
 .. code-block:: solidity
 
     import {symbol1 as alias, symbol2} from "filename";
@@ -156,14 +157,14 @@ Bir adlandırma çakışması varsa, içe aktarma sırasında sembolleri yeniden
 
  Tüm platformlarda tekrarlanabilir derlemeleri destekleyebilmek için Solidity derleyicisinin kaynak dosyalarının depolandığı dosya sisteminin ayrıntılarını soyutlaması gerekir.
 Bu nedenle içe aktarma yolları doğrudan ana dosya sistemindeki dosyalara başvurmaz.
-Bunun yerine derleyici, her kaynak birime opak ve yapılandırılmamış bir tanımlayıcı olan benzersiz bir *kaynak birim adı* atanan dahili bir veritabanı (*sanal dosya sistemi* veya kısaca *VFS*) tutar. import deyiminde belirtilen import yolu, bir kaynak birim adına çevrilir ve
-Bu veritabanında ilgili kaynak birimi bulun.
+Bunun yerine derleyici, her kaynak birime opak ve yapılandırılmamış bir tanımlayıcı olan benzersiz bir *kaynak birim adı* atanan dahili bir veritabanı (*sanal dosya sistemi* veya kısaca *VFS*) tutar. Import deyiminde belirtilen import yolu, bir kaynak birim adına çevrilir
+ve veritabanında ilgili kaynak birimini bulmak için kullanılır.
 
-ref:`Standart JSON <compiler-api>` API'sini kullanarak, derleyici girdisinin bir parçası olarak tüm kaynak dosyaların adlarını ve içeriğini doğrudan sağlamak mümkündür. bu durumda kaynak birim adları gerçekten keyfi olabilir. ancak, derleyicinin kaynak kodu otomatik olarak bulmasını ve VFS'ye yüklemesini istiyorsanız, kaynak birim adlarınızın bir :ref:`import callback'i mümkün kılacak şekilde yapılandırılması gerekir.
+ref:`Standart JSON <compiler-api>` API'sini kullanarak, derleyici girdisinin bir parçası olarak tüm kaynak dosyaların adlarını ve içeriğini doğrudan sağlamak mümkündür. Bu durumda kaynak birim adları gerçekten keyfi olabilir. Ancak, derleyicinin kaynak kodu otomatik olarak bulmasını ve VFS'ye yüklemesini istiyorsanız, kaynak birim adlarınızın bir :ref:`import callback'i mümkün kılacak şekilde yapılandırılması gerekir.
 <import-callback>` komut satırı derleyicisini kullanırken varsayılan import callback yalnızca kaynak kodun yüklenmesini destekler
 Bazı ortamlar daha çok yönlü olan özel geri aramalar sağlar. Örneğin `Remix IDE <https://remix.ethereum.org/>`_, `HTTP, IPFS ve Swarm URL'lerinden dosya içe aktarmanıza veya doğrudan NPM kayıt defterindeki paketlere başvurmanıza<https://remix-ide.readthedocs.io/en/latest/import.html>`_ olanak tanıyan bir tane sağlar.
-tarafından kullanılan sanal dosya sistemi ve yol çözümleme mantığının tam bir açıklaması için
-derleyici bkz :ref:`Path Resolution <path-resolution>`.
+Derleyici tarafından kullanılan sanal dosya sistemi ve yol çözümleme mantığının tam bir açıklaması için
+bkz :ref:`Path Resolution <path-resolution>`.
 
 .. index:: ! comment, natspec
 
@@ -184,4 +185,4 @@ Tek satırlı yorumlar (``//``) ve çok satırlı yorumlar (``/*...*/``) mümkü
 .. note::
   Tek satırlık bir yorum UTF-8 kodlamasında herhangi bir unicode satır sonlandırıcısı (LF, VF, FF, CR, NEL, LS veya PS) ile sonlandırılır. Sonlandırıcı, yorumdan sonra hala kaynak kodun bir parçasıdır, bu nedenle bir ASCII sembolü değilse (bunlar NEL, LS ve PS'dir), bir ayrıştırıcı hatasına yol açacaktır.
 Ayrıca, NatSpec yorumu adı verilen başka bir yorum türü daha vardır,
-ref:`style guide<style_guide_natspec>` içinde ayrıntılı olarak açıklanmıştır. Bunlar üçlü eğik çizgi (``//``) veya çift yıldız bloğu (``/** ... */``) ile yazılır ve doğrudan fonksiyon bildirimlerinin veya deyimlerinin üzerinde kullanılmalıdır.
+ref:`style guide<style_guide_natspec>` içinde ayrıntılı olarak açıklanmıştır. Bunlar üçlü eğik çizgi (``///``) veya çift yıldız bloğu (``/** ... */``) ile yazılır ve doğrudan fonksiyon bildirimlerinin veya deyimlerinin üzerinde kullanılmalıdır.
