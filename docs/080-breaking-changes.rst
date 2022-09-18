@@ -110,7 +110,7 @@ Kodunuzu nasıl güncelleyebilirsiniz?
 - Eski ABI kodlayıcı ile devam etmek istiyorsanız ``pragma abicoder v1;`` ekleyin.
 - İsteğe bağlı olarak ``pragma experimental ABIEncoderV2`` veya ``pragma abicoder v2`` gereksiz olduğu için kaldırın.
 - ``byte`` ifadesini ``bytes1`` olarak değiştirin.
-- Gerekirse ara açık tip dönüşümleri ekleyin.
+- Gerekirse ara açık tip dönüşümler ekleyin.
 - ``c.f{gas: 10000}{value: 1}()`` ifadesini ``c.f{gas: 10000, value: 1}()`` olarak birleştirin.
 - ``msg.sender.transfer(x)`` öğesini ``payable(msg.sender).transfer(x)`` olarak değiştirin veya ``address payable`` türü saklanmış bir değişken kullanın.
 - ``x**y**z`` ifadesini ``(x**y)**z`` olarak değiştirin.
