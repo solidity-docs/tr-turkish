@@ -89,7 +89,7 @@ Tüm derleyici testlerini çalıştırmak için isteğe bağlı olarak birkaç b
 yüklemek isteyebilirsiniz (`evmone <https://github.com/ethereum/evmone/releases>`_,
 `libz3 <https://github.com/Z3Prover/z3>`_ ve `libhera <https://github.com/ewasm/hera>`_).
 
-macOS üzerinde bazı test betikleri GNU coreutils'in kurulu olmasını beklemektedir.
+macOS üzerinde bazı test komut dosyaları GNU coreutils'in kurulu olmasını beklemektedir.
 Bu en kolay Homebrew kullanılarak gerçekleştirilebilir: ``brew install coreutils``.
 
 Windows sistemlerinde ortak bağlantı oluşturma ayrıcalığına sahip olduğunuzdan emin
