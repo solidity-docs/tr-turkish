@@ -97,7 +97,7 @@ Arayüz Değişiklikleri
   ``storage-layout`` artık alt nesnelerdir. 0.8.0'dan önce string olarak serileştiriliyorlardı.
 
 * "Eski AST" kaldırıldı (komut satırı arayüzünde ``--ast-json`` ve standart JSON için ``legacyAST``).
-  Yerine "kompakt AST" (``--ast-compact--json`` resp. ``AST``) kullanın.
+  Yerine "kompakt AST" (``--ast-compact--json`` sırasıyla ``AST``) kullanın.
 
 * Eski hata raporlayıcı (``--old-reporter``) kaldırıldı.
 
