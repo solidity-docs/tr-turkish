@@ -60,7 +60,7 @@ Bu bölümde, mevcut sözleşmelerin artık derlenmemesine neden olabilecek değ
   - ``int80(bytes10)`` ve ``bytes10(int80)``: hem tür kategorisini hem de işareti dönüştürüyor. Bunu sırasıyla ``int80(uint80(bytes10))`` ve ``bytes10(uint80(int80)`` ile değiştirin.
   - ``Contract(uint)``: hem tür kategorisini hem de genişliği dönüştürüyor. Bunu ``Contract(address(uint160(uint)))`` ile değiştirin.
 
-  Belirsizliği önlemek için bu dönüşümlere izin verilmemiştir. Örneğin, ``uint16 x = uint16(int8(-1))`` ifadesinde, ``x`` değeri önce işaret veya genişlik dönüşümünün uygulanıp uygulanmadığına bağlı olacaktır.
+  Belirsizliği önlemek için bu dönüşümlere izin verilmemiştir. Örneğin, ``uint16 x = uint16(int8(-1))`` ifadesinde, ``x`` değeri, işaret ve genişlik dönüşümünden hangisinin önce uygulandığına bağlı olacaktır.
 
 * Fonksiyon çağrı seçenekleri sadece bir kez verilebilir, yani ``c.f{gas: 10000}{value: 1}()`` geçersizdir ve ``c.f{gas: 10000, value: 1}()`` olarak değiştirilmelidir.
 
