@@ -10,7 +10,7 @@ SPDX Lisans Tanımlayıcısı
 =======================
 
 Kaynak kodlarının erişilebilir olması, akıllı sözleşmeleri daha güvenilir
-kullanılabilir. Kaynak kodunu erişilebilir kılmak her zaman telif hakkı ile ilgili yasal sorunlara yol açtığından, Solidity derleyicisi makine tarafından okunabilen `SPDX lisans tanımlayıcılarının <https://spdx.org>`_ kullanılmasını teşvik eder:
+hale getirebilir. Kaynak kodunun erişilebilir hale getirilmesi her zaman telif hakkı ile ilgili yasal sorunlara yol açtığından, Solidity derleyicisi, makine tarafından okunabilen `SPDX lisans tanımlayıcılarının <https://spdx.org>`_ kullanılmasını teşvik eder:
 
 ``// SPDX-License-Identifier: MIT``
 
