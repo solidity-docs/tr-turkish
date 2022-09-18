@@ -14,7 +14,7 @@ hale getirebilir. Kaynak kodunun erişilebilir hale getirilmesi her zaman telif 
 
 ``// SPDX-License-Identifier: MIT``
 
-Derleyici, lisansın belgenin bir parçası olduğunu doğrulamaz.
+Derleyici, lisansın,
 SPDX <https://spdx.org/licenses/>`_ tarafından izin verilen liste, ancak
 sağlanan dizeyi :ref:`bytecode metadata <metadata>` içine dahil eder.
 
