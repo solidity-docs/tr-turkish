@@ -33,7 +33,7 @@ Bu bölüm, derleyici size bildirmeden mevcut kodun davranışını değiştirdi
 * Depolama alanında uzunluğu yanlış kodlanmış bir bayt dizisine erişilmesi paniğe neden olunur.
   Depolama bayt dizilerinin ham gösterimini değiştirmek için inline assembly kullanılmadığı sürece bir sözleşme bu duruma giremez.
 
-* Dizi uzunluğu ifadelerinde sabitler kullanılırsa, Solidity'nin önceki sürümleri değerlendirme ağacının(evaluation tree) tüm dallarında(branch) rastgele arbitrary kullanırdı. Artık, sabit değişkenler ara ifadeler olarak kullanılırsa, değerleri çalışma zamanı ifadelerinde kullanıldıklarında olduğu gibi düzgün bir şekilde yuvarlanacaktır.
+* Dizi uzunluğu ifadelerinde sabitler kullanılması halinde Solidity'nin önceki sürümleri, değerlendirme ağacının (evaluation tree) tüm dallarında (branch) rastgele (arbitrary) kesinlik kullanırdı. Artık, sabit değişkenler ara ifadeler olarak kullanıldığında, değerleri, çalışma zamanı ifadelerinde kullanıldıklarında olduğu gibi uygun şekilde yuvarlanacaktır.
 
 * ``byte`` türü kaldırıldı. Bu ``bytes1`` türünün bir takma adıydı.
 
