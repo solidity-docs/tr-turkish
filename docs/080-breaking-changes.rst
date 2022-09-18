@@ -76,7 +76,7 @@ Bu bölümde, mevcut sözleşmelerin artık derlenmemesine neden olabilecek değ
 
 * Koddaki ``\b``, ``\f`` ve ``\v`` kaçış dizileri için destek kaldırılmıştır. Bunlar, onaltılık kaçış dizileri aracılığıyla eklenmeye devam edebilir; örneğin, sırasıyla ``\x08``, ``\x0c`` ve ``\x0b``.
 
-* Global değişkenler ``tx.origin`` ve ``msg.sender``, ``address payable`` yerine ``address`` tipine sahiptir. Bunları açık bir dönüşüm kullanarak ``address payable`` türüne dönüştürebilirsiniz, yani ``payable(tx.origin)`` veya ``payable(msg.sender)``.
+* Global değişkenler ``tx.origin`` ve ``msg.sender``, ``address payable`` yerine ``address`` tipine sahiptir. Bunlar, açık bir dönüşüm kullanılarak ``address payable`` türüne, yani ``payable(tx.origin)`` veya ``payable(msg.sender)``a dönüştürülebilir.
 
   Bu değişiklik, derleyicinin bu adreslerin ödenebilir olup olmadığını belirleyememesi nedeniyle yapılmıştır, bu nedenle artık bu gereksinimi görünür kılmak için açık bir dönüşüm gerektirmektedir. 
 
