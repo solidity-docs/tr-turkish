@@ -82,7 +82,7 @@ Bu bölümde, mevcut sözleşmelerin artık derlenmemesine neden olabilecek değ
 
 * ``address`` türüne açık dönüşüm, her zaman, ödenebilir olmayan bir ``address`` türü döndürür. Özellikle, aşağıdaki açık dönüşümler ``address payable`` yerine ``address`` türüne sahiptir:
 
-  - ``address(u)`` burada ``u`` ``uint160`` türünde bir değişkendir. Biri ``u`` türünü iki açık dönüşüm kullanarak ``address payable`` türüne dönüştürebilir, yani ``payable(address(u))``.
+  - ``u``nun ``uint160`` türü bir değişken olduğu ``address(u)``. ``u``, iki açık dönüşüm kullanılarak ``payable(address(u))`` şeklinde ``address payable`` türüne dönüştürebilir.
   - ``address(b)`` burada ``b`` ``bytes20`` tipinde bir değişkendir. Biri ``b`` türünü iki açık dönüşüm kullanarak `` address payable`` türüne dönüştürebilir, yani ``payable(address(b))``.
   - ``address(c)``, burada ``c`` bir sözleşmedir. Önceden, bu dönüşümün dönüş türü, sözleşmenin Ether alıp alamayacağına bağlıydı (bir receive fonksiyonuna veya bir payable fallback fonksiyonuna sahip olarak). ``payable(c)`` dönüşümü ``address payable`` türüne sahiptir ve yalnızca ``c`` sözleşmesi Ether alabildiğinde izin verilir. Genel olarak, aşağıdaki açık dönüşüm kullanılarak ``c`` her zaman ``address payable`` türüne dönüştürülebilir: ``payable(address(c))``. ``address(this)`` türünün ``address(c)`` ile aynı kategoriye girdiğini ve aynı kuralların onun için de geçerli olduğunu unutmayın.
 
