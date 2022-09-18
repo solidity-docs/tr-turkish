@@ -55,7 +55,7 @@ Derleyici sürümü için daha karmaşık kurallar belirlemek mümkündür,
 bunlar `npm<https://docs.npmjs.com/cli/v6/using-npm/semver>`_ tarafından kullanılan sözdizimin aynısına uyar.
 
 .. note::
-  Version pragmasının kullanılması *derleyicinin sürümünü değiştirmez*.
+ Sürüm pragmasının kullanılması, derleyicinin sürümünü _*değiştirmez*._
 Ayrıca derleyicinin özelliklerini etkinleştirmez veya devre dışı bırakmaz. Sadece
 derleyiciye kendi sürümünün aşağıdakiyle eşleşip eşleşmediğini kontrol etmesi talimatını verir
 pragma tarafından gerekli kılınmıştır. Eşleşmezse, derleyici şu sorunları verir bir hata.
