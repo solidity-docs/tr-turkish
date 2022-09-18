@@ -6,7 +6,7 @@ Bu bölüm, Solidity 0.8.0 sürümünde sunulan ana işleyişi bozan değişikli
 Tam liste için `sürüm değişiklik günlüğü <https://github.com/ethereum/solidity/releases/tag/v0.8.0>`_
 adresini kontrol edin.
 
-Semantiğin Sessiz Değişimleri
+Semantikte Sessiz Değişiklikler
 ===============================
 
 Bu bölüm, derleyici size bildirmeden mevcut kodun davranışını değiştirdiği değişiklikleri listeler.
