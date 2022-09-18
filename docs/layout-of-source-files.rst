@@ -56,7 +56,7 @@ bunlar `npm<https://docs.npmjs.com/cli/v6/using-npm/semver>`_ tarafından kullan
 
 .. note::
  Sürüm pragmasının kullanılması, derleyicinin sürümünü _*değiştirmez*._
-Ayrıca derleyicinin özelliklerini etkinleştirmez veya devre dışı bırakmaz. Sadece
+Derleyicinin özelliklerini etkinleştirme veya devre dışı bırakma işlevine de sahip _*değildir*._
 derleyiciye kendi sürümünün aşağıdakiyle eşleşip eşleşmediğini kontrol etmesi talimatını verir
 pragma tarafından gerekli kılınmıştır. Eşleşmezse, derleyici şu sorunları verir bir hata.
 
