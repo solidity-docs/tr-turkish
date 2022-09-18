@@ -63,7 +63,7 @@ etmesi için yönerge verir. Sürümler uyumlu değilse derleyici hata verir.
 ABI Kodlayıcı Pragması
 ----------------
 
-``pragma abicoder v1`` veya ``pragma abicoder v2`` kullanarak şunları yapabilirsiniz
+``pragma abicoder v1`` veya ``pragma abicoder v2`` kullanarak ABI kodlayıcı ile
 ABI kodlayıcı ve kod çözücünün iki uygulaması arasında seçim yapın.
 
 Yeni ABI kodlayıcı (v2) keyfi olarak iç içe geçmiş dizileri ve yapıları kodlama ve kod çözme yapabilmektedir
