@@ -80,7 +80,7 @@ Bu bölümde, mevcut sözleşmelerin artık derlenmemesine neden olabilecek değ
 
   Bu değişiklik, derleyicinin bu adreslerin ödenebilir olup olmadığını belirleyememesi nedeniyle yapılmıştır, bu nedenle artık bu gereksinimi görünür kılmak için açık bir dönüşüm gerektirmektedir. 
 
-* ``address`` türüne açık dönüştürme her zaman ödenebilir olmayan bir ``address`` türü döndürür. Özellikle, aşağıdaki açık dönüşümler ``address payable`` yerine ``address`` türüne sahiptir:
+* ``address`` türüne açık dönüşüm, her zaman, ödenebilir olmayan bir ``address`` türü döndürür. Özellikle, aşağıdaki açık dönüşümler ``address payable`` yerine ``address`` türüne sahiptir:
 
   - ``address(u)`` burada ``u`` ``uint160`` türünde bir değişkendir. Biri ``u`` türünü iki açık dönüşüm kullanarak ``address payable`` türüne dönüştürebilir, yani ``payable(address(u))``.
   - ``address(b)`` burada ``b`` ``bytes20`` tipinde bir değişkendir. Biri ``b`` türünü iki açık dönüşüm kullanarak `` address payable`` türüne dönüştürebilir, yani ``payable(address(b))``.
