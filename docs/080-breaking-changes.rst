@@ -11,7 +11,7 @@ Semantikte Sessiz Değişiklikler
 
 Bu bölüm, derleyici size bildirmeden mevcut kodun davranışını değiştirdiği değişiklikleri listeler.
 
-* Aritmetik işlemler alttan taşma ve üstten taşma durumunda geri döner. Önceki paketleme davranışını kullanmak için ``unchecked { ... }`` kullanarak önceki paketleme davranışını kullanabilirsiniz.
+* Aritmetik işlemler alttan taşma ve üstten taşma durumunda geri döner. Önceki paketleme davranışını kullanmak için ``unchecked { ... }`` öğesini kullanabilirsiniz.
 
   Taşma kontrolleri çok yaygındır, bu nedenle gaz maliyetlerinde hafif bir artışa neden olsa bile kodun okunabilirliğini artırmak için bunları varsayılan hale getirdik.
 
