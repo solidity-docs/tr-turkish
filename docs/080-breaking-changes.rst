@@ -72,7 +72,7 @@ Bu bölümde, mevcut sözleşmelerin artık derlenmemesine neden olabilecek değ
 
   Bu, ABI'deki temel türün her zaman ``uint8`` olduğunu varsaymayı güvenli hale getirecektir.
 
-* Public fonksiyonlar ve event`ler haricinde ``this``, ``super`` ve ``_`` isimli tanımlamalara izin verilmez. İstisna, bu tür fonksiyon isimlerine izin veren Solidity dışındaki dillerde uygulanan sözleşmelerin arayüzlerini beyan etmeyi mümkün kılmaktır.
+* Public fonksiyonlar ve event`ler haricinde ``this``, ``super`` ve ``_`` isimli açıklamalara izin verilmez. İstisna, bu tür fonksiyon isimlerine izin veren Solidity dışındaki dillerde uygulanan sözleşmelerin arayüzlerini açıklamayı mümkün kılmaktır.
 
 * Koddaki ``\b``, ``\f`` ve ``\v`` kaçış dizileri için destek kaldırıldı. Bunlar hala onaltılık kaçış dizileri aracılığıyla eklenebilir, örneğin sırasıyla ``\x08``, ``\x0c`` ve ``\x0b``.
 
