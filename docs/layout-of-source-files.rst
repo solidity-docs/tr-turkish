@@ -2,7 +2,7 @@
 Solidity Kaynak Dosyasının Düzeni
 ********************************
 
-Kaynak dosyalar keyfi sayıda:ref:`contract definitions<contract_structure>`, import_ ,:ref:`pragma<pragma>` ve :ref:`using for<using-for>` yönergeleri ve:ref:`struct<structs>`,:ref:`enum<enums>`, :ref:`function<functions>`, :ref:`error<errors>` ve :ref:`constant variable<constants>` tanımları içerebilir.
+Kaynak dosyalar, istenilen sayıda :ref:`contract definitions<contract_structure>`, import_ ,:ref:`pragma<pragma>` ve :ref:`using for<using-for>` yönergeleri ile :ref:`struct<structs>`,:ref:`enum<enums>`, :ref:`function<functions>`, :ref:`error<errors>` ve :ref:`constant variable<constants>` tanımları içerebilir.
 
 .. index:: ! license, spdx
 
