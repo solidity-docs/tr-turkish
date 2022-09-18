@@ -26,7 +26,7 @@ Solidity, ` npm önerisine <https://docs.npmjs.com/cli/v7/configuring-npm/packag
 Bu açıklamayı eklemeniz, elbette ki sizi, her kaynak dosyada belirli bir lisans adından veya
 telif hakkının orijinal sahibinden bahsetme zorunluluğu gibi, lisans konusuyla ilgili diğer yükümlülüklerden muaf tutmaz.
 Derleyici, açıklamayı, dosya düzeyinde dosyanın herhangi bir yerinde algılayabilir
-file level, but it is recommended to put it at the top of the file.
+ancak dosyanın üst kısmına eklenmesi önerilir.
 
 SPDX lisans tanımlayıcılarının nasıl kullanılacağı hakkında daha fazla bilgi `SPDX web sitesi <https://spdx.org/ids-how>`_ adresinde bulunabilir.
 
