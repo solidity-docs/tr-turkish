@@ -47,7 +47,7 @@ Bu bölümde, mevcut sözleşmelerin artık derlenmemesine neden olabilecek değ
   1. Negatif literallerden ve ``type(uint160).max`` değerinden büyük literallerden ``address`` değerine açık dönüşümlere izin verilmez.
   2. Literaller ve ``T`` tamsayı tipi arasındaki açık dönüşümlere yalnızca literal ``type(T).min`` ve ``type(T).max`` arasında yer alıyorsa izin verilir. Özellikle, ``uint(-1)`` kullanımlarını ``type(uint).max`` ile değiştirin.
   3. Literaller ve enumlar arasındaki açık dönüşümlere yalnızca literal enumdaki bir değeri temsil edebiliyorsa izin verilir.
-  4. Değişmezler ve ``address`` türü arasındaki açık dönüşümler (örneğin ``address(literal)``) ``address payable`` yerine ``address`` türüne sahiptir. Açık bir dönüşüm, yani ``payable(literal)`` kullanılarak payable bir adres türü elde edilebilir.
+  4. Literaller ve ``address`` türü arasındaki açık dönüşümler (örneğin ``address(literal)``) ``address payable`` yerine ``address`` türüne sahiptir. Açık bir dönüşüm, yani ``payable(literal)`` kullanılarak payable(ödenebilir) bir adres türü elde edilebilir.
 
 * :ref:`Address literals<address_literals>`, ``address payable`` yerine ``address`` türüne sahiptir. Açık bir dönüşüm kullanılarak ``address payable`` türüne dönüştürülebilirler, örneğin ``payable(0xdCad3a6d3569DF655070DEd06cb7A1b2Ccd1D3AF)``.
 
