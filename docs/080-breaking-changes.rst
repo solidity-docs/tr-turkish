@@ -58,7 +58,7 @@ Bu bölümde, mevcut sözleşmelerin artık derlenmemesine neden olabilecek değ
 - ``address(uint)`` ve ``uint(address)``: hem tür kategorisini hem de genişliği dönüştürüyor. Bunu sırasıyla ``address(uint160(uint))`` ve ``uint(uint160(address))`` ile değiştirin.
   - ``payable(uint160)``, ``payable(bytes20)`` ve ``payable(integer-literal)``: hem tür kategorisini hem de durum değiştirilebilirliğini dönüştürüyor. Bunu sırasıyla ``payable(address(uint160))``, ``payable(address(bytes20))`` ve ``payable(address(integer-literal))`` ile değiştirin. ``payable(0)``ın geçerli olduğunu ve kuralın bir istisnası olduğunu unutmayın.
   - ``int80(bytes10)`` ve ``bytes10(int80)``: hem tür kategorisini hem de işareti dönüştürüyor. Bunu sırasıyla ``int80(uint80(bytes10))`` ve ``bytes10(uint80(int80)`` ile değiştirin.
-  - ``Contract(uint)``: hem tür kategorisini hem de genişliği dönüştürür. Bunu ``Contract(address(uint160(uint)))`` ile değiştirin.
+  - ``Contract(uint)``: hem tür kategorisini hem de genişliği dönüştürüyor. Bunu ``Contract(address(uint160(uint)))`` ile değiştirin.
 
   Belirsizliği önlemek için bu dönüşümlere izin verilmemiştir. Örneğin, ``uint16 x = uint16(int8(-1))`` ifadesinde, ``x`` değeri önce işaret veya genişlik dönüşümünün uygulanıp uygulanmadığına bağlı olacaktır.
 
