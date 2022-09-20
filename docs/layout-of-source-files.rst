@@ -66,14 +66,14 @@ ABI Kodlayıcı Pragması
 ``pragma abicoder v1`` veya ``pragma abicoder v2`` kullanarak ABI kodlayıcı ile
 kod çözücü iki uygulama arasında seçim yapabilirsiniz.
 
-Yeni ABI kodlayıcı (v2) keyfi olarak iç içe geçmiş dizileri ve yapıları kodlama ve kod çözme yapabilmektedir
+Yeni ABI kodlayıcı (v2) keyfi olarak iç içe geçmiş dizileri ve yapıları kodlama(encode) ve kod çözme(decode) yapabilir
 . Daha az optimal kod üretebilir ve eski kodlayıcı kadar test edilmemiştir, ancak Solidity 0.6.0'dan itibaren deneysel olmayan olarak kabul edilir. Yine de ``pragma abicoder v2;`` kullanarak açıkça etkinleştirmeniz gerekir. Solidity 0.8.0'dan itibaren varsayılan olarak etkinleştirileceğinden, ``pragma abicoder v1;`` kullanarak eski kodlayıcıyı seçme seçeneği vardır.
 
-Yeni kodlayıcı tarafından desteklenen türler, eskisi tarafından desteklenenlerin katı bir üst kümesidir. Bunu kullanan sözleşmeler, kullanmayanlarla sınırlama olmadan etkileşime girebilir. Bunun tersi ancak, ``abicoder v2`` dışı sözleşme, yalnızca yeni kodlayıcı tarafından desteklenen kod çözme türlerini gerektirecek çağrılarda bulunmaya çalışmadığı sürece mümkündür. Aksi halde, derleyici bu çağrıları tespit ederek hata verebilir. Sözleşmeniz için ``abicoder v2``yi etkinleştirmeniz hatanın ortadan kalkması için yeterlidir.
+Yeni kodlayıcı tarafından desteklenen türler, eskisi tarafından desteklenenlerin katı bir üst kümesidir. Bunu kullanan sözleşmeler, kullanmayanlarla sınırlama olmadan etkileşime girebilir. Bunun tersi ancak, ``abicoder v2`` dışı sözleşme, yalnızca yeni kodlayıcı tarafından desteklenen kod çözme türlerini gerektirecek çağrılarda bulunmaya çalışmadığı sürece mümkündür. Aksi halde, derleyici bu çağrıları tespit ederek hata verebilir. Sözleşmeniz için ``abicoder v2`` yi etkinleştirmeniz hatanın ortadan kalkması için yeterlidir.
 
 .. note::
   Bu pragma, en nihayetinde kodun nerede sonlandığına bakılmaksızın, etkinleştirildiği dosyada tanımlanan tüm kodlar için geçerlidir. Yani, kaynak dosyası ABI coder v1 ile derlenmek üzere seçilen bir sözleşme, başka bir
-sözleşmeden kalıt alarak, yeni kodlayıcıyı kullanan kod içermeye devam edebilir. Bu, yeni türlerin, externaş fonksiyon imzalarında değil, yalnızca dahili olarak kullanılması halinde mümkündür.
+sözleşmeden kalıt alarak, yeni kodlayıcıyı kullanan kod içermeye devam edebilir. Bu, yeni türlerin, external fonksiyon imzalarında değil, yalnızca dahili olarak kullanılması halinde mümkündür.
 
 .. note::
   
@@ -160,8 +160,8 @@ Bu nedenle içe aktarma yolları doğrudan ana dosya sistemindeki dosyalara baş
 Bunun yerine derleyici, her kaynak birime opak ve yapılandırılmamış bir tanımlayıcı olan benzersiz bir *kaynak birim adı* atanan dahili bir veritabanı (*sanal dosya sistemi* veya kısaca *VFS*) tutar. Import deyiminde belirtilen import yolu, bir kaynak birim adına çevrilir
 ve veritabanında ilgili kaynak birimini bulmak için kullanılır.
 
-ref:`Standart JSON <compiler-api>` API'sini kullanarak, derleyici girdisinin bir parçası olarak tüm kaynak dosyaların adlarını ve içeriğini doğrudan sağlamak mümkündür. Bu durumda kaynak birim adları gerçekten keyfi olabilir. Ancak, derleyicinin kaynak kodu otomatik olarak bulmasını ve VFS'ye yüklemesini istiyorsanız, kaynak birim adlarınızın bir :ref:`import callback'i mümkün kılacak şekilde yapılandırılması gerekir.
-<import-callback>` komut satırı derleyicisini kullanırken varsayılan import callback yalnızca kaynak kodun yüklenmesini destekler
+ref:`Standart JSON <compiler-api>` API'sini kullanarak, derleyici girdisinin bir parçası olarak tüm kaynak dosyaların adlarını ve içeriğini doğrudan sağlamak mümkündür. Bu durumda kaynak birim adları gerçekten keyfi olabilir. Ancak, derleyicinin kaynak kodu otomatik olarak bulmasını ve VFS'ye yüklemesini istiyorsanız, kaynak birim adlarınızın bir :ref:`import callback <import-callback>` i mümkün kılacak şekilde yapılandırılması gerekir.
+Komut satırı derleyicisini kullanırken varsayılan import callback yalnızca kaynak kodun bir ana bilgisayar dosya sisteminden yüklenmesini destekler; yani kaynak birim adları, yollar olmalıdır.```
 Bazı ortamlar daha çok yönlü olan özel geri aramalar sağlar. Örneğin `Remix IDE <https://remix.ethereum.org/>`_, `HTTP, IPFS ve Swarm URL'lerinden dosya içe aktarmanıza veya doğrudan NPM kayıt defterindeki paketlere başvurmanıza<https://remix-ide.readthedocs.io/en/latest/import.html>`_ olanak tanıyan bir tane sağlar.
 Derleyici tarafından kullanılan sanal dosya sistemi ve yol çözümleme mantığının tam bir açıklaması için
 bkz :ref:`Path Resolution <path-resolution>`.
@@ -185,4 +185,4 @@ Tek satırlı yorumlar (``//``) ve çok satırlı yorumlar (``/*...*/``) mümkü
 .. note::
   Tek satırlık bir yorum UTF-8 kodlamasında herhangi bir unicode satır sonlandırıcısı (LF, VF, FF, CR, NEL, LS veya PS) ile sonlandırılır. Sonlandırıcı, yorumdan sonra hala kaynak kodun bir parçasıdır, bu nedenle bir ASCII sembolü değilse (bunlar NEL, LS ve PS'dir), bir ayrıştırıcı hatasına yol açacaktır.
 Ayrıca, NatSpec yorumu adı verilen başka bir yorum türü daha vardır,
-ref:`style guide<style_guide_natspec>` içinde ayrıntılı olarak açıklanmıştır. Bunlar üçlü eğik çizgi (``///``) veya çift yıldız bloğu (``/** ... */``) ile yazılır ve doğrudan fonksiyon bildirimlerinin veya deyimlerinin üzerinde kullanılmalıdır.
+ref:`stil kılavuzu<style_guide_natspec>` içinde ayrıntılı olarak açıklanmıştır. Bunlar üçlü eğik çizgi (``///``) veya çift yıldız bloğu (``/** ... */``) ile yazılır ve doğrudan fonksiyon bildirimlerinin veya deyimlerinin üzerinde kullanılmalıdır.
