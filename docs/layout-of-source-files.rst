@@ -1,260 +1,177 @@
 ********************************
-Layout of a Solidity Source File
+Solidity Kaynak Dosyasının Düzeni
 ********************************
 
-Source files can contain an arbitrary number of
-:ref:`contract definitions<contract_structure>`, import_ ,
-:ref:`pragma<pragma>` and :ref:`using for<using-for>` directives and
-:ref:`struct<structs>`, :ref:`enum<enums>`, :ref:`function<functions>`, :ref:`error<errors>`
-and :ref:`constant variable<constants>` definitions.
+Kaynak dosyalar, istenilen sayıda :ref:`contract definitions<contract_structure>`, import_ ,:ref:`pragma<pragma>` ve :ref:`using for<using-for>` yönergeleri ile :ref:`struct<structs>`,:ref:`enum<enums>`, :ref:`function<functions>`, :ref:`error<errors>` ve :ref:`constant variable<constants>` tanımları içerebilir.
 
 .. index:: ! license, spdx
 
-SPDX License Identifier
+SPDX Lisans Tanımlayıcısı
 =======================
 
-Trust in smart contracts can be better established if their source code
-is available. Since making source code available always touches on legal problems
-with regards to copyright, the Solidity compiler encourages the use
-of machine-readable `SPDX license identifiers <https://spdx.org>`_.
-Every source file should start with a comment indicating its license:
+Kaynak kodlarının erişilebilir olması, akıllı sözleşmeleri daha güvenilir
+hale getirebilir. Kaynak kodunun erişilebilir hale getirilmesi her zaman telif hakkı ile ilgili yasal sorunlara yol açtığından, Solidity derleyicisi, makine tarafından okunabilen `SPDX lisans tanımlayıcılarının <https://spdx.org>`_ kullanılmasını teşvik eder:
 
 ``// SPDX-License-Identifier: MIT``
 
-The compiler does not validate that the license is part of the
-`list allowed by SPDX <https://spdx.org/licenses/>`_, but
-it does include the supplied string in the :ref:`bytecode metadata <metadata>`.
+Derleyici, lisansın,
+`SPDX'in izin verdiği liste <https://spdx.org/licenses/>`_ kapsamında olduğunu doğrulamaz ancak
+sağlanan dizeyi :ref:`bytecode metadata <metadata>` içine dahil eder.
 
-If you do not want to specify a license or if the source code is
-not open-source, please use the special value ``UNLICENSED``.
-Note that ``UNLICENSED`` (no usage allowed, not present in SPDX license list)
-is different from ``UNLICENSE`` (grants all rights to everyone).
-Solidity follows `the npm recommendation <https://docs.npmjs.com/cli/v7/configuring-npm/package-json#license>`_.
+Bir lisans belirtmek istemiyorsanız veya kaynak kodu
+açık kaynak değilse, lütfen ``UNLICENSED`` özel değerini kullanın.
+``UNLICENSED`` (kullanıma izin verilmez, SPDX lisans listesinde bulunmaz) değerinin, ``UNLICENSE`` (herkese tüm hakları verir) değerinden farklı olduğunu unutmayın.
+Solidity, ` npm önerisine <https://docs.npmjs.com/cli/v7/configuring-npm/package-json#license>`_  uyar.
 
-Supplying this comment of course does not free you from other
-obligations related to licensing like having to mention
-a specific license header in each source file or the
-original copyright holder.
+Bu açıklamayı eklemeniz, elbette ki sizi, her kaynak dosyada belirli bir lisans adından veya
+telif hakkının orijinal sahibinden bahsetme zorunluluğu gibi, lisans konusuyla ilgili diğer yükümlülüklerden muaf tutmaz.
+Derleyici, açıklamayı, dosya düzeyinde dosyanın herhangi bir yerinde algılayabilir
+ancak dosyanın üst kısmına eklenmesi önerilir.
 
-The comment is recognized by the compiler anywhere in the file at the
-file level, but it is recommended to put it at the top of the file.
-
-More information about how to use SPDX license identifiers
-can be found at the `SPDX website <https://spdx.org/ids-how>`_.
-
+SPDX lisans tanımlayıcılarının nasıl kullanılacağı hakkında daha fazla bilgi `SPDX web sitesinde <https://spdx.org/ids-how>`_ bulunabilir.
 
 .. index:: ! pragma
 
 .. _pragma:
 
-Pragmas
+Pragmalar
 =======
-
-The ``pragma`` keyword is used to enable certain compiler features
-or checks. A pragma directive is always local to a source file, so
-you have to add the pragma to all your files if you want to enable it
-in your whole project. If you :ref:`import<import>` another file, the pragma
-from that file does *not* automatically apply to the importing file.
-
+``Pragma`` anahtar sözcüğü, belirli derleyici özelliklerini veya kontrollerini etkinleştirmek için
+kullanılır. Bir pragma yönergesi, her zaman bir kaynak dosya için yereldir, bu nedenle pragmayı tüm projenizde etkinleştirmek istiyorsanız tüm dosyalarınıza eklemeniz gerekir. Başka bir dosyayı :ref:`içe aktarırsanız<import>` o dosyadaki pragma, içe aktarılan dosyaya otomatik olarak _*uygulanmaz*._
 .. index:: ! pragma, version
 
 .. _version_pragma:
 
-Version Pragma
+Sürüm Pragması
 --------------
 
-Source files can (and should) be annotated with a version pragma to reject
-compilation with future compiler versions that might introduce incompatible
-changes. We try to keep these to an absolute minimum and
-introduce them in a way that changes in semantics also require changes
-in the syntax, but this is not always possible. Because of this, it is always
-a good idea to read through the changelog at least for releases that contain
-breaking changes. These releases always have versions of the form
-``0.x.0`` or ``x.0.0``.
+Uyumsuz değişiklikler getirebilecek gelecekteki derleyici sürümleriyle derlemeyi önlemek için kaynak dosyalarına bir sürüm pragması eklenebilir (ve eklenmelidir). Bunları mutlak minimumda tutmaya ve anlambilimdeki değişikliklerin sözdiziminde de değişiklik gerektireceği şekilde tanıtmaya çalışıyoruz, ancak bu her zaman mümkün olmayabilir. Bu nedenle, en azından işleyişi bozan değişiklikler içeren sürümler için değişiklik günlüğünü okumak her zaman iyi bir fikirdir. Bu sürümler her zaman ``0.x.0`` veya ``x.0.0`` biçiminde versiyonlara sahiptir.
 
-The version pragma is used as follows: ``pragma solidity ^0.5.2;``
+Sürüm pragması aşağıdaki gibi kullanılır: ``pragma solidity ^0.5.2;``
 
-A source file with the line above does not compile with a compiler earlier than version 0.5.2,
-and it also does not work on a compiler starting from version 0.6.0 (this
-second condition is added by using ``^``). Because
-there will be no breaking changes until version ``0.6.0``, you can
-be sure that your code compiles the way you intended. The exact version of the
-compiler is not fixed, so that bugfix releases are still possible.
+Yukarıdaki satırı içeren bir kaynak dosyası, 0.5.2'den eski sürümlü bir derleyiciyle derleme yapmadığı gibi, 0.6.0'dan yeni sürümlü bir derleyicide de çalışmaz (bu ikinci koşul ``^`` kullanılarak eklenir). ``0.6.0`` sürümüne kadar işleyişi bozan bir değişiklik olmayacağından, kodunuzun amaçladığınız şekilde derleme yaptığından emin olabilirsiniz. Derleyicinin tam sürümü sabit olmadığından hata düzeltme sürümlerinin kullanılması da mümkün olacaktır.
 
-It is possible to specify more complex rules for the compiler version,
-these follow the same syntax used by `npm <https://docs.npmjs.com/cli/v6/using-npm/semver>`_.
+Derleyici sürümü için daha karmaşık kurallar belirlemek mümkündür,
+bunlar `npm<https://docs.npmjs.com/cli/v6/using-npm/semver>`_ tarafından kullanılan sözdizimin aynısına uyar.
 
 .. note::
-  Using the version pragma *does not* change the version of the compiler.
-  It also *does not* enable or disable features of the compiler. It just
-  instructs the compiler to check whether its version matches the one
-  required by the pragma. If it does not match, the compiler issues
-  an error.
+ Sürüm pragmasının kullanılması, derleyicinin sürümünü _*değiştirmez*._
+Derleyicinin özelliklerini etkinleştirme veya devre dışı bırakma işlevine de sahip _*değildir*._
+Yalnızca, derleyiciye kendi sürümünün, pragmanın gerektirdiği sürüm ile uyumlu olup olmadığını kontrol
+etmesi için yönerge verir. Sürümler uyumlu değilse derleyici hata verir.
 
-ABI Coder Pragma
+ABI Kodlayıcı Pragması
 ----------------
 
-By using ``pragma abicoder v1`` or ``pragma abicoder v2`` you can
-select between the two implementations of the ABI encoder and decoder.
+``pragma abicoder v1`` veya ``pragma abicoder v2`` kullanarak ABI kodlayıcı ile
+kod çözücü iki uygulama arasında seçim yapabilirsiniz.
 
-The new ABI coder (v2) is able to encode and decode arbitrarily nested
-arrays and structs. It might produce less optimal code and has not
-received as much testing as the old encoder, but is considered
-non-experimental as of Solidity 0.6.0. You still have to explicitly
-activate it using ``pragma abicoder v2;``. Since it will be
-activated by default starting from Solidity 0.8.0, there is the option to select
-the old coder using ``pragma abicoder v1;``.
+Yeni ABI kodlayıcı (v2) keyfi olarak iç içe geçmiş dizileri ve yapıları kodlama(encode) ve kod çözme(decode) yapabilir
+. Daha az optimal kod üretebilir ve eski kodlayıcı kadar test edilmemiştir, ancak Solidity 0.6.0'dan itibaren deneysel olmayan olarak kabul edilir. Yine de ``pragma abicoder v2;`` kullanarak açıkça etkinleştirmeniz gerekir. Solidity 0.8.0'dan itibaren varsayılan olarak etkinleştirileceğinden, ``pragma abicoder v1;`` kullanarak eski kodlayıcıyı seçme seçeneği vardır.
 
-The set of types supported by the new encoder is a strict superset of
-the ones supported by the old one. Contracts that use it can interact with ones
-that do not without limitations. The reverse is possible only as long as the
-non-``abicoder v2`` contract does not try to make calls that would require
-decoding types only supported by the new encoder. The compiler can detect this
-and will issue an error. Simply enabling ``abicoder v2`` for your contract is
-enough to make the error go away.
+Yeni kodlayıcı tarafından desteklenen türler, eskisi tarafından desteklenenlerin katı bir üst kümesidir. Bunu kullanan sözleşmeler, kullanmayanlarla sınırlama olmadan etkileşime girebilir. Bunun tersi ancak, ``abicoder v2`` dışı sözleşme, yalnızca yeni kodlayıcı tarafından desteklenen kod çözme türlerini gerektirecek çağrılarda bulunmaya çalışmadığı sürece mümkündür. Aksi halde, derleyici bu çağrıları tespit ederek hata verebilir. Sözleşmeniz için ``abicoder v2`` yi etkinleştirmeniz hatanın ortadan kalkması için yeterlidir.
 
 .. note::
-  This pragma applies to all the code defined in the file where it is activated,
-  regardless of where that code ends up eventually. This means that a contract
-  whose source file is selected to compile with ABI coder v1
-  can still contain code that uses the new encoder
-  by inheriting it from another contract. This is allowed if the new types are only
-  used internally and not in external function signatures.
+  Bu pragma, en nihayetinde kodun nerede sonlandığına bakılmaksızın, etkinleştirildiği dosyada tanımlanan tüm kodlar için geçerlidir. Yani, kaynak dosyası ABI coder v1 ile derlenmek üzere seçilen bir sözleşme, başka bir
+sözleşmeden kalıt alarak, yeni kodlayıcıyı kullanan kod içermeye devam edebilir. Bu, yeni türlerin, external fonksiyon imzalarında değil, yalnızca dahili olarak kullanılması halinde mümkündür.
 
 .. note::
-  Up to Solidity 0.7.4, it was possible to select the ABI coder v2
-  by using ``pragma experimental ABIEncoderV2``, but it was not possible
-  to explicitly select coder v1 because it was the default.
-
-.. index:: ! pragma, experimental
+  
+Solidity 0.7.4'e kadar, ``pragma experimental ABIEncoderV2`` kullanarak ABI kodlayıcı v2'yi seçmek mümkündü, ancak varsayılan olduğu için kodlayıcı v1'i açık bir şekilde seçmek mümkün değildi.
+.. index:: ! pragma, deneysel
 
 .. _experimental_pragma:
-
-Experimental Pragma
+Deneysel Pragma
 -------------------
 
-The second pragma is the experimental pragma. It can be used to enable
-features of the compiler or language that are not yet enabled by default.
-The following experimental pragmas are currently supported:
+İkinci pragma deneysel pragmadır. Derleyicinin veya dilin henüz varsayılan olarak etkinleştirilmemiş özelliklerini etkinleştirmek için kullanılabilir. Şu anda, aşağıdaki deneysel pragmalar desteklenmektedir:
 
 
 ABIEncoderV2
 ~~~~~~~~~~~~
 
-Because the ABI coder v2 is not considered experimental anymore,
-it can be selected via ``pragma abicoder v2`` (please see above)
-since Solidity 0.7.4.
-
+ABI kodlayıcı v2 artık deneysel kabul edilmediğinden
+Solidity 0.7.4 sonrasında ``pragma abicoder v2`` aracılığıyla seçilebilir (lütfen
+ yukarıya bakın).
 .. _smt_checker:
 
 SMTChecker
 ~~~~~~~~~~
 
-This component has to be enabled when the Solidity compiler is built
-and therefore it is not available in all Solidity binaries.
-The :ref:`build instructions<smt_solvers_build>` explain how to activate this option.
-It is activated for the Ubuntu PPA releases in most versions,
-but not for the Docker images, Windows binaries or the
-statically-built Linux binaries. It can be activated for solc-js via the
-`smtCallback <https://github.com/ethereum/solc-js#example-usage-with-smtsolver-callback>`_ if you have an SMT solver
-installed locally and run solc-js via node (not via the browser).
+Bu bileşeni, Solidity derleyicisi oluşturulduğunda etkinleştirmek gerektiği için
+tüm Solidity binary'lerinde mevcut değildir. :ref:`build yönergeleri<smt_solvers_build>` bu seçeneğin nasıl etkinleştirileceğini açıklar. Çoğu sürümde Ubuntu PPA sürümleri için etkinleştirilmiş olsa da
+Docker görüntüleri, Windows binary'leri veya statik olarak oluşturulmuş Linux binary'leri için etkin değildir. Yerel olarak yüklenmiş bir SMT çözücünüz varsa ve solc-js'yi node üzerinden (tarayıcı üzerinden değil) çalıştırıyorsanız `smtCallback <https://github.com/ethereum/solc js#example-usage-with-smtsolver-callback>`_ kullanarak solc-js için etkinleştirebilirsiniz.
 
-If you use ``pragma experimental SMTChecker;``, then you get additional
-:ref:`safety warnings<formal_verification>` which are obtained by querying an
-SMT solver.
-The component does not yet support all features of the Solidity language and
-likely outputs many warnings. In case it reports unsupported features, the
-analysis may not be fully sound.
+Eğer ``pragma experimental SMTChecker;`` kullanırsanız bir SMT çözücü sorgulatarak ek:ref:`güvenlik uyarıları<formal_verification>` alırsınız.
+Bileşen henüz Solidity dilinin tüm özelliklerini desteklememekte ve muhtemelen çok sayıda uyarı vermektedir. Desteklenmeyen özellikleri bildirmesi durumunda, analiz tamamen sağlıklı olmayabilir.
 
-.. index:: source file, ! import, module, source unit
 
+.. index:: kaynak dosya, ! içe aktarma, modül, kaynak birim
 .. _import:
 
-Importing other Source Files
+Diğer Kaynak Dosyalarını İçe Aktarma
 ============================
 
-Syntax and Semantics
+Sözdizimi ve Anlambilim
 --------------------
 
-Solidity supports import statements to help modularise your code that
-are similar to those available in JavaScript
-(from ES6 on). However, Solidity does not support the concept of
-a `default export <https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export#Description>`_.
+Solidity, kodunuzu modüler hale getirmenize yardımcı olmak için Javascript'te mevcut olanlara (ES6'dan sonrası)
+benzer import ifadelerini destekler. Ancak, Solidity `varsayılan export <https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export#Description>`_ kavramını desteklemez.
 
-At a global level, you can use import statements of the following form:
+Genel düzeyde, aşağıdaki formdaki içe aktarma deyimlerini kullanabilirsiniz:
 
 .. code-block:: solidity
 
     import "filename";
 
-The ``filename`` part is called an *import path*.
-This statement imports all global symbols from "filename" (and symbols imported there) into the
-current global scope (different than in ES6 but backwards-compatible for Solidity).
-This form is not recommended for use, because it unpredictably pollutes the namespace.
-If you add new top-level items inside "filename", they automatically
-appear in all files that import like this from "filename". It is better to import specific
-symbols explicitly.
+``filename`` kısmı *import path* olarak adlandırılır.
+Bu deyim, "filename "deki tüm global sembolleri (ve orada içe aktarılan sembolleri) geçerli global kapsama içe aktarır (ES6'dakinden farklıdır, ancak Solidity için geriye dönük olarak uyumludur).
+Bu formun kullanılması tavsiye edilmez, çünkü isim alanını tahmin edilemeyecek şekilde kirletir.
+"filename" içine yeni üst düzey öğeler eklerseniz, bunlar otomatik olarak "filename "den bu şekilde içe aktarılan tüm dosyalarda görünür. Belirli sembolleri açık bir şekilde içe aktarmak
+daha iyidir.
 
-The following example creates a new global symbol ``symbolName`` whose members are all
-the global symbols from ``"filename"``:
+Aşağıdaki örnek, üyeleri ``"filename"`` içindeki tüm global semboller olan yeni bir global sembol ``symbolName`` oluşturur:
 
 .. code-block:: solidity
 
     import * as symbolName from "filename";
 
-which results in all global symbols being available in the format ``symbolName.symbol``.
+bu da tüm global sembollerin ``symbolName.symbol`` biçiminde kullanılabilir olmasıyla sonuçlanır.
 
-A variant of this syntax that is not part of ES6, but possibly useful is:
-
+Bu sözdiziminin ES6'nın bir parçası olmayan, ancak muhtemelen yararlı olan bir çeşidi:
 .. code-block:: solidity
 
   import "filename" as symbolName;
 
-which is equivalent to ``import * as symbolName from "filename";``.
+bu da ``import * as symbolName from "filename";`` ile eşdeğerdir.
 
-If there is a naming collision, you can rename symbols while importing. For example,
-the code below creates new global symbols ``alias`` and ``symbol2`` which reference
-``symbol1`` and ``symbol2`` from inside ``"filename"``, respectively.
-
+Bir adlandırma çakışması varsa içe aktarma sırasında sembolleri yeniden adlandırabilirsiniz. Örneğin, aşağıdaki kod sırasıyla ``"filename"`` içinden ``symbol1`` ve ``symbol2`` yi referans veren yeni global semboller ``alias`` ve ``symbol2`` oluşturur.
 .. code-block:: solidity
 
     import {symbol1 as alias, symbol2} from "filename";
 
 .. index:: virtual filesystem, source unit name, import; path, filesystem path, import callback, Remix IDE
 
-Import Paths
+İçe Aktarma Yolları
 ------------
 
-In order to be able to support reproducible builds on all platforms, the Solidity compiler has to
-abstract away the details of the filesystem where source files are stored.
-For this reason import paths do not refer directly to files in the host filesystem.
-Instead the compiler maintains an internal database (*virtual filesystem* or *VFS* for short) where
-each source unit is assigned a unique *source unit name* which is an opaque and unstructured identifier.
-The import path specified in an import statement is translated into a source unit name and used to
-find the corresponding source unit in this database.
+ Tüm platformlarda tekrarlanabilir derlemeleri destekleyebilmek için Solidity derleyicisinin kaynak dosyalarının depolandığı dosya sisteminin ayrıntılarını soyutlaması gerekir.
+Bu nedenle içe aktarma yolları doğrudan ana dosya sistemindeki dosyalara başvurmaz.
+Bunun yerine derleyici, her kaynak birime opak ve yapılandırılmamış bir tanımlayıcı olan benzersiz bir *kaynak birim adı* atanan dahili bir veritabanı (*sanal dosya sistemi* veya kısaca *VFS*) tutar. İçe aktarma ifadesinde belirtilen içe aktarma yolu, bir kaynak birim adına çevrilir
+ve veritabanında ilgili kaynak birimini bulmak için kullanılır.
 
-Using the :ref:`Standard JSON <compiler-api>` API it is possible to directly provide the names and
-content of all the source files as a part of the compiler input.
-In this case source unit names are truly arbitrary.
-If, however, you want the compiler to automatically find and load source code into the VFS, your
-source unit names need to be structured in a way that makes it possible for an :ref:`import callback
-<import-callback>` to locate them.
-When using the command-line compiler the default import callback supports only loading source code
-from the host filesystem, which means that your source unit names must be paths.
-Some environments provide custom callbacks that are more versatile.
-For example the `Remix IDE <https://remix.ethereum.org/>`_ provides one that
-lets you `import files from HTTP, IPFS and Swarm URLs or refer directly to packages in NPM registry
-<https://remix-ide.readthedocs.io/en/latest/import.html>`_.
-
-For a complete description of the virtual filesystem and the path resolution logic used by the
-compiler see :ref:`Path Resolution <path-resolution>`.
+ref:`Standart JSON <compiler-api>` API'sini kullanarak, derleyici girdisinin bir parçası olarak tüm kaynak dosyaların adlarını ve içeriğini doğrudan sağlamak mümkündür. Bu durumda kaynak birim adları gerçekten keyfi olabilir. Ancak, derleyicinin kaynak kodu otomatik olarak bulmasını ve VFS'ye yüklemesini istiyorsanız, kaynak birim adlarınızın bir :ref:`import callback <import-callback>` i mümkün kılacak şekilde yapılandırılması gerekir.
+Komut satırı derleyicisini kullanırken varsayılan import callback yalnızca kaynak kodun bir ana bilgisayar dosya sisteminden yüklenmesini destekler; yani kaynak birim adları, yollar olmalıdır.```
+Bazı ortamlar daha çok yönlü olan özel callback'ler sağlar. Örneğin `Remix IDE <https://remix.ethereum.org/>`_, `HTTP, IPFS ve Swarm URL'lerinden dosya içe aktarmanıza veya doğrudan NPM kayıt defterindeki paketlere başvurmanıza<https://remix-ide.readthedocs.io/en/latest/import.html>`_ olanak tanıyan bir tane sağlar.
+Derleyici tarafından kullanılan sanal dosya sistemi ve yol çözümleme mantığının tam bir açıklaması için
+bkz :ref:`Path Resolution <path-resolution>`.
 
 .. index:: ! comment, natspec
 
-Comments
+Yorumlar
 ========
 
-Single-line comments (``//``) and multi-line comments (``/*...*/``) are possible.
+Tek satırlı yorumlar (``//``) ve çok satırlı yorumlar (``/*...*/``) mümkündür.
 
 .. code-block:: solidity
 
@@ -266,12 +183,6 @@ Single-line comments (``//``) and multi-line comments (``/*...*/``) are possible
     */
 
 .. note::
-  A single-line comment is terminated by any unicode line terminator
-  (LF, VF, FF, CR, NEL, LS or PS) in UTF-8 encoding. The terminator is still part of
-  the source code after the comment, so if it is not an ASCII symbol
-  (these are NEL, LS and PS), it will lead to a parser error.
-
-Additionally, there is another type of comment called a NatSpec comment,
-which is detailed in the :ref:`style guide<style_guide_natspec>`. They are written with a
-triple slash (``///``) or a double asterisk block (``/** ... */``) and
-they should be used directly above function declarations or statements.
+  Tek satırlık bir yorum UTF-8 kodlamasında herhangi bir unicode satır sonlandırıcısı (LF, VF, FF, CR, NEL, LS veya PS) ile sonlandırılır. Sonlandırıcı, yorumdan sonra hala kaynak kodun bir parçasıdır, bu nedenle bir ASCII sembolü değilse (bunlar NEL, LS ve PS'dir), bir ayrıştırıcı hatasına yol açacaktır.
+Ayrıca, NatSpec yorumu adı verilen başka bir yorum türü daha vardır,
+ref:`stil kılavuzu<style_guide_natspec>` içinde ayrıntılı olarak açıklanmıştır. Bunlar üçlü eğik çizgi (``///``) veya çift yıldız bloğu (``/** ... */``) ile yazılır ve doğrudan fonksiyon bildirimlerinin veya deyimlerinin üzerinde kullanılmalıdır.
