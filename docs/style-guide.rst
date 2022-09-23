@@ -512,7 +512,7 @@ Hayır:
 Aynı öneriler ``if``, ``else``, ``while`` ve ``for`` kontrol yapıları için de geçerlidir.
 
 
-Ayrıca kontrol yapıları arasında tek bir boşluk olmalıdır
+Ayrıca, "if", "while" ve "for" kontrol yapıları ile parantez bloğu arasında tek bir boşluk olmalıdır. Bu boşluk, koşullu parantez bloğu ile açılış ayracı arasında koşullu ve tek bir boşluğu temsil eder.
 ``if``, ``while`` ve ``for`` ile parantez içindeki blok
 koşullu ve koşullu parantez arasında tek bir boşluk
 blok ve açılış desteği.
