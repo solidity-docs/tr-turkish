@@ -13,7 +13,7 @@ Bu bölüm, derleyici size bildirmeden mevcut kodun davranışını değiştirdi
 
 * Aritmetik işlemler alttan taşma ve üstten taşma durumunda geri döner. Önceki paketleme davranışını kullanmak için ``unchecked { ... }`` öğesini kullanabilirsiniz.
 
-  Taşma kontrolleri çok yaygındır, bu nedenle gaz maliyetlerinde hafif bir artışa neden olsa bile kodun okunabilirliğini artırmak için bunları varsayılan hale getirdik.
+  Üstten taşma kontrolleri çok yaygındır, bu nedenle gaz maliyetlerinde hafif bir artışa neden olsa bile kodun okunabilirliğini artırmak için bunları varsayılan hale getirdik.
 
 * ABI coder v2 varsayılan olarak etkinleştirilmiştir.
 
@@ -26,7 +26,7 @@ Bu bölüm, derleyici size bildirmeden mevcut kodun davranışını değiştirdi
 
   Bu, üs alma operatörünü ayrıştırmanın yaygın yoludur.
 
-* Başarısız iddialar ve sıfıra bölme veya aritmetik taşma gibi diğer dahili kontroller geçersiz işlem kodunu değil, bunun yerine geri döndürme işlem kodunu kullanır. Daha spesifik olarak, ``Panic(uint256)`` fonksiyon çağrısına eşit hata verilerini koşullara özgü bir hata koduyla kullanacaklardır.
+* Başarısız iddialar ve sıfıra bölme veya aritmetik üstten taşma gibi diğer dahili kontroller geçersiz işlem kodunu değil, bunun yerine geri döndürme işlem kodunu kullanır. Daha spesifik olarak, ``Panic(uint256)`` fonksiyon çağrısına eşit hata verilerini, koşullara özgü bir hata koduyla kullanacaklardır.
 
   Bu, hatalarda gaz tasarrufu sağlarken, statik analiz araçlarının bu durumları, başarısız bir ``require`` gibi geçersiz bir girdi üzerindeki bir geri dönüşten ayırt etmesine izin verir.
 
