@@ -250,7 +250,7 @@ Sözleşmeye göre:
     }
 
 
-Böylece ``Foo`` örneğimiz için ``69`` ve ``true`` parametreleriyle ``baz``ı çağırmak istersek, toplam 68 bayt iletiriz, bu da şu şekilde ayrılabilir:
+Böylece ``Foo`` örneğimiz için ``69`` ve ``true`` parametreleriyle ``baz`` ı çağırmak istersek, toplam 68 bayt iletiriz, bu da şu şekilde ayrılabilir:
 
 - ``0xcdcd77c0``: Method ID. Bu, ``baz(uint32,bool)`` imzasının ASCII formunun Keccak hash'inin ilk 4 baytı olacak şekilde türetilecektir.
 - ``0x000000000000000000000000000000000000000000000045``: ilk parametre, 32 bayta doldurulmuş bir uint32 değeri ``69``
