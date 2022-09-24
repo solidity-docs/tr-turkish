@@ -91,7 +91,7 @@ Bu değişiklikler :ref:`Standard JSON Interface<compiler-api>` aracılığıyla
 Metadata'ları okumak için önerilen yol, CBOR şifrelemesinin uzunluğunu belirlemek için son iki baytı okumak ve :ref:`metadata section<encoding-of-the-metadata-hash-in-the-bytecode>` bölümünde açıklandığı gibi bu veri bloğu üzerinde uygun bir şifre çözme işlemi gerçekleştirmektir.
 
 Yul Optimize Edici
-~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
 
 Eski bytecode optimizer ile birlikte, :doc:`Yul <yul>` optimizer artık derleyiciyi ``--optimize`` ile çağırdığınızda varsayılan olarak etkinleştirilir. Derleyiciyi ``--no-optimize-yul`` ile çağırarak devre dışı bırakılabilir. Bu çoğunlukla ABI coder v2 kullanan kodları etkiler.
 
