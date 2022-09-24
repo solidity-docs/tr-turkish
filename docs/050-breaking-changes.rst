@@ -15,7 +15,7 @@ adresini kontrol edin.
    bölümüne bakınız.
 
 Yalnızca Anlamsal (Semantik) Değişiklikleri
-=====================
+============================================
 
 Bu bölümde yalnızca semantik olan, dolayısıyla mevcut kodda yeni ve farklı davranışları gizleme potansiyeli olan değişiklikler listelenmektedir.
 
