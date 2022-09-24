@@ -1,6 +1,6 @@
-********************************
+*********************************************
 Solidity v0.5.0 İşleyişi Bozan Değişiklikler
-********************************
+*********************************************
 
 Bu bölüm, Solidity 0.5.0 sürümünde getirilen değişikliklerin, eski sürümlerdeki ana işleyişi bozan kısımlarını
 değişikliklerin arkasındaki gerekçeleri ve etkilenen kodun nasıl güncelleneceğini
