@@ -2,12 +2,12 @@
 
 .. _ABI:
 
-**************************
+*****************************
 Sözleşme ABI Spesifikasyonu
-**************************
+*****************************
 
 Temel Tasarım
-============
+===============
 
 Sözleşme Uygulama Binary Arayüzü (ABI), Ethereum ekosistemindeki sözleşmelerle hem
 blok zinciri dışından hem de sözleşmeler arası etkileşimde bulunmanın standart yoludur.
@@ -25,7 +25,7 @@ bilinen sözleşmeleri ele almaz.
 .. index:: ! selector; of a function
 
 Function Selector (Function Selector)
-=================
+===========================================
 
 Bir fonksiyon çağrısı için çağrı verisinin(call data) ilk dört baytı çağrılacak
 fonksiyonu belirtmektedir. Bu, fonksiyonun imzasının Keccak-256 hash'inin ilk (sol,
@@ -48,7 +48,7 @@ başka yerlerde de kullanılır, örneğin geri dönüş değerleri ve event arg
 fonksiyonu belirten dört bayt olmadan aynı şekilde şifrelenir.
 
 Tipler (Types)
-=====
+==================
 
 Aşağıdaki ana tipler mevcuttur:
 
@@ -96,7 +96,7 @@ Tipler, virgülle ayrılmış parantezler içine alınarak bir tuple olarak birl
 Tuple'ların tuple'larını, tuple'ların dizilerini ve benzerlerini oluşturmak mümkündür. Sıfır tuple oluşturmak da mümkündür ( genellikle ``n == 0``).
 
 Solidity'yi ABI Tipleriyle Eşleştirme
------------------------------
+--------------------------------------
 
 Solidity, tuple'lar haricinde yukarıda aynı adlandırmalarla sunulan tüm tipleri
 destekler. Öte yandan, bazı Solidity tipleri ABI tarafından desteklenmez. Aşağıdaki
@@ -124,7 +124,7 @@ sütunda ise bunları temsil eden ABI tipleri verilmiştir.
     herhangi bir elemanın değerini tutmaya yetebilecek büyüklükteki en küçük tamsayı tipiyle ifade ediliyordu.
 
 Şifreleme için Tasarım Kriterleri
-================================
+=============================================
 
 Şifreleme aşağıdaki özelliklere sahip olacak şekilde tasarlanmıştır; bu özellikler özellikle bazı bağımsız değişkenlerin iç içe diziler olması halinde kullanışlıdır:
 
@@ -220,7 +220,7 @@ uzunlukları değerlere değil sadece tiplere bağlıdır. ``head(X(i))`` değer
 Herhangi bir ``X`` için ``len(enc(X))`` değerinin 32’nin bir katı olduğuna dikkat edin.
 
 Fonksiyon Seçicisi ve Argüman Şifrelemesi
-=======================================
+====================================================
 
 Sonuç olarak, ``f`` fonksiyonuna ``a_1, ..., a_n`` parametreleri ile yapılan bir çağrı şu şekilde şifrelenir
 
@@ -297,7 +297,7 @@ Toplam olarak:
     0xa5643bf20000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000464617665000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003
 
 Dinamik Tiplerin Kullanımı
-====================
+=================================
 
 ``f(uint256,uint32[],bytes10,bytes)`` imzalı olan bir fonksiyona ``(0x123, [0x456, 0x789], "1234567890", "Hello, world!")`` değerleriyle yapılan herhangi bir çağrı aşağıdaki şekilde şifrelenecektir:
 
@@ -457,7 +457,7 @@ dolayısıyla ``g = 0x0000000000000000000000000000000000000000000000000000000000
 .. _abi_events:
 
 Event'ler
-======
+===========
 
 Event'ler Ethereum loglama/olay izleme protokolünün bir özetidir. Günlük girdileri
 sözleşmenin adresini, dört maddeye kadar bir dizi ve bazı değişken uzunluktaki binary
@@ -504,7 +504,7 @@ hem de değişken okunabilirlik elde edebileceklerdir.
 .. index:: error, selector; of an error
 
 Error'ler
-======
+=============
 
 Bir sözleşme içinde bir hata olması durumunda, sözleşme yürütme işlemini iptal etmek
 ve tüm durum değişikliklerini geri almak için özel bir opcode kullanabilir. Bu etkilere
@@ -744,7 +744,7 @@ yazılır, ancak bazı şifre çözücüler katı modu zorlayabilir. Solidity AB
 anda katı modu kullanmayı zorunlu kılmaz, ancak şifreleyici her zaman katı modda veri oluşturur.
 
 Standart Olmayan Paket Modu
-========================
+=====================================
 
 Solidity, ``abi.encodePacked()`` aracılığıyla standart olmayan bir paketlenmiş modu destekler:
 
@@ -800,7 +800,7 @@ Fonksiyonları çağırırken paketlenmiş şifreleme kullanılmadığından, bi
 .. _indexed_event_encoding:
 
 İndekslenmiş Event Parametrelerinin Şifrelenmesi
-====================================
+=================================================
 
 Değer türü olmayan indekslenmiş event parametreleri, yani diziler ve struct'lar
 doğrudan saklanmaz, bunun yerine bir şifrelemenin keccak256-hash'i saklanır. Bu
