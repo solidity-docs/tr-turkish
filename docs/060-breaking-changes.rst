@@ -50,7 +50,7 @@ Bu bölüm, kodunuzu değiştirmeniz gereken ve daha sonra başka bir şey yapan
 
 * Genellikle " fallback fonksiyonu" olarak adlandırılan isimsiz fonksiyon, ``fallback`` anahtar kelimesi kullanılarak tanımlanan yeni bir fallback fonksiyonuna ve ``receive`` anahtar kelimesi kullanılarak tanımlanan bir receive ether fonksiyonuna bölünmüştür.
 
-  * Mevcutsa, çağrı verisi boş olduğunda ( ether alınsın ya da alınmasın) ether alma fonksiyonu çağrılır. Bu fonksiyon örtük olarak ``payable``dır.
+  * Mevcutsa, çağrı verisi boş olduğunda ( ether alınsın ya da alınmasın) ether alma fonksiyonu çağrılır. Bu fonksiyon örtük olarak ``payable`` dır.
 
   * Yeni fallback fonksiyonu, başka hiçbir fonksiyon uyuşmadığında çağrılır (eğer receive ether fonksiyonu mevcut değilse, bu boş çağrı verisine sahip çağrıları da içerir). Bu fonksiyonu ``payable`` yapabilir ya da yapmayabilirsiniz. Eğer ``payable`` değilse, değer gönderen başka bir fonksiyonla eşleşmeyen işlemler geri dönecektir. Yeni fallback fonksiyonunu yalnızca bir yükseltme veya proxy modelini takip ediyorsanız uygulamanız gerekir.
 
