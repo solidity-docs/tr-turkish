@@ -1,6 +1,6 @@
-********************************
+*********************************************
 Solidity v0.7.0 İşleyişi Bozan Değişiklikler
-********************************
+*********************************************
 
 Bu bölüm, Solidity 0.7.0 sürümünde getirilen ana işleyişi bozan değişiklikleri,
 değişikliklerin arkasındaki gerekçeleri ve etkilenen kodun nasıl güncelleneceğini
@@ -9,7 +9,7 @@ adresini kontrol edin.
 
 
 Semantiğin Sessiz Değişiklikleri
-===============================
+=================================
 
 * Literallerin literal olmayanlarla üslendirilmesi ve kaydırılması (örneğin ``1 << x``
   veya ``2 ** x``) işlemi gerçekleştirmek için her zaman ``uint256`` (negatif olmayan
@@ -19,7 +19,7 @@ Semantiğin Sessiz Değişiklikleri
 
 
 Söz dizimindeki Değişiklikler
-=====================
+==============================
 
 * External fonksiyon ve sözleşme oluşturma çağrılarında, Ether ve gas artık yeni bir sözdizimi kullanılarak belirtiliyor: ``x.f{gaz: 10000, değer: 2 eter}(arg1, arg2)``. Eski sözdizimi -- ``x.f.gas(10000).value(2 ether)(arg1, arg2)`` -- bir hataya neden olacaktır.
 
@@ -45,17 +45,17 @@ Inline Assembly
 * ``x`` depolama işaretçisi değişkeninin yuvasına ve ofsetine ``x_slot`` ve ``x_offset`` yerine ``x.slot`` ve ``x.offset`` üzerinden erişilir.
 
 Kullanılmayan veya Güvenli Olmayan Özelliklerin Kaldırılması
-====================================
+==============================================================
 
 Depolama dışındaki eşleştirmeler(Mappings outside Storage)
-------------------------
+-----------------------------------------------------------
 
 * Bir struct veya dizi bir mapping içeriyorsa, yalnızca depolama alanında kullanılabilir. Önceden, mapping üyeleri bellekte sessizce atlanıyordu, bu da kafa karıştırıcı ve hataya açıktı.
 
 * Depolama alanındaki struct veya dizilere yapılan atamalar, mapping içeriyorsa çalışmaz. Önceden, mappingler kopyalama işlemi sırasında sessizce atlanıyordu, bu da yanıltıcı ve hataya açıktı.
 
 Fonksiyonlar ve Event'ler
---------------------
+--------------------------
 
 * Görünürlük (``public`` / ``internal``) artık constructor`lar için gerekli değildir: Bir sözleşmenin oluşturulmasını önlemek için, sözleşme ``abstract`` olarak işaretlenebilir. Bu, constructor'lar için görünürlük kavramını geçersiz kılar.
 
@@ -78,7 +78,7 @@ Bildiriler
 * ``var`` anahtar sözcüğü artık kullanılamıyor. Önceden, bu anahtar sözcük ayrıştırılır ancak bir tür hatasına ve hangi türün kullanılacağına ilişkin bir öneriye neden olurdu. Şimdi, bir ayrıştırıcı hatasıyla sonuçlanıyor.
 
 Arayüz Değişiklikleri
-=================
+=======================
 
 * JSON AST: Hex string değişmezlerini ``kind: "hexString"`` ile işaretleyin.
 * JSON AST: Değeri ``null`` olan üyeler JSON çıktısından kaldırılır.
@@ -86,7 +86,7 @@ Arayüz Değişiklikleri
 
 
 Kodunuzu nasıl güncelleyebilirsiniz?
-=======================
+=====================================
 
 Bu bölümde, her işleyişi bozan değişiklik için önceki kodun nasıl güncelleneceğine ilişkin ayrıntılı talimatlar verilmektedir.
 
