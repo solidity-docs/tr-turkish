@@ -1,13 +1,13 @@
-********************************
+*********************************************
 Solidity v0.8.0 İşleyişi Bozan Değişiklikler
-********************************
+*********************************************
 
 Bu bölüm, Solidity 0.8.0 sürümünde sunulan ana işleyişi bozan değişiklikleri vurgular.
 Tam liste için `sürüm değişiklik günlüğü <https://github.com/ethereum/solidity/releases/tag/v0.8.0>`_
 adresini kontrol edin.
 
 Semantikte Sessiz Değişiklikler
-===============================
+================================
 
 Bu bölüm, derleyici size bildirmeden mevcut kodun davranışını değiştirdiği değişiklikleri listeler.
 
@@ -38,7 +38,7 @@ Bu bölüm, derleyici size bildirmeden mevcut kodun davranışını değiştirdi
 * ``byte`` türü kaldırıldı. Bu ``bytes1`` türünün bir takma adıydı.
 
 Yeni Kısıtlamalar
-================
+==================
 
 Bu bölümde, mevcut sözleşmelerin artık derlenmemesine neden olabilecek değişiklikler listelenmektedir.
 
@@ -91,7 +91,7 @@ Bu bölümde, mevcut sözleşmelerin artık derlenmemesine neden olabilecek değ
 * Tekli negasyon artık işaretsiz tamsayılar üzerinde kullanılamaz, sadece işaretli tamsayılar üzerinde kullanılabilir.
 
 Arayüz Değişiklikleri
-=================
+======================
 
 * ``--combined-json`` çıktısı değişti: JSON alanları ``abi``, ``devdoc``, ``userdoc`` ve
   ``storage-layout`` artık alt nesnelerdir. 0.8.0'dan önce string olarak serileştiriliyorlardı.
@@ -103,7 +103,7 @@ Arayüz Değişiklikleri
 
 
 Kodunuzu nasıl güncelleyebilirsiniz?
-=======================
+=====================================
 
 - Aritmetik paketlemeye güveniyorsanız, her işlemi ``unchecked { ... }``.
 - İsteğe bağlı: SafeMath veya benzer bir kütüphane kullanıyorsanız, ``x.add(y)`` ifadesini ``x + y``, ``x.mul(y)`` ifadesini ``x * y`` vb. olarak değiştirin.
