@@ -280,7 +280,7 @@ Toplam olarak:
 Eğer ``sam``ı ``"dave"``, ``true`` ve ``[1,2,3]`` argümanlarıyla çağırmak isteseydik, toplam 292 bayt aktarmamız gerekirdi:
 
 - ``0xa5643bf2``: Method ID. Bu, ``sam(bytes,bool,uint256[])`` imzasından türetilmiştir. Burada ``uint`` yerine onun kanonik bir gösterimi olan ``uint256``’nın kullanıldığını unutmayın.
-- ``0x0000000000000000000000000000000000000000000000000000000000000060``: argüman bloğunun başlangıcından itibaren bayt cinsinden ölçülen ilk parametrelerinin (dinamik tipteki) veri bölümünün konumu. Bu örnekte, ``0x60``tır.
+- ``0x0000000000000000000000000000000000000000000000000000000000000060``: argüman bloğunun başlangıcından itibaren bayt cinsinden ölçülen ilk parametrelerinin (dinamik tipteki) veri bölümünün konumu. Bu örnekte, ``0x60`` tır.
 - ``0x0000000000000000000000000000000000000000000000000000000000000001``: ikinci parametre: boolean true.
 - ``0x00000000000000000000000000000000000000000000000000000000000000a0``: üçüncü parametrenin (dinamik tipteki) veri parçasının bayt cinsinden belirlenen konumu. Bu durumda, ``0xa0``dır.
 - ``0x0000000000000000000000000000000000000000000000000000000000000004``: ilk argümanın veri parçası, bayt dizisinin elemanlar cinsinden uzunluğu ile başlar, bu örnekte 4'tür.
