@@ -1,6 +1,6 @@
-********************************
+*********************************************
 Solidity v0.6.0 İşleyişi Bozan Değişiklikler
-********************************
+*********************************************
 
 Bu bölüm, Solidity 0.6.0 sürümünde getirilen ana işleyişi bozan değişiklikleri,
 değişikliklerin arkasındaki gerekçeleri ve etkilenen kodun nasıl güncelleneceğini
@@ -9,7 +9,7 @@ adresini kontrol edin.
 
 
 Derleyicinin Uyaramayabileceği Değişiklikler
-=========================================
+=============================================
 
 Bu bölümde, kodunuzun davranışının derleyici size haber vermeden değişebileceği değişiklikler listelenmektedir.
 
@@ -40,11 +40,11 @@ listeler. Konuların çoğu için derleyici öneriler sağlayacaktır.
 
 
 Semantik ve Sentaktik Değişiklikler
-==============================
+====================================
 
 Bu bölüm, kodunuzu değiştirmeniz gereken ve daha sonra başka bir şey yapan değişiklikleri listeler.
 
-* External fonksiyon tiplerinden ``address``e dönüşümlere artık izin verilmiyor. Bunun yerine harici fonksiyon tipleri, mevcut ``selector`` üyesine benzer şekilde ``address`` adlı bir üyeye sahiptir.
+* External fonksiyon tiplerinden ``address`` e dönüşümlere artık izin verilmiyor. Bunun yerine harici fonksiyon tipleri, mevcut ``selector`` üyesine benzer şekilde ``address`` adlı bir üyeye sahiptir.
 
 * Dinamik depolama dizileri için ``push(value)`` fonksiyonu artık yeni uzunluğu döndürmüyor (hiçbir şey döndürmüyor).
 
@@ -56,7 +56,7 @@ Bu bölüm, kodunuzu değiştirmeniz gereken ve daha sonra başka bir şey yapan
 
 
 Yeni Özellikler
-============
+===============
 
 Bu bölümde Solidity 0.6.0 öncesinde mümkün olmayan veya başarılması daha zor olan şeyler listelenmektedir.
 
@@ -69,7 +69,7 @@ Bu bölümde Solidity 0.6.0 öncesinde mümkün olmayan veya başarılması daha
 
 
 Arayüz Değişiklikleri
-=================
+======================
 
 Bu bölümde, dilin kendisiyle ilgili olmayan ancak derleyicinin arayüzleri üzerinde
 etkisi olan değişiklikler listelenmektedir. Bunlar derleyiciyi komut satırında nasıl
@@ -77,12 +77,12 @@ kullandığınızı, programlanabilir arayüzünü nasıl kullandığınızı ve
 üretilen çıktıyı nasıl analiz ettiğinizi değiştirebilir.
 
 Yeni Hata Raporlayıcısı
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Komut satırında daha erişilebilir hata mesajları üretmeyi amaçlayan yeni bir hata raporlayıcı tanıtıldı. Öntanımlı olarak etkindir, ancak ``--old-reporter`` geçildiğinde kullanımdan kaldırılmış eski hata raporlayıcısına geri dönülür.
 
 Metadata Hash Seçenekleri
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Derleyici artık metadata dosyasının `IPFS <https://ipfs.io/>`_ hash'ini varsayılan olarak bytecode'un sonuna ekliyor (ayrıntılar için :doc:`contract metadata <metadata>` belgesine bakın). 0.6.0'dan önce derleyici varsayılan olarak `Swarm <https://ethersphere.github.io/swarm-home/>`_ hash'ini ekliyordu ve bu davranışı desteklemeye devam etmek için yeni komut satırı seçeneği ``--metadata-hash`` tanıtıldı. Bu, ``--metadata-hash`` komut satırı seçeneğine değer olarak ``ipfs`` veya ``swarm`` değerlerinden birini geçirerek üretilecek ve eklenecek hash'i seçmenize olanak tanır. ``none`` değerinin geçilmesi hash'i tamamen kaldırır.
 
@@ -96,7 +96,7 @@ Yul Optimize Edici
 Eski bytecode optimizer ile birlikte, :doc:`Yul <yul>` optimizer artık derleyiciyi ``--optimize`` ile çağırdığınızda varsayılan olarak etkinleştirilir. Derleyiciyi ``--no-optimize-yul`` ile çağırarak devre dışı bırakılabilir. Bu çoğunlukla ABI coder v2 kullanan kodları etkiler.
 
 C API Değişiklikleri
-~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ``libsolc`` C API`sini kullanan istemci kodu artık derleyici tarafından kullanılan belleğin
 kontrolünü elinde tutmaktadır. Bu değişikliği tutarlı hale getirmek için ``solidity_free``
@@ -105,13 +105,13 @@ fonksiyonları eklendi ve ``solidity_compile`` artık ``solidity_free()`` ile a�
 
 
 Kodunuzu nasıl güncelleyebilirsiniz?
-=======================
+=====================================
 
 Bu bölüm, her işleyişi bozan değişiklik için önceki kodun nasıl güncelleneceğine ilişkin ayrıntılı talimatlar vermektedir.
 
 * ``f`` external fonksiyon tipinde olduğu için ``address(f)`` ifadesini ``f.address`` olarak değiştirin.
 
-* ``fonksiyon () external [payable] { ... }`` yerine ``receive() external payable { ... }``, ``fallback() external [payable] { ... }` veya her ikisiyle. Mümkün olduğunda sadece ``receive`` fonksiyonunu kullanmayı tercih edin.
+* ``fonksiyon () external [payable] { ... }`` yerine ``receive() external payable { ... }``, ``fallback() external [payable] { ... }`` veya her ikisiyle. Mümkün olduğunda sadece ``receive`` fonksiyonunu kullanmayı tercih edin.
 
 * ``uint length = array.push(value)`` ifadesini ``array.push(value);`` olarak değiştirin. Yeni uzunluğa ``array.length`` aracılığıyla erişilebilir.
 
