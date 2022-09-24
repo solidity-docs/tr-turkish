@@ -115,4 +115,4 @@ Kodunuzu nasıl güncelleyebilirsiniz?
 - ``msg.sender.transfer(x)`` öğesini ``payable(msg.sender).transfer(x)`` olarak değiştirin veya ``address payable`` türü saklanmış bir değişken kullanın.
 - ``x**y**z`` ifadesini ``(x**y)**z`` olarak değiştirin.
 - ``log0``, ..., ``log4`` yerine inline assembly kullanın.
-- İşaretsiz tamsayıları, türün maksimum değerinden çıkarıp 1 ekleyerek negatifleştirin (örneğin ``type(uint256).max - x + 1``, `x`in sıfır olmadığından emin olarak)
+- İşaretsiz tamsayıları, türün maksimum değerinden çıkarıp 1 ekleyerek negatifleştirin (örneğin ``type(uint256).max - x + 1``, ``x`` in sıfır olmadığından emin olarak)
