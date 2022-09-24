@@ -352,7 +352,7 @@ ancak şifreleme işleminin en atomik kısımlarından başlayalım:
 
 Ardından, ilk kök dizisinin ``[[1, 2], [3]]`` ikinci gömülü dinamik dizisinin ``[3]`` uzunluğunu ve verilerini şifreleyeceğiz:
 
-- ``0x0000000000000000000000000000000000000000000000000000000000000001`` (ikinci dizideki eleman sayısı, 1; eleman ``3``tür)
+- ``0x0000000000000000000000000000000000000000000000000000000000000001`` (ikinci dizideki eleman sayısı, 1; eleman ``3`` tür)
 - ``0x0000000000000000000000000000000000000000000000000000000000000003`` (ilk eleman)
 
 Daha sonra ``[1, 2]`` ve ``[3]`` dinamik dizileri için ``a`` ve ``b`` ofsetlerini
