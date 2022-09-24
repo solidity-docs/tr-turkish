@@ -176,12 +176,11 @@ on the type of ``X`` being
   Aksi takdirde, yani ``Ti`` dinamik ise:
 
     ``head(X(i)) = enc(len( head(X(1)) ... head(X(k)) tail(X(1)) ... tail(X(i-1)) ))``
-``tail(X(i)) = enc(X(i))`` 
+    ``tail(X(i)) = enc(X(i))`` 
 
-
-Dinamik durumlarda, ``head(X(i))`` ifadesi iyi tanımlanmıştır çünkü başlık parçalarının
-uzunlukları değerlere değil sadece tiplere bağlıdır. ``head(X(i))`` değeri, ``enc(X)``
-öğesinin başlangıç noktasına göre ``tail(X(i))`` öğesinin başlangıç noktasındaki ofset değeridir.
+    Dinamik durumlarda, ``head(X(i))`` ifadesi iyi tanımlanmıştır çünkü başlık parçalarının
+    uzunlukları değerlere değil sadece tiplere bağlıdır. ``head(X(i))`` değeri, ``enc(X)``
+    öğesinin başlangıç noktasına göre ``tail(X(i))`` öğesinin başlangıç noktasındaki ofset değeridir.
 
 - Herhangi bir ``T`` ve ``k`` için ``T[k]``:
 
