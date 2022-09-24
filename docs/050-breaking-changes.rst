@@ -34,7 +34,7 @@ Bu bölümde yalnızca semantik olan, dolayısıyla mevcut kodda yeni ve farklı
 * Tangerine Whistle'dan başlayarak harici fonksiyon çağrıları ile mevcut tüm gazı iletin.
 
 Semantik ve Sentaktik Değişiklikler
-==============================
+====================================
 
 Bu bölümde sözdizimi ve anlambilimi etkileyen değişiklikler vurgulanmaktadır.
 
