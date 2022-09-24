@@ -67,7 +67,7 @@ Konuların çoğu için derleyici öneriler sağlayacaktır.
 * Anlaşılabilirlik nedeniyle, standart girdi kaynak olarak kullanıldığında komut satırı arayüzü artık ``-`` gerektirmektedir. Translated with www.DeepL.com/Translator (free version)
 
 Kullanımdan Kaldırılan Öğeler
-===================
+==============================
 
 Bu bölümde, önceki özellikleri veya sözdizimini kullanımdan kaldıran değişiklikler listelenmektedir.  Bu değişikliklerin çoğunun ``v0.5.0`` deneysel modunda zaten etkin olduğunu unutmayın.
 
@@ -89,7 +89,7 @@ Komut Satırı ve JSON Arayüzleri
 * Bağlantısız ikili hex dosyalarında, kütüphane adres yer tutucuları artık ``$...$`` ile çevrelenmiş tam nitelikli kütüphane adının keccak256 hash'inin ilk 36 hex karakteridir. Önceden, sadece tam nitelikli kütüphane adı kullanılıyordu. Bu, özellikle uzun yollar kullanıldığında çakışma olasılığını azaltır. Binary dosyalar artık bu yer tutuculardan tam nitelikli adlara bir eşleme listesi de içeriyor.
 
 Constructor'lar
-------------
+----------------
 
 * Constructor'lar artık ``constructor`` anahtar sözcüğü kullanılarak tanımlanmalıdır.
 
@@ -100,7 +100,7 @@ Constructor'lar
 * Argümanları olan ancak argüman sayısı yanlış olan bir constructor çağrılmasına artık izin verilmemektedir.  Argüman vermeden yalnızca bir kalıtım ilişkisi belirtmek istiyorsanız, parantezleri hiç sağlamayın.
 
 Fonksiyonlar
----------
+-------------
 
 * Fonksiyon ``callcode`` artık izin verilmiyor (``delegatecall`` lehine). Inline assembly ile kullanmak hala mümkündür.
 
@@ -118,7 +118,7 @@ Dönüşümler
 * Onaltılık değişmezlerden farklı boyuttaki ``bytesXX`` türlerine açık ve örtük dönüşümlere artık izin verilmiyor.
 
 Literaller ve Sonekler
----------------------
+-----------------------
 
 * Artık yıllarla ilgili karmaşıklıklar ve karışıklıklar nedeniyle ``years`` birim gösterimine artık izin verilmemektedir.
 
@@ -129,7 +129,7 @@ Literaller ve Sonekler
 * Onaltılık sayılar için ``0X`` önekine izin verilmez, sadece ``0x`` mümkündür.
 
 Değişkenler
----------
+------------
 
 * Anlaşılabilirlik için boş structların tanımlanmasına artık izin verilmiyor.
 
@@ -150,7 +150,7 @@ Değişkenler
 * Uzunluğu sıfır olan sabit boyutlu dizilere artık izin verilmemektedir.
 
 Sözdizimi
-------
+----------
 
 * Fonksiyon durumu değişebilirlik değiştiricisi olarak ``constant`` kullanımına artık izin verilmemektedir.
 
@@ -181,7 +181,7 @@ Sözdizimi
 .. _interoperability:
 
 Eski Sözleşmelerle Birlikte Çalışabilirlik
-=====================================
+===========================================
 
 Solidity'nin v0.5.0'dan önceki sürümleri için yazılmış sözleşmeler için arayüzler
 tanımlayarak (veya tam tersi şekilde) arayüz oluşturmak hala mümkündür. Aşağıdaki
