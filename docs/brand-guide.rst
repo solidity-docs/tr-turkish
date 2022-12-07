@@ -1,6 +1,6 @@
-####################
+########################
 Solidity Marka Kılavuzu
-####################
+########################
 
 Bu marka rehberi, Solidity'nin marka politikası ve logo kullanım yönergeleri hakkında bilgi içerir.
 

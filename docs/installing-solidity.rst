@@ -106,7 +106,7 @@ tarafından yüklenmesi gereken herhangi bir harici dosyaya referans göstermez)
     docker run ethereum/solc:stable --standard-json < input.json > output.json
 
 Linux Paketleri
-==============
+================
 
 Solidity'nin binary paketleri `solidity/releases <https://github.com/ethereum/solidity/releases>`_ adresinde mevcuttur.
 
@@ -160,7 +160,7 @@ Solidity'nin en son değişiklikleri içeren son çıkan geliştirme sürümün�
 
 
 macOS Paketleri
-==============
+================
 
 Solidity derleyicisini, kaynaktan oluşturulmuş bir sürüm olarak Homebrew aracılığıyla
 dağıtıyoruz. Önceden oluşturulmuş olan “bottles"lar(binary paketleri)
@@ -352,7 +352,7 @@ Aşağıda Solidity'nin tüm geliştirmeleri için bağımlılıklar verilmişti
     için lütfen ``scripts/tests.sh`` dosyasına ``--no-smt`` seçeneğini de eklemeyi unutmayın.
 
 Minimum Derleyici Sürümleri
-^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Aşağıdaki C++ derleyicileri ve minimum sürümleri Solidity kod tabanını derleyebilir:
 
@@ -448,7 +448,7 @@ Solidity'yi çatallamalı(fork) ve kişisel çatalınızı(fork) ikinci bir remo
     (github tarafından sağlanan "Kaynak kodu" değil).
 
 Komut Satırı Kullanarak Derlemek
-------------------
+----------------------------------
 
 **Derlemeden önce Harici Bağımlılıkları(yukarıda bulunan) yüklediğinizden emin olun.**
 
@@ -499,14 +499,14 @@ Alternatif olarak, Windows için komut satırında aşağıdaki gibi bir derleme
     cmake --build . --config Release
 
 CMake Ayarları
-=============
+===============
 
 CMake ayarlarının ne olduğunu merak ediyorsanız ``cmake .. -LH`` komutunu çalıştırın.
 
 .. _smt_solvers_build:
 
 SMT Çözücüleri
------------
+---------------
 Solidity, SMT çözücülerine karşı derlenebilir ve sistemde bulunurlarsa default(varsayılan)
 olarak bunu yapacaklardır. Her çözücü bir `cmake` seçeneği ile devre dışı bırakılabilir.
 
@@ -527,7 +527,7 @@ Yapı klasörünün içinde bunları devre dışı bırakabilirsiniz, çünkü v
     cmake .. -DUSE_CVC4=OFF -DUSE_Z3=OFF
 
 Sürüm Dizgisi (String) Detayları
-============================
+=================================
 
 Solidity sürüm dizgisi dört bölümden oluşur:
 

@@ -2,9 +2,9 @@
 
 .. _functions:
 
-*********
+*************
 Fonksiyonlar
-*********
+*************
 
 Fonksiyonlar akıllı sözleşmelerin içerisinde veya dışarısında tanımlanabilir.
 
@@ -44,13 +44,13 @@ kullanan her bir akıllı sözleşmeye eklenir, tıpkı internal kütüphane fon
 .. _function-parameters-return-variables:
 
 Fonksiyon Parametreleri ve Return Parametreleri
-========================================
+================================================
 
 Fonksiyonlar tipi belirtilmiş parametreler alabilir ve diğer birçok programlama
 dilinin aksine keyfi sayıda değişkeni return edebilirler.
 
 Fonksiyon Parametreleri
--------------------
+------------------------
 
 Fonksiyon parametreleri değişkenlerle aynı şekilde tanımlanırlar.
 Ayrıca kullanılmayan parametreler gözardı edilebilirler.
@@ -86,7 +86,7 @@ değişkenlere atanabilirler.
 .. index:: return array, return string, array, string, array of strings, dynamic array, variably sized array, return struct, struct
 
 Return Değişkenleri
-----------------
+--------------------
 
 Fonksiyon return değişkenleri aynı şekilde ``returns`` sözcüğünden sonra tanımlanır.
 
@@ -155,14 +155,14 @@ bir ifade kullanabilirsiniz. Return değişkeni sayısı ve tipleri, bir
 .. _state-mutability:
 
 State Değişkenliği
-================
+===================
 
 .. index:: ! view function, function;view
 
 .. _view-functions:
 
 View Fonksiyonlar
---------------
+------------------
 
 ``view`` ile tanımlanan fonksiyonlar state'te herhangi bir değişikliği yapamaz, sadece
 state'deki değerleri okuyabilirler.
@@ -217,7 +217,7 @@ Aşağıdaki ifadeler state değişikliğini temsil eder:
 .. _pure-functions:
 
 Pure Fonksiyonlar
---------------
+------------------
 
 Fonksiyonlar ``pure`` olarak tanımlanabilir ve bu şekilde tanımlanan fonksiyonlar state'i okuyamaz ve
 değişiklik yapamaz. Pure fonksiyonlar içerisinde ``immutable`` değişkenler okuyabilir durumdadır.
@@ -285,7 +285,7 @@ Bu davranış ``STATICCALL`` için de geçerlidir.
 .. _receive-ether-function:
 
 Receive Ether Fonksiyonu
-----------------------
+-------------------------
 
 Bİr akıllı sözleşme sadece bir adet ``receive`` fonksiyonuna sahip olabilir. Bu fonksiyon
 şu şekilde tanımlanır: ``receive() external payable { ... }`` (function sözcüğü olmadan).
@@ -353,7 +353,7 @@ Aşağıdaki Sink akıllı sözleşmesi ``receive`` kullanımına bir örnektir.
 .. _fallback-function:
 
 Fallback Fonksiyonu
------------------
+---------------------
 
 Bir akıllı sözleşme sadece bir adet ``fallback`` fonksiyonuna sahip olabilir. Bu fonksiyon
 şu iki şekilde tanımlanabilir: ``fallback () external [payable]`` veya 
@@ -463,7 +463,7 @@ Diğer herhangi bir fonksiyon gibi fallback fonksiyonu da yeterli gaza sahip old
 .. _overload-function:
 
 Fonksiyon Overloading
-====================
+=======================
 
 Bir akıllı sözleşme aynı isimde fakat farklı parametre tiplerine sahip fonksiyonlara sahip olabilir.
 Bu işlem "overloading" olarak adlandırılır ve ayrıca türetilen fonksiyonlar için de geçerlidir.
@@ -514,7 +514,7 @@ Yukarıdaki iki ``f`` fonksiyonu da ABI'leri aracılığı ile address tipinden 
 kabul ediyor, her ne kadar Solidity içerisinde farklı tipler kabul etseler de.
 
 Overload Ayrıştırma ve Parametre Eşleştirme
------------------------------------------
+--------------------------------------------
 
 Overload edilmiş fonksiyonlar, geçerli kapsamdaki fonksiyon tanımlamalarını fonksiyon çağrısında
 sağlanan parametrelerle eşleştirerek seçilir. Tüm parametreler implicit olarak beklenen türlere

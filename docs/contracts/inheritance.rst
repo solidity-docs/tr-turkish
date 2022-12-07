@@ -190,9 +190,9 @@ explicitly in the final override, but this function will bypass
         function destroy() public override(Base1, Base2) { super.destroy(); }
     }
 
-``Base2``, ``super`` işlevini çağırırsa, bu işlevi temel sözleşmelerinden
+``Base2`` , ``super`` işlevini çağırırsa, bu işlevi temel sözleşmelerinden
 birinde çağırmaz. Bunun yerine, son kalıtım grafiğindeki bir sonraki temel 
-sözleşmede bu işlevi çağırır, bu nedenle ``Base1.destroy()``u çağırır 
+sözleşmede bu işlevi çağırır, bu nedenle ``Base1.destroy()`` u çağırır 
 (son kalıtım dizisinin -- en türetilmiş sözleşmeyle başlayarak şöyle 
 olduğuna dikkat edin: Final, Base2, Base1, Destructible, owned). 
 super kullanılırken çağrılan asıl işlev, türü bilinmesine rağmen kullanıldığı 
@@ -203,7 +203,7 @@ sınıf bağlamında bilinmemektedir. Bu, sıradan sanal yöntem araması için 
 .. _function-overriding:
 
 Fonksiyon Override Etme
-===================
+========================
 
 Temel fonksiyonlar ``virtual`` olarak işaretlenmişse, davranışlarını
 değiştirmek için override edilebilirler. Override eden fonksiyon
@@ -337,7 +337,7 @@ bir external fonksiyonu override edebilir:
 .. _modifier-overriding:
 
 Modifier Override Etme
-===================
+=======================
 
 Fonksiyon modifier'ları birbirlerini override edebilirler. Bu aynı
 :ref:`fonksiyon override etmedeki <function-overriding>` gibidir
@@ -390,7 +390,7 @@ durumunu belirtmelidir.
 .. _constructor:
 
 Constructor'lar
-============
+================
 
 Constructor isteğe bağlı olarak tanımlanan özel fonksiyonlardan biridir ve
 ``constructor`` sözcüğü ile tanımlanır. Bu fonksiyon akıllı sözleşme oluşumu sırasında
@@ -443,7 +443,7 @@ constructor'ları aracılığıyla atanır.
 .. index:: ! base;constructor, inheritance list, contract;abstract, abstract contract
 
 Temel Constructor'lar için Argümanlar
-===============================
+======================================
 
 Tüm temel akıllı sözleşmelerin constructor'ları, aşağıda açıklanan doğrusallaştırma kurallarına göre çağrılacaktır. 
 Temel akıllı sözleşmelerin argümanları varsa, türetilmiş akıllı sözleşmelerin hepsini belirtmesi gerekir. 

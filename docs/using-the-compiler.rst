@@ -1,24 +1,24 @@
-******************
+***********************
 Derleyicinin Kullanımı
-******************
+***********************
 
 .. index:: ! commandline compiler, compiler;commandline, ! solc
 
 .. _commandline-compiler:
 
 Komut Satırı Derleyicisinin Kullanımı
-******************************
+**************************************
 
 .. note::
     Bu bölüm, komut satırı modunda kullanılsa bile :ref:`solcjs <solcjs>` için geçerli değildir.
 
 Temel Kullanım
------------
+---------------
 
 Solidity deposunun(repository) derleme kaynaklarından biri de Solidity komut satırı derleyicisi olan ``solc`` dur. ``solc --help`` komutunu kullanmak size tüm seçeneklerin açıklamalarını verir. Derleyici, soyut bir sözdizimi ağacı (parse tree) üzerinde basit binary ve assembly'den gaz kullanımı tahminlerine kadar çeşitli çıktılar üretebilir. Sadece tek bir dosyayı derlemek istiyorsanız, ``solc --bin sourceFile.sol`` şeklinde çalıştırdığınızda binary dosyayı yazdıracaktır. Eğer ``solc``un daha gelişmiş çıktı çeşitlerinden bazılarını elde etmek istiyorsanız, ``solc -o outputDirectory --bin --ast-compact-json --asm sourceFile.sol`` kullanarak her öğeyi ayrı dosyalara çıktı olarak vermesini söylemek muhtemelen daha iyi bir seçenek olacaktır.
 
 Optimize Edici Seçenekleri
------------------
+---------------------------
 
 Sözleşmenizi deploy etmeden önce, ``solc --optimize --bin sourceFile.sol`` kullanarak
 derleme yaparken optimize ediciyi etkinleştirmelisiniz. Standart olarak optimize edici,
@@ -71,7 +71,7 @@ tartışılması için lütfen :ref:`path resolution <path-resolution>` bölüm�
 .. _library-linking:
 
 Kütüphane Bağlantıları (Library Linking)
----------------
+-----------------------------------------
 
 Sözleşmeleriniz :ref:`libraries <libraries>` kullanıyorsa, bytecode'un ``__$53aea86b7d70b31448b230b20ae141a537$__``
 şeklinde alt dizeler içerdiğini fark edeceksiniz. Bunlar gerçek kütüphane adresleri
@@ -146,7 +146,7 @@ anahtarını kullanın:
     }
 
 Hedef Seçenekleri
---------------
+------------------
 
 Aşağıda hedef EVM sürümlerinin bir listesi ve her sürümde derleyiciyle ilgili yapılan
 değişiklikler yer almaktadır. Her sürüm arasında geriye dönük uyumluluk garanti edilmez.
@@ -603,7 +603,7 @@ Girdi Açıklaması
 
 
 Hata Türleri
-~~~~~~~~~~~
+~~~~~~~~~~~~~~~
 
 1. ``JSONError``: JSON girdisi gerekli biçime uymuyor, örneğin girdi bir JSON nesnesi değil, dil desteklenmiyor vb.
 2. ``IOError``: Çözümlenemeyen URL veya sağlanan kaynaklardaki hash uyuşmazlığı gibi IO ve içe aktarma işleme hataları.
@@ -624,7 +624,7 @@ Hata Türleri
 .. _compiler-tools:
 
 Derleyici Araçları
-**************
+*******************
 
 solidity-upgrade
 ----------------
@@ -647,7 +647,7 @@ gerektirecek olanları hala desteklemektedir.
     dikkatli kullanın.
 
 Nasıl Çalışır?
-~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
 
 Solidity kaynak dosya(lar)ını ``solidity-upgrade [files]``'a aktarabilirsiniz. Bunlar,
 geçerli kaynak dosyanın dizini dışındaki dosyalara referans veren ``import`` ifadesini
@@ -685,7 +685,7 @@ günceldir ve derleyicinin en son sürümüyle derlenebilir.
 .. _upgrade-modules:
 
 Kullanılabilir Yükseltme Modülleri
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 +----------------------------+---------+--------------------------------------------------+
 | Modül                      | Versiyon| Açıklama                                         |
@@ -723,7 +723,7 @@ Daha fazla ayrıntı için lütfen :doc:`0.5.0 release notes <050-breaking-chang
 ve :doc:`0.8.0 release notes <080-breaking-changes>` bölümlerini okuyun.
 
 Özet bilgi(Synopsis)
-~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: none
 
@@ -747,10 +747,9 @@ ve :doc:`0.8.0 release notes <080-breaking-changes>` bölümlerini okuyun.
 
 
 Hata Raporları / Özellik Talepleri
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Bir hata bulduysanız veya bir özellik isteğiniz varsa, lütfen Github'da
-`<https://github.com/ethereum/solidity/issues/new/choose> bir sorun gönderin.`_
+Bir hata bulduysanız veya bir özellik isteğiniz varsa, lütfen Github'da `<https://github.com/ethereum/solidity/issues/new/choose> bir sorun gönderin.`_
 
 
 Örnek
@@ -792,7 +791,7 @@ Bir hata bulduysanız veya bir özellik isteğiniz varsa, lütfen Github'da
 
 
 Gerekli Değişiklikler
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
 
 Yukarıdaki sözleşme 0.7.0'dan itibaren derlenmeyecektir. Sözleşmeyi mevcut Solidity
 sürümüyle güncel hale getirmek için aşağıdaki yükseltme modüllerinin çalıştırılması
@@ -801,7 +800,7 @@ lütfen :ref:`available modules <upgrade-modules>` belgelendirmesini okuyun.
 
 
 Yükseltmenin Çalıştırılması
-^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Yükseltme modüllerinin ``--modules`` argümanı kullanılarak açıkça belirtilmesi önerilir.
 

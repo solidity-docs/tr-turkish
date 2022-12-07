@@ -63,8 +63,8 @@ tercih edeceğiniz yola göre :ref:`indirme sayfası <installing-solidity>`
 'da bulunan adımları izleyin.
 
 .. hint::
-  `Remix IDE <https://remix.ethereum.org>`_ ile birlikte kod örneklerini doğrudan tarayıcınızda
-  deneyebilirsiniz. Remix, Solidity'yi yerel olarak yüklemenize gerek kalmadan Solidity akıllı sözleşmelerini yazmanıza,
+   `Remix IDE <https://remix.ethereum.org>`_ ile birlikte kod örneklerini doğrudan tarayıcınızda
+   deneyebilirsiniz. Remix, Solidity'yi yerel olarak yüklemenize gerek kalmadan Solidity akıllı sözleşmelerini yazmanıza,
    dağıtmanıza ve yönetmenize olanak tanıyan web tarayıcısı tabanlı bir IDE'dir.
 
 .. warning::
@@ -112,7 +112,7 @@ arasında geçiş yapabilirsiniz.
    lütfen `çeviri kılavuzuna <https://github.com/solidity-docs/translation-guide>`_ bakın.
 
 İçindekiler
-========
+============
 
 :ref:`Anahtar Kelime Dizini <genindex>`, :ref:`Arama Sayfası <search>`
 

@@ -1,13 +1,13 @@
-********************************
+**********************************
 Solidity Kaynak Dosyasının Düzeni
-********************************
+**********************************
 
 Kaynak dosyalar, istenilen sayıda :ref:`contract definitions<contract_structure>`, import_ ,:ref:`pragma<pragma>` ve :ref:`using for<using-for>` yönergeleri ile :ref:`struct<structs>`,:ref:`enum<enums>`, :ref:`function<functions>`, :ref:`error<errors>` ve :ref:`constant variable<constants>` tanımları içerebilir.
 
 .. index:: ! license, spdx
 
 SPDX Lisans Tanımlayıcısı
-=======================
+==========================
 
 Kaynak kodlarının erişilebilir olması, akıllı sözleşmeleri daha güvenilir
 hale getirebilir. Kaynak kodunun erişilebilir hale getirilmesi her zaman telif hakkı ile ilgili yasal sorunlara yol açtığından, Solidity derleyicisi, makine tarafından okunabilen `SPDX lisans tanımlayıcılarının <https://spdx.org>`_ kullanılmasını teşvik eder:
@@ -35,7 +35,7 @@ SPDX lisans tanımlayıcılarının nasıl kullanılacağı hakkında daha fazla
 .. _pragma:
 
 Pragmalar
-=======
+==========
 ``Pragma`` anahtar sözcüğü, belirli derleyici özelliklerini veya kontrollerini etkinleştirmek için
 kullanılır. Bir pragma yönergesi, her zaman bir kaynak dosya için yereldir, bu nedenle pragmayı tüm projenizde etkinleştirmek istiyorsanız tüm dosyalarınıza eklemeniz gerekir. Başka bir dosyayı :ref:`içe aktarırsanız<import>` o dosyadaki pragma, içe aktarılan dosyaya otomatik olarak _*uygulanmaz*._
 .. index:: ! pragma, version
@@ -43,7 +43,7 @@ kullanılır. Bir pragma yönergesi, her zaman bir kaynak dosya için yereldir, 
 .. _version_pragma:
 
 Sürüm Pragması
---------------
+---------------
 
 Uyumsuz değişiklikler getirebilecek gelecekteki derleyici sürümleriyle derlemeyi önlemek için kaynak dosyalarına bir sürüm pragması eklenebilir (ve eklenmelidir). Bunları mutlak minimumda tutmaya ve anlambilimdeki değişikliklerin sözdiziminde de değişiklik gerektireceği şekilde tanıtmaya çalışıyoruz, ancak bu her zaman mümkün olmayabilir. Bu nedenle, en azından işleyişi bozan değişiklikler içeren sürümler için değişiklik günlüğünü okumak her zaman iyi bir fikirdir. Bu sürümler her zaman ``0.x.0`` veya ``x.0.0`` biçiminde versiyonlara sahiptir.
 
@@ -55,13 +55,13 @@ Derleyici sürümü için daha karmaşık kurallar belirlemek mümkündür,
 bunlar `npm<https://docs.npmjs.com/cli/v6/using-npm/semver>`_ tarafından kullanılan sözdizimin aynısına uyar.
 
 .. note::
- Sürüm pragmasının kullanılması, derleyicinin sürümünü _*değiştirmez*._
-Derleyicinin özelliklerini etkinleştirme veya devre dışı bırakma işlevine de sahip _*değildir*._
-Yalnızca, derleyiciye kendi sürümünün, pragmanın gerektirdiği sürüm ile uyumlu olup olmadığını kontrol
-etmesi için yönerge verir. Sürümler uyumlu değilse derleyici hata verir.
+  Sürüm pragmasının kullanılması, derleyicinin sürümünü _*değiştirmez*._
+  Derleyicinin özelliklerini etkinleştirme veya devre dışı bırakma işlevine de sahip _*değildir*._
+  Yalnızca, derleyiciye kendi sürümünün, pragmanın gerektirdiği sürüm ile uyumlu olup olmadığını kontrol
+  etmesi için yönerge verir. Sürümler uyumlu değilse derleyici hata verir.
 
 ABI Kodlayıcı Pragması
-----------------
+-----------------------
 
 ``pragma abicoder v1`` veya ``pragma abicoder v2`` kullanarak ABI kodlayıcı ile
 kod çözücü iki uygulama arasında seçim yapabilirsiniz.
@@ -73,14 +73,15 @@ Yeni kodlayıcı tarafından desteklenen türler, eskisi tarafından desteklenen
 
 .. note::
   Bu pragma, en nihayetinde kodun nerede sonlandığına bakılmaksızın, etkinleştirildiği dosyada tanımlanan tüm kodlar için geçerlidir. Yani, kaynak dosyası ABI coder v1 ile derlenmek üzere seçilen bir sözleşme, başka bir
-sözleşmeden kalıt alarak, yeni kodlayıcıyı kullanan kod içermeye devam edebilir. Bu, yeni türlerin, external fonksiyon imzalarında değil, yalnızca dahili olarak kullanılması halinde mümkündür.
+  sözleşmeden kalıt alarak, yeni kodlayıcıyı kullanan kod içermeye devam edebilir. Bu, yeni türlerin, external fonksiyon imzalarında değil, yalnızca dahili olarak kullanılması halinde mümkündür.
 
 .. note::
-  
-Solidity 0.7.4'e kadar, ``pragma experimental ABIEncoderV2`` kullanarak ABI kodlayıcı v2'yi seçmek mümkündü, ancak varsayılan olduğu için kodlayıcı v1'i açık bir şekilde seçmek mümkün değildi.
+  Solidity 0.7.4'e kadar, ``pragma experimental ABIEncoderV2`` kullanarak ABI kodlayıcı v2'yi seçmek mümkündü, ancak varsayılan olduğu için kodlayıcı v1'i açık bir şekilde seçmek mümkün değildi.
+
 .. index:: ! pragma, deneysel
 
 .. _experimental_pragma:
+
 Deneysel Pragma
 -------------------
 
@@ -91,8 +92,8 @@ ABIEncoderV2
 ~~~~~~~~~~~~
 
 ABI kodlayıcı v2 artık deneysel kabul edilmediğinden
-Solidity 0.7.4 sonrasında ``pragma abicoder v2`` aracılığıyla seçilebilir (lütfen
- yukarıya bakın).
+Solidity 0.7.4 sonrasında ``pragma abicoder v2`` aracılığıyla seçilebilir (lütfen yukarıya bakın).
+
 .. _smt_checker:
 
 SMTChecker
@@ -110,10 +111,10 @@ Bileşen henüz Solidity dilinin tüm özelliklerini desteklememekte ve muhtemel
 .. _import:
 
 Diğer Kaynak Dosyalarını İçe Aktarma
-============================
+=====================================
 
 Sözdizimi ve Anlambilim
---------------------
+------------------------
 
 Solidity, kodunuzu modüler hale getirmenize yardımcı olmak için Javascript'te mevcut olanlara (ES6'dan sonrası)
 benzer import ifadelerini destekler. Ancak, Solidity `varsayılan export <https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export#Description>`_ kavramını desteklemez.
@@ -153,14 +154,14 @@ Bir adlandırma çakışması varsa içe aktarma sırasında sembolleri yeniden 
 .. index:: virtual filesystem, source unit name, import; path, filesystem path, import callback, Remix IDE
 
 İçe Aktarma Yolları
-------------
+--------------------
 
- Tüm platformlarda tekrarlanabilir derlemeleri destekleyebilmek için Solidity derleyicisinin kaynak dosyalarının depolandığı dosya sisteminin ayrıntılarını soyutlaması gerekir.
+Tüm platformlarda tekrarlanabilir derlemeleri destekleyebilmek için Solidity derleyicisinin kaynak dosyalarının depolandığı dosya sisteminin ayrıntılarını soyutlaması gerekir.
 Bu nedenle içe aktarma yolları doğrudan ana dosya sistemindeki dosyalara başvurmaz.
 Bunun yerine derleyici, her kaynak birime opak ve yapılandırılmamış bir tanımlayıcı olan benzersiz bir *kaynak birim adı* atanan dahili bir veritabanı (*sanal dosya sistemi* veya kısaca *VFS*) tutar. İçe aktarma ifadesinde belirtilen içe aktarma yolu, bir kaynak birim adına çevrilir
 ve veritabanında ilgili kaynak birimini bulmak için kullanılır.
 
-ref:`Standart JSON <compiler-api>` API'sini kullanarak, derleyici girdisinin bir parçası olarak tüm kaynak dosyaların adlarını ve içeriğini doğrudan sağlamak mümkündür. Bu durumda kaynak birim adları gerçekten keyfi olabilir. Ancak, derleyicinin kaynak kodu otomatik olarak bulmasını ve VFS'ye yüklemesini istiyorsanız, kaynak birim adlarınızın bir :ref:`import callback <import-callback>` i mümkün kılacak şekilde yapılandırılması gerekir.
+:ref:`Standart JSON <compiler-api>` API'sini kullanarak, derleyici girdisinin bir parçası olarak tüm kaynak dosyaların adlarını ve içeriğini doğrudan sağlamak mümkündür. Bu durumda kaynak birim adları gerçekten keyfi olabilir. Ancak, derleyicinin kaynak kodu otomatik olarak bulmasını ve VFS'ye yüklemesini istiyorsanız, kaynak birim adlarınızın bir :ref:`import callback <import-callback>` i mümkün kılacak şekilde yapılandırılması gerekir.
 Komut satırı derleyicisini kullanırken varsayılan import callback yalnızca kaynak kodun bir ana bilgisayar dosya sisteminden yüklenmesini destekler; yani kaynak birim adları, yollar olmalıdır.```
 Bazı ortamlar daha çok yönlü olan özel callback'ler sağlar. Örneğin `Remix IDE <https://remix.ethereum.org/>`_, `HTTP, IPFS ve Swarm URL'lerinden dosya içe aktarmanıza veya doğrudan NPM kayıt defterindeki paketlere başvurmanıza<https://remix-ide.readthedocs.io/en/latest/import.html>`_ olanak tanıyan bir tane sağlar.
 Derleyici tarafından kullanılan sanal dosya sistemi ve yol çözümleme mantığının tam bir açıklaması için
@@ -169,7 +170,7 @@ bkz :ref:`Path Resolution <path-resolution>`.
 .. index:: ! comment, natspec
 
 Yorumlar
-========
+=========
 
 Tek satırlı yorumlar (``//``) ve çok satırlı yorumlar (``/*...*/``) mümkündür.
 
@@ -184,5 +185,5 @@ Tek satırlı yorumlar (``//``) ve çok satırlı yorumlar (``/*...*/``) mümkü
 
 .. note::
   Tek satırlık bir yorum UTF-8 kodlamasında herhangi bir unicode satır sonlandırıcısı (LF, VF, FF, CR, NEL, LS veya PS) ile sonlandırılır. Sonlandırıcı, yorumdan sonra hala kaynak kodun bir parçasıdır, bu nedenle bir ASCII sembolü değilse (bunlar NEL, LS ve PS'dir), bir ayrıştırıcı hatasına yol açacaktır.
-Ayrıca, NatSpec yorumu adı verilen başka bir yorum türü daha vardır,
-ref:`stil kılavuzu<style_guide_natspec>` içinde ayrıntılı olarak açıklanmıştır. Bunlar üçlü eğik çizgi (``///``) veya çift yıldız bloğu (``/** ... */``) ile yazılır ve doğrudan fonksiyon bildirimlerinin veya deyimlerinin üzerinde kullanılmalıdır.
+  Ayrıca, NatSpec yorumu adı verilen başka bir yorum türü daha vardır,
+  :ref:`stil kılavuzu<style_guide_natspec>` içinde ayrıntılı olarak açıklanmıştır. Bunlar üçlü eğik çizgi (``///``) veya çift yıldız bloğu (``/** ... */``) ile yazılır ve doğrudan fonksiyon bildirimlerinin veya deyimlerinin üzerinde kullanılmalıdır.

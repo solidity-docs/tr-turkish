@@ -4,9 +4,9 @@ Akıllı Sözleşmelere Giriş
 
 .. _simple-smart-contract:
 
-***********************
+**************************
 Basit Bir Akıllı Sözleşme
-***********************
+**************************
 
 Bir değişkenin değerini atayan ve bunu diğer sözleşmelerin erişimine sunan temel bir örnekle başlayalım.
 Şu an her şeyi anlamadıysanız sorun değil, birazdan daha fazla ayrıntıya gireceğiz.
@@ -70,7 +70,7 @@ için nasıl erişim kısıtlamalarını koyabileceğinizi göreceksiniz.
 .. index:: ! subcurrency
 
 Alt Para Birimi Örneği
-===================
+=======================
 
 Aşağıdaki sözleşme, bir kripto para biriminin en basit biçiminin bir örneğidir.
 Bu sözleşme, yalnızca sözleşme sahibinin (oluşturucusunun) yeni paralar oluşturmasına
@@ -198,7 +198,7 @@ ve daha sonra çağırılamayan özel bir fonksiyondur. Bu örnekte ise construc
 ``msg`` değişkeni (``tx`` ve ``block`` ile birlikte), blok zincirine erişim izini veren özellikleri olan :ref:`özel bir global değişken <special-variables-functions>`dir.
 ``msg.sender`` her zaman varsayılan fonksiyonu (external) çağıran kişinin adresini döndürür.
 
-Sözleşmeyi oluşturan ve hem kullanıcıların hemde sözleşmelerin çağırabileceği fonksiyonlar ``mint`` ve ``send``dir.
+Sözleşmeyi oluşturan ve hem kullanıcıların hemde sözleşmelerin çağırabileceği fonksiyonlar ``mint`` ve ``send`` dir.
 
 ``mint`` fonksiyonu yeni oluşturulan bir miktar parayı başka bir adrese gönderir. ref:`require <assert-and-require>`
 fonksiyon çağrısı, karşılanmadığı takdirde tüm değişiklikleri geri döndüren koşulları tanımlar.
@@ -217,7 +217,7 @@ ve geri alır, ancak aynı zamanda bir hatanın daha kolay hata ayıklanabilmesi
 verilebilmesi için hatanın adını ve çağıran kişiye (ve nihayetinde ön uç uygulamaya veya
 blok gezginine) sağlanacak ek verileri sağlamanıza olanak tanır.
 
-‘'send'' fonksiyonu, herhangi biri tarafından (hali hazırda bir miktar paraya sahip olan)
+``send`` fonksiyonu, herhangi biri tarafından (hali hazırda bir miktar paraya sahip olan)
 başka birine para göndermek için kullanılabilir. Gönderen kişinin göndermek için yeterli
 bakiyesi yoksa, ``if`` koşulu doğru (true) olarak değerlendirilir. Sonuç olarak ``revert``
 fonksiyonu, ``InsufficientBalance``(Yetersiz bakiye) hatasını kullanarak göndericiye hata
@@ -233,9 +233,9 @@ ayrıntılarını sağlarken işlemin başarısız olmasına neden olacaktır.
 
 .. _blockchain-basics:
 
-*****************
+***********************
 Blok Zinciri Temelleri
-*****************
+***********************
 
 Bir kavram olarak blok zincirleri anlamak programcılar için çok zor değildir. Bunun nedeni,
 komplikasyonların (madencilik (mining), `hashing <https://en.wikipedia.org/wiki/Cryptographic_hash_function>`_,
@@ -248,7 +248,7 @@ AWS'sini kullanmak için dahili olarak nasıl çalıştığını bilmek zorunda 
 .. index:: transaction
 
 İşlemler (Transactions)
-============
+========================
 
 Blok zinciri, küresel olarak paylaşılan, işlemsel bir veritabanıdır.
 Bu, herkesin yalnızca ağa katılarak veritabanındaki girdileri okuyabileceği anlamına gelir.
@@ -271,7 +271,7 @@ aktarabilmesini sağlar.
 .. index:: ! block
 
 Bloklar
-======
+========
 
 Üstesinden gelinmesi gereken en büyük engellerden biri (Bitcoin açısından) "çifte harcama
 saldırısı" olarak adlandırılan bir olaydır: Ağda bir cüzdanı boşaltmak isteyen eşzamanlı iki
@@ -311,7 +311,7 @@ Ethereum Sanal Makinası
 ****************************
 
 Genel Bakış
-========
+============
 
 Ethereum Sanal Makinesi veya ESM, Ethereum'daki akıllı sözleşmeler
 için çalışma ortamıdır. Bu alan yalnızca korumalı bir alan değil, aynı
@@ -324,7 +324,7 @@ diğer akıllı sözleşmelere erişimi bile sınırlıdır.
 .. _accounts:
 
 Hesaplar
-========
+==========
 
 Ethereum'da aynı adres alanını paylaşan iki tür hesap vardır:
 Public anahtar çiftleri (yani insanlar) tarafından kontrol edilen
@@ -342,7 +342,7 @@ Her hesabın, 256-bit sözcükleri **storage** adı verilen 256-bit sözcüklere
 kalıcı bir anahtar-değer deposu vardır.
 
 Ayrıca, her hesabın Ether cinsinden bir **bakiyesi** vardır (tam olarak "Wei"
-cinsinden, ``1 ether`` ``10**18 wei``dir) ve bu Ether içeren işlemler gönderilerek
+cinsinden, ``1 ether`` ``10**18 wei`` dir) ve bu Ether içeren işlemler gönderilerek
 değiştirilebilir.
 
 .. index:: ! transaction
@@ -409,7 +409,7 @@ miktarını sözleşmenin çalışması için gereken en azami miktara indirmeli
 Ayrıca türetilmiş hesaplamalar, önbelleğe alma ve toplamalar gibi verileri sözleşmenin dışında depolamalısınız.
 Bir sözleşme, kendi depolama alanı dışında herhangi bir depolama alanını ne okuyabilir ne de bu alandaki verileri değiştirebilir.
 
-İkincisi ise, **memory**(bellek) olarak adlandırılan ve bir sözleşmenin her ileti çağrısı
+İkincisi ise, **memory** (bellek) olarak adlandırılan ve bir sözleşmenin her ileti çağrısı
 için yeniden oluşturulmuş bir örneğini alan bir veri alanıdır. Bellek doğrusaldır ve bayt
 düzeyinde adreslenebilir, ancak okumalar 256 bit genişlikle sınırlıyken, yazmalar 8 bit veya
 256 bit genişliğinde olabilir. Daha önceden dokunulmamış bir bellek kelimesine (yani bir kelime
@@ -445,7 +445,7 @@ Tam bir liste için lütfen satır içi montaj belgelerinin bir parçası olarak
 .. index:: ! message call, function;call
 
 Mesaj Çağırıları
-=============
+=================
 
 Sözleşmeler, mesaj çağrıları aracılığıyla diğer sözleşmeleri çağırabilir
 veya sözleşme dışı hesaplara Ether gönderebilir. Mesaj çağrıları, bir kaynak,
@@ -476,7 +476,7 @@ daha az bir alan sınırlamasına neden olur.
 .. index:: delegatecall, callcode, library
 
 Delegatecall / Çağrı Kodu ve Kütüphaneler
-=====================================
+==========================================
 
 Bir mesaj çağrısı ile temelde aynı anlama gelen **delegatecall**, hedef
 adresteki kodun arama sözleşmesi bağlamında (yani adresinde) yürütülmesi ve
@@ -493,7 +493,7 @@ uygulanabilen ve yeniden kullanılabilen bir kütüphane kodu örnek olarak veri
 .. index:: log
 
 Kayıtlar (Logs)
-====
+================
 
 Verileri, tamamen blok seviyesine kadar haritalayan özel olarak indekslenmiş bir veri
 yapısında depolamak mümkündür. **Kayıtlar** (log) olarak adlandırılan bu özellik, Solidity
@@ -508,7 +508,7 @@ bulabilir.
 .. index:: contract creation
 
 Create
-======
+=======
 
 Sözleşmeler, özel bir opcode kullanarak başka sözleşmeler bile oluşturabilir
 (bunu, hedef adresi boş bırakarak yaparlar). Bu arama çağrıları ve normal mesaj
@@ -518,7 +518,7 @@ olarak saklanarak arayan tarafın(yaratıcının) yığındaki yeni sözleşmeni
 .. index:: selfdestruct, self-destruct, deactivate
 
 Devre Dışı Bırakma ve Kendini İmha
-============================
+===================================
 
 Blok zincirinden bir kodu kaldırmanın tek yolu, söz konusu adresteki bir sözleşmenin
 selfdestruct işlemini gerçekleştirmesidir. Bu adreste depolanan kalan Ether belirlenen
@@ -545,7 +545,7 @@ Bu, Ether'i derhal iade ettiğinden sözleşmeyi kullanmayı imkansız kılar.
 .. _precompiledContracts:
 
 Önceden Derlenmiş Sözleşmeler (Precompiled Contracts)
-=====================
+=======================================================
 
 Özel olan bir dizi küçük sözleşme adresi vardır: ``1`` ile (``8`` dahil)
 ``8`` arasındaki adres aralığı, diğer sözleşmeler gibi çağrılabilen "önceden

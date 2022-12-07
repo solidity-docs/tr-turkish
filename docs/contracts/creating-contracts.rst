@@ -1,8 +1,8 @@
 .. index:: ! contract;creation, constructor
 
-******************
+**************************
 Akıllı Sözleşme Oluşturma
-******************
+**************************
 
 Akıllı sözleşmeler iki şekilde oluşturulabilir; "dışarıdan" bir Ethereum transactionı ile veya
 Solidity kullanarak direkt başka bir akıllı sözleşme içerisinde.

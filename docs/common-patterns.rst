@@ -1,6 +1,6 @@
-###############
+########################
 Sık Kullanılan Modeller
-###############
+########################
 
 .. index:: withdrawal
 
@@ -231,9 +231,9 @@ incelenecektir.
 
 .. index:: state machine
 
-*************
+*****************
 Durum Makinesi
-*************
+*****************
 
 Sözleşmeler, sıklıkla, bir durum makinesi işlevi
 görür; bu, içinde farklı davrandıkları veya farklı

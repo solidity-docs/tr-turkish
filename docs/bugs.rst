@@ -2,9 +2,9 @@
 
 .. _known_bugs:
 
-##################
+#########################
 Bilinen Bugların Listesi
-##################
+#########################
 
 Aşağıda, Solidity derleyicisindeki güvenlikle ilgili bilinen bazı hataların JSON
 biçimli bir listesini bulabilirsiniz. Dosyanın kendisi `Github repository <https://github.com/ethereum/solidity/blob/develop/docs/bugs.json>`_'de

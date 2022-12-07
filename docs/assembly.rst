@@ -111,7 +111,7 @@ Inline assembly optimizer verimli kodlar üretemediği zamanlarda da yararlıdı
 .. index:: selector; of a function
 
 Dış(External) değişkenlere, fonksiyonlara ve kütüphanelere erişim
--------------------------------------------------------
+------------------------------------------------------------------
 
 Solidity değişkenlerine ve diğer tanımlayıcılara isimlerini kullanarak erişebilirsiniz.
 
@@ -297,7 +297,7 @@ Sebebi ise ``returndatasize()`` fonksiyonunun değeri belirtilen 64 bitlik geçi
       revert(0, returndatasize())
     }
 
-Fakat aşağıdaki kod ise bellek açısından *güvenli*dir. 
+Fakat aşağıdaki kod ise bellek açısından *güvenli* dir. 
 Çünkü boş bellek pointer'ının gösterdiği yerden sonrası güvenli bir şekilde geçici alan olarak kullanılabilir.
 
 .. code-block:: solidity
@@ -335,7 +335,7 @@ Aşağıdaki örnek bellek için güvenli değildir:
 Belleğe erişim istemeyen işlemlerden oluşan ve bellek üzerindeki Solidity değişkenlerine atama yapmayan inline assembly 
 otomatik olarak bellek için güvenli sayılır ve ekstra olarak belirtilmesine gerek duyulmaz.
 
-.. uyarı::
+.. warning::
     Assembly'nin bellek modelini sağladığından emin olmak sizin sorumluluğunuzdadır. Eğer siz bir assembly bloğunu 
     bellek için güvenli olarak tanımlayıp herhangi bir bellek hatası yaparsanız bu **kesinlikle**, doğru olmayan ya da 
     tanımlanmamış bir davranışa sebep olur. Ve bu hata test yaparak kolay bir şekilde bulunamaz.

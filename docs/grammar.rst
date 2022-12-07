@@ -1,6 +1,6 @@
-****************
+************************************
 Dilbilgisi (Language Grammar)
-****************
+************************************
 
 .. a4:autogrammar:: SolidityParser
    :only-reachable-from: SolidityParser.sourceUnit

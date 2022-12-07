@@ -2,9 +2,9 @@
 
 .. _events:
 
-******
+*********
 Eventler
-******
+*********
 
 Solidity eventleri EVM'nin loglama işlevinin üzerine bir soyutlama verir. Uygulamalar
 Ethereum clientlarının RPC arayüzüne abone olarak bu eventleri dinleyebilirler.
@@ -68,7 +68,7 @@ Ayrıca, üç yerine dört indexed değişken bildirmenize olanak tanır.
 .. index:: ! selector; of an event
 
 Eventlerin Üyeleri
-=================
+===================
 
 - ``event.selector``: Anonim olmayan eventlerde ``bytes32`` tipindeki bir değerdir ve
   eventin imzasının hashini içerir ``keccak256``.

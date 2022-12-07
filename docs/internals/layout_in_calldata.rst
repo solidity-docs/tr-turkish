@@ -1,9 +1,9 @@
 
 .. index: calldata layout
 
-*******************
+**************************
 Çağrı Verilerinin Düzeni
-*******************
+**************************
 
 Bir fonksiyon çağrısı için alınan girdi verisinin :ref:`ABI belirtimi <ABI>` tarafından
 tanımlanan formatta olduğu varsayılır. Diğerlerinin yanı sıra, ABI tanımlaması argümanların 32

@@ -41,7 +41,7 @@ Entegre (Ethereum) Geliştirme Ortamları
     Ethereum geliştirme çerçevesi.
 
 Editör Entegrasyonları
-===================
+=======================
 
 * Atom
 
@@ -77,7 +77,7 @@ Editör Entegrasyonları
     * `Vim Syntastic <https://github.com/vim-syntastic/syntastic>`_
         Derleme denetimi sağlayan Vim düzenleyicisi için eklenti.
 
-* Visual Studio Kodu
+* Visual Studio Code
 
     * `Visual Studio Kod uzantısı <https://juan.blanco.ws/solidity-contracts-in-visual-studio-code/>`_
         Microsoft Visual Studio Code için sözdizimi vurgulama ve Solidity derleyicisi içeren Solidity eklentisi.
@@ -86,7 +86,7 @@ Editör Entegrasyonları
         Visual Studio Code'a güvenlik merkezli sözdizimi ve anlamsal vurgulama ekler.
 
 Solidity Araçları
-==============
+==================
 
 * `ABI - Solidity arayüz dönüştürücüsü <https://gist.github.com/chriseth/8f533d133fa0c15b0d6eaf3ec502c82b>`_
     Akıllı bir sözleşmenin ABI'sinden sözleşme arayüzleri oluşturmak için bir betik.
@@ -146,7 +146,7 @@ Solidity Araçları
     Yapılandırılabilir kurallar ve Solidity ve Vyper desteği ile mutasyon üretimi için bir araç.
 
 Üçüncü Parti Solidity Ayrıştırıcıları ve Gramerleri
-=========================================
+=====================================================
 
 * `Solidity Parser for JavaScript <https://github.com/solidity-parser/parser>`_
     Sağlam bir ANTLR4 gramerinin üzerine inşa edilmiş JS için bir Solidity ayrıştırıcısı.

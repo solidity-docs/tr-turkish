@@ -2,7 +2,7 @@
 .. _value-types:
 
 Değer Türleri
-===========
+==============
 
 Aşağıdaki türlere de değer türleri denir, çünkü bu türlerin değişkenleri her zaman değere göre iletilir, yani fonksiyon argümanları olarak veya atamalarda kullanıldıklarında her zaman kopyalanırlar.
 
@@ -27,7 +27,7 @@ Operatörler:
 .. _integers:
 
 Tamsayılar
---------
+-----------
 
 ``int`` / ``uint``: Çeşitli boyutlarda işaretli ve işaretsiz tam sayılar.
 ``8`` (8'den 256 bit'e kadar işaretsiz) ve ``uint8`` ila ``uint256`` adımlarında ``uint8`` ile ``uint256`` arasındaki anahtar kelimeler. ``uint`` ve ``int`` sırasıyla ``uint256`` ve ``int256`` için takma adlardır.
@@ -39,16 +39,16 @@ Operatörler:
 * Değiştirme (Shift) operatörleri: ``<<`` (sol shift), ``>>`` (sağ shift)
 * Aritmetik operatörler: ``+``, ``-``, tekli ``-`` (sadece imzalı tamsayılar için), ``*``, ``/``, ``%`` (mod alma operatörü), ``**`` (ül alma operatörü)
 
-Bir tamsayı türü olan ``X`` için, tür tarafından gösterilebilen minimum ve maksimum değere erişmek için ``type(X).min`` ve ``type(X).max``ı kullanabilirsiniz.
+Bir tamsayı türü olan ``X`` için, tür tarafından gösterilebilen minimum ve maksimum değere erişmek için ``type(X).min`` ve ``type(X).max`` ı kullanabilirsiniz.
 
 
-.. uyarı::
+.. warning::
 
  Solidity'deki tamsayılar belirli bir aralıkla sınırlıdır. Örneğin, ``uint32`` ile bu ``0``dan ``2**32 - 1``e kadardır. Bu türlerde aritmetiğin gerçekleştirildiği iki mod vardır: "wrapping" veya "unchecked" mod ve "checked" mod. Varsayılan olarak, aritmetik her zaman "checked" durumundadır, yani bir işlemin sonucu türün değer aralığının dışına çıkarsa, çağrı bir :ref:`başarısız onaylama<asset-and-require>` aracılığıyla geri döndürülür. ``unchecked { ... }`` kullanarak "unchecked" moda geçebilirsiniz. Daha fazla ayrıntı :ref:`unchecked <unchecked>` ile ilgili bölümde bulunabilir.
 
 
 Karşılaştırmalar
-^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
 
 Bir karşılaştırmanın değeri, tamsayı değeri karşılaştırılarak elde edilen değerdir.
 
@@ -70,11 +70,11 @@ Vardiyalar, aşağıdaki şekilde ikinin kuvvetleriyle çarpma kullanılarak "si
 - ``x << y``, ``x * 2**y`` matematiksel ifadesine eşdeğerdir.
 - ``x >> y``, ``x / 2**y`` matematiksel ifadesine eşdeğerdir, negatif sonsuza yuvarlanır.
 
-.. uyarı::
+.. warning::
 
     ``0.5.0`` sürümünden önce, negatif ``x`` için bir sağa kaydırma ``x >> y`` sıfıra yuvarlanmış ``x / 2**y`` matematiksel ifadesine eşdeğerdi, yani sağa kaydırmalar, aşağı yuvarlama (negatif sonsuza doğru) yerine yukarı (sıfıra doğru) yuvarlama olarak kullanılır.
 
-.. not::
+.. note::
     Aritmetik işlemlerde olduğu gibi kaydırma işlemleri için de taşma kontrolleri yapılmaz. Bunun yerine, sonuç her zaman kesilir.
 
 Toplama, Çıkarma ve Çarpma
@@ -84,7 +84,7 @@ Toplama, çıkarma ve çarpma, taşma ve alttan akışa ilişkin iki farklı mod
 
 Varsayılan olarak, tüm aritmetik yetersiz veya taşma açısından kontrol edilir, ancak bu, :ref:`unchecked blok<unchecked>` kullanılarak devre dışı bırakılabilir, bu da sarma aritmetiğiyle sonuçlanır. Daha fazla ayrıntı o bölümde bulunabilir.
 
-``-x`` ifadesi, ``(T(0) - x)`` ile eşdeğerdir; burada ``T``, ``x``in türüdür. Yalnızca imzalı türlere uygulanabilir. ``x`` negatifse ``-x``in değeri pozitif olabilir. İkisinin tamamlayıcı temsilinden kaynaklanan başka bir uyarı daha var:
+``-x`` ifadesi, ``(T(0) - x)`` ile eşdeğerdir; burada ``T``, ``x``in türüdür. Yalnızca imzalı türlere uygulanabilir. ``x`` negatifse ``-x`` in değeri pozitif olabilir. İkisinin tamamlayıcı temsilinden kaynaklanan başka bir uyarı daha var:
 
 ``int x = type(int).min;`` varsa, ``-x`` pozitif aralığa uymaz. ``unchecked { assert(-x == x); }`` çalışır ve işaretli modda kullanıldığında ``-x`` ifadesi başarısız bir onaylamaya neden olur.
 
@@ -97,14 +97,14 @@ Bir işlemin sonucunun türü her zaman işlenenlerden birinin türü olduğunda
 
 Buna karşılık, :ref:`değişmezler (literals) <rational_literals>` üzerinde bölmenin keyfi kesinliğin kesirli değerleriyle sonuçlandığını unutmayın.
 
-.. not::
+.. note::
     Sıfıra bölme bir :ref:`panik hatasına<assert-and-require>` neden olur. Bu kontrol, ``unckecked { ... }`` ile devre dışı **bırakılamaz**.
 
-.. not::
+.. note::
   ``type(int).min / (-1)`` ifadesi, bölmenin taşmaya neden olduğu tek durumdur. Kontrollü aritmetik modda, bu başarısız bir onaylamaya neden olurken, sarma modunda değer ``type(int).min`` olacaktır.
 
 Mod Alma
-^^^^^^
+^^^^^^^^^^
 
 Mod alma işlemi ``a % n``, ``a`` işleneninin ``n`` işlenenine bölünmesinden sonra kalan ``r``yi verir, burada ``q = int(a / n)`` ve ``r = a - (n * q)``. Bu, mod alma işleminin sol işleneni (veya sıfır) ile aynı işaretle sonuçlandığı ve ``a % n == -(-a % n)``nin negatif ``a`` için geçerli olduğu anlamına gelir:
 
@@ -114,30 +114,30 @@ Mod alma işlemi ``a % n``, ``a`` işleneninin ``n`` işlenenine bölünmesinden
 * ``int256(-5) % int256(2) == int256(-1)``
 * ``int256(-5) % int256(-2) == int256(-1)``
 
-.. not::
+.. note::
   Sıfırlı mod alma işlemi :ref:`Panik hatasına<assert-and-require>` neden oluyor. Bu kontrol, ``unckecked { ... }`` ile devre dışı **bırakılamaz**.
 
 Üs Alma
-^^^^^^^^^^^^^^
+^^^^^^^^^
 
 Üs, yalnızca üsteki işaretsiz türler için kullanılabilir. Elde edilen bir üs türü her zaman tabanın türüne eşittir. Lütfen sonucu tutacak ve olası onaylama hatalarına veya sarma davranışına hazırlanacak kadar büyük olmasına dikkat edin.
 
 
-.. not::
+.. note::
   İşaretli (checked) modda, üs alma yalnızca küçük tabanlar için nispeten ucuz ``exp`` işlem kodunu kullanır.
    ``x**3`` durumları için ``x*x*x`` ifadesi daha ucuz olabilir.
    Her durumda, gaz maliyeti testleri ve optimize edicinin kullanılması tavsiye edilir.
 
 
-.. not::
+.. note::
   ``0**0``ın EVM tarafından ``1`` olarak tanımlandığını unutmayın.
 
 .. index:: ! ufixed, ! fixed, ! fixed point number
 
 Sabit Nokta Sayıları
--------------------
+---------------------
 
-.. uyarı::
+.. warning::
     Sabit nokta sayıları henüz Solidity tarafından tam olarak desteklenmemektedir. Bildirilebilirler, ancak atanamazlar veya atanamazlar.
 
 ``fixed`` / ``ufixed``: Çeşitli boyutlarda imzalı ve imzasız sabit nokta sayısı. 
@@ -149,7 +149,7 @@ Operatörler:
 * Karşılaştırma: ``<=``, ``<``, ``==``, ``!=``, ``>=``, ``>`` (``bool`` olarak değerlendir)
 * Aritmetik operatörler: ``+``, ``-``, tekil ``-``, ``*``, ``/``, ``%`` (mod alma)
 
-.. not::
+.. note::
     Kayan nokta (birçok dilde ``float`` ve ``double``, daha doğrusu IEEE 754 sayıları) ile sabit nokta sayıları arasındaki temel fark, tamsayı ve kesirli kısım için kullanılan bit sayısının (birçok dilde ondalık nokta) birincisinde esnektir, ikincisinde ise kesin olarak tanımlanmıştır. Genel olarak, kayan noktada neredeyse tüm alan sayıyı temsil etmek için kullanılırken, ondalık noktanın nerede olduğunu yalnızca az sayıda bit tanımlar.
 
 
@@ -158,41 +158,41 @@ Operatörler:
 .. _address:
 
 Adresler
--------
+---------
 
 Adres türü, büyük ölçüde aynı olan iki şekilde gelir:
 
 - ``address``: 20 baytlık bir değer tutar (bir Ethereum adresinin boyutu).
 - ``address payable``: ``address`` ile aynıdır, ek olarak ``transfer`` ve ``send`` bulundurur.
 
-Bu ayrımın arkasındaki fikir, ``address payable``in, Ether gönderebileceğiniz bir adres olduğu, ancak Ether'i düz bir ``address``e göndermemeniz gerektiğidir, örneğin akıllı bir sözleşme olabileceği için. Ether'i kabul etmek için oluşturulmamıştır.
+Bu ayrımın arkasındaki fikir, ``address payable`` in, Ether gönderebileceğiniz bir adres olduğu, ancak Ether'i düz bir ``address`` e göndermemeniz gerektiğidir, örneğin akıllı bir sözleşme olabileceği için. Ether'i kabul etmek için oluşturulmamıştır.
 
 
 Tür dönüşümleri:
 
 ``address payable``den ``address``e örtülü dönüşümlere izin verilirken, ``address``den ``address payable``a dönüşümler ``payable(<address>)`` üzerinden açık olmalıdır.
 
-``uint160``, tamsayı değişmezleri, ``bytes20`` ve sözleşme türleri için ``address``e ve adresten açık dönüşümlere izin verilir.
+``uint160``, tamsayı değişmezleri, ``bytes20`` ve sözleşme türleri için ``address`` e ve adresten açık dönüşümlere izin verilir.
 
-Yalnızca ``address`` ve sözleşme türündeki ifadeler, açık dönüştürme ``payable(...)`` aracılığıyla ``address
-payable`` türüne dönüştürülebilir. Sözleşme türü için, bu dönüştürmeye yalnızca sözleşme Ether alabiliyorsa, yani sözleşmenin bir :ref:`alma <receive-ether-function>` veya ödenebilir yedek fonksiyonu varsa izin verilir. ``payable(0)``ın geçerli olduğunu ve bu kuralın bir istisnası olduğunu unutmayın.
+Yalnızca ``address`` ve sözleşme türündeki ifadeler, açık dönüştürme ``payable(...)`` aracılığıyla ``address payable`` 
+türüne dönüştürülebilir. Sözleşme türü için, bu dönüştürmeye yalnızca sözleşme Ether alabiliyorsa, yani sözleşmenin bir :ref:`alma <receive-ether-function>` veya ödenebilir yedek fonksiyonu varsa izin verilir. ``payable(0)`` ın geçerli olduğunu ve bu kuralın bir istisnası olduğunu unutmayın.
 
-.. not::
+.. note::
     ``address`` türünde bir değişkene ihtiyacınız varsa ve buna Ether göndermeyi planlıyorsanız, bu gereksinimi görünür kılmak için türünü ``address payable`` olarak bildirin. Ayrıca, bu ayrımı veya dönüşümü mümkün olduğunca erken yapmaya çalışın.
 
 Operatörler:
 
 * ``<=``, ``<``, ``==``, ``!=``, ``>=`` ve ``>``
 
-.. uyarı::
+.. warning::
     Daha büyük bir bayt boyutu kullanan bir türü bir ``address``e, örneğin ``bytes32``ye dönüştürürseniz, ``address`` kısaltılır. Dönüştürme belirsizliğini azaltmak için sürüm 0.4.24 ve derleyici kuvvetinin daha yüksek sürümü, dönüştürmede kesmeyi açık hale getirirsiniz.
      Örneğin, ``0x111122223333444455556666777788889999AAAABBBBCCCCDDDDEEEEFFFFCCC`` 32 bayt değerini alın.
 
     ``address(uint160(bytes20(b)))`` kullanabilirsiniz, bu da ``0x111122223333444455556666777788889999aAaa`` ile sonuçlanır,
-     veya ``0x777788889999AaAAbBbbCccccddDdeeeEfFFfCcCc`` ile sonuçlanan ``address(uint160(uint256(b)))``i kullanabilirsiniz.
+     veya ``0x777788889999AaAAbBbbCccccddDdeeeEfFFfCcCc`` ile sonuçlanan ``address(uint160(uint256(b)))`` i kullanabilirsiniz.
 
-.. not::
-    ``address`` ve ``address payable`` arasındaki ayrım, 0.5.0 sürümüyle tanıtıldı. Ayrıca bu versiyondan başlayarak, sözleşmeler adres türünden türetilmez, ancak yine de bir alma veya ödeme geri dönüş fonksiyonu varsa, açıkça ``address``e veya ``address payable``a dönüştürülebilir.
+.. note::
+    ``address`` ve ``address payable`` arasındaki ayrım, 0.5.0 sürümüyle tanıtıldı. Ayrıca bu versiyondan başlayarak, sözleşmeler adres türünden türetilmez, ancak yine de bir alma veya ödeme geri dönüş fonksiyonu varsa, açıkça ``address`` e veya ``address payable`` a dönüştürülebilir.
 
 .. _members-of-addresses:
 
@@ -215,7 +215,7 @@ Bir adresin bakiyesini ``balance`` özelliğini kullanarak sorgulamak ve ``trans
 Mevcut sözleşmenin bakiyesi yeterince büyük değilse veya Ether transferi alıcı hesap tarafından reddedilirse ``transfer`` fonksiyonu başarısız olur. ``transfer`` fonksiyonu başarısızlık üzerine geri döner.
 
 
-.. not::
+.. note::
     ``x`` bir sözleşme (kontrat) adresiyse, kodu (daha spesifik olarak: varsa :ref:`receive-ether-function` veya varsa :ref:`fallback-function` yürütülür. ``transfer`` çağrısı ile birlikte (bu, EVM'nin bir özelliğidir ve engellenemez). Bu yürütmenin gazı biterse veya herhangi bir şekilde başarısız olursa, Ether transferi geri alınacak ve mevcut sözleşme bir istisna dışında durdurulacaktır.
 
 * ``send``
@@ -224,9 +224,9 @@ Gönder, ``transfer``in alt düzey karşılığıdır. Yürütme (execution) ba�
 
 Send is the low-level counterpart of ``transfer``. If the execution fails, the current contract will not stop with an exception, but ``send`` will return ``false``.
 
-.. uyarı::
+.. warning::
     ``send`` kullanmanın bazı tehlikeleri vardır:
-     Çağrı yığını derinliği 1024 ise aktarım başarısız olur (bu her zaman arayan tarafından zorlanabilir) ve ayrıca alıcının gazı biterse de başarısız olur. Bu nedenle, güvenli Ether transferleri yapmak için her zaman ``send``in dönüş değerini kontrol edin, ``transfer``i kullanın veya daha iyisi: 
+     Çağrı yığını derinliği 1024 ise aktarım başarısız olur (bu her zaman arayan tarafından zorlanabilir) ve ayrıca alıcının gazı biterse de başarısız olur. Bu nedenle, güvenli Ether transferleri yapmak için her zaman ``send`` in dönüş değerini kontrol edin, ``transfer`` i kullanın veya daha iyisi: 
      alıcının parayı çektiği bir kalıp kullanın.
 
 * ``call``, ``delegatecall`` ve ``staticcall``
@@ -244,11 +244,11 @@ ve ``abi.encodeWithSignature`` fonksiyonları kullanılabilir.
     (bool success, bytes memory returnData) = address(nameReg).call(payload);
     require(success);
 
-.. uyarı::
+.. warning::
     Tüm bu fonksiyonlar alt düzey fonksiyonlarıdır ve dikkatli kullanılmalıdır. Spesifik olarak, bilinmeyen herhangi bir sözleşme kötü niyetli olabilir ve onu çağırırsanız, kontrolü o sözleşmeye devredersiniz ve bu da sözleşmenize geri çağrı yapabilir, bu nedenle arama geri döndüğünde durum değişkenlerinizdeki değişikliklere hazır olun. Diğer sözleşmelerle etkileşime girmenin normal yolu, bir sözleşme nesnesi (``x.f()``) üzerindeki bir fonksiyonu çağırmaktır.
 
 
-.. not::
+.. note::
     Solidity'nin önceki sürümleri, bu fonksiyonların rastgele argümanlar almasına izin veriyordu ve ayrıca ``bytes4`` türündeki ilk argümanı farklı şekilde ele alıyorlardı. Bu uç durumlar 0.5.0 sürümünde kaldırılmıştır.
 
 Verilen gazı ``gas`` değiştiricisi ile ayarlamak mümkündür:
@@ -269,10 +269,10 @@ Son olarak, bu değiştiriciler birleştirilebilir. Onların sırası önemli de
 
     address(nameReg).call{gas: 1000000, value: 1 ether}(abi.encodeWithSignature("register(string)", "MyName"));
 
-Benzer şekilde, ``delegatecall`` fonksiyonu kullanılabilir: fark, yalnızca verilen adresin kodunun kullanılması, diğer tüm yönlerin (depolama, bakiye, ...) mevcut sözleşmeden alınmasıdır. ``delegatecall``un amacı, başka bir sözleşmede saklanan kütüphane kodunu kullanmaktır. Kullanıcı, her iki sözleşmedeki depolama düzeninin, kullanılacak temsilci çağrısı için uygun olduğundan emin olmalıdır.
+Benzer şekilde, ``delegatecall`` fonksiyonu kullanılabilir: fark, yalnızca verilen adresin kodunun kullanılması, diğer tüm yönlerin (depolama, bakiye, ...) mevcut sözleşmeden alınmasıdır. ``delegatecall`` un amacı, başka bir sözleşmede saklanan kütüphane kodunu kullanmaktır. Kullanıcı, her iki sözleşmedeki depolama düzeninin, kullanılacak temsilci çağrısı için uygun olduğundan emin olmalıdır.
 
 
-.. not::
+.. note::
     Homestead'den önce, orijinal ``msg.sender`` ve ``msg.value`` değerlerine erişim sağlamayan ``callcode`` adlı yalnızca sınırlı bir değişken mevcuttu. Bu fonksiyon 0.5.0 sürümünde kaldırılmıştır.
 
 
@@ -280,10 +280,10 @@ Bizans'tan (Byzantium) beri ``staticcall`` da kullanılabilir. Bu temelde ``call
 
 Her üç fonksiyon, ``call``, ``delegatecall`` ve ``staticcall`` çok düşük düzeyli fonksiyonlardır ve Solidity'nin tür güvenliğini bozdukları için yalnızca *son çare* olarak kullanılmalıdır.
 
-``Gas`` seçeneği her üç yöntemde de mevcuttur, ``value`` seçeneği ise yalnızca ``call``da mevcuttur.
+``Gas`` seçeneği her üç yöntemde de mevcuttur, ``value`` seçeneği ise yalnızca ``call`` da mevcuttur.
 
 
-.. not::
+.. note::
     Durumun okunması veya yazılmasından bağımsız olarak akıllı sözleşme kodunuzdaki sabit kodlanmış gaz değerlerine güvenmekten kaçınmak en iyisidir, çünkü bunun birçok tuzağı olabilir. Ayrıca, gelecekte gaza erişim değişebilir.
 
 * ``code`` and ``codehash``
@@ -291,7 +291,7 @@ Her üç fonksiyon, ``call``, ``delegatecall`` ve ``staticcall`` çok düşük d
 Herhangi bir akıllı sözleşme için dağıtılan kodu sorgulayabilirsiniz. EVM bayt kodunu boş olabilecek bir ``bytes memory`` olarak almak için ``.code`` kullanın. ``.codehash`` kullanın, bu kodun Keccak-256 karmasını alın (``bytes32`` olarak). ``addr.codehash``in ``keccak256(addr.code)`` kullanmaktan daha ucuz olduğunu unutmayın.
 
 
-.. not::
+.. note::
     Tüm sözleşmeler ``address`` türüne dönüştürülebilir, bu nedenle ``address(this).balance`` kullanılarak mevcut sözleşmenin bakiyesini sorgulamak mümkündür.
 
 .. index:: ! contract type, ! type; contract
@@ -299,21 +299,21 @@ Herhangi bir akıllı sözleşme için dağıtılan kodu sorgulayabilirsiniz. EV
 .. _contract_types:
 
 Sözleşme Türleri
---------------
+-----------------
 
 Her :ref:`sözleşme<contracts>` kendi türünü tanımlar. Sözleşmeleri dolaylı olarak miras aldıkları sözleşmelere dönüştürebilirsiniz. Sözleşmeler açıkça ``address`` türüne dönüştürülebilir.
 
 ``address payable`` türüne ve ``address payable`` türünden açık dönüştürme, yalnızca sözleşme türünün bir alacak veya ödenebilir yedek fonksiyonu varsa mümkündür. Dönüştürme hala ``address(x)`` kullanılarak gerçekleştirilir. Sözleşme türünün bir alma veya ödenebilir yedek fonksiyonu yoksa, ``address payable``a dönüştürme ``payable(address(x))`` kullanılarak yapılabilir.
 
 
-:ref:`Adres türü<adres>` ile ilgili bölümde daha fazla bilgi bulabilirsiniz.
+:ref:`Adres türü <address>` ile ilgili bölümde daha fazla bilgi bulabilirsiniz.
 
-.. not::
+.. note::
     0.5.0 sürümünden önce, sözleşmeler doğrudan adres türünden türetilir, ve ``address`` ve ``address payable`` arasında bir ayrım yoktu.
 
 Sözleşme tipinde (``MyContract c``) yerel bir değişken bildirirseniz, o sözleşmedeki fonksiyonları çağırabilirsiniz. Aynı sözleşme türünden bir yerden atamaya özen gösterin.
 
-Ayrıca sözleşmeleri somutlaştırabilirsiniz (bu, sözleşmelerin yeni oluşturuldukları anlamına gelir). Daha fazla ayrıntıyı :ref:`'Contracts via new'<oluşturma-sözleşmeler>` bölümünde bulabilirsiniz.
+Ayrıca sözleşmeleri somutlaştırabilirsiniz (bu, sözleşmelerin yeni oluşturuldukları anlamına gelir). Daha fazla ayrıntıyı :ref:`'Contracts via new' <creating-contracts>` bölümünde bulabilirsiniz.
 
 Bir sözleşmenin veri temsili, ``address`` türününkiyle aynıdır ve bu tür aynı zamanda :ref:`ABI<ABI>` içinde kullanılır.
 
@@ -321,12 +321,12 @@ Sözleşmeler hiçbir operatörü desteklemez.
 
 Sözleşme türlerinin üyeleri, ``public`` olarak işaretlenen tüm durum değişkenleri dahil olmak üzere sözleşmenin harici fonksiyonlarıdır.
 
-Bir ``C`` sözleşmesi için, sözleşmeyle ilgili :ref:`tür bilgisine<meta-type>` erişmek için ``type(C)``yi kullanabilirsiniz.
+Bir ``C`` sözleşmesi için, sözleşmeyle ilgili :ref:`tür bilgisine<meta-type>` erişmek için ``type(C)`` yi kullanabilirsiniz.
 
 .. index:: byte array, bytes32
 
 Sabit Boyutlu Bayt Dizileri
-----------------------
+-----------------------------
 
 ``bytes1``, ``bytes2``, ``bytes3``, ..., ``bytes32`` değer türleri 1'den 32'ye kadar bir bayt dizisini tutar.
 
@@ -344,33 +344,33 @@ Kaydırma operatörü, sağ işlenen olarak işaretsiz tamsayı türüyle çalı
 
 * ``.length``, bayt dizisinin sabit uzunluğunu verir (salt okunur).
 
-.. not::
+.. note::
     ``bytes1[]`` türü bir bayt dizisidir, ancak doldurma kuralları nedeniyle her öğe için (depolama dışında) 31 baytlık alan harcar. Bunun yerine ``bytes`` türünü kullanmak daha iyidir.
 
-.. not::
+.. note::
     0.8.0 sürümünden önce, ``byte``, ``bytes1`` için bir takma addı.
 
 Dinamik Olarak Boyutlandırılmış Bayt Dizisi
-----------------------------
+--------------------------------------------
 
 ``bytes``:
-    Dinamik olarak boyutlandırılmış bayt dizisi, bkz. :ref:`diziler`. Bir değer türü değil!
+    Dinamik olarak boyutlandırılmış bayt dizisi, bkz. :ref:`arrays`. Bir değer türü değil!
 ``string``:
-    Dinamik olarak boyutlandırılmış UTF-8 kodlu dize, bkz.:ref:`diziler`. Bir değer türü değil!
+    Dinamik olarak boyutlandırılmış UTF-8 kodlu dize, bkz.:ref:`arrays`. Bir değer türü değil!
 
 .. index:: address, literal;address
 
 .. _address_literals:
 
 Adres Değişmezleri
-----------------
+-------------------
 
 Adres sağlama toplamı (checksum) testini geçen onaltılık sabit değerler, örneğin ``0xdCad3a6d3569DF655070DEd06cb7A1b2Ccd1D3AF``, ``address`` türündedir.
 
 39 ila 41 basamak uzunluğunda olan ve sağlama toplamı (checksum) testini geçmeyen onaltılık değişmez değerler bir hata üretir. Hatayı kaldırmak için başa (tamsayı türleri için) veya sona(bytesNN türleri için) sıfırlar ekleyebilirsiniz.
 
 
-.. not::
+.. note::
     Karışık büyük/küçük harfli adres sağlama toplamı biçimi, `EIP-55 <https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md>`_ içinde tanımlanır.
 
 .. index:: literal, literal;rational
@@ -378,7 +378,7 @@ Adres sağlama toplamı (checksum) testini geçen onaltılık sabit değerler, �
 .. _rational_literals:
 
 Rasyonel ve Tamsayı Değişmezleri
------------------------------
+---------------------------------
 
 Tamsayı değişmezleri, 0-9 aralığında bir basamak dizisinden oluşturulur. Ondalık sayılar olarak yorumlanırlar. Örneğin, ``69`` altmış dokuz anlamına gelir. Solidity'de sekizlik değişmez değerler yoktur ve baştaki sıfırlar geçersizdir.
 
@@ -394,7 +394,7 @@ Sayı değişmezi ifadeleri, sabit olmayan bir türe dönüştürülene kadar (y
 Örneğin, ``(2**800 + 1) - 2**800``, ara sonuçlar makine kelime boyutuna bile sığmasa da ``1`` sabitiyle sonuçlanır (``uint8`` türünden). Ayrıca, ``.5 * 8``, ``4``  tamsayısıyla sonuçlanır (arada tamsayı olmayanlar kullanılmasına rağmen).
 
 
-.. uyarı::
+.. warning::
     Çoğu operatör, değişmez değerlere uygulandığında değişmez bir ifade üretirken, bu kalıbı takip etmeyen bazı operatörler vardır:
 
     - Üçlü operatör (``... ? ... : ...``),
@@ -407,14 +407,14 @@ Tamsayılara uygulanabilen herhangi bir operatör, işlenenler tamsayı olduğu 
 Sol (veya taban) işlenen olarak değişmez sayılar ve sağ (üs) işlenen olarak tamsayı türleri ile kaydırmalar ve üs alma, her zaman "uint256" (negatif olmayan değişmezler için) veya sağ (üs) işlenenin türünden bağımsız olarak "int256" (negatif değişmezler için) içinde gerçekleştirilir.
 
 
-.. uyarı::
-    0.4.0 sürümünden önce Solidity'de tamsayı değişmezleri üzerinde bölme kullanılırdı, ancak şimdi rasyonel bir sayıya dönüştürülür, yani ``5 / 2``, ``2``ye eşit değil, ``2.5``e eşittir .
+.. warning::
+    0.4.0 sürümünden önce Solidity'de tamsayı değişmezleri üzerinde bölme kullanılırdı, ancak şimdi rasyonel bir sayıya dönüştürülür, yani ``5 / 2``, ``2`` ye eşit değil, ``2.5`` e eşittir .
 
-.. not::
+.. note::
     Solidity, her rasyonel sayı için bir sayı değişmez (literal) tipine sahiptir. Tamsayı değişmezleri ve rasyonel sayı değişmezleri, sayı değişmez türlerine aittir. Ayrıca, tüm sayı değişmez ifadeleri (yani yalnızca sayı değişmezlerini ve işleçlerini içeren ifadeler) sayı değişmez türlerine aittir. Dolayısıyla, ``1 + 2`` ve ``2 + 1`` sayı değişmez ifadelerinin her ikisi de üç rasyonel sayı için aynı sayı değişmez türüne aittir.
 
 
-.. not::
+.. note::
     Sayı değişmez ifadeleri, değişmez olmayan ifadelerle birlikte kullanılır kullanılmaz, değişmez bir türe dönüştürülür. Türlerden bağımsız olarak, aşağıdaki ``b``ye atanan ifadenin değeri bir tamsayı olarak değerlendirilir. "a", "uint128" türünde olduğundan, "2.5 + a" ifadesinin uygun bir türe sahip olması gerekir. ``2.5`` ve ``uint128`` tipi için ortak bir tip olmadığı için Solidity derleyicisi bu kodu kabul etmez.
 
 .. code-block:: solidity
@@ -426,7 +426,7 @@ Sol (veya taban) işlenen olarak değişmez sayılar ve sağ (üs) işlenen olar
 .. _string_literals:
 
 Dize Değişmezleri ve Türleri
--------------------------
+------------------------------
 
 Dize değişmezleri ya çift ya da tek tırnak (``"foo"`` veya ``'bar'``) ile yazılır ve ayrıca uzun dizelerle uğraşırken yardımcı olabilecek şekilde birden çok ardışık parçaya bölünebilirler (``"foo" "bar"``, ``"foobar"`` ile eşdeğerdir). C'deki gibi sondaki sıfırları ima etmezler; ``"foo"`` dört değil, üç baytı temsil eder. Tamsayı değişmezlerinde olduğu gibi, türleri değişebilir, ancak sığarlarsa "bytes1", ..., "bytes32"ye örtük olarak "bytes" ve "string"e dönüştürülebilirler.
 
@@ -449,7 +449,7 @@ Ayrıca, dize değişmezleri aşağıdaki kaçış karakterlerini de destekler:
 
 ``\xNN`` bir onaltılık değer alıp uygun baytı eklerken, ``\uNNNN`` bir Unicode kod noktası alır ve bir UTF-8 dizisi ekler.
 
-.. not::
+.. note::
     0.8.0 sürümüne kadar üç ek kaçış dizisi vardı: ``\b``, ``\f`` ve ``\v``. Diğer dillerde yaygın olarak bulunurlar, ancak pratikte nadiren ihtiyaç duyulur. Bunlara ihtiyacınız varsa, yine de diğer ASCII karakterleri gibi, sırasıyla ``\x08``, ``\x0c`` ve ``\x0b`` gibi onaltılık çıkışlar yoluyla eklenebilirler.
 
 Aşağıdaki örnekteki dizenin uzunluğu on bayttır. Yeni satır baytı ile başlar, ardından çift tırnak, tek tırnak, ters eğik çizgi ve ardından (ayırıcı olmadan) ``abcdef`` karakter dizisi gelir.
@@ -465,7 +465,7 @@ Yeni satır olmayan herhangi bir Unicode satır sonlandırıcı (yani LF, VF, FF
 
 
 Unicode Değişmezler
-----------------
+--------------------
 
 Normal dize değişmezleri yalnızca ASCII içerebilirken, Unicode değişmezleri ``unicode`` – anahtar kelimesiyle önek – herhangi bir geçerli UTF-8 dizisi içerebilir. Ayrıca, normal dize değişmezleri ile aynı kaçış dizilerini de desteklerler.
 
@@ -477,11 +477,11 @@ Normal dize değişmezleri yalnızca ASCII içerebilirken, Unicode değişmezler
 .. index:: literal, bytes
 
 Onaltılık (Hexadecimal) Değişmezler
---------------------
+-------------------------------------
 
-Onaltılık değişmezlerin önüne ``hex`` anahtar kelimesi getirilir ve çift veya tek tırnak içine alınır (``hex"001122FF"``, ``hex'0011_22_FF'``). İçerikleri, isteğe bağlı olarak bayt sınırları arasında ayırıcı olarak tek bir alt çizgi kullanabilen onaltılık basamaklar olmalıdır. Değişmez değerin değeri, onaltılık dizinin ikili gösterimi olacaktır.
+Onaltılık değişmezlerin önüne ``hex`` anahtar kelimesi getirilir ve çift veya tek tırnak içine alınır (``hex"001122FF"`` , ``hex'0011_22_FF'`` ). İçerikleri, isteğe bağlı olarak bayt sınırları arasında ayırıcı olarak tek bir alt çizgi kullanabilen onaltılık basamaklar olmalıdır. Değişmez değerin değeri, onaltılık dizinin ikili gösterimi olacaktır.
 
-Boşlukla ayrılmış birden çok onaltılık sabit değer, tek bir sabit değerde birleştirilir: ``hex"00112233" hex"44556677"``, ``hex"0011223344556677"``ye eşittir
+Boşlukla ayrılmış birden çok onaltılık sabit değer, tek bir sabit değerde birleştirilir: ``hex"00112233" hex"44556677"`` , ``hex"0011223344556677"`` ye eşittir
 
 Onaltılık değişmez değerler :ref:`string değişmezleri <string_literals>` gibi davranır ve aynı dönüştürülebilirlik kısıtlamalarına sahiptir.
 
@@ -490,11 +490,11 @@ Onaltılık değişmez değerler :ref:`string değişmezleri <string_literals>` 
 .. _enums:
 
 Numaralandırmalar (Enums)
------
+--------------------------
 
 Numaralandırmalar, Solidity'de kullanıcı tanımlı bir tür oluşturmanın bir yoludur. Tüm tamsayı türlerine açıkça dönüştürülebilirler, ancak örtük dönüştürmeye izin verilmez. Tamsayıdan yapılan açık dönüştürme, çalışma zamanında değerin numaralandırma aralığı içinde olup olmadığını kontrol eder ve aksi takdirde bir :ref:`Panik hatası<assert-and-require>` oluşmasına neden olur. Numaralandırmalar en az bir üye gerektirir ve bildirildiğinde varsayılan değeri ilk üyedir. Numaralandırmaların 256'dan fazla üyesi olamaz.
 
-Veri gösterimi, C'deki numaralandırmalarla aynıdır: Seçenekler, ``0``dan başlayan müteakip işaretsiz tamsayı değerleriyle temsil edilir.
+Veri gösterimi, C'deki numaralandırmalarla aynıdır: Seçenekler, ``0`` dan başlayan müteakip işaretsiz tamsayı değerleriyle temsil edilir.
 
 ``type(NameOfEnum).min`` ve ``type(NameOfEnum).max`` kullanarak verilen numaralandırmanın en küçük ve sırasıyla en büyük değerini alabilirsiniz.
 
@@ -530,7 +530,7 @@ Veri gösterimi, C'deki numaralandırmalarla aynıdır: Seçenekler, ``0``dan ba
         }
     }
 
-.. not::
+.. note::
     Numaralandırmalar, sözleşme veya kitaplık tanımlarının dışında dosya düzeyinde de bildirilebilir.
 
 .. index:: ! user defined value type, custom type
@@ -538,7 +538,7 @@ Veri gösterimi, C'deki numaralandırmalarla aynıdır: Seçenekler, ``0``dan ba
 .. _user-defined-value-types:
 
 Kullanıcı Tanımlı Değer Türleri
-------------------------
+---------------------------------
 
 Kullanıcı tanımlı bir değer türü, bir temel değer türü üzerinde sıfır maliyetli bir soyutlama oluşturmaya izin verir. Bu, takma ada benzer, ancak daha katı tür gereksinimleri vardır.
 
@@ -591,7 +591,7 @@ Aşağıdaki örnek, 18 ondalık basamaklı bir ondalık sabit nokta türünü v
 .. _function_types:
 
 Fonksiyon Tipleri
---------------
+------------------
 
 Fonksiyon türleri, kullanulan fonksiyonların türleridir. Fonksiyon tipinin değişkenleri fonksiyonlardan atanabilir ve fonksiyon tipinin fonksiyon parametreleri fonksiyon çağrılarına fonksiyon geçirmek ve fonksiyon çağrılarından fonksiyon döndürmek için kullanılabilir. Fonksiyon türleri iki şekilde gelir - *dahili* ve *harici* fonksiyonlar:
 
@@ -630,7 +630,7 @@ Bir fonksiyon türü değişkeni başlatılmazsa, onu çağırmak bir :ref:`Pani
 
 Harici fonksiyon türleri, Solidity bağlamı dışında kullanılırsa, adres ve ardından fonksiyon tanımlayıcısını birlikte tek bir ``bytes24`` türünde kodlayan ``function`` türü olarak kabul edilirler.
 
-Mevcut sözleşmenin genel (public) fonksiyonlarının hem dahili hem de harici (external) bir fonksiyon olarak kullanılabileceğini unutmayın. ``f``yi dahili bir fonksiyon olarak kullanmak için ``f``yi kullanın, harici biçimini kullanmak istiyorsanız ``this.f``yi kullanın.
+Mevcut sözleşmenin genel (public) fonksiyonlarının hem dahili hem de harici (external) bir fonksiyon olarak kullanılabileceğini unutmayın. ``f`` yi dahili bir fonksiyon olarak kullanmak için ``f`` yi kullanın, harici biçimini kullanmak istiyorsanız ``this.f`` yi kullanın.
 
 Dahili tipte bir fonksiyon, nerede tanımlandığına bakılmaksızın dahili fonksiyon tipindeki bir değişkene atanabilir. Bu, hem sözleşmelerin hem de kütüphanelerin özel, dahili ve genel fonksiyonlarını ve ayrıca ücretsiz fonksiyonlarını içerir. harici fonksiyon türleri ise yalnızca genel (public) ve harici (external) sözleşme fonksiyonlarıyla uyumludur. Kitaplıklar, bir ``delegatecall`` gerektirdikleri ve :ref:`seçicileri için farklı bir ABI kuralı <library-selectors>` kullandıkları için hariç tutulur. Arayüzlerde bildirilen fonksiyonların tanımları yoktur, bu nedenle onlara işaret etmek de bir anlam ifade etmez.
 
@@ -642,9 +642,8 @@ Harici (veya genel) fonksiyonlar aşağıdaki üyelere sahiptir:
 * ``.address`` fonksiyonun sözleşmesinin adresini döndürür.
 * ``.selector``, :ref:`BI işlev seçicisini <abi_function_selector>` döndürür
 
-.. not::
-Harici (veya genel) fonksiyonlar, ``.gas(uint)`` ve ``.value(uint)`` ek üyelerine sahiptiler. Bunlar Solidity 0.6.2'de tartışmaya açıldı ve Solidity 0.7.0'da kaldırıldı. Bunun yerine, bir fonksiyona gönderilen gaz miktarını veya wei miktarını belirtmek için sırasıyla ``{gas: ...}`` ve ``{value: ...}`` kullanın. Daha fazla bilgi için bkz. :ref:`Harici İşlev Çağrıları <external-function-calls>``.
-
+.. note::
+    Harici (veya genel) fonksiyonlar, ``.gas(uint)`` ve ``.value(uint)`` ek üyelerine sahiptiler. Bunlar Solidity 0.6.2'de tartışmaya açıldı ve Solidity 0.7.0'da kaldırıldı. Bunun yerine, bir fonksiyona gönderilen gaz miktarını veya wei miktarını belirtmek için sırasıyla ``{gas: ...}`` ve ``{value: ...}`` kullanın. Daha fazla bilgi için bkz. :ref:`External Function Calls <external-function-calls>` .
 
 Üyelerin nasıl kullanılacağını gösteren örnek:
 
@@ -769,5 +768,5 @@ Harici işlev türlerini kullanan başka bir örnek:
         }
     }
 
-.. not::
+.. note::
     Lambda veya satır içi işlevler planlanmıştır ancak henüz desteklenmemektedir.
