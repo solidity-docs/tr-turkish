@@ -19,7 +19,7 @@ hızlı bir bakış açısı elde etmek adına faydalıdır.
 .. _structure-state-variables:
 
 Durum Değişkenleri
-===============
+===================
 
 Durum değişkenleri, değerleri sözleşmenin deposunda kalıcı olarak saklanan değişkenlerdir.
 
@@ -39,7 +39,7 @@ görünürlük hakkındaki olası seçenekler için :ref:`visibility-and-getters
 .. _structure-functions:
 
 Fonksiyonlar
-=========
+=============
 
 Fonksiyonlar, yürütülebilir kod birimleridir. Fonksiyonlar genellikle 
 bir sözleşme içinde tanımlanabilecekleri gibi sözleşmelerin dışında da tanımlanabilirler.
@@ -67,7 +67,7 @@ seviyelerine sahiptir. :ref:`Functions<functions>` parametre ve değişkenleri b
 .. _structure-function-modifiers:
 
 Fonksiyon Değiştiriciler (Modifier'lar)
-==================
+========================================
 
 Fonksiyon değiştiriciler fonksiyonların semantiğini bildirimsel bir şekilde değiştirmek için kullanılabilir.
 (sözleşmeler bölümündeki :ref:`modifiers` kısmına bakın).
@@ -102,7 +102,7 @@ Fonksiyonlar gibi, değiştiriciler de :ref:`overridden <modifier-overriding>` o
 .. _structure-events:
 
 Olaylar (Event)
-======
+================
 
 Olaylar, EVM için yapılacak olan kayıt işlemlerine kolaylık sağlayan arayüzlerdir.
 
@@ -121,12 +121,12 @@ Olaylar, EVM için yapılacak olan kayıt işlemlerine kolaylık sağlayan aray�
     }
 
 Olayların nasıl bildirildiği ve bir dapp içinden nasıl kullanılabileceği hakkında bilgi almak için 
-sözleşmeler bölümündeki :ref:`events`e bakabilirsiniz.
+sözleşmeler bölümündeki :ref:`events` e bakabilirsiniz.
 
 .. _structure-errors:
 
 Hatalar
-======
+========
 
 Hatalar, kodunuzdaki hatalı durumlar için açıklayıcı adlar ve veriler tanımlamanıza olanak sunar.
 Hatalar :ref:`revert statements <revert-statement>` içerisinde kullanılabilir.
@@ -155,12 +155,12 @@ açıklamak için NatSpec'i kullanabilirsiniz.
         }
     }
 
-Daha fazla bilgi için sözleşmeler bölümündeki :ref:`errors`a bakın.
+Daha fazla bilgi için sözleşmeler bölümündeki :ref:`errors` a bakın.
 
 .. _structure-struct-types:
 
 Yapı (Struct) Tipleri
-=============
+======================
 
 Yapılar, birkaç değişkeni grup halinde bir arada bulunduran özel tanımlı türlerdir (tipler
 bölümündeki :ref:`structs` kısmına bakın).
@@ -182,7 +182,7 @@ bölümündeki :ref:`structs` kısmına bakın).
 .. _structure-enum-types:
 
 Enum Tipleri
-==========
+=============
 
 Enum'lar 'sabit değerlerden' oluşan ve sınırlı sayıda setler halinde 
 oluşturabileceğiniz özel tipler oluşturmanızı sağlar (tipler bölümündeki

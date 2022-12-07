@@ -2,9 +2,9 @@
 
 .. _libraries:
 
-*********
+*************
 Kütüphaneler
-*********
+*************
 
 Kütüphaneler akıllı sözleşmelere benzerler, ama onların amacı sadece bir kere deploy edilip
 daha sonrasında ihtiyaç duyulması halinde ``DELEGATECALL`` ile çağrılmalarıdır
@@ -211,7 +211,7 @@ Akıllı sözleşmelerle kıyaslandığında, kütüphaneler aşağıdaki şekil
 .. index:: ! selector; of a library function
 
 Function Signatures and Selectors in Libraries
-==============================================
+===============================================
 
 Public veya external kütüphane fonksiyonlarına harici çağrılar mümkün olsa da, 
 bu tür çağrılar için çağrı kuralının Solidity'nin içinde olduğu ve normal 
@@ -256,7 +256,7 @@ Değeri, ``.selector`` üyesi kullanılarak Solidity'den şu şekilde elde edile
 .. _call-protection:
 
 Kütüphaneler İçin Çağrı Koruması
-=============================
+=================================
 
 Girişte belirtildiği gibi, bir kütüphanenin kodu ``DELEGATECALL`` veya ``CALLCODE`` 
 yerine bir ``CALL`` kullanılarak yürütülürse, bir ``view`` veya ``pure`` fonksiyon

@@ -1,8 +1,8 @@
 .. _natspec:
 
-##############
+###################
 NatSpec Formatı
-##############
+###################
 
 Solidity sözleşmeleri, fonksiyonlar, dönüş değişkenleri ve daha fazlası için zengin
 dokümantasyon sağlamak üzere özel bir yorum biçimi kullanabilir. Bu özel form Ethereum
@@ -26,7 +26,7 @@ Doğal Dil Belirtim Formatı( Ethereum Natural Language Specification Format) (N
   biçime dönüştüren Solidity derleyicisinin çıktısı da aşağıda detaylı olarak açıklanmıştır.
 
   NatSpec, üçüncü taraf araçlar tarafından kullanılan ek açıklamaları da içerebilir. Bunlar
-  büyük olasılıkla ``@custom:<name>` etiketi aracılığıyla gerçekleştirilir ve iyi bir kullanım
+  büyük olasılıkla ``@custom:<name>`` etiketi aracılığıyla gerçekleştirilir ve iyi bir kullanım
   örneği analiz ve doğrulama araçlarıdır.
 
 .. _header-doc-example:
@@ -34,9 +34,9 @@ Doğal Dil Belirtim Formatı( Ethereum Natural Language Specification Format) (N
 Dokümantasyon Örneği
 =====================
 
-Dokümantasyon, Doxygen notasyon formatı kullanılarak her ``contract``, ``interface``,
-``library``, ``function`` ve ``event`` üzerine eklenir. Bir ``public`` durum değişkeni,
-NatSpec'in kullanım amaçları doğrultusunda bir ``fonksiyon``a eşdeğerdir.
+Dokümantasyon, Doxygen notasyon formatı kullanılarak her ``contract`` , ``interface`` ,
+``library`` , ``function`` ve ``event`` üzerine eklenir. Bir ``public`` durum değişkeni,
+NatSpec'in kullanım amaçları doğrultusunda bir ``fonksiyon`` a eşdeğerdir.
 
 -  Solidity için tek veya çok satırlı yorumlar için ``//`` veya ``/**`` ve ``*/``
    ile sonlandırmayı tercih edebilirsiniz.
@@ -131,8 +131,8 @@ ve geliştirici belgelerinin bir parçasıdırlar.
 
 .. _header-dynamic:
 
-Dinamik ifade biçimleri
--------------------
+Dinamik İfade Biçimleri
+------------------------
 
 Solidity derleyicisi, NatSpec belgelerini Solidity kaynak kodunuzdan bu kılavuzda
 açıklandığı gibi JSON çıktısına aktaracaktır. Bu JSON çıktısının kullanıcısı, örneğin
@@ -172,7 +172,7 @@ devralacaktır. Bununla ilgili istisnalar şunlardır:
 .. _header-output:
 
 Dokümantasyon Çıktısı
-====================
+======================
 
 Derleyici tarafından çözümlendiğinde, yukarıdaki örnekteki gibi belgeler iki farklı
 JSON dosyası üretecektir. Biri son kullanıcı tarafından bir fonksiyon çalıştırıldığında
@@ -197,7 +197,7 @@ belgeleri kullanarak oluşturabilirsiniz:
 .. _header-user-doc:
 
 Kullanıcı Dokümantasyonu
-------------------
+-------------------------
 
 Yukarıdaki dokümantasyon çıktı olarak aşağıdaki kullanıcı dokümantasyonu JSON dosyasını üretecektir:
 
@@ -216,14 +216,13 @@ Yukarıdaki dokümantasyon çıktı olarak aşağıdaki kullanıcı dokümantasy
       "notice" : "You can use this contract for only the most basic simulation"
     }
 
-Metotları bulmak için anahtarın sadece fonksiyonun adı değil, :ref:`Contract ABI
-<abi_function_selector>`da tanımlandığı gibi fonksiyonun kanonik imzası olduğunu
+Metodları bulmak için anahtarın sadece fonksiyonun adı değil, :ref:`Contract ABI <abi_function_selector>` da tanımlandığı gibi fonksiyonun kanonik imzası olduğunu
 unutmayın.
 
 .. _header-developer-doc:
 
 Geliştirici Dokümantasyonu
------------------------
+---------------------------
 
 Kullanıcı dokümantasyon dosyasının yanı sıra, bir geliştirici dokümantasyon JSON
 dosyası da üretilmeli ve aşağıdaki gibi görünmelidir:

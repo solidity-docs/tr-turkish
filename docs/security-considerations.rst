@@ -1,8 +1,8 @@
 .. _security_considerations:
 
-#######################
-Güvenlikle ilgili Değerlendirmeler
-#######################
+###################################
+Güvenlikle İlgili Değerlendirmeler
+###################################
 
 Genellikle öngörüldüğü gibi çalışan bir yazılım oluşturmak oldukça kolay olsa da,
 kimsenin bu yazılımı **öngörülmeyen** bir şekilde kullanamayacağını kontrol etmek oldukça zordur.
@@ -36,7 +36,7 @@ Tuzaklar
 ********
 
 Özel(Private) Bilgiler ve Rastgelelik
-==================================
+======================================
 
 Bir akıllı sözleşmede kullandığınız her şey, yerel değişkenler ve ``private`` olarak
 işaretlenmiş durum değişkenleri de dahil olmak üzere herkes tarafından görülebilir.
@@ -45,7 +45,7 @@ Madencilerin hile yapabilmesini istemiyorsanız, akıllı sözleşmelerde rastge
 kullanmak oldukça zordur.
 
 Yeniden Giriş (Re-Entrancy)
-===========
+===========================
 
 Bir sözleşmeden (A) başka bir sözleşmeye (B) herhangi bir etkileşim ve herhangi
 bir Ether transferi, kontrolü o sözleşmeye (B) devreder. Bu, B'nin bu etkileşim
@@ -118,7 +118,7 @@ içeren durumları da hesaba katmanız gerekmektedir. Çağrılan bir sözleşme
 olduğunuz başka bir sözleşmenin yapısını değiştirebilir.
 
 Gas Limiti ve Döngüler
-===================
+=======================
 
 Sabit sayıda iterasyona sahip olmayan döngüler, örneğin depolama değerine bağlı döngüler,
 dikkatli bir şekilde kullanılmalıdır: Blok gas limiti nedeniyle, işlemler yalnızca belirli
@@ -176,7 +176,7 @@ Ether Gönderme ve Alma
      yerine bir :ref:`"withdraw" pattern <withdrawal_pattern>` kullanmaktır.
 
 Çağrı Yığını Derinliği
-================
+=======================
 
 External fonksiyon çağrıları, 1024 olan maksimum çağrı yığını boyutu sınırını aştıkları
 için her an başarısız olabilirler. Bu gibi durumlarda Solidity bir istisna gönderir.
@@ -192,7 +192,7 @@ bu durumda ``false`` döndürdüğünü unutmayın. Düşük seviyeli fonksiyonl
 
 
 Yetkilendirilmiş Proxyler (Authorized Proxies)
-==================
+===============================================
 
 Sözleşmeniz bir proxy olarak hareket edebiliyorsa, yani kullanıcı tarafından
 sağlanan verilerle rastgele sözleşmeleri çağırabiliyorsa, kullanıcı esasen proxy
@@ -312,7 +312,7 @@ taşmaları bulmak için :ref:`SMT checker<smt_checker>` kullanın.
 .. _clearing-mappings:
 
 Mappingleri Temizleme
-=================
+======================
 
 Yalnızca depolama amaçlı bir anahtar-değer veri yapısı olan Solidity tipi ``mapping``
 (bkz. :ref:`mapping-types`), sıfır olmayan bir değer atanmış anahtarların kaydını tutmaz.
@@ -363,7 +363,7 @@ benzeri bir kütüphane kullanmayı düşünün, bu sayede anahtarlar arasında 
 
 
 Küçük Detaylar
-=============
+===============
 
 - Tam 32 baytı kaplamayan türler "kirli yüksek dereceli bitler" içerebilir. Bu durum
   özellikle ``msg.data`` türüne eriştiğinizde önemlidir - bu bir değiştirilebilirlik
@@ -410,7 +410,7 @@ ve benzerlerini sınırlayın. Başkalarının niyetinizin ne olduğunu ve kodun
 farklı olup olmadığını görebilmesi için fonksiyonlarınızı belgeleyin.
 
 Kontroller-Etkiler-Etkileşimler Modelini Kullanın
-===========================================
+===================================================
 
 Çoğu fonksiyon önce bazı kontroller yapacaktır (fonksiyonu kim çağırdı, argümanlar
 aralıkta mı, yeterince Ether gönderdiler mi, kişinin tokenleri var mı, vb.) Bu kontroller önce yapılmalıdır.
@@ -426,7 +426,7 @@ yapılmasına neden olabileceğini unutmayın, bu nedenle bu kalıbı her zaman 
 
 
 Arızaya Karşı Güvenli Mod Ekleyin
-========================
+==================================
 
 Sisteminizi tamamen merkeziyetsiz hale getirmek herhangi bir aracıyı ortadan kaldıracak
 olsa da, özellikle yeni kodlar için bir tür arıza güvenliği mekanizması eklemek iyi bir fikir olabilir:
@@ -440,7 +440,7 @@ moda geçer; örneğin, özelliklerin çoğunu devre dışı bırakır, kontrol�
 bir üçüncü tarafa devreder veya sözleşmeyi basit bir "paramı geri ver" sözleşmesine dönüştürür.
 
 Peer İncelemesi İsteyin
-===================
+========================
 
 Bir kod parçası ne kadar çok kişi tarafından incelenirse, o kadar çok sorun bulunur.
 İnsanlardan kodunuzu incelemelerini istemek, kodunuzun kolay anlaşılır olup olmadığını

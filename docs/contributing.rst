@@ -1,6 +1,6 @@
-############
+##################
 Katkıda Bulunmak
-############
+##################
 
 Yardıma her zaman açığız ve Solidity'ye nasıl katkıda bulunabileceğinize dair pek çok seçenek var.
 
@@ -25,7 +25,7 @@ sözleşmeler yazma konusunda uzmanlaşmak da faydalı olabilir.
 Lütfen bu projenin bir `Katılımcı Davranış Kuralları <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_ ile yayınlandığını unutmayın. Bu projeye katılarak - sorunlarda, pull request' lerde veya Gitter kanallarında - şartlarına uymayı kabul etmiş olursunuz.
 
 Takım Toplantıları
-==========
+===================
 
 Tartışmak istediğiniz sorunlar veya pull request'ler varsa ya da ekibin ve katkıda
 bulunanların neler üzerinde çalıştığını duymak istiyorsanız, herkese açık takım toplantılarımıza katılabilirsiniz:
@@ -36,7 +36,7 @@ bulunanların neler üzerinde çalıştığını duymak istiyorsanız, herkese a
 Her iki çağrı da `Jitsi <https://meet.ethereum.org/solidity>`_ üzerinde gerçekleşir.
 
 Sorunlar Nasıl Rapor Edilir
-====================
+============================
 
 Bir sorunu bildirmek için lütfen `GitHub sorunları izleyicisini <https://github.com/ethereum/solidity/issues>`_
 kullanın. Sorunları bildirirken lütfen aşağıdaki ayrıntıları belirtin:
@@ -51,7 +51,7 @@ Soruna neden olan kaynak kodunu en aza indirmek her zaman sorunların çözümü
 olur ve hatta bazen bir yanlış anlaşılmayı açıklığa kavuşturur.
 
 Pull Request'ler için İş Akışı(Workflow)
-==========================
+=========================================
 
 Katkıda bulunmak için lütfen ``develop`` dalını forklayın ve değişikliklerinizi
 orada yapın. Commit mesajlarınızda *ne* yaptığınızın yanı sıra *neden* değişiklik
@@ -80,7 +80,7 @@ ve bir pull request göndermeden önce yerel olarak derlendiğinden emin olun.
 Yardımlarınız için teşekkür ederiz!
 
 Derleyici Testlerini Çalıştırma
-==========================
+================================
 
 Ön Koşullar
 -------------
@@ -98,7 +98,7 @@ sahip olması gerekir, ancak `diğer kullanıcılara da verebilirsiniz <https://
 `Geliştirici Modunu etkinleştirebilirsiniz <https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development>`_.
 
 Testleri Çalıştırma
------------------
+--------------------
 
 Solidity, çoğu `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_ uygulaması ``soltest`` içinde paketlenmiş farklı test türleri içerir. Çoğu değişiklik için ``build/test/soltest`` veya onun paketleyicisi olan ``scripts/soltest.sh`` dosyasını çalıştırmak yeterlidir.
 
@@ -158,7 +158,7 @@ CI, Emscripten hedefinin derlenmesini gerektiren ek testler (``solc-js`` ve üç
 taraf Solidity çerçevelerinin test edilmesi dahil) çalıştırır.
 
 Sözdizimi Testleri Yazma ve Çalıştırma
---------------------------------
+---------------------------------------
 
 Sözdizimi testleri, derleyicinin geçersiz kod için doğru hata mesajlarını oluşturduğunu
 ve geçerli kodu düzgün bir şekilde kabul ettiğini kontrol eder. Bunlar
@@ -249,7 +249,7 @@ ve testi yeniden çalıştırır. Şimdi tekrar geçer:
 
 
 Fuzzer'ı AFL ile Çalıştırma
-==========================
+============================
 
 Fuzzing, istisnai yürütme durumlarını (segmentasyon hataları, istisnalar, vb.) bulmak
 için programları az çok rastgele girdiler üzerinde çalıştıran bir tekniktir. Modern
@@ -373,7 +373,7 @@ kullanılırsa, o zaman ``name`` string parametresinin boş olup olmadığı kon
 .. _documentation-style:
 
 Dokümantasyon Stil Rehberi
-=========================
+===========================
 
 Aşağıdaki bölümde özellikle Solidity'ye yapılan dokümantasyon katkılarına odaklanan
 stil önerileri bulacaksınız.
@@ -396,7 +396,7 @@ imla kurallarını tercih edin. Yerel argo ve referansların kullanımını azal
     bulunabileceğiniz hakkında bilgi için lütfen `çeviri kılavuzuna <https://github.com/solidity-docs/translation-guide>`_ bakın.
 
 Başlıklar için Başlık Düzeni
------------------------
+-----------------------------
 
 Başlıklar için `title case <https://titlecase.com>`_ kullanın. Bu, başlıklardaki
 tüm ana sözcüklerin büyük harfle yazılması, ancak başlığa başlamadıkları sürece
@@ -410,7 +410,7 @@ artikellerin, bağlaçların ve edatların büyük harfle yazılmaması anlamın
 * Düzen Sırası.
 
 Genişletme Kısaltmaları
--------------------
+-------------------------
 
 Örneğin, sözcükler için genişletilmiş kısaltmalar kullanın:
 
@@ -441,12 +441,12 @@ pasif ses bazen daha uygundur.
   öneki yeniden eşlemelerini belirtebilirsiniz.
 
 Genel Terimler
-------------
+---------------
 
 * "Fonksiyon parametreleri" ve "dönüş değişkenleri", girdi ve çıktı parametreleri değil.
 
 Kod Örnekleri
--------------
+--------------
 
 Bir CI süreci, bir PR oluşturduğunuzda ``./test/cmdlineTests.sh`` betiğini kullanarak
 ``pragma solidity``, ``contract``, ``library`` veya ``interface`` ile başlayan tüm kod
@@ -457,7 +457,7 @@ Tüm kod örneklerinin, sözleşme kodunun geçerli olduğu en geniş alanı kap
 ``pragma`` sürümü ile başladığından emin olun. Örneğin ``pragma solidity >=0.4.0 <0.9.0;``.
 
 Dokümantasyon Testlerini Çalıştırma
----------------------------
+------------------------------------
 
 Dokümantasyon için gerekli bağımlılıkları yükleyen ve kırık bağlantılar veya sözdizimi
 sorunları gibi sorunları kontrol eden ``./docs/docs.sh`` dosyasını çalıştırarak katkılarınızın dokümantasyon testlerimizi geçtiğinizden emin olun.

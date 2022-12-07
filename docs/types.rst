@@ -2,9 +2,9 @@
 
 .. _types:
 
-*****
+********
 Türler
-*****
+********
 
 Solidity statik olarak yazılmış bir dildir, bu, her bir değişkenin türünün (durum ve yerel) belirtilmesi gerektiği anlamına gelir.
 Solidity, karmaşık türler oluşturmak için bir araya getirilen birkaç temel tür sağlar. 

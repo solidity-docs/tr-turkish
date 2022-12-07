@@ -1,8 +1,8 @@
 .. index:: purchase, remote purchase, escrow
 
-********************
+**************************
 Güvenli Uzaktan Alışveriş
-********************
+**************************
 
 Uzaktan bir mal satın almak birden fazla tarafın birbirine güvenmesini gerektirir.
 En basit durumda bir satıcı bir de alıcı olur. Alıcı ürünü satıcıdan almak ister, satıcı da 

@@ -1,9 +1,9 @@
 .. index:: optimizer, optimiser, common subexpression elimination, constant propagation
 .. _optimizer:
 
-*************
+****************
 Optimize Edici
-*************
+****************
 
 Solidity derleyicisi iki farklı optimize edici modül kullanır: İşlem kodu düzeyinde çalışan "eski"
 iyileştirici ve Yul IR kodunda çalışan "yeni" iyileştirici.
@@ -26,7 +26,7 @@ Benzer şekilde, bağımsız bir Yul modu için ``solc --strict-assembly --optim
 Aşağıda hem optimize edici modüller hem de optimizasyon adımları hakkında daha fazla ayrıntı bulabilirsiniz.
 
 Solidity Kodunu Optimize Etmenin Faydaları
-====================================
+============================================
 
 Genel olarak optimize ediciler, karmaşık ifadeleri sadeleştirmeye çalışır, bu da hem kod boyutunu hem de
 çalıştırma(execution) maliyetini azaltır, yani sözleşmenin devreye alınmasını ve sözleşmeye yapılan harici çağrılar için gereken
@@ -36,7 +36,7 @@ Ayrıca, fonksiyonları uzmanlaştırır veya sıralar. Özellikle satır içi f
 
 
 Optimize Edilmiş ve Optimize Edilmemiş Kod Arasındaki Farklar
-====================================================
+==============================================================
 
 Genel olarak ikisi arasındaki en görünür fark, sabit ifadelerin derleme zamanındaki farklılıklardır.
 ASM çıktısı söz konusu olduğunda, eşdeğer veya yinelenen kod bloklarındaki gas miktarında azalma da fark edilebilir (``--asm`` ve
@@ -47,7 +47,7 @@ için yeniden yazılabilir, vb. (çıktıyı ``--ir`` ve ``--optimize --ir-optim
 .. _optimizer-parameter-runs:
 
 Optimize Edici Parametre Çalıştırmaları
-========================
+========================================
 
 Çalıştırma sayısı ("--optimize-runs"), dağıtılan kodun her bir işlem kodunun sözleşmenin ömrü boyunca
 yaklaşık olarak ne sıklıkta yürütüleceğini belirtir. Bu, kod boyutu (dağıtım maliyeti) ve kod yürütme
@@ -62,7 +62,7 @@ parametresi daha uzun ancak daha fazla gaz verimli kod üretecektir. Parametreni
     Ancak bu doğru değildir: Optimize edici her zaman kodu iyileştirebildiği kadar çalışır.
 
 Opcode Tabanlı Optimize Edici Modülü
-=============================
+======================================
 
 Opcode tabanlı optimize edici modül, assembly kodu üzerinde çalışır.
 Komut dizisini "JUMPs" ve "JUMPDESTs"de temel bloklara böler.
@@ -241,7 +241,7 @@ optimizer parametresi "runs") bağlıdır.
 
 
 Yul Tabanlı Optimize Edici Modülü
-==========================
+==================================
 
 Yul tabanlı optimize edici, tümü AST'yi anlamsal olarak eşdeğer bir şekilde dönüştüren birkaç aşamadan ve
 bileşenden oluşur. Amaç, ya daha kısa ya da en azından marjinal olarak daha uzun olan ancak daha fazla
@@ -265,7 +265,7 @@ Aşağıdaki dönüşüm adımları ana bileşenlerdir:
 - Full Inliner
 
 Optimize Edici Adımları
----------------
+------------------------
 
 Bu, Yul tabanlı optimize edicinin alfabetik olarak sıralanmış tüm adımlarının
 bir listesidir. Her bir adım ve bunların sıralaması hakkında daha fazla bilgiyi
@@ -321,7 +321,7 @@ sayısına (şu anda 12) ulaşılana kadar bir döngü içinde birden çok kez u
 Mevcut kısaltmalar :ref:`Yul optimize edici dokümanları <optimization-step-sequence>` içinde listelenmiştir.
 
 Ön İşleme (Preprocessing)
--------------
+---------------------------
 
 Ön işleme bileşenleri, programı üzerinde çalışılması daha kolay olan belirli normal
 bir forma sokmak için gerekli dönüşümleri gerçekleştirir. Bu normal formu optimizasyon
@@ -330,7 +330,7 @@ sürecinin geri kalan bölümü boyunca muhafaza eder.
 .. _disambiguator:
 
 Disambiguator
-^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^
 
 Anlam ayrıştırıcı bir AST alır ve tüm tanımlayıcıların girdi AST'sinde benzersiz
 adlara sahip olduğu yeni bir kopya döndürür. Bu, diğer tüm optimize edici aşamalar
@@ -345,7 +345,7 @@ herhangi bir yeni tanımlayıcı eklenmesi gerektiğinde yeni bir benzersiz isim
 .. _function-hoister:
 
 FunctionHoister
-^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^
 
 Fonksiyon hoister, tüm fonksiyon tanımlarını en üstte bulunan bloğun sonuna taşır. Belirsizliği giderme aşamasından sonra
 gerçekleştirildiği sürece bu anlamsal olarak eşdeğer bir dönüşümdür. Bunun nedeni, bir tanımın daha yüksek seviyeli
@@ -358,7 +358,7 @@ geçmek zorunda kalmadan izole bir şekilde optimize edilebilmesidir.
 .. _function-grouper:
 
 FunctionGrouper
-^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^
 
 Fonksiyon grouper, Disambiguator ve FunctionHoister sonra uygulanmalıdır.
 Etkisi, işlev tanımları olmayan en üstteki tüm öğelerin, kök bloğun ilk
@@ -380,7 +380,7 @@ olanak sağlamasıdır.
 .. _for-loop-condition-into-body:
 
 ForLoopConditionIntoBody
-^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Bu dönüşüm, bir for döngüsünün döngü yineleme koşulunu döngü gövdesine taşır.
 Bu dönüşüme ihtiyacımız var çünkü :ref:`expression-splitter` yineleme koşulu
@@ -710,10 +710,10 @@ sürece, hala "undecided" durumundaki tüm ifadeler "unused" olarak değiştiril
 Bu adım genellikle SSA dönüşümünden hemen sonra çalıştırılarak pseudo-SSA'nın oluşturulması tamamlanır.
 
 Araçlar
------
+--------
 
 Taşınabilirlik(Movability)
-^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Taşınabilirlik(Movability) bir ifadenin özelliğidir. Kabaca, ifadenin yan etkisiz olduğu ve
 değerlendirmesinin yalnızca değişkenlerin değerlerine ve ortamın çağrı sabit
@@ -742,7 +742,7 @@ bir for döngüsüne girildiğinde, gövde veya son blok sırasında atanacak t�
 temizlenir.
 
 İfade-Ölçekli Basitleştirmeler (Expression-Scale Simplifications)
---------------------------------
+-------------------------------------------------------------------
 
 Bu sadeleştirme geçişleri ifadeleri değiştirir ve onları eşdeğer ve muhtemelen
 daha basit ifadelerle değiştirir.
@@ -774,7 +774,7 @@ alt ifade giderici kendisinden hemen önce çalıştırılmışsa.
 .. _expression-simplifier:
 
 İfade Basitleştirici (Expression Simplifier)
-^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 İfade Basitleştirici, Dataflow Analyzer'ı kullanarak kodu basitleştirmek için
 ``X + 0 -> X`` gibi ifadeler üzerinde bir denklik dönüşümleri listesi kullanmaktadır.
@@ -824,7 +824,7 @@ Yalnızca EVM diyalektinde etkilidir, ancak diğer diyalektlerde kullanımı gü
 Prerequisite: Disambiguator, SSATransform.
 
 İfade Ölçeğindeki Basitleştirmeler (Statement-Scale Simplifications)
--------------------------------
+---------------------------------------------------------------------
 
 .. _circular-reference-pruner:
 
@@ -1011,7 +1011,7 @@ Gereksinimler:
 
 
 Fonksiyon Düzeyinde Optimizasyonlar
-----------------------------
+------------------------------------------
 
 .. _function-specializer:
 
@@ -1075,8 +1075,8 @@ fonksiyonlardan birine yapılan herhangi bir referans diğeriyle değiştirilir.
 Fonksiyonun asıl kaldırılma işlemi Unused Pruner tarafından gerçekleştirilir.
 
 
-Fonksiyon İnlining (Function Inlining)
------------------
+Fonksiyon Inlining (Function Inlining)
+---------------------------------------
 
 .. _expression-inliner:
 
@@ -1088,17 +1088,16 @@ yani tek bir değer döndüren fonksiyonları inline ederek kısıtlı fonksiyon
 gerçekleştirir:
 
 - tek bir değer döndüren.
-- ``r := <fonksiyonel ifade>` gibi bir gövdeye sahip olan.
+- ``r := <fonksiyonel ifade>`` gibi bir gövdeye sahip olan.
 - ne kendilerine ne de sağ taraftaki ``r`` ye referans verirler.
 
 Ayrıca, tüm parametreler için aşağıdakilerin tümünün doğru olması gerekir:
 
 - Bağımsız değişken taşınabilir.
-- Parametreye ya fonksiyon gövdesinde iki kereden az referans verilir ya da argüman
-oldukça ucuzdur ("cost" en fazla 1, 0xff'ye kadar bir sabit gibi).
+- Parametreye ya fonksiyon gövdesinde iki kereden az referans verilir ya da argüman oldukça ucuzdur ("cost" en fazla 1, 0xff'ye kadar bir sabit gibi).
 
 Örnek: Inline edilecek fonksiyon ``function f(...) -> r { r := E }`` biçimindedir;
-burada ``E``, ``r``ye referans vermeyen bir ifadedir ve fonksiyon çağrısındaki tüm
+burada ``E``, ``r`` ye referans vermeyen bir ifadedir ve fonksiyon çağrısındaki tüm
 argümanlar taşınabilir ifadelerdir.
 
 Bu inlining işleminin sonucu her zaman tek bir ifadedir.
@@ -1132,7 +1131,7 @@ kazançlar elde edilirse, özelleştirilmiş fonksiyon korunur, aksi takdirde or
 fonksiyon kullanılır.
 
 Temizlik (Cleanup)
--------
+---------------------
 
 Temizleme, optimizer çalışmasının sonunda gerçekleştirilir. Bölünmüş ifadeleri
 tekrar derin iç içe geçmiş ifadelerle birleştirmeye çalışır ve ayrıca değişkenleri
@@ -1289,7 +1288,7 @@ WebAssembly'a özgü
 --------------------
 
 Ana Fonksiyon(MainFunction)
-^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 En üstteki bloğu, girdisi veya çıktısı olmayan belirli bir ada ("main") sahip bir
 fonksiyon olarak değiştirir.

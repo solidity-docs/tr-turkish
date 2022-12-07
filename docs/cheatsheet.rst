@@ -1,6 +1,6 @@
-**********
+*************
 Kopya Kağıdı
-**********
+*************
 
 .. index:: operator; precedence
 
@@ -11,7 +11,7 @@ Operatörlerin Öncelik Sırası
 .. index:: assert, block, coinbase, difficulty, number, block;number, timestamp, block;timestamp, msg, data, gas, sender, value, gas price, origin, revert, require, keccak256, ripemd160, sha256, ecrecover, addmod, mulmod, cryptography, this, super, selfdestruct, balance, codehash, send
 
 Global Değişkenlere
-================
+====================
 
 - ``abi.decode(bytes memory encodedData, (...)) returns (...)``: ABI formatında gönderilen verinin ayrıştırılması sırasında, tipler ikinci argüman olarak parantez içinde verilir. Örneğin: ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
 - ``abi.encode(...) returns (bytes memory)``: ABI formatında verileri düzenler
@@ -66,7 +66,7 @@ Global Değişkenlere
 .. index:: visibility, public, private, external, internal
 
 Fonksiyon Görünürlük Belirteçleri
-==============================
+==================================
 
 .. code-block:: solidity
     :force:
@@ -97,7 +97,7 @@ Modifiers
 - ``override``: Bu fonksiyon, modifier veya genel durum değişkeninin, bir temel sözleşmedeki bir fonksiyonun veya modifier'ın davranışını değiştirdiğini ifade etmektedir.
 
 Ayrılmış Anahtar Kelimeler
-=================
+===========================
 
 Bu anahtar kelimeler Solidity'de ayrılmıştır. Gelecekte sözdiziminin(syntax) bir parçası olabilirler:
 

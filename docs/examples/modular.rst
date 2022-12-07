@@ -1,8 +1,8 @@
 .. index:: contract;modular, modular contract
 
-*****************
+********************
 Modüler Kontratlar
-*****************
+********************
 
 Kontratları oluştururken modüler bir yaklaşım izlemek kodların karışıklığını
 azaltıp, okunabilirliğini arttırır. Bu durumda hataların ve açıkların daha

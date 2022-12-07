@@ -1,11 +1,11 @@
-**************************************
+**********************************************************
 Birimler ve Global Olarak Kullanılabilir Değişkenler
-**************************************
+**********************************************************
 
 .. index:: wei, finney, szabo, gwei, ether
 
 Ether Birimleri
-===========
+================
 
 Bir değişmez sayı, Ether'in bir alt para birimini belirtmek için ``wei``, ``gwei`` veya ``ether`` son ekini alabilir; burada son eki olmayan Ether sayılarının Wei olduğu varsayılır.
 
@@ -23,7 +23,7 @@ Alt isim ekinin("e") tek etkisi, onluk bir kuvvetle çarpmadır.
 .. index:: time, seconds, minutes, hours, days, weeks, years
 
 Zaman Birimleri
-==========
+================
 
 Gerçek sayılardan sonra gelen ``saniye``, ``dakika``, ``saat``, ``gün`` ve
 ``hafta`` gibi son ekler, saniyelerin temel birim olduğu zaman birimlerini
@@ -58,7 +58,7 @@ yorumlamak istiyorsanız, aşağıdaki şekilde yapabilirsiniz:
 .. _special-variables-functions:
 
 Özel Değişkenler ve Fonksiyonlar
-===============================
+=================================
 
 Global ad alanında her zaman var olan özel değişkenler ve işlevler vardır ve bunlar
 çoğunlukla blok zinciri hakkında bilgi sağlamak için kullanılır. Veya bunlara ek olarak
@@ -125,7 +125,7 @@ Blok ve İşlem Özellikleri
 .. index:: abi, encoding, packed
 
 ABI Şifreleme ve Şifreyi Çözme Fonksiyonları
------------------------------------
+----------------------------------------------
 
 - ``abi.decode(bytes memory encodedData, (...)) returns (...)``: ABI verilen verinin şifresini çözerken, tipler ikinci argüman olarak parantez içinde verilir. Örneğin: ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
 - ``abi.encode(...) returns (bytes memory)``: ABI verilen argümanları şifreler
@@ -185,7 +185,7 @@ bilgi için :ref:`assert ve require<assert-and-require>` bölümüne bakın.
 .. _mathematical-and-cryptographic-functions:
 
 Matematiksel ve Kriptografik Fonksiyonlar
-----------------------------------------
+------------------------------------------
 
 ``addmod(uint x, uint y, uint k) returns (uint)``
     toplama işleminin isteğe bağlı kesinlikte gerçekleştirildiği ve ``2**256``da kapsamadığı ``(x + y) % k`` değerini hesaplar. Sürüm 0.5.0'den başlayarak "k!= 0" olduğunu iddia eder.
@@ -311,7 +311,7 @@ Daha fazla bilgi için :ref:`address` ile ilgili bölüme bakın.
 .. index:: this, selfdestruct
 
 Sözleşme İle İlgili
-----------------
+---------------------
 
 ``this`` (mevcut sözleşmenin türü)
     mevcut sözleşme, açıkça :ref:`address`’ine dönüştürülebilir

@@ -472,8 +472,8 @@ konu başlıklarını oluşturmak için event imzası Keccak hash'i ile birlikte
 
 Gerçekte, bu ABI'yi kullanan bir log girdisi şu şekilde açıklanır:
 
-- ``address ``: sözleşmenin adresi (Ethereum tarafından dahili olarak sağlanır);
-- ``topics[0]``: ``keccak(EVENT_NAME+"("+EVENT_ARGS.map(canonical_type_of).join(",")+")")``
+- ``address`` : sözleşmenin adresi (Ethereum tarafından dahili olarak sağlanır);
+- ``topics[0]`` : ``keccak(EVENT_NAME+"("+EVENT_ARGS.map(canonical_type_of).join(",")+")")``
   (``canonical_type_of`` verilen bir argümanın kanonik tipini döndüren bir fonksiyondur,
   örneğin ``uint indexed foo`` için ``uint256`` değerini döndürür). Bu değer yalnızca event
   ``anonymous`` olarak tanımlanmamışsa  ``topics[0]`` içinde bulunur;
@@ -642,7 +642,7 @@ JSON ile sonuçlanacaktır:
     }]
 
 Tuple tiplerinin kullanılması
---------------------
+------------------------------
 
 İsimler bilinçli olarak ABI şifrelemesinin bir parçası olmamasına rağmen, son kullanıcıya
 gösterilmesini sağlamak için JSON'a dahil edilmeleri çok önemlidir. Yapı aşağıdaki şekilde

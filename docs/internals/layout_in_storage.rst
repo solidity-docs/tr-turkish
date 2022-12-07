@@ -1,8 +1,8 @@
 .. index:: storage, state variable, mapping
 
-************************************
+*************************************************
 Depolama Alanındaki Durum Değişkenlerinin Düzeni
-************************************
+*************************************************
 
 .. _storage-inplace-encoding:
 
@@ -56,7 +56,7 @@ Structure'ların ve dizilerin(arrays) elemanları, ayrı ayrı değerler şeklin
 
 
 Mapping'ler ve Dinamik Diziler(Arrays)
-===========================
+=======================================
 
 .. _storage-hashed-encoding:
 
@@ -134,7 +134,7 @@ diziyi uzun bir diziden ayırt edebileceğiniz anlamına gelir: kısa (ayarlanma
   IR aracılığıyla derleme yapıyorsanız, geçersiz olarak kodlanmış bir yuvayı okumak ``Panic(0x22)`` hatasıyla sonuçlanır.
 
 JSON Çıktısı
-===========
+=============
 
 .. _storage-layout-top-level:
 

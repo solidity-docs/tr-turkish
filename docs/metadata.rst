@@ -1,8 +1,8 @@
 .. _metadata:
 
-#################
+#####################
 Sözleşme Meta Verisi
-#################
+#####################
 
 .. index:: metadata, contract verification
 
@@ -117,14 +117,14 @@ Meta veri dosyası aşağıdaki formattadır. Fakat aşağıdaki örnek okuması
   meta veri ile dolayısı ile farklı bir bayt kod ile sonuçlanabilir. 
 
 .. note::
-    Yukarıdaki ABI tanımının belirlenmiş bir sıralaması yoktur ve derleyici sürümlerine 
-    göre değişebilir. Fakat Solidity 0.5.12 sürümüyle birlikte ABI dizisi belirili bir 
-    sıralamayı takip eder.
+  Yukarıdaki ABI tanımının belirlenmiş bir sıralaması yoktur ve derleyici sürümlerine 
+  göre değişebilir. Fakat Solidity 0.5.12 sürümüyle birlikte ABI dizisi belirili bir 
+  sıralamayı takip eder.
 
 .. _encoding-of-the-metadata-hash-in-the-bytecode:
 
 Meta Veri Hash'inin Bayt Kod İçinde Kodlanması
-=============================================
+===============================================
 
 Meta veriyi indirmenin farklı yollarını ileride destekleyebileceğimiz için 
 ``{"ipfs": <IPFS hash>, "solc": <compiler version>}`` eşlemesi 
@@ -163,7 +163,7 @@ string ile kodlanır.
   Bu sebeple en doğrusu uygun bir CBOR ayrıştırıcı (parser) kullanmanızdır.
 
 Otomatik Arayüz Oluşturmanın Kullanılması ve NatSpec
-====================================================
+=====================================================
 
 Meta veri şu şekilde kullanılır: Bir sözleşmeyle etkileşime geçmek isteyen 
 bir bileşen (örn. Mist veya başka bir cüzdan) sözleşmenin kodunu indirir. Daha
@@ -177,10 +177,10 @@ Ek olarak cüzdan, kullanıcı bir sözleşmeyle etkileşime geçerken kullanıc
 işlem için imza onayı istemenin yanında kullanıcıya bir onay mesajı göstermek 
 için NatSpec kullanıcı dokümantasyonunu kullanabilir. 
 
-Daha fazla bilgi için :doc:`Ethereum Natural Language Specification (NatSpec) format <natspec-format>`ını okuyunuz.
+Daha fazla bilgi için :doc:`Ethereum Natural Language Specification (NatSpec) format <natspec-format>` ını okuyunuz.
 
 Kaynak Kodu Doğrulama için Kullanım
-==================================
+====================================
 
 Derlemeyi doğrulamak için kaynaklar meta veri dosyasında verilen bağlantılar ile
 IPFS/Swarm'dan indirilebilir. 

@@ -61,7 +61,7 @@ Bu nedenle, aşağıdaki örneklerde türlerden bahsetmeyeceğiz.
 
 
 Basit Bir Örnek
-==============
+================
 
 Aşağıdaki örnek program EVM diyalektiyle yazılmıştır ve üs alma işlemini hesaplar.
 ``solc --strict-assembly`` kullanılarak derlenebilir.
@@ -106,7 +106,7 @@ kullanarak da uygulamak mümkündür. Burada ``lt(a, b)``, ``a``'nın ``b``'den 
 
 
 Tek Başına Kullanım
-=================
+====================
 
 Yul'u Solidity derleyicisini kullanarak EVM diyalektinde tek başına kullanabilirsiniz. 
 Bu, Yul nesne notasyonunu kullanır, böylece sözleşmeleri deploy etmek için koda veri 
@@ -124,7 +124,7 @@ olarak atıfta bulunulabilir. Bu Yul modu, komut satırı derleyicisi
         }
     }
 
-.. uyarı::
+.. warning::
 
     Yul aktif geliştirme aşamasındadır ve bayt kodu oluşturma, yalnızca hedef olarak EVM 1.0 
     ile Yul'un EVM diyalekti için tam olarak uygulanabilir.
@@ -136,7 +136,7 @@ Yul'un Resmi Olmayan Tanımı
 Aşağıda Yul dilinin bütün yönleri hakkında konuşacağız. Örneklerde varsayılan EVM diyalektini kullanacağız.
 
 Sözdizimi (Syntax)
-------
+-------------------
 
 Yul, yorumları, değişmez değerleri ve tanımlayıcıları Solidity ile aynı şekilde ayrıştırır,
 böylece örneğin yorumları belirtmek için  ``//`` ve ``/* */`` kullanabilirsiniz.  
@@ -167,7 +167,7 @@ Birden fazla sözdizimsel öğe, yalnızca boşlukla ayrılmış olarak birbirin
 takip edebilir, yani ``;`` ile sonlandırma yoktur veya yeni satıra geçilmelidir.
 
 Değişmezler (Literal)
---------
+-----------------------
 
 Değişmezler olarak şunları kullanabilirsiniz:
 
@@ -221,7 +221,7 @@ iki nokta üst üste (:) işaretinden sonra belirtilmesi gerekir:
 
 
 Fonksiyon Çağrıları
---------------
+--------------------
 
 Hem gömülü hem de kullanıcı tanımlı fonksiyonlar (aşağıya bakın)
 önceki örnekte gösterildiği gibi çağrılabilir.
@@ -324,7 +324,7 @@ sol tarafında birden çok kez bulunamaz,
 
 
 If
---
+---
 
 if ifadesi, koşullu olarak kod çalıştırmak için kullanılabilir. 
 “else” bloğu tanımlanamaz. Birden fazla alternatife ihtiyacınız varsa, 
@@ -364,7 +364,7 @@ Switch ifadesindeki case'ler süslü parantezle çevrelenmez, ancak case'lerin k
 için süslü parantezle çevreleme zorunluluğu vardır.
 
 Döngüler (Loop)
------
+----------------
 
 Yul, bir başlatma bölümü, bir koşul, 
 bir iterasyon sonrası bölümü ve bir kod gövdesi içeren
@@ -507,7 +507,7 @@ kendi bölümlerinde açıklandığı üzere Yul nesnelerinin içine yerleştiri
 
 
 Dilbilgisi ile İlgili Kısıtlamalar
----------------------------
+------------------------------------
 
 Doğrudan dilbilgisi tarafından dayatılanların dışında, 
 aşağıdaki kısıtlamalar geçerlidir:
@@ -569,7 +569,7 @@ bir türün değerini alan ve farklı bir türün değerini döndüren
 uygun bir gömülü fonksiyon sağladığında gerçekleştirilebilir.
 
 Kapsam Belirleme Kuralları
--------------
+----------------------------
 
 Yul'daki kapsamlar (scope) Bloklara bağlıdır (fonksiyonlar ve aşağıda açıklandığı 
 gibi for döngüsü hariç) ve tüm bildirimler 
@@ -948,7 +948,7 @@ yanı sıra ``jump`` talimatlarını, etiketleri ve ``push`` talimatlarını iç
 
 .. _yul-call-return-area:
 
-.. not::
+.. note::
   ``call*`` komutları, return veya hata verilerinin yerleştirildiği bellekte bir alanı 
   tanımlamak için ``out`` ve ``outsize`` parametrelerini kullanır. Bu alan, çağrılan sözleşmenin 
   kaç bayt döndüğüne bağlı olarak yazılır. Daha fazla veri döndürürse, yalnızca ilk ``outsize`` baytlar yazılır. 
@@ -1097,14 +1097,14 @@ Bir "verbatim" bayt kodu bloğuna kontrol akışı
 tarafından ulaşılamıyorsa, kaldırılabilir.
 
 
-.. uyarı::
+.. warning::
 
     EVM iyileştirmelerinin mevcut akıllı sözleşmeleri bozup bozmayacağı 
     konusundaki tartışmalar sırasında, ``verbatim`` içindeki özellikler, 
     Solidity derleyicisinin kullandığı özelliklerle 
     aynı değerlendirmeyi alamaz.
 
-.. not::
+.. note::
 
     Karışıklığı önlemek için, "verbatim" string'i başlayan tüm tanımlayıcılar reserv edilmiştir ve 
     kullanıcıların atadığı tanımlayıcılar için kullanılamaz.
@@ -1131,19 +1131,19 @@ Kod için ``datacopy``, birleştirilmiş ikili (binary) gösterimine erişecekti
 
 Yukarıda ``Block``, önceki bölümde Yul kodu dilbilgisinde açıklanan ``Block`` anlamına gelir.
 
-.. not::
+.. note::
 
     ``_deployed`` ile biten bir ada sahip bir nesne, Yul optimizer tarafından deploy edilmiş 
     kod olarak değerlendirilir. Bunun tek sonucu, optimize edicide bulgusal olarak farklı bir gaz maliyeti yöntemidir.
 
-.. not::
+.. note::
 
     Adında ``.`` bulunan veri nesneleri veya alt nesneler tanımlanabilir, 
     ancak bunlara ``datasize``, ``dataoffset`` veya ``datacopy`` üzerinden erişim 
     mümkün değildir, çünkü ``.``, başka bir nesnenin içindeki 
     nesnelere erişmek için ayırıcı olarak kullanılır.
 
-.. not::
+.. note::
 
     ``".metadata"`` adı verilen veri nesnesinin özel bir anlamı vardır: 
     Koddan erişilemez ve nesnedeki konumundan bağımsız 
@@ -1314,7 +1314,7 @@ sonuçlar üretebilir, bu yüzden lütfen dikkatli kullanın!
 .. _erc20yul:
 
 Tamamlanmış ERC20 Örneği
-======================
+=========================
 
 .. code-block:: yul
 

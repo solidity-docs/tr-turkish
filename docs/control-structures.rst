@@ -29,12 +29,12 @@ yani ``if (1) { ... }`` ifadesi Solidity için geçerli *değildir*.
 .. _function-calls:
 
 Fonksiyon Çağrıları
-==============
+====================
 
 .. _internal-function-calls:
 
 Dahili Fonksiyon Çağrıları
------------------------
+---------------------------
 
 Mevcut sözleşmenin fonksiyonları, bu örnekte görüldüğü gibi, doğrudan ("dahili") olarak,
 aynı zamanda yinelemeli olarak çağrılabilir:
@@ -60,7 +60,7 @@ en az bir yığın yuvası kullanır ve yalnızca 1024 yuva mevcuttur.
 .. _external-function-calls:
 
 Harici Fonksiyon Çağrıları
------------------------
+---------------------------
 
 Fonksiyonlar ayrıca ``this.g(8);`` ve ``c.g(2);`` notasyonu kullanılarak da çağrılabilir, 
 burada ``c`` bir sözleşme örneğidir ve ``g``, ``c`` ye ait bir fonksiyondur.
@@ -72,7 +72,7 @@ Lütfen ``this`` üzerindeki fonksiyon çağrılarının constructorda kullanıl
 Diğer sözleşmelerin fonksiyonları harici olarak çağrılmalıdır. Harici bir çağrı için,
 tüm fonksiyon argümanlarının belleğe kopyalanması gerekir.
 
-.. not::
+.. note::
     Bir sözleşmeden diğerine yapılan fonksiyon çağrısı kendi işlemini oluşturmaz,
     Bu çağrı, genel işlemin parçası olan bir mesaj çağrısıdır.
 
@@ -98,7 +98,7 @@ açıkça belirtmenin önerilmediğini unutmayın. Sözleşmeye gönderdiğiniz 
 ``info`` fonksiyonu ile ``payable`` modifier'ını kullanmanız gerekir, çünkü
 aksi takdirde, ``value`` seçeneği kullanılamaz.
 
-.. uyarı::
+.. warning::
   ``feed.info{value: 10, gas: 800}`` ifadesinin sadece yerel olarak fonksiyon çağrısı ile gönderilen
   ``value`` ve ``gas`` miktarını ayarladığına, ve sondaki parantezlerin asıl çağrıyı yaptığına dikkat edin. 
   Yani ``feed.info{value: 10, gas: 800}`` ifadesi fonksiyonu çağırmaz, ``value`` ve ``gas`` ayarları kaybolur, yalnızca
@@ -110,18 +110,18 @@ olmadığını (kod içermesini) kontrol etmek için ``extcodesize`` işlem kodu
 eğer sözleşme yoksa hata verir.  Çağrıdan sonra dönüş verilerinin kodu çözülecekse
 bu aşama atlanır ve böylece ABI kod çözücüsü mevcut olmayan bir sözleşme durumunu yakalar.
 
-Bu kontrolün, sözleşme örnekleri yerine adresler üzerinde çalışan :ref:`düşük seviyeli çağrılar <address_related>` 
+Bu kontrolün, sözleşme örnekleri yerine adresler üzerinde çalışan :ref:`düşük seviyeli çağrılar <address_related>`  
 olması durumunda gerçekleştirilmediğini unutmayın.
 
-.. not::
-    :ref:`önceden derlenmiş sözleşmeler <precompiledContracts>`de,
+.. note::
+    :ref:`önceden derlenmiş sözleşmeler <precompiledContracts>` de,
     üst düzey çağrılar kullanırken dikkatli olun, çünkü derleyici, 
     kodu çalıştırsalar ve veri döndürebilseler bile bunları mevcut saymaz.
 
 Fonksiyon çağrıları, çağrılan sözleşmenin kendisi bir hata döndürürse veya gazı tükenirse,
 hatalara da neden olur.
 
-.. uyarı::
+.. warning::
     Başka bir sözleşme ile herhangi bir etkileşim, özellikle sözleşmenin kaynak 
     kodu önceden bilinmiyorsa, potansiyel bir tehlike oluşturur. Mevcut sözleşme, 
     kontrolü, çağrılan sözleşmeye devreder ve bu, potansiyel olarak hemen hemen 
@@ -136,13 +136,13 @@ hatalara da neden olur.
     böylece sözleşmeniz yeniden giriş istismarına karşı savunmasız kalmaz.
 
 
-.. not::
+.. note::
     Solidity 0.6.2'den önce, değeri ve gazı belirtmenin önerilen yolu
     ``f.value(x).gas(g)()`` kullanmaktı. Bu, Solidity 0.6.2'de kullanımdan 
     kaldırıldı ve Solidity 0.7.0'dan beri kullanımı artık mümkün değil.
 
 Adlandırılmış Çağrılar ve Anonim Fonksiyon Parametreleri
----------------------------------------------
+--------------------------------------------------------
 
 Aşağıdaki örnekte görüldüğü gibi, ``{ }`` içine alınmışlarsa, fonksiyon 
 çağrısı argümanları herhangi bir sırayla ve tercihe bağlı isimle adlandırılabilir. 
@@ -168,7 +168,7 @@ Argüman listesi, fonksiyon bildirimindeki parametre listesiyle ve adıyla
     }
 
 Dikkate Alınmayan Fonksiyon Parametre Adları
---------------------------------
+---------------------------------------------
 
 Kullanılmayan parametrelerin adları (özellikle dönüş parametreleri) atlanabilir.
 Bu parametreler yığında bulunmaya devam eder, fakat erişilemezler.
@@ -191,7 +191,7 @@ Bu parametreler yığında bulunmaya devam eder, fakat erişilemezler.
 .. _creating-contracts:
 
 ``new`` Yoluyla Sözleşmeler Oluşturma
-==============================
+=======================================
 
 Bir sözleşme, ``new`` anahtar sözcüğünü kullanarak başka sözleşmeler oluşturabilir.
 Oluşturulan sözleşmenin tam kodu, oluşturulan sözleşme derlendiğinde bilinmelidir,
@@ -229,7 +229,7 @@ Oluşturma başarısız olursa (yığın olmaması, yeterli bakiye olmaması vey
 bir hata döndürülür.
 
 Saltlı sözleşme kreasyonları / create2
------------------------------------
+---------------------------------------
 
 Bir sözleşme oluştururken, sözleşmenin adresi, oluşturulan sözleşmenin adresinden ve her sözleşmede artan 
 bir sayaçtan hesaplanır.
@@ -355,7 +355,7 @@ yani bu geçerli değildir: ``(x, uint y) = (1, 2);``
     kopyalama davranışına yol açabilir.
 
 Diziler ve Structlar için Komplikasyonlar
-------------------------------------
+------------------------------------------
 
 Atamaların anlamı, diziler ve structlar gibi değer olmayan türler için daha karmaşıktır.
 ``bytelar`` ve ``string`` dahil, ayrıntılar için :ref:`Data location and assignment behaviour <data-location-assignment>` bölümüne bakın.
@@ -391,7 +391,7 @@ bellekteki depolama değerinin bağımsız bir kopyasını oluşturur. Ancak, ``
 .. _default-value:
 
 Kapsam Belirleme ve Beyanlar
-========================
+=============================
 
 Bildirilen bir değişken, bayt temsilinin tümü sıfır olan 
 bir başlangıç ​​varsayılan değerine sahip olacaktır.
@@ -442,7 +442,7 @@ iki değişken aynı ada ancak ayrık kapsamlara sahiptir.
     }
 
 C99 kapsam belirleme kurallarına özel bir örnek olarak, aşağıdakilere dikkat edin,
-``x``e yapılan ilk atama aslında iç değişkeni değil dış değişkeni atayacaktır.
+``x`` e yapılan ilk atama aslında iç değişkeni değil dış değişkeni atayacaktır.
 Her durumda, gölgelenen dış değişken hakkında bir uyarı alacaksınız.
 
 .. code-block:: solidity
@@ -486,7 +486,7 @@ Her durumda, gölgelenen dış değişken hakkında bir uyarı alacaksınız.
 .. _unchecked:
 
 Checked veya Unchecked Matematiksel İşlemler
-===============================
+=============================================
 
 Bir overflow veya underflow durumu, aritmetik bir işlemin sınırsız 
 bir tamsayı üzerinde işlem yaptığında sonuç türünün aralığı
@@ -607,7 +607,7 @@ Aşağıdaki durumlarda bir Panik exception'ı oluşturulur.
 Hata verileriyle birlikte verilen hata kodu, panik türünü belirtir.
 
 #. 0x00: Jenerik derleyici yerleştirilmiş panikler için kullanılır.
-#. 0x01: Yanlış olarak değerlendirilen bir argümanla ``assert``ü çağırırsanız.
+#. 0x01: Yanlış olarak değerlendirilen bir argümanla ``assert`` ü çağırırsanız.
 #. 0x11: Bir aritmetik işlem, ``unchecked { ... }`` bir bloğun dışında underflow veya overflow ie sonuçlanırsa.
 #. 0x12; Sıfıra bölerseniz veya mod alma işlemi yaparsanız (ör. ``5 / 0`` ya da ``23 % 0``).
 #. 0x21: Çok büyük veya negatif bir değeri bir enum türüne dönüştürürseniz.
@@ -657,8 +657,8 @@ neden olabileceği anlamına gelir:
     ``require`` için bir dize argümanı sağlamazsanız, 
     hata seçiciyi içermeden bile boş hata verileriyle geri dönecektir.
 
-Aşağıdaki örnek, girdilerdeki koşulları kontrol etmek için ``require``
-ve dahili hata kontrolü için ``assert``i nasıl kullanabileceğinizi gösterir.
+Aşağıdaki örnek, girdilerdeki koşulları kontrol etmek için ``require`` 
+ve dahili hata kontrolü için ``assert`` i nasıl kullanabileceğinizi gösterir.
 
 .. code-block:: solidity
     :force:
@@ -778,8 +778,8 @@ Elde edilen mesaj, çağıran tarafından aşağıda gösterildiği gibi ``try``
 
 .. _try-catch:
 
-``try``/``catch``
------------------
+``try``/ ``catch``
+-------------------
 
 Harici aramadaki bir hata, aşağıdaki gibi bir try/catch ifadesi kullanılarak yakalanabilir:
 

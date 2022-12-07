@@ -42,7 +42,7 @@ Yukarıda açıklandığı üzere bellekteki düzen ile depolama düzeni
 Aşağıda bunlara yönelik bazı örnekler bulunmaktadır.
 
 Dizilerdeki Farklılıklara Bir Örnek
---------------------------------
+------------------------------------
 
 Aşağıdaki dizi, depolamada 32 bayt (1 yuva) yer kaplar, ancak bellekte 128
 bayt (her biri 32 bayt olan 4 öğe) yer kaplar.
@@ -54,7 +54,7 @@ bayt (her biri 32 bayt olan 4 öğe) yer kaplar.
 
 
 Yapı(Struct) Düzeni Farklılıklarına Bir Örnek
----------------------------------------
+----------------------------------------------
 
 Aşağıdaki struct, depolamada 96 bayt (32 baytlık 3 yuva) kaplar,
 ama bellekte 128 bayt (her biri 32 bayt olan 4 öğe) yer kaplar.

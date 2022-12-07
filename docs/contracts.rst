@@ -2,9 +2,9 @@
 
 .. _contracts:
 
-##########
+###################
 Akıllı Sözleşmeler
-##########
+###################
 
 Solidity'deki akıllı sözleşmeler nesne yönelimli programlama dillerine benzerdir. State
 değişkenlerinde kalıcı data içerirler ve fonksiyonlar bu değişkenlerin değerini

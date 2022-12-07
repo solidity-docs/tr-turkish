@@ -3,7 +3,7 @@
 .. _reference-types:
 
 Referans Türleri
-===============
+=================
 
 Referans türünün değerleri, birden çok farklı adla değiştirilebilir. Bunu, bir değer türü değişkeni kullanıldığında bağımsız bir kopya aldığınız değer türleriyle karşılaştırın. Bu nedenle referans türleri, değer türlerinden daha dikkatli ele alınmalıdır. Şu anda referans türleri yapılar, diziler ve eşlemelerden oluşmaktadır. Bir referans türü kullanıyorsanız, her zaman türün depolandığı veri alanını açıkça sağlamanız gerekir: ``memory`` (ömrü, harici bir fonksiyon çağrısıyla sınırlıdır), ``storage`` (durum değişkenlerinin ömrünün, bir sözleşmenin ömrüyle sınırlı olduğu durumlarda saklanır) veya ``calldata`` (fonksiyon argümanlarını içeren özel veri konumu).
 
@@ -17,13 +17,13 @@ Veri Konumu
 Her referans türünün, nerede depolandığı hakkında "veri konumu" olan ek bir açıklaması vardır. Üç veri konumu vardır: ``memory``, ``storage`` ve ``calldata``. Çağrı verileri (calldata), fonksiyon bağımsız değişkenlerinin depolandığı ve çoğunlukla bellek gibi davrandığı, değiştirilemeyen, kalıcı olmayan bir alandır.
 
 
-.. not::
+.. note::
     Yapabiliyorsanız, veri konumu olarak ``calldata`` kullanmayı deneyin, çünkü bu kopyaları önler ve ayrıca verilerin değiştirilememesini sağlar. "calldata" veri konumuna sahip diziler ve yapılar da fonksiyonlarla döndürülebilir, ancak bu türlerin atanması mümkün değildir.
 
-.. not::
-    0.6.9 sürümünden önce, referans türü argümanlar için veri konumu, harici fonksiyonlarda ``calldata``, genel fonksiyonlarda ``memory`` ve dahili ve özel fonksiyonlarda ``memory`` veya ``storage`` ile sınırlıydı. . Artık ``memory``e ve ``calldata``ya, görünürlüklerinden bağımsız olarak tüm fonksiyonlarda izin verilir.
+.. note::
+    0.6.9 sürümünden önce, referans türü argümanlar için veri konumu, harici fonksiyonlarda ``calldata`` , genel fonksiyonlarda ``memory`` ve dahili ve özel fonksiyonlarda ``memory`` veya ``storage`` ile sınırlıydı. . Artık ``memory`` e ve ``calldata`` ya, görünürlüklerinden bağımsız olarak tüm fonksiyonlarda izin verilir.
    
-.. not::
+.. note::
     0.5.0 sürümünden önce, veri konumu atlanabilir ve değişkenin türüne, fonksiyon türüne vb. bağlı olarak varsayılan olarak farklı konumlara atanırdı, ancak tüm karmaşık türler şimdi açık bir veri konumu vermelidir.
 
 .. _data-location-assignment:
@@ -37,8 +37,8 @@ Data locations are not only relevant for persistency of data, but also for the s
 
 * ``storage`` ve ``memory`` (veya ``calldata``) arasındaki atamalar her zaman bağımsız bir kopya oluşturur.
 * ``memory``den ``memory``ye (bellekten belleğe) yapılan atamalar yalnızca referans oluşturur. Bu, bir bellek değişkeninde (``memory``) yapılan değişikliklerin aynı verilere atıfta bulunan diğer tüm bellek değişkenlerinde de görülebileceği anlamına gelir.
-* ``storage``dan (depolamadan), **local** (yerel) depolama değişkenine yapılan atamalar da yalnızca bir referans atar.
-*  Diğer tüm atamalar ``storage``a her zaman kopyalanır. Bu duruma örnek olarak, yerel değişkenin kendisi yalnızca bir başvuru olsa bile, durum değişkenlerine veya depolama yapısı türünün yerel değişkenlerinin üyelerine atamalar verilebilir.
+* ``storage`` dan (depolamadan), **local** (yerel) depolama değişkenine yapılan atamalar da yalnızca bir referans atar.
+*  Diğer tüm atamalar ``storage`` a her zaman kopyalanır. Bu duruma örnek olarak, yerel değişkenin kendisi yalnızca bir başvuru olsa bile, durum değişkenlerine veya depolama yapısı türünün yerel değişkenlerinin üyelerine atamalar verilebilir.
 
 .. code-block:: solidity
 
@@ -74,13 +74,13 @@ Data locations are not only relevant for persistency of data, but also for the s
 .. _arrays:
 
 Diziler
-------
+--------
 
 Diziler, derleme zamanında sabit bir boyuta sahip olabilir veya dinamik bir boyuta sahip olabilir.
 
 Sabit boyutlu bir dizinin türü ``k`` ve öğe türü ``T``, ``T[k]`` olarak yazılır ve dinamik boyut dizisi ``T[]`` olarak yazılır.
 
-Örneğin, ``uint``in 5 dinamik dizisinden oluşan bir dizi ``uint[][5]`` olarak yazılır. Notasyon, diğer bazı dillere kıyasla tersine çevrilir. Solidity'de, ``X[3]`` her zaman ``X`` türünde üç öğe içeren bir dizidir, ``X``in kendisi bir dizi olsa bile. C gibi diğer dillerde durum böyle değildir.
+Örneğin, ``uint`` in 5 dinamik dizisinden oluşan bir dizi ``uint[][5]`` olarak yazılır. Notasyon, diğer bazı dillere kıyasla tersine çevrilir. Solidity'de, ``X[3]`` her zaman ``X`` türünde üç öğe içeren bir dizidir, ``X`` in kendisi bir dizi olsa bile. C gibi diğer dillerde durum böyle değildir.
 
 Endeksler sıfır tabanlıdır ve erişim bildirimin tersi yönündedir.
 
@@ -100,7 +100,7 @@ Sonunu aşan bir diziye erişmek, başarısız bir onaylamaya neden olur. ``.pus
 .. _bytes:
 
 Diziler olarak ``bytes`` ve ``string``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ``bytes`` ve ``string`` türündeki değişkenler özel dizilerdir. ``bytes`` türü ``bytes1[]`` ile benzerdir, ancak çağrı verileri ve bellekte sıkıca paketlenmiştir. ``string``, ``bytes`` değerine eşittir ancak uzunluk veya dizin erişimine izin vermez.
 
@@ -111,7 +111,7 @@ kullanarak iki dizgiyi keccak256-hash ile karşılaştırabilir ve ``string.conc
 ``bytes1[]`` yerine ``bytes`` kullanmalısınız çünkü daha ucuzdur, çünkü ``memory``de ``bytes1[]`` kullanmak, öğeler arasında 31 dolgu bayt ekler. ``storage``"da, sıkı paketleme nedeniyle dolgu bulunmadığına dikkat edin, bkz. :ref:`bayt ve string <bytes-and-string>`. Genel bir kural olarak, rastgele uzunluktaki ham bayt verileri için ``bytes`` ve rastgele uzunluktaki string (UTF-8) verileri için ``string`` kullanın. Uzunluğu belirli bir bayt sayısıyla sınırlayabiliyorsanız, her zaman ``bytes1`` ile ``bytes32`` arasındaki değer türlerinden birini kullanın çünkü bunlar çok daha ucuzdur.
 
 
-.. not::
+.. note::
 
     ``s`` stringinin bayt temsiline erişmek istiyorsanız, ``bytes(s).length`` / ``bytes(s)[7] = 'x';`` yapısını kullanın. Tek tek karakterlere değil, UTF-8 temsilinin düşük seviyeli baytlarına eriştiğinizi unutmayın.
 
@@ -123,9 +123,9 @@ kullanarak iki dizgiyi keccak256-hash ile karşılaştırabilir ve ``string.conc
 ``bytes.concat`` ve ``string.concat`` Fonksiyonları
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``string.concat`` kullanarak rastgele sayıda ``string`` değerini birleştirebilirsiniz. Fonksiyon, bağımsız değişkenlerin içeriğini doldurmadan içeren tek bir ``string memory`` dizisi döndürür. Örtülü olarak ``string``e dönüştürülemeyen diğer türlerin parametrelerini kullanmak istiyorsanız, önce bunları ``string``e dönüştürmeniz gerekir.
+``string.concat`` kullanarak rastgele sayıda ``string`` değerini birleştirebilirsiniz. Fonksiyon, bağımsız değişkenlerin içeriğini doldurmadan içeren tek bir ``string memory`` dizisi döndürür. Örtülü olarak ``string`` e dönüştürülemeyen diğer türlerin parametrelerini kullanmak istiyorsanız, önce bunları ``string`` e dönüştürmeniz gerekir.
 
-Benzer şekilde, ``bytes.concat`` fonksiyonu, rastgele sayıda ``bytes`` veya ``bytes1 ... bytes32`` değerlerini birleştirebilir. Fonksiyon, bağımsız değişkenlerin içeriğini doldurmadan içeren tek bir ``bytes memory`` dizisi döndürür. String parametreleri veya örtük olarak ``bytes``a dönüştürülemeyen diğer türleri kullanmak istiyorsanız, önce bunları ``bytes`` veya ``bytes1``/.../``bytes32``ye dönüştürmeniz gerekir.
+Benzer şekilde, ``bytes.concat`` fonksiyonu, rastgele sayıda ``bytes`` veya ``bytes1 ... bytes32`` değerlerini birleştirebilir. Fonksiyon, bağımsız değişkenlerin içeriğini doldurmadan içeren tek bir ``bytes memory`` dizisi döndürür. String parametreleri veya örtük olarak ``bytes`` a dönüştürülemeyen diğer türleri kullanmak istiyorsanız, önce bunları ``bytes`` veya ``bytes1`` /.../ ``bytes32`` ye dönüştürmeniz gerekir.
 
 
 .. code-block:: solidity
@@ -144,7 +144,7 @@ Benzer şekilde, ``bytes.concat`` fonksiyonu, rastgele sayıda ``bytes`` veya ``
         }
     }
 
-``string.concat``ı veya ``bytes.concat``ı, argüman olmadan çağırırsanız, boş bir dizi döndürürler.
+``string.concat`` ı veya ``bytes.concat`` ı, argüman olmadan çağırırsanız, boş bir dizi döndürürler.
 
 .. index:: ! array;allocating, new
 
@@ -153,7 +153,7 @@ Bellek Dizilerini Ayırma
 
 Dinamik uzunluktaki bellek dizileri ``new`` operatörü kullanılarak oluşturulabilir. Depolama dizilerinin aksine, bellek dizilerini yeniden boyutlandırmak **değildir** (ör. ``.push`` üye fonksiyonları kullanılamaz). Gereken boyutu önceden hesaplamanız veya yeni bir bellek dizisi oluşturmanız ve her öğeyi kopyalamanız gerekir.
 
-Solidity'deki tüm değişkenler gibi, yeni tahsis edilen dizilerin öğeleri her zaman :ref:`varsayılan değer<varsayılan-değer>` ile başlatılır.
+Solidity'deki tüm değişkenler gibi, yeni tahsis edilen dizilerin öğeleri her zaman :ref:`varsayılan değer<default-value>` ile başlatılır.
 
 .. code-block:: solidity
 
@@ -183,7 +183,7 @@ Dizinin temel türü, diğer tüm ifadelerin dolaylı olarak kendisine dönüşt
 
 Tüm öğelerin dönüştürülebileceği bir türün olması yeterli değildir. Öğelerden birinin bu türden olması gerekir.
 
-Aşağıdaki örnekte, ``[1, 2, 3]`` türü ``uint8[3] memory``dir, çünkü bu sabitlerin her birinin türü ``uint8``dir. Sonucun ``uint[3] memory`` türünde olmasını istiyorsanız, ilk öğeyi ``uint``e dönüştürmeniz gerekir.
+Aşağıdaki örnekte, ``[1, 2, 3]`` türü ``uint8[3] memory`` dir, çünkü bu sabitlerin her birinin türü ``uint8`` dir. Sonucun ``uint[3] memory`` türünde olmasını istiyorsanız, ilk öğeyi ``uint`` e dönüştürmeniz gerekir.
 
 .. code-block:: solidity
 
@@ -267,13 +267,13 @@ Dizi Üyeleri
 **pop()**:
     Dinamik depolama dizileri ve ``bytes`` (``string`` değil), dizinin sonundan bir öğeyi kaldırmak için kullanabileceğiniz ``pop()`` adlı bir üye fonksiyonuna sahiptir. Bu ayrıca kaldırılan öğede örtük olarak :ref:`delete<delete>` öğesini çağırır. Fonksiyon hiçbir şey döndürmez.
 
-.. not::
+.. note::
     ``pop()`` kullanarak uzunluk azaltılırken kaldırılan öğenin "boyutuna" bağlı olarak bir ücreti varken, bir depolama dizisinin uzunluğunu ``push()`` çağırarak artırmanın sabit gaz maliyetleri vardır çünkü başlarken depolama sıfırdır. Kaldırılan öğe bir diziyse, çok maliyetli olabilir, çünkü :ref:`delete<delete>` çağrılmasına benzer şekilde kaldırılan öğelerin açıkça temizlenmesini içerir.
 
-.. not::
+.. note::
     Dizi dizilerini harici (genel yerine) fonksiyonlarda kullanmak için ABI kodlayıcı v2'yi etkinleştirmeniz gerekir.
 
-.. not::
+.. note::
     "Byzantium" öncesi EVM sürümlerinde fonksiyon çağrılarından dönen dinamik dizilere erişim mümkün değildi. Dinamik diziler döndüren fonksiyonları çağırırsanız, Byzantium moduna ayarlanmış bir EVM kullandığınızdan emin olun.
 
 .. code-block:: solidity
@@ -459,10 +459,10 @@ Kodunuzda sarkan referanslardan kaçındığınızdan emin olun!
 .. _array-slices:
 
 Dizi Dilimleri
-------------
+----------------
 
 Dizi dilimleri, bir dizinin bitişik kısmındaki bir görünümdür. ``x[start:end]`` olarak yazılırlar, burada ``start`` ve
-``end``, uint256 türüyle sonuçlanan (veya dolaylı olarak ona dönüştürülebilir) ifadelerdir. Dilimin ilk öğesi ``x[start]`` ve son öğesi ``x[end - 1]``dir.
+``end`` , uint256 türüyle sonuçlanan (veya dolaylı olarak ona dönüştürülebilir) ifadelerdir. Dilimin ilk öğesi ``x[start]`` ve son öğesi ``x[end - 1]`` dir.
 
 ``start``, ``end``den büyükse veya ``end``, dizinin uzunluğundan büyükse, bir istisna atılır.
 
@@ -472,7 +472,7 @@ Dizi dilimlerinin herhangi bir üyesi yoktur. Altta yatan türdeki dizilere ört
 
 Dizi dilimlerinin bir tür adı yoktur, yani hiçbir değişken tür olarak dizi dilimlerine sahip olamaz, yalnızca ara ifadelerde bulunurlar.
 
-.. not::
+.. note::
     Şu anda dizi dilimleri yalnızca çağrı verisi dizileri için uygulanmaktadır.
 
 Dizi dilimleri, fonksiyon parametrelerinde iletilen ikincil verilerin ABI kodunu çözmek için kullanışlıdır:
@@ -510,7 +510,7 @@ Dizi dilimleri, fonksiyon parametrelerinde iletilen ikincil verilerin ABI kodunu
 .. _structs:
 
 Yapılar
--------
+--------
 
 Solidity, aşağıdaki örnekte gösterildiği gibi, yapılar biçiminde yeni türleri tanımlamanın bir yolunu sağlar:
 
@@ -576,5 +576,5 @@ Bir yapının kendi türünden bir üye içermesi mümkün değildir, ancak yap�
 
 Tüm fonksiyonlarda, veri konumu ``storage`` olan yerel bir değişkene bir yapı türünün nasıl atandığına dikkat edin. Bu, yapıyı kopyalamaz, ancak yalnızca bir referansı saklar, böylece yerel değişkenin üyelerine yapılan atamalar aslında duruma yazılır.
 
-.. not::
+.. note::
     Solidity 0.7.0'a kadar, yalnızca depolama türlerinin üyelerini (ör. eşlemeler) içeren bellek yapılarına izin veriliyordu ve ``campaigns[campaignID] = Campaign(beneficiary, goal, 0, 0)`` gibi atamalar işe yarıyordu ve bunları sessizce atlıyordu.
