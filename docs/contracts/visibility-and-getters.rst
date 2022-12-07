@@ -1,15 +1,15 @@
 .. index:: ! visibility, external, public, private, internal
 
-.. |visibility-caveat| replace::Bir şeyi ``private`` veya ``internal`` yapmak sadece diğer akıllı sözleşmelerin o bilgiye erişimini veya değiştirilmesini engeller. Ama bu bilgiler blok zinciri dışından erişilebilir durumdadır.
+.. |visibility-caveat| replace:: Bir şeyi ``private`` veya ``internal`` yapmak sadece diğer akıllı sözleşmelerin o bilgiye erişimini veya değiştirilmesini engeller. Ama bu bilgiler blok zinciri dışından erişilebilir durumdadır.
 
 .. _visibility-and-getters:
 
-**********************
+**********************************
 Görünürlük ve Getter Fonksiyonlar
-**********************
+**********************************
 
 Durum Değişkenlerinde Görünürlük
-=========================
+=================================
 
 ``public``
     Public durum değişkenleri internallerden sadece bir açıdan farklıdır, o da derleyicinin direkt olarak bir
@@ -33,7 +33,7 @@ Durum Değişkenlerinde Görünürlük
     |visibility-caveat|
 
 Fonksiyonlarda Görünürlük
-===================
+===========================
 
 Solidity iki tip fonksiyon çağrısı bilir: gerçek bir EVM mesaj çağrısı yapan external'lar ve bu çağrıyı yapmayan internal'lar.
 Ayrıca internal fonksiyonlar türetilen fonksiyonlardan erişilemez hale de getirilebilir.
@@ -113,7 +113,7 @@ ama ``f`` fonksiyonunu çağıramaz. ``E`` akıllı sözleşmeleri ise ``C`` ak�
 .. _getter-functions:
 
 Getter Fonksiyonlar
-================
+====================
 
 Derleyici bütün **public** durum değişkenleri için getter fonksiyonu oluşturur.
 Örneğin aşağıdaki akıllı sözleşme için, derleyici ``data`` adında bir fonksiyon üretir.

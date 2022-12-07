@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bellekteki Düzen &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/js/toggle.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Çağrı Verilerinin Düzeni" href="layout_in_calldata.html" />
+    <link rel="prev" title="Depolama Alanındaki Durum Değişkenlerinin Düzeni" href="layout_in_storage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="../index.html">
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Bellekteki Düzen</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#depolama-duzeni-farkliliklari">Depolama Düzeni Farklılıkları</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dizilerdeki-farkliliklara-bir-ornek">Dizilerdeki Farklılıklara Bir Örnek</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#yapi-struct-duzeni-farkliliklarina-bir-ornek">Yapı(Struct) Düzeni Farklılıklarına Bir Örnek</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="../genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Bellekteki Düzen</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/internals/layout_in_memory.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bellekteki-duzen">
+<h1>Bellekteki Düzen<a class="headerlink" href="#bellekteki-duzen" title="Permalink to this heading"></a></h1>
+<p>Solidity, belirli bayt aralıklarını (uç noktalar dahil) aşağıdaki şekilde kullanılmak üzere dört adet 32 baytlık yuva ayırır:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0x00</span></code> - <code class="docutils literal notranslate"><span class="pre">0x3f</span></code> (64 bytes): Hash metotları için scratch(kazıma) alanı</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x40</span></code> - <code class="docutils literal notranslate"><span class="pre">0x5f</span></code> (32 bytes): Şuan ayrılmış olan bellek boyutu (boş bellek pointer’ı olarak da bilinir)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x60</span></code> - <code class="docutils literal notranslate"><span class="pre">0x7f</span></code> (32 bytes): zero slot (sıfır yuva)</p></li>
+</ul>
+<p>Durumlar arasında (yani assembly içinde) scratch alanı kullanılabilir. Sıfır yuvası, dinamik bellek dizilerinin başlangıç
+değeri olarak kullanılır ve asla başlangıçta <code class="docutils literal notranslate"><span class="pre">0x80</span></code>’i gösteren boş bellek pointer noktasına yazılmamalıdır.</p>
+<p>Solidity her zaman yeni nesneleri boş bellek işaretçisine yerleştirir ve
+hafıza asla serbest bırakılmaz (Bu özellik gelecekte değişebilir).</p>
+<p>Solidity’de bulunan bellek dizilerindeki öğeler her zaman 32 baytın katlarını kaplar (Bu
+<code class="docutils literal notranslate"><span class="pre">bytes1[]</span></code> için bile doğrudur, ama <code class="docutils literal notranslate"><span class="pre">bytes</span></code> ve <code class="docutils literal notranslate"><span class="pre">string</span></code> için geçerli değildir).
+Çok boyutlu bellek dizileri, bellek dizilerinin işaretçileridir. Bir dinamik dizinin uzunluğu
+dizinin ilk yuvasında depolanır ve ardından dizinin elemanları gelir.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Solidity’de 64 bayttan daha büyük bir geçici bellek alanına ihtiyaç
+duyan ve bu nedenle scratch alanına sığmayan bazı işlemler vardır.
+Bu işlemler boş bellek noktalarına yerleştirilecektir, ama kısa ömürleri
+nedeniyle işaretçi güncellenemez. Bellek sıfırlanmış olabilir ya da
+olmayabilir. Bu nedenle, boş hafızanın sıfırlanmış hafızayı göstermesi beklenmemelidir.</p>
+<p>Net bir sıfırlanmış bellek alanına ulaşmak için <code class="docutils literal notranslate"><span class="pre">msize</span></code> kullanmak
+iyi bir fikir gibi görünse de, boş bellek işaretçisi güncellenmeden
+geçici olmayan bir işaretçi kullanmak beklenmeyen sonuçlara neden olabilir.</p>
+</div>
+<section id="depolama-duzeni-farkliliklari">
+<h2>Depolama Düzeni Farklılıkları<a class="headerlink" href="#depolama-duzeni-farkliliklari" title="Permalink to this heading"></a></h2>
+<p>Yukarıda açıklandığı üzere bellekteki düzen ile depolama düzeni
+(<a class="reference internal" href="layout_in_storage.html#storage-inplace-encoding"><span class="std std-ref">storage</span></a>) farklıdır.
+Aşağıda bunlara yönelik bazı örnekler bulunmaktadır.</p>
+<section id="dizilerdeki-farkliliklara-bir-ornek">
+<h3>Dizilerdeki Farklılıklara Bir Örnek<a class="headerlink" href="#dizilerdeki-farkliliklara-bir-ornek" title="Permalink to this heading"></a></h3>
+<p>Aşağıdaki dizi, depolamada 32 bayt (1 yuva) yer kaplar, ancak bellekte 128
+bayt (her biri 32 bayt olan 4 öğe) yer kaplar.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=dWludDhbNF0gYTs="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="kt">uint8</span><span class="p">[</span><span class="m m-Decimal">4</span><span class="p">]</span><span class="w"> </span>a<span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="yapi-struct-duzeni-farkliliklarina-bir-ornek">
+<h3>Yapı(Struct) Düzeni Farklılıklarına Bir Örnek<a class="headerlink" href="#yapi-struct-duzeni-farkliliklarina-bir-ornek" title="Permalink to this heading"></a></h3>
+<p>Aşağıdaki struct, depolamada 96 bayt (32 baytlık 3 yuva) kaplar,
+ama bellekte 128 bayt (her biri 32 bayt olan 4 öğe) yer kaplar.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=c3RydWN0IFMgewogICAgdWludCBhOwogICAgdWludCBiOwogICAgdWludDggYzsKICAgIHVpbnQ4IGQ7Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="kt">struct</span><span class="w"> </span><span class="nv">S</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint</span><span class="w"> </span><span class="nv">a</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint</span><span class="w"> </span><span class="nv">b</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint8</span><span class="w"> </span><span class="nv">c</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint8</span><span class="w"> </span><span class="nv">d</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="layout_in_storage.html" class="btn btn-neutral float-left" title="Depolama Alanındaki Durum Değişkenlerinin Düzeni" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="layout_in_calldata.html" class="btn btn-neutral float-right" title="Çağrı Verilerinin Düzeni" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="../credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

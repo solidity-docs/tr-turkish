@@ -2,9 +2,9 @@
 
 .. _constants:
 
-**************************************
+*****************************************
 Constant ve Immutable State Değişkenleri
-**************************************
+*****************************************
 
 State değişkenleri ``constant`` veya ``immutable`` olarak tanımlanabilir.
 Her iki durumda da akıllı sözleşme kurulduktan sonra (constructor çalıştıktan sonra) bu tür değişkenler değiştirilemez.

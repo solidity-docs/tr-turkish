@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solidity v0.8.0 İşleyişi Bozan Değişiklikler &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="NatSpec Formatı" href="natspec-format.html" />
+    <link rel="prev" title="Solidity v0.7.0 İşleyişi Bozan Değişiklikler" href="070-breaking-changes.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#semantikte-sessiz-degisiklikler">Semantikte Sessiz Değişiklikler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yeni-kisitlamalar">Yeni Kısıtlamalar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#arayuz-degisiklikleri">Arayüz Değişiklikleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#kodunuzu-nasil-guncelleyebilirsiniz">Kodunuzu nasıl güncelleyebilirsiniz?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/080-breaking-changes.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="solidity-v0-8-0-isleyisi-bozan-degisiklikler">
+<h1>Solidity v0.8.0 İşleyişi Bozan Değişiklikler<a class="headerlink" href="#solidity-v0-8-0-isleyisi-bozan-degisiklikler" title="Permalink to this heading"></a></h1>
+<p>Bu bölüm, Solidity 0.8.0 sürümünde sunulan ana işleyişi bozan değişiklikleri vurgular.
+Tam liste için <a class="reference external" href="https://github.com/ethereum/solidity/releases/tag/v0.8.0">sürüm değişiklik günlüğü</a>
+adresini kontrol edin.</p>
+<section id="semantikte-sessiz-degisiklikler">
+<h2>Semantikte Sessiz Değişiklikler<a class="headerlink" href="#semantikte-sessiz-degisiklikler" title="Permalink to this heading"></a></h2>
+<p>Bu bölüm, derleyici size bildirmeden mevcut kodun davranışını değiştirdiği değişiklikleri listeler.</p>
+<ul>
+<li><p>Aritmetik işlemler alttan taşma ve üstten taşma durumunda geri döner. Önceki paketleme davranışını kullanmak için <code class="docutils literal notranslate"><span class="pre">unchecked</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code> öğesini kullanabilirsiniz.</p>
+<p>Üstten taşma kontrolleri çok yaygındır, bu nedenle gaz maliyetlerinde hafif bir artışa neden olsa bile kodun okunabilirliğini artırmak için bunları varsayılan hale getirdik.</p>
+</li>
+<li><p>ABI coder v2 varsayılan olarak etkinleştirilmiştir.</p>
+<p>Eski davranışı kullanmayı <code class="docutils literal notranslate"><span class="pre">pragma</span> <span class="pre">abicoder</span> <span class="pre">v1;</span></code> kullanarak seçebilirsiniz. Pragma <code class="docutils literal notranslate"><span class="pre">pragma</span> <span class="pre">experimental</span> <span class="pre">ABIEncoderV2;</span></code> hala geçerlidir, ancak kullanımdan kaldırılmıştır ve hiçbir etkisi yoktur. Eğer doğrudan belirtmek istiyorsanız, lütfen bunun yerine <code class="docutils literal notranslate"><span class="pre">pragma</span> <span class="pre">abicoder</span> <span class="pre">v2;</span></code> kullanın.</p>
+<p>ABI coder v2’nin v1’den daha fazla türü desteklediğini ve girdiler üzerinde daha fazla sanity kontrolü gerçekleştirdiğini unutmayın. ABI coder v2 bazı fonksiyon çağrılarını daha pahalı hale getirir ve ayrıca parametre tiplerine uymayan veriler içerdiklerinde ABI coder v1 ile geri dönmeyen sözleşme çağrılarının geri dönmesine neden olabilir.</p>
+</li>
+<li><p>Üs alma sağdan ilişkilidir, yani <code class="docutils literal notranslate"><span class="pre">a**b**c</span></code> ifadesi <code class="docutils literal notranslate"><span class="pre">a**(b**c)</span></code> olarak ayrıştırılır.
+0.8.0’dan önce <code class="docutils literal notranslate"><span class="pre">(a**b)**c</span></code> olarak ayrıştırılıyordu.</p>
+<p>Bu, üs alma operatörünü ayrıştırmanın yaygın yoludur.</p>
+</li>
+<li><p>Başarısız iddialar ve sıfıra bölme veya aritmetik üstten taşma gibi diğer dahili kontroller geçersiz işlem kodunu değil, bunun yerine geri döndürme işlem kodunu kullanır. Daha spesifik olarak, <code class="docutils literal notranslate"><span class="pre">Panic(uint256)</span></code> fonksiyon çağrısına eşit hata verilerini, koşullara özgü bir hata koduyla kullanacaklardır.</p>
+<p>Bu, hatalarda gaz tasarrufu sağlarken, statik analiz araçlarının bu durumları, başarısız bir <code class="docutils literal notranslate"><span class="pre">require</span></code> gibi geçersiz bir girdi üzerindeki bir geri dönüşten ayırt etmesine izin verir.</p>
+</li>
+<li><p>Depolama alanında uzunluğu yanlış kodlanmış bir bayt dizisine erişilmesi paniğe neden olunur.
+Depolama bayt dizilerinin ham gösterimini değiştirmek için inline assembly kullanılmadığı sürece bir sözleşme bu duruma giremez.</p></li>
+<li><p>Dizi uzunluğu ifadelerinde sabitler kullanılması halinde Solidity’nin önceki sürümleri, değerlendirme ağacının (evaluation tree) tüm dallarında (branch) rastgele (arbitrary) kesinlik kullanırdı. Artık, sabit değişkenler ara ifadeler olarak kullanıldığında, değerleri, çalışma zamanı ifadelerinde kullanıldıklarında olduğu gibi uygun şekilde yuvarlanacaktır.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">byte</span></code> türü kaldırıldı. Bu <code class="docutils literal notranslate"><span class="pre">bytes1</span></code> türünün bir takma adıydı.</p></li>
+</ul>
+</section>
+<section id="yeni-kisitlamalar">
+<h2>Yeni Kısıtlamalar<a class="headerlink" href="#yeni-kisitlamalar" title="Permalink to this heading"></a></h2>
+<p>Bu bölümde, mevcut sözleşmelerin artık derlenmemesine neden olabilecek değişiklikler listelenmektedir.</p>
+<ul>
+<li><p>Literallerin açık dönüşümleri ile ilgili yeni kısıtlamalar vardır. Aşağıdaki durumlarda önceki davranış muhtemelen belirsizdi:</p>
+<ol class="arabic simple">
+<li><p>Negatif literallerden ve <code class="docutils literal notranslate"><span class="pre">type(uint160).max</span></code> değerinden büyük literallerden <code class="docutils literal notranslate"><span class="pre">address</span></code> değerine açık dönüşümlere izin verilmez.</p></li>
+<li><p>Literaller ve <code class="docutils literal notranslate"><span class="pre">T</span></code> tamsayı tipi arasındaki açık dönüşümlere yalnızca literal <code class="docutils literal notranslate"><span class="pre">type(T).min</span></code> ve <code class="docutils literal notranslate"><span class="pre">type(T).max</span></code> arasında yer alıyorsa izin verilir. Özellikle, <code class="docutils literal notranslate"><span class="pre">uint(-1)</span></code> kullanımlarını <code class="docutils literal notranslate"><span class="pre">type(uint).max</span></code> ile değiştirin.</p></li>
+<li><p>Literaller ve enumlar arasındaki açık dönüşümlere yalnızca literal enumdaki bir değeri temsil edebiliyorsa izin verilir.</p></li>
+<li><p>Literaller ve <code class="docutils literal notranslate"><span class="pre">address</span></code> türü arasındaki açık dönüşümler (örneğin <code class="docutils literal notranslate"><span class="pre">address(literal)</span></code>) <code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code> yerine <code class="docutils literal notranslate"><span class="pre">address</span></code> türüne sahiptir. Açık bir dönüşüm, yani <code class="docutils literal notranslate"><span class="pre">payable(literal)</span></code> kullanılarak payable(ödenebilir) bir adres türü elde edilebilir.</p></li>
+</ol>
+</li>
+<li><p><a class="reference internal" href="types.html#address-literals"><span class="std std-ref">Address literals</span></a>, <code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code> yerine <code class="docutils literal notranslate"><span class="pre">address</span></code> türüne sahiptir. Açık bir dönüşüm kullanılarak <code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code> türüne dönüştürülebilirler, örneğin <code class="docutils literal notranslate"><span class="pre">payable(0xdCad3a6d3569DF655070DEd06cb7A1b2Ccd1D3AF)</span></code>.</p></li>
+<li><p>Açık tip dönüşümlerinde yeni kısıtlamalar vardır. Dönüşüme yalnızca işaret, genişlik veya tür kategorisinde en fazla bir değişiklik olduğunda izin verilir (<code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">adres</span></code>, <code class="docutils literal notranslate"><span class="pre">bytesNN</span></code>, vb.). Birden fazla değişiklik yapmak için birden fazla dönüşüm kullanın.</p>
+<p>Burada, <code class="docutils literal notranslate"><span class="pre">T</span></code> ve <code class="docutils literal notranslate"><span class="pre">S</span></code> tipleri ve <code class="docutils literal notranslate"><span class="pre">x</span></code> de <code class="docutils literal notranslate"><span class="pre">S</span></code> tipindeki herhangi bir rastgele(arbitrary) değişken olmak üzere, <code class="docutils literal notranslate"><span class="pre">T(x)</span></code> açık dönüşümünü belirtmek için <code class="docutils literal notranslate"><span class="pre">T(S)</span></code> notasyonunu kullanalım. Hem genişliği (8 bitten 16 bite) hem de işareti (işaretli tamsayıdan işaretsiz tamsayıya) değiştirdiği için bu tür bir izin verilmeyen dönüştürmeye örnek olarak <code class="docutils literal notranslate"><span class="pre">uint16(int8)</span></code> verilebilir. Dönüştürmeyi yapmak için bir ara türden geçmek gerekir. Önceki örnekte, bu <code class="docutils literal notranslate"><span class="pre">uint16(uint8(int8))</span></code> veya <code class="docutils literal notranslate"><span class="pre">uint16(int16(int8))</span></code> olacaktır. Dönüştürmenin iki yolunun farklı sonuçlar üreteceğini unutmayın, örneğin <code class="docutils literal notranslate"><span class="pre">-1</span></code> için. Aşağıda, bu kural tarafından izin verilmeyen bazı dönüşüm örnekleri verilmiştir.</p>
+</li>
+</ul>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">address(uint)</span></code> ve <code class="docutils literal notranslate"><span class="pre">uint(address)</span></code>: hem tür kategorisini hem de genişliği dönüştürüyor. Bunu sırasıyla <code class="docutils literal notranslate"><span class="pre">address(uint160(uint))</span></code> ve <code class="docutils literal notranslate"><span class="pre">uint(uint160(address))</span></code> ile değiştirin.
+- <code class="docutils literal notranslate"><span class="pre">payable(uint160)</span></code>, <code class="docutils literal notranslate"><span class="pre">payable(bytes20)</span></code> ve <code class="docutils literal notranslate"><span class="pre">payable(integer-literal)</span></code>: hem tür kategorisini hem de durum değiştirilebilirliğini dönüştürüyor. Bunu sırasıyla <code class="docutils literal notranslate"><span class="pre">payable(address(uint160))</span></code>, <code class="docutils literal notranslate"><span class="pre">payable(address(bytes20))</span></code> ve <code class="docutils literal notranslate"><span class="pre">payable(address(integer-literal))</span></code> ile değiştirin. <code class="docutils literal notranslate"><span class="pre">payable(0)``ın</span> <span class="pre">geçerli</span> <span class="pre">olduğunu</span> <span class="pre">ve</span> <span class="pre">kuralın</span> <span class="pre">bir</span> <span class="pre">istisnası</span> <span class="pre">olduğunu</span> <span class="pre">unutmayın.</span>
+<span class="pre">-</span> <span class="pre">``int80(bytes10)</span></code> ve <code class="docutils literal notranslate"><span class="pre">bytes10(int80)</span></code>: hem tür kategorisini hem de işareti dönüştürüyor. Bunu sırasıyla <code class="docutils literal notranslate"><span class="pre">int80(uint80(bytes10))</span></code> ve <code class="docutils literal notranslate"><span class="pre">bytes10(uint80(int80)</span></code> ile değiştirin.
+- <code class="docutils literal notranslate"><span class="pre">Contract(uint)</span></code>: hem tür kategorisini hem de genişliği dönüştürüyor. Bunu <code class="docutils literal notranslate"><span class="pre">Contract(address(uint160(uint)))</span></code> ile değiştirin.</p>
+<p>Belirsizliği önlemek için bu dönüşümlere izin verilmemiştir. Örneğin, <code class="docutils literal notranslate"><span class="pre">uint16</span> <span class="pre">x</span> <span class="pre">=</span> <span class="pre">uint16(int8(-1))</span></code> ifadesinde, <code class="docutils literal notranslate"><span class="pre">x</span></code> değeri, işaret ve genişlik dönüşümünden hangisinin önce uygulandığına bağlı olacaktır.</p>
+</li>
+</ul>
+<ul>
+<li><p>Fonksiyon çağrı seçenekleri sadece bir kez verilebilir, yani <code class="docutils literal notranslate"><span class="pre">c.f{gas:</span> <span class="pre">10000}{value:</span> <span class="pre">1}()</span></code> geçersizdir ve <code class="docutils literal notranslate"><span class="pre">c.f{gas:</span> <span class="pre">10000,</span> <span class="pre">value:</span> <span class="pre">1}()</span></code> olarak değiştirilmelidir.</p></li>
+<li><p>Global fonksiyonlar <code class="docutils literal notranslate"><span class="pre">log0</span></code>, <code class="docutils literal notranslate"><span class="pre">log1</span></code>, <code class="docutils literal notranslate"><span class="pre">log2</span></code>, <code class="docutils literal notranslate"><span class="pre">log3</span></code> ve <code class="docutils literal notranslate"><span class="pre">log4</span></code> kaldırılmıştır.</p>
+<p>Bunlar büyük ölçüde kullanılmayan düşük seviyeli fonksiyonlardır. Davranışlarına inline assembly’den erişilebilir.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">enum</span></code> tanımları 256`dan fazla üye içeremez.</p>
+<p>Bu, ABI’deki temel türün her zaman <code class="docutils literal notranslate"><span class="pre">uint8</span></code> olduğunu varsaymayı güvenli hale getirecektir.</p>
+</li>
+<li><p>Public fonksiyonlar ve event`ler haricinde <code class="docutils literal notranslate"><span class="pre">this</span></code>, <code class="docutils literal notranslate"><span class="pre">super</span></code> ve <code class="docutils literal notranslate"><span class="pre">_</span></code> isimli açıklamalara izin verilmez. İstisna, bu tür fonksiyon isimlerine izin veren Solidity dışındaki dillerde uygulanan sözleşmelerin arayüzlerini açıklamayı mümkün kılmaktır.</p></li>
+<li><p>Koddaki <code class="docutils literal notranslate"><span class="pre">\b</span></code>, <code class="docutils literal notranslate"><span class="pre">\f</span></code> ve <code class="docutils literal notranslate"><span class="pre">\v</span></code> kaçış dizileri için destek kaldırılmıştır. Bunlar, onaltılık kaçış dizileri aracılığıyla eklenmeye devam edebilir; örneğin, sırasıyla <code class="docutils literal notranslate"><span class="pre">\x08</span></code>, <code class="docutils literal notranslate"><span class="pre">\x0c</span></code> ve <code class="docutils literal notranslate"><span class="pre">\x0b</span></code>.</p></li>
+<li><p>Global değişkenler <code class="docutils literal notranslate"><span class="pre">tx.origin</span></code> ve <code class="docutils literal notranslate"><span class="pre">msg.sender</span></code>, <code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code> yerine <code class="docutils literal notranslate"><span class="pre">address</span></code> tipine sahiptir. Bunlar, açık bir dönüşüm kullanılarak <code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code> türüne, yani <code class="docutils literal notranslate"><span class="pre">payable(tx.origin)</span></code> veya <code class="docutils literal notranslate"><span class="pre">payable(msg.sender)</span></code> a dönüştürülebilir.</p>
+<p>Bu değişiklik, derleyicinin bu adreslerin ödenebilir olup olmadığını belirleyememesi nedeniyle yapılmıştır, bu nedenle artık bu gereksinimi görünür kılmak için açık bir dönüşüm gerektirmektedir.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">address</span></code> türüne açık dönüşüm, her zaman, ödenebilir olmayan bir <code class="docutils literal notranslate"><span class="pre">address</span></code> türü döndürür. Özellikle, aşağıdaki açık dönüşümler <code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code> yerine <code class="docutils literal notranslate"><span class="pre">address</span></code> türüne sahiptir:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">u``nun</span> <span class="pre">``uint160</span></code> türü bir değişken olduğu <code class="docutils literal notranslate"><span class="pre">address(u)</span></code>. <code class="docutils literal notranslate"><span class="pre">u</span></code>, iki açık dönüşüm kullanılarak <code class="docutils literal notranslate"><span class="pre">payable(address(u))</span></code> şeklinde <code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code> türüne dönüştürebilir.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">b``nin</span> <span class="pre">``bytes20</span></code> türü bir değişken olduğu <code class="docutils literal notranslate"><span class="pre">address(b)</span></code>. <code class="docutils literal notranslate"><span class="pre">b</span></code>, iki açık dönüşüm kullanılarak <code class="docutils literal notranslate"><span class="pre">payable(address(b))</span></code> şeklinde `` address payable`` türüne dönüştürebilir.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">c``nin</span> <span class="pre">bir</span> <span class="pre">sözleşme</span> <span class="pre">olduğu</span> <span class="pre">``address(c)</span></code>. Önceden, bu dönüşümün dönüş türü, sözleşmenin Ether alıp alamayacağına (bir receive fonksiyonuna veya bir payable fallback fonksiyonuna sahip olarak) bağlıydı. <code class="docutils literal notranslate"><span class="pre">payable(c)</span></code> dönüşümü <code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code> türüne sahiptir ve yalnızca <code class="docutils literal notranslate"><span class="pre">c</span></code> sözleşmesi Ether alabildiğinde bu dönüşüme izin verilir. Genel olarak <code class="docutils literal notranslate"><span class="pre">c</span></code>, şu açık dönüşüm kullanılarak her zaman <code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code> türüne dönüştürülebilir: <code class="docutils literal notranslate"><span class="pre">payable(address(c))</span></code>. <code class="docutils literal notranslate"><span class="pre">address(this)</span></code> türünün <code class="docutils literal notranslate"><span class="pre">address(c)</span></code> ile aynı kategoriye girdiğini ve aynı kuralların onun için de geçerli olduğunu unutmayın.</p></li>
+</ul>
+</li>
+<li><p>Inline assembly`de yerleşik <code class="docutils literal notranslate"><span class="pre">chainid</span></code> artık <code class="docutils literal notranslate"><span class="pre">pure</span></code> yerine <code class="docutils literal notranslate"><span class="pre">view</span></code> olarak kabul edilmektedir.</p></li>
+<li><p>Tekli negasyon artık işaretsiz tamsayılar üzerinde kullanılamaz, sadece işaretli tamsayılar üzerinde kullanılabilir.</p></li>
+</ul>
+</section>
+<section id="arayuz-degisiklikleri">
+<h2>Arayüz Değişiklikleri<a class="headerlink" href="#arayuz-degisiklikleri" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--combined-json</span></code> çıktısı değişti: JSON alanları <code class="docutils literal notranslate"><span class="pre">abi</span></code>, <code class="docutils literal notranslate"><span class="pre">devdoc</span></code>, <code class="docutils literal notranslate"><span class="pre">userdoc</span></code> ve
+<code class="docutils literal notranslate"><span class="pre">storage-layout</span></code> artık alt nesnelerdir. 0.8.0’dan önce string olarak serileştiriliyorlardı.</p></li>
+<li><p>“Eski AST” kaldırıldı (komut satırı arayüzünde <code class="docutils literal notranslate"><span class="pre">--ast-json</span></code> ve standart JSON için <code class="docutils literal notranslate"><span class="pre">legacyAST</span></code>).
+Yerine “kompakt AST” (<code class="docutils literal notranslate"><span class="pre">--ast-compact--json</span></code> sırasıyla <code class="docutils literal notranslate"><span class="pre">AST</span></code>) kullanın.</p></li>
+<li><p>Eski hata raporlayıcı (<code class="docutils literal notranslate"><span class="pre">--old-reporter</span></code>) kaldırıldı.</p></li>
+</ul>
+</section>
+<section id="kodunuzu-nasil-guncelleyebilirsiniz">
+<h2>Kodunuzu nasıl güncelleyebilirsiniz?<a class="headerlink" href="#kodunuzu-nasil-guncelleyebilirsiniz" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Aritmetik paketlemeye güveniyorsanız, her işlemi <code class="docutils literal notranslate"><span class="pre">unchecked</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code>.</p></li>
+<li><p>İsteğe bağlı: SafeMath veya benzer bir kütüphane kullanıyorsanız, <code class="docutils literal notranslate"><span class="pre">x.add(y)</span></code> ifadesini <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+</span> <span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">x.mul(y)</span></code> ifadesini <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">*</span> <span class="pre">y</span></code> vb. olarak değiştirin.</p></li>
+<li><p>Eski ABI kodlayıcı ile devam etmek istiyorsanız <code class="docutils literal notranslate"><span class="pre">pragma</span> <span class="pre">abicoder</span> <span class="pre">v1;</span></code> ekleyin.</p></li>
+<li><p>İsteğe bağlı olarak <code class="docutils literal notranslate"><span class="pre">pragma</span> <span class="pre">experimental</span> <span class="pre">ABIEncoderV2</span></code> veya <code class="docutils literal notranslate"><span class="pre">pragma</span> <span class="pre">abicoder</span> <span class="pre">v2</span></code> gereksiz olduğu için kaldırın.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">byte</span></code> ifadesini <code class="docutils literal notranslate"><span class="pre">bytes1</span></code> olarak değiştirin.</p></li>
+<li><p>Gerekirse ara açık tip dönüşümler ekleyin.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">c.f{gas:</span> <span class="pre">10000}{value:</span> <span class="pre">1}()</span></code> ifadesini <code class="docutils literal notranslate"><span class="pre">c.f{gas:</span> <span class="pre">10000,</span> <span class="pre">value:</span> <span class="pre">1}()</span></code> olarak birleştirin.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">msg.sender.transfer(x)</span></code> öğesini <code class="docutils literal notranslate"><span class="pre">payable(msg.sender).transfer(x)</span></code> olarak değiştirin veya <code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code> türü saklanmış bir değişken kullanın.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">x**y**z</span></code> ifadesini <code class="docutils literal notranslate"><span class="pre">(x**y)**z</span></code> olarak değiştirin.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">log0</span></code>, …, <code class="docutils literal notranslate"><span class="pre">log4</span></code> yerine inline assembly kullanın.</p></li>
+<li><p>İşaretsiz tamsayıları, türün maksimum değerinden çıkarıp 1 ekleyerek negatifleştirin (örneğin <code class="docutils literal notranslate"><span class="pre">type(uint256).max</span> <span class="pre">-</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span></code> in sıfır olmadığından emin olarak)</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="070-breaking-changes.html" class="btn btn-neutral float-left" title="Solidity v0.7.0 İşleyişi Bozan Değişiklikler" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="natspec-format.html" class="btn btn-neutral float-right" title="NatSpec Formatı" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

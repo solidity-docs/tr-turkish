@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solidity Kaynak Dosyasının Düzeni &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bir Sözleşmenin Yapısı" href="structure-of-a-contract.html" />
+    <link rel="prev" title="Solidity by Example" href="solidity-by-example.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Solidity Kaynak Dosyasının Düzeni</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#spdx-lisans-tanimlayicisi">SPDX Lisans Tanımlayıcısı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pragmalar">Pragmalar</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#surum-pragmasi">Sürüm Pragması</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abi-kodlayici-pragmasi">ABI Kodlayıcı Pragması</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deneysel-pragma">Deneysel Pragma</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#abiencoderv2">ABIEncoderV2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#smtchecker">SMTChecker</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#diger-kaynak-dosyalarini-ice-aktarma">Diğer Kaynak Dosyalarını İçe Aktarma</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sozdizimi-ve-anlambilim">Sözdizimi ve Anlambilim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ice-aktarma-yollari">İçe Aktarma Yolları</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#yorumlar">Yorumlar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Solidity Kaynak Dosyasının Düzeni</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/layout-of-source-files.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="solidity-kaynak-dosyasinin-duzeni">
+<h1>Solidity Kaynak Dosyasının Düzeni<a class="headerlink" href="#solidity-kaynak-dosyasinin-duzeni" title="Permalink to this heading"></a></h1>
+<p>Kaynak dosyalar, istenilen sayıda <a class="reference internal" href="structure-of-a-contract.html#contract-structure"><span class="std std-ref">contract definitions</span></a>, <a class="reference internal" href="#import">import</a> ,:ref:<cite>pragma&lt;pragma&gt;</cite> ve <a class="reference internal" href="contracts.html#using-for"><span class="std std-ref">using for</span></a> yönergeleri ile <a class="reference internal" href="types.html#structs"><span class="std std-ref">struct</span></a>,:ref:<cite>enum&lt;enums&gt;</cite>, <a class="reference internal" href="contracts.html#functions"><span class="std std-ref">function</span></a>, <a class="reference internal" href="contracts.html#errors"><span class="std std-ref">error</span></a> ve <a class="reference internal" href="contracts.html#constants"><span class="std std-ref">constant variable</span></a> tanımları içerebilir.</p>
+<section id="spdx-lisans-tanimlayicisi">
+<span id="index-0"></span><h2>SPDX Lisans Tanımlayıcısı<a class="headerlink" href="#spdx-lisans-tanimlayicisi" title="Permalink to this heading"></a></h2>
+<p>Kaynak kodlarının erişilebilir olması, akıllı sözleşmeleri daha güvenilir
+hale getirebilir. Kaynak kodunun erişilebilir hale getirilmesi her zaman telif hakkı ile ilgili yasal sorunlara yol açtığından, Solidity derleyicisi, makine tarafından okunabilen <a class="reference external" href="https://spdx.org">SPDX lisans tanımlayıcılarının</a> kullanılmasını teşvik eder:</p>
+<p><code class="docutils literal notranslate"><span class="pre">//</span> <span class="pre">SPDX-License-Identifier:</span> <span class="pre">MIT</span></code></p>
+<p>Derleyici, lisansın,
+<a class="reference external" href="https://spdx.org/licenses/">SPDX’in izin verdiği liste</a> kapsamında olduğunu doğrulamaz ancak
+sağlanan dizeyi <a class="reference internal" href="metadata.html#metadata"><span class="std std-ref">bytecode metadata</span></a> içine dahil eder.</p>
+<p>Bir lisans belirtmek istemiyorsanız veya kaynak kodu
+açık kaynak değilse, lütfen <code class="docutils literal notranslate"><span class="pre">UNLICENSED</span></code> özel değerini kullanın.
+<code class="docutils literal notranslate"><span class="pre">UNLICENSED</span></code> (kullanıma izin verilmez, SPDX lisans listesinde bulunmaz) değerinin, <code class="docutils literal notranslate"><span class="pre">UNLICENSE</span></code> (herkese tüm hakları verir) değerinden farklı olduğunu unutmayın.
+Solidity, ` npm önerisine &lt;<a class="reference external" href="https://docs.npmjs.com/cli/v7/configuring-npm/package-json#license">https://docs.npmjs.com/cli/v7/configuring-npm/package-json#license</a>&gt;`_  uyar.</p>
+<p>Bu açıklamayı eklemeniz, elbette ki sizi, her kaynak dosyada belirli bir lisans adından veya
+telif hakkının orijinal sahibinden bahsetme zorunluluğu gibi, lisans konusuyla ilgili diğer yükümlülüklerden muaf tutmaz.
+Derleyici, açıklamayı, dosya düzeyinde dosyanın herhangi bir yerinde algılayabilir
+ancak dosyanın üst kısmına eklenmesi önerilir.</p>
+<p>SPDX lisans tanımlayıcılarının nasıl kullanılacağı hakkında daha fazla bilgi <a class="reference external" href="https://spdx.org/ids-how">SPDX web sitesinde</a> bulunabilir.</p>
+</section>
+<section id="pragmalar">
+<span id="pragma"></span><span id="index-1"></span><h2>Pragmalar<a class="headerlink" href="#pragmalar" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Pragma</span></code> anahtar sözcüğü, belirli derleyici özelliklerini veya kontrollerini etkinleştirmek için
+kullanılır. Bir pragma yönergesi, her zaman bir kaynak dosya için yereldir, bu nedenle pragmayı tüm projenizde etkinleştirmek istiyorsanız tüm dosyalarınıza eklemeniz gerekir. Başka bir dosyayı <a class="reference internal" href="#import"><span class="std std-ref">içe aktarırsanız</span></a> o dosyadaki pragma, içe aktarılan dosyaya otomatik olarak _*uygulanmaz*._
+.. index:: ! pragma, version</p>
+<section id="surum-pragmasi">
+<span id="version-pragma"></span><h3>Sürüm Pragması<a class="headerlink" href="#surum-pragmasi" title="Permalink to this heading"></a></h3>
+<p>Uyumsuz değişiklikler getirebilecek gelecekteki derleyici sürümleriyle derlemeyi önlemek için kaynak dosyalarına bir sürüm pragması eklenebilir (ve eklenmelidir). Bunları mutlak minimumda tutmaya ve anlambilimdeki değişikliklerin sözdiziminde de değişiklik gerektireceği şekilde tanıtmaya çalışıyoruz, ancak bu her zaman mümkün olmayabilir. Bu nedenle, en azından işleyişi bozan değişiklikler içeren sürümler için değişiklik günlüğünü okumak her zaman iyi bir fikirdir. Bu sürümler her zaman <code class="docutils literal notranslate"><span class="pre">0.x.0</span></code> veya <code class="docutils literal notranslate"><span class="pre">x.0.0</span></code> biçiminde versiyonlara sahiptir.</p>
+<p>Sürüm pragması aşağıdaki gibi kullanılır: <code class="docutils literal notranslate"><span class="pre">pragma</span> <span class="pre">solidity</span> <span class="pre">^0.5.2;</span></code></p>
+<p>Yukarıdaki satırı içeren bir kaynak dosyası, 0.5.2’den eski sürümlü bir derleyiciyle derleme yapmadığı gibi, 0.6.0’dan yeni sürümlü bir derleyicide de çalışmaz (bu ikinci koşul <code class="docutils literal notranslate"><span class="pre">^</span></code> kullanılarak eklenir). <code class="docutils literal notranslate"><span class="pre">0.6.0</span></code> sürümüne kadar işleyişi bozan bir değişiklik olmayacağından, kodunuzun amaçladığınız şekilde derleme yaptığından emin olabilirsiniz. Derleyicinin tam sürümü sabit olmadığından hata düzeltme sürümlerinin kullanılması da mümkün olacaktır.</p>
+<p>Derleyici sürümü için daha karmaşık kurallar belirlemek mümkündür,
+bunlar <a href="#id1"><span class="problematic" id="id2">`npm&lt;https://docs.npmjs.com/cli/v6/using-npm/semver&gt;`_</span></a> tarafından kullanılan sözdizimin aynısına uyar.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Sürüm pragmasının kullanılması, derleyicinin sürümünü _*değiştirmez*._
+Derleyicinin özelliklerini etkinleştirme veya devre dışı bırakma işlevine de sahip _*değildir*._
+Yalnızca, derleyiciye kendi sürümünün, pragmanın gerektirdiği sürüm ile uyumlu olup olmadığını kontrol
+etmesi için yönerge verir. Sürümler uyumlu değilse derleyici hata verir.</p>
+</div>
+</section>
+<section id="abi-kodlayici-pragmasi">
+<h3>ABI Kodlayıcı Pragması<a class="headerlink" href="#abi-kodlayici-pragmasi" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">pragma</span> <span class="pre">abicoder</span> <span class="pre">v1</span></code> veya <code class="docutils literal notranslate"><span class="pre">pragma</span> <span class="pre">abicoder</span> <span class="pre">v2</span></code> kullanarak ABI kodlayıcı ile
+kod çözücü iki uygulama arasında seçim yapabilirsiniz.</p>
+<p>Yeni ABI kodlayıcı (v2) keyfi olarak iç içe geçmiş dizileri ve yapıları kodlama(encode) ve kod çözme(decode) yapabilir
+. Daha az optimal kod üretebilir ve eski kodlayıcı kadar test edilmemiştir, ancak Solidity 0.6.0’dan itibaren deneysel olmayan olarak kabul edilir. Yine de <code class="docutils literal notranslate"><span class="pre">pragma</span> <span class="pre">abicoder</span> <span class="pre">v2;</span></code> kullanarak açıkça etkinleştirmeniz gerekir. Solidity 0.8.0’dan itibaren varsayılan olarak etkinleştirileceğinden, <code class="docutils literal notranslate"><span class="pre">pragma</span> <span class="pre">abicoder</span> <span class="pre">v1;</span></code> kullanarak eski kodlayıcıyı seçme seçeneği vardır.</p>
+<p>Yeni kodlayıcı tarafından desteklenen türler, eskisi tarafından desteklenenlerin katı bir üst kümesidir. Bunu kullanan sözleşmeler, kullanmayanlarla sınırlama olmadan etkileşime girebilir. Bunun tersi ancak, <code class="docutils literal notranslate"><span class="pre">abicoder</span> <span class="pre">v2</span></code> dışı sözleşme, yalnızca yeni kodlayıcı tarafından desteklenen kod çözme türlerini gerektirecek çağrılarda bulunmaya çalışmadığı sürece mümkündür. Aksi halde, derleyici bu çağrıları tespit ederek hata verebilir. Sözleşmeniz için <code class="docutils literal notranslate"><span class="pre">abicoder</span> <span class="pre">v2</span></code> yi etkinleştirmeniz hatanın ortadan kalkması için yeterlidir.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Bu pragma, en nihayetinde kodun nerede sonlandığına bakılmaksızın, etkinleştirildiği dosyada tanımlanan tüm kodlar için geçerlidir. Yani, kaynak dosyası ABI coder v1 ile derlenmek üzere seçilen bir sözleşme, başka bir
+sözleşmeden kalıt alarak, yeni kodlayıcıyı kullanan kod içermeye devam edebilir. Bu, yeni türlerin, external fonksiyon imzalarında değil, yalnızca dahili olarak kullanılması halinde mümkündür.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Solidity 0.7.4’e kadar, <code class="docutils literal notranslate"><span class="pre">pragma</span> <span class="pre">experimental</span> <span class="pre">ABIEncoderV2</span></code> kullanarak ABI kodlayıcı v2’yi seçmek mümkündü, ancak varsayılan olduğu için kodlayıcı v1’i açık bir şekilde seçmek mümkün değildi.</p>
+</div>
+</section>
+<section id="deneysel-pragma">
+<span id="experimental-pragma"></span><span id="index-2"></span><h3>Deneysel Pragma<a class="headerlink" href="#deneysel-pragma" title="Permalink to this heading"></a></h3>
+<p>İkinci pragma deneysel pragmadır. Derleyicinin veya dilin henüz varsayılan olarak etkinleştirilmemiş özelliklerini etkinleştirmek için kullanılabilir. Şu anda, aşağıdaki deneysel pragmalar desteklenmektedir:</p>
+<section id="abiencoderv2">
+<h4>ABIEncoderV2<a class="headerlink" href="#abiencoderv2" title="Permalink to this heading"></a></h4>
+<p>ABI kodlayıcı v2 artık deneysel kabul edilmediğinden
+Solidity 0.7.4 sonrasında <code class="docutils literal notranslate"><span class="pre">pragma</span> <span class="pre">abicoder</span> <span class="pre">v2</span></code> aracılığıyla seçilebilir (lütfen yukarıya bakın).</p>
+</section>
+<section id="smtchecker">
+<span id="smt-checker"></span><h4>SMTChecker<a class="headerlink" href="#smtchecker" title="Permalink to this heading"></a></h4>
+<p>Bu bileşeni, Solidity derleyicisi oluşturulduğunda etkinleştirmek gerektiği için
+tüm Solidity binary’lerinde mevcut değildir. <a class="reference internal" href="installing-solidity.html#smt-solvers-build"><span class="std std-ref">build yönergeleri</span></a> bu seçeneğin nasıl etkinleştirileceğini açıklar. Çoğu sürümde Ubuntu PPA sürümleri için etkinleştirilmiş olsa da
+Docker görüntüleri, Windows binary’leri veya statik olarak oluşturulmuş Linux binary’leri için etkin değildir. Yerel olarak yüklenmiş bir SMT çözücünüz varsa ve solc-js’yi node üzerinden (tarayıcı üzerinden değil) çalıştırıyorsanız <a class="reference external" href="https://github.com/ethereum/solcjs#example-usage-with-smtsolver-callback">smtCallback</a> kullanarak solc-js için etkinleştirebilirsiniz.</p>
+<p>Eğer <code class="docutils literal notranslate"><span class="pre">pragma</span> <span class="pre">experimental</span> <span class="pre">SMTChecker;</span></code> kullanırsanız bir SMT çözücü sorgulatarak ek:ref:<cite>güvenlik uyarıları&lt;formal_verification&gt;</cite> alırsınız.
+Bileşen henüz Solidity dilinin tüm özelliklerini desteklememekte ve muhtemelen çok sayıda uyarı vermektedir. Desteklenmeyen özellikleri bildirmesi durumunda, analiz tamamen sağlıklı olmayabilir.</p>
+</section>
+</section>
+</section>
+<section id="diger-kaynak-dosyalarini-ice-aktarma">
+<span id="import"></span><span id="index-3"></span><h2>Diğer Kaynak Dosyalarını İçe Aktarma<a class="headerlink" href="#diger-kaynak-dosyalarini-ice-aktarma" title="Permalink to this heading"></a></h2>
+<section id="sozdizimi-ve-anlambilim">
+<h3>Sözdizimi ve Anlambilim<a class="headerlink" href="#sozdizimi-ve-anlambilim" title="Permalink to this heading"></a></h3>
+<p>Solidity, kodunuzu modüler hale getirmenize yardımcı olmak için Javascript’te mevcut olanlara (ES6’dan sonrası)
+benzer import ifadelerini destekler. Ancak, Solidity <a class="reference external" href="https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export#Description">varsayılan export</a> kavramını desteklemez.</p>
+<p>Genel düzeyde, aşağıdaki formdaki içe aktarma deyimlerini kullanabilirsiniz:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=aW1wb3J0ICJmaWxlbmFtZSI7"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="kt">import</span><span class="w"> </span><span class="s2">&quot;filename&quot;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">filename</span></code> kısmı <em>import path</em> olarak adlandırılır.
+Bu deyim, “filename “deki tüm global sembolleri (ve orada içe aktarılan sembolleri) geçerli global kapsama içe aktarır (ES6’dakinden farklıdır, ancak Solidity için geriye dönük olarak uyumludur).
+Bu formun kullanılması tavsiye edilmez, çünkü isim alanını tahmin edilemeyecek şekilde kirletir.
+“filename” içine yeni üst düzey öğeler eklerseniz, bunlar otomatik olarak “filename “den bu şekilde içe aktarılan tüm dosyalarda görünür. Belirli sembolleri açık bir şekilde içe aktarmak
+daha iyidir.</p>
+<p>Aşağıdaki örnek, üyeleri <code class="docutils literal notranslate"><span class="pre">&quot;filename&quot;</span></code> içindeki tüm global semboller olan yeni bir global sembol <code class="docutils literal notranslate"><span class="pre">symbolName</span></code> oluşturur:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=aW1wb3J0ICogYXMgc3ltYm9sTmFtZSBmcm9tICJmaWxlbmFtZSI7"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="kt">import</span><span class="w"> </span><span class="o">*</span><span class="w"> </span>as<span class="w"> </span>symbolName<span class="w"> </span>from<span class="w"> </span><span class="s2">&quot;filename&quot;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>bu da tüm global sembollerin <code class="docutils literal notranslate"><span class="pre">symbolName.symbol</span></code> biçiminde kullanılabilir olmasıyla sonuçlanır.</p>
+<p>Bu sözdiziminin ES6’nın bir parçası olmayan, ancak muhtemelen yararlı olan bir çeşidi:
+.. code-block:: solidity</p>
+<blockquote>
+<div><p>import “filename” as symbolName;</p>
+</div></blockquote>
+<p>bu da <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">*</span> <span class="pre">as</span> <span class="pre">symbolName</span> <span class="pre">from</span> <span class="pre">&quot;filename&quot;;</span></code> ile eşdeğerdir.</p>
+<p>Bir adlandırma çakışması varsa içe aktarma sırasında sembolleri yeniden adlandırabilirsiniz. Örneğin, aşağıdaki kod sırasıyla <code class="docutils literal notranslate"><span class="pre">&quot;filename&quot;</span></code> içinden <code class="docutils literal notranslate"><span class="pre">symbol1</span></code> ve <code class="docutils literal notranslate"><span class="pre">symbol2</span></code> yi referans veren yeni global semboller <code class="docutils literal notranslate"><span class="pre">alias</span></code> ve <code class="docutils literal notranslate"><span class="pre">symbol2</span></code> oluşturur.
+.. code-block:: solidity</p>
+<blockquote>
+<div><p>import {symbol1 as alias, symbol2} from “filename”;</p>
+</div></blockquote>
+</section>
+<section id="ice-aktarma-yollari">
+<span id="index-4"></span><h3>İçe Aktarma Yolları<a class="headerlink" href="#ice-aktarma-yollari" title="Permalink to this heading"></a></h3>
+<p>Tüm platformlarda tekrarlanabilir derlemeleri destekleyebilmek için Solidity derleyicisinin kaynak dosyalarının depolandığı dosya sisteminin ayrıntılarını soyutlaması gerekir.
+Bu nedenle içe aktarma yolları doğrudan ana dosya sistemindeki dosyalara başvurmaz.
+Bunun yerine derleyici, her kaynak birime opak ve yapılandırılmamış bir tanımlayıcı olan benzersiz bir <em>kaynak birim adı</em> atanan dahili bir veritabanı (<em>sanal dosya sistemi</em> veya kısaca <em>VFS</em>) tutar. İçe aktarma ifadesinde belirtilen içe aktarma yolu, bir kaynak birim adına çevrilir
+ve veritabanında ilgili kaynak birimini bulmak için kullanılır.</p>
+<p><a class="reference internal" href="using-the-compiler.html#compiler-api"><span class="std std-ref">Standart JSON</span></a> API’sini kullanarak, derleyici girdisinin bir parçası olarak tüm kaynak dosyaların adlarını ve içeriğini doğrudan sağlamak mümkündür. Bu durumda kaynak birim adları gerçekten keyfi olabilir. Ancak, derleyicinin kaynak kodu otomatik olarak bulmasını ve VFS’ye yüklemesini istiyorsanız, kaynak birim adlarınızın bir <a class="reference internal" href="path-resolution.html#import-callback"><span class="std std-ref">import callback</span></a> i mümkün kılacak şekilde yapılandırılması gerekir.
+Komut satırı derleyicisini kullanırken varsayılan import callback yalnızca kaynak kodun bir ana bilgisayar dosya sisteminden yüklenmesini destekler; yani kaynak birim adları, yollar olmalıdır.```
+Bazı ortamlar daha çok yönlü olan özel callback’ler sağlar. Örneğin <a class="reference external" href="https://remix.ethereum.org/">Remix IDE</a>, <a href="#id3"><span class="problematic" id="id4">`HTTP, IPFS ve Swarm URL'lerinden dosya içe aktarmanıza veya doğrudan NPM kayıt defterindeki paketlere başvurmanıza&lt;https://remix-ide.readthedocs.io/en/latest/import.html&gt;`_</span></a> olanak tanıyan bir tane sağlar.
+Derleyici tarafından kullanılan sanal dosya sistemi ve yol çözümleme mantığının tam bir açıklaması için
+bkz <a class="reference internal" href="path-resolution.html#path-resolution"><span class="std std-ref">Path Resolution</span></a>.</p>
+</section>
+</section>
+<section id="yorumlar">
+<span id="index-5"></span><h2>Yorumlar<a class="headerlink" href="#yorumlar" title="Permalink to this heading"></a></h2>
+<p>Tek satırlı yorumlar (<code class="docutils literal notranslate"><span class="pre">//</span></code>) ve çok satırlı yorumlar (<code class="docutils literal notranslate"><span class="pre">/*...*/</span></code>) mümkündür.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gVGhpcyBpcyBhIHNpbmdsZS1saW5lIGNvbW1lbnQuCgovKgpUaGlzIGlzIGEKbXVsdGktbGluZSBjb21tZW50LgoqLw=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// This is a single-line comment.</span>
+
+<span class="cm">/*</span>
+<span class="cm">This is a</span>
+<span class="cm">multi-line comment.</span>
+<span class="cm">*/</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Tek satırlık bir yorum UTF-8 kodlamasında herhangi bir unicode satır sonlandırıcısı (LF, VF, FF, CR, NEL, LS veya PS) ile sonlandırılır. Sonlandırıcı, yorumdan sonra hala kaynak kodun bir parçasıdır, bu nedenle bir ASCII sembolü değilse (bunlar NEL, LS ve PS’dir), bir ayrıştırıcı hatasına yol açacaktır.
+Ayrıca, NatSpec yorumu adı verilen başka bir yorum türü daha vardır,
+<a class="reference internal" href="style-guide.html#style-guide-natspec"><span class="std std-ref">stil kılavuzu</span></a> içinde ayrıntılı olarak açıklanmıştır. Bunlar üçlü eğik çizgi (<code class="docutils literal notranslate"><span class="pre">///</span></code>) veya çift yıldız bloğu (<code class="docutils literal notranslate"><span class="pre">/**</span> <span class="pre">...</span> <span class="pre">*/</span></code>) ile yazılır ve doğrudan fonksiyon bildirimlerinin veya deyimlerinin üzerinde kullanılmalıdır.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="solidity-by-example.html" class="btn btn-neutral float-left" title="Solidity by Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="structure-of-a-contract.html" class="btn btn-neutral float-right" title="Bir Sözleşmenin Yapısı" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

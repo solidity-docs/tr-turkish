@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birimler ve Global Olarak Kullanılabilir Değişkenler &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="İfadeler ve Kontrol Yapıları" href="control-structures.html" />
+    <link rel="prev" title="Türler" href="types.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Birimler ve Global Olarak Kullanılabilir Değişkenler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ether-birimleri">Ether Birimleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#zaman-birimleri">Zaman Birimleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ozel-degiskenler-ve-fonksiyonlar">Özel Değişkenler ve Fonksiyonlar</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blok-ve-islem-ozellikleri">Blok ve İşlem Özellikleri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abi-sifreleme-ve-sifreyi-cozme-fonksiyonlari">ABI Şifreleme ve Şifreyi Çözme Fonksiyonları</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#byte-uyeleri">Byte Üyeleri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#string-uyeleri">String Üyeleri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hata-isleme">Hata İşleme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#matematiksel-ve-kriptografik-fonksiyonlar">Matematiksel ve Kriptografik Fonksiyonlar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adres-tipleri-uyeleri">Adres Tipleri Üyeleri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sozlesme-ile-ilgili">Sözleşme İle İlgili</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#type-bilgileri">Type Bilgileri</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Birimler ve Global Olarak Kullanılabilir Değişkenler</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/units-and-global-variables.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="birimler-ve-global-olarak-kullanilabilir-degiskenler">
+<h1>Birimler ve Global Olarak Kullanılabilir Değişkenler<a class="headerlink" href="#birimler-ve-global-olarak-kullanilabilir-degiskenler" title="Permalink to this heading"></a></h1>
+<section id="ether-birimleri">
+<span id="index-0"></span><h2>Ether Birimleri<a class="headerlink" href="#ether-birimleri" title="Permalink to this heading"></a></h2>
+<p>Bir değişmez sayı, Ether’in bir alt para birimini belirtmek için <code class="docutils literal notranslate"><span class="pre">wei</span></code>, <code class="docutils literal notranslate"><span class="pre">gwei</span></code> veya <code class="docutils literal notranslate"><span class="pre">ether</span></code> son ekini alabilir; burada son eki olmayan Ether sayılarının Wei olduğu varsayılır.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=YXNzZXJ0KDEgd2VpID09IDEpOwphc3NlcnQoMSBnd2VpID09IDFlOSk7CmFzc2VydCgxIGV0aGVyID09IDFlMTgpOw=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span>assert<span class="p">(</span><span class="m m-Decimal">1</span><span class="w"> </span>wei<span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m m-Decimal">1</span><span class="p">);</span><span class="w"></span>
+assert<span class="p">(</span><span class="m m-Decimal">1</span><span class="w"> </span>gwei<span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="err">1</span>e9<span class="p">);</span><span class="w"></span>
+assert<span class="p">(</span><span class="m m-Decimal">1</span><span class="w"> </span>ether<span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="err">1</span>e18<span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Alt isim ekinin(“e”) tek etkisi, onluk bir kuvvetle çarpmadır.
+.. note:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=MC43LjAgc8O8csO8bcO8bmRlICJmaW5uZXkiIHZlICJzemFibyIgYWRsYXLEsSBrYWxkxLFyxLFsbcSxxZ90xLFyLg=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-Solidity notranslate"><div class="highlight"><pre><span></span><span class="mf">0.7</span><span class="p">.</span><span class="mi">0</span> <span class="n">sürümünde</span> <span class="s">&quot;finney&quot;</span> <span class="n">ve</span> <span class="s">&quot;szabo&quot;</span> <span class="n">adları</span> <span class="n">kaldırılmıştır</span><span class="p">.</span>
+</pre></div>
+</div>
+</section>
+<section id="zaman-birimleri">
+<span id="index-1"></span><h2>Zaman Birimleri<a class="headerlink" href="#zaman-birimleri" title="Permalink to this heading"></a></h2>
+<p>Gerçek sayılardan sonra gelen <code class="docutils literal notranslate"><span class="pre">saniye</span></code>, <code class="docutils literal notranslate"><span class="pre">dakika</span></code>, <code class="docutils literal notranslate"><span class="pre">saat</span></code>, <code class="docutils literal notranslate"><span class="pre">gün</span></code> ve
+<code class="docutils literal notranslate"><span class="pre">hafta</span></code> gibi son ekler, saniyelerin temel birim olduğu zaman birimlerini
+belirtmek için kullanılabilir. Ve ayrıca birimler aşağıdaki şekilde olduğu
+gibi basitçe ele alınır:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">==</span> <span class="pre">1</span> <span class="pre">saniye</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">dakika</span> <span class="pre">==</span> <span class="pre">60</span> <span class="pre">saniye</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">saat</span> <span class="pre">==</span> <span class="pre">60</span> <span class="pre">dakika</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">gün</span> <span class="pre">==</span> <span class="pre">24</span> <span class="pre">saat</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">hafta</span> <span class="pre">==</span> <span class="pre">7</span> <span class="pre">gün</span></code></p></li>
+</ul>
+<p>Bu birimleri kullanarak takvim hesaplamaları yapıyorsanız dikkatli olun, çünkü her
+yıl 365 güne eşit değildir ve <a class="reference external" href="https://en.wikipedia.org/wiki/Leap_second">“artık saniyeler”</a>
+nedeniyle her gün bile 24 saat değildir. “Artık saniyelerin” tahmin edilememesi nedeniyle, tam
+bir takvim kütüphanesinin harici bir oracle tarafından güncellenmesi gerekir.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Yukarıdaki nedenlerden dolayı <code class="docutils literal notranslate"><span class="pre">years</span></code> soneki 0.5.0 sürümünde kaldırılmıştır.</p>
+</div>
+<p>Bu son ekler değişkenlere uygulanamaz. Örneğin, bir fonksiyon parametresini gün olarak
+yorumlamak istiyorsanız, aşağıdaki şekilde yapabilirsiniz:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=ZnVuY3Rpb24gZih1aW50IHN0YXJ0LCB1aW50IGRheXNBZnRlcikgcHVibGljIHsKICAgIGlmIChibG9jay50aW1lc3RhbXAgPj0gc3RhcnQgKyBkYXlzQWZ0ZXIgKiAxIGRheXMpIHsKICAgICAgLy8gLi4uCiAgICB9Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="kt">function</span><span class="w"> </span><span class="nv">f</span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">start</span><span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">daysAfter</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">if</span><span class="w"> </span><span class="p">(</span><span class="k">block.timestamp</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span>start<span class="w"> </span><span class="o">+</span><span class="w"> </span>daysAfter<span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m m-Decimal">1</span><span class="w"> </span>days<span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// ...</span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="ozel-degiskenler-ve-fonksiyonlar">
+<span id="special-variables-functions"></span><h2>Özel Değişkenler ve Fonksiyonlar<a class="headerlink" href="#ozel-degiskenler-ve-fonksiyonlar" title="Permalink to this heading"></a></h2>
+<p>Global ad alanında her zaman var olan özel değişkenler ve işlevler vardır ve bunlar
+çoğunlukla blok zinciri hakkında bilgi sağlamak için kullanılır. Veya bunlara ek olarak
+genel kullanım amaçlı yardımcı fonksiyonlar da bulunmaktadır.</p>
+<section id="blok-ve-islem-ozellikleri">
+<span id="index-2"></span><h3>Blok ve İşlem Özellikleri<a class="headerlink" href="#blok-ve-islem-ozellikleri" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">blockhash(uint</span> <span class="pre">blockNumber)</span> <span class="pre">returns</span> <span class="pre">(bytes32)</span></code>: <code class="docutils literal notranslate"><span class="pre">blocknumber</span></code> en son 256 bloktan biri olduğunda verilen bloğun hash`ini döndürür, aksi takdirde sıfır döndürür</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">block.basefee</span></code> (<code class="docutils literal notranslate"><span class="pre">uint</span></code>): mevcut bloğun baz ücreti (<a class="reference external" href="https://eips.ethereum.org/EIPS/eip-3198">EIP-3198</a> ve <a class="reference external" href="https://eips.ethereum.org/EIPS/eip-1559">EIP-1559</a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">block.chainid</span></code> (<code class="docutils literal notranslate"><span class="pre">uint</span></code>): mevcut bloğun zincir kimliği</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">block.coinbase</span></code> (<code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code>): mevcut blok madencisinin adresi</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">block.difficulty</span></code> (<code class="docutils literal notranslate"><span class="pre">uint</span></code>): mevcut blok zorluğu</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">block.gaslimit</span></code> (<code class="docutils literal notranslate"><span class="pre">uint</span></code>): mevcut blok gas sınırı</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">block.number</span></code> (<code class="docutils literal notranslate"><span class="pre">uint</span></code>): mevcut blok numarası</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">block.timestamp</span></code> (<code class="docutils literal notranslate"><span class="pre">uint</span></code>): unix döneminden bu yana saniye biçimindeki mevcut blok zaman bilgisi</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gasleft()</span> <span class="pre">returns</span> <span class="pre">(uint256)</span></code>: kalan gas</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">msg.data</span></code> (<code class="docutils literal notranslate"><span class="pre">bytes</span> <span class="pre">calldata</span></code>): bütün calldata</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">msg.sender</span></code> (<code class="docutils literal notranslate"><span class="pre">address</span></code>): mesajın göndericisi (mevcut çağırma için)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">msg.sig</span></code> (<code class="docutils literal notranslate"><span class="pre">bytes4</span></code>): calldata’nın ilk 4 byte değeri (yani fonksiyon tanımlayıcısı)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">msg.value</span></code> (<code class="docutils literal notranslate"><span class="pre">uint</span></code>): mesaj ile birlikte gönderilen wei miktarı</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tx.gasprice</span></code> (<code class="docutils literal notranslate"><span class="pre">uint</span></code>): işlemin gas fiyatı</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tx.origin</span></code> (<code class="docutils literal notranslate"><span class="pre">address</span></code>): işlemin göndericisi (tam çağrı zinciri)</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">msg.sender</span></code> ve <code class="docutils literal notranslate"><span class="pre">msg.value</span></code> dahil olmak üzere <code class="docutils literal notranslate"><span class="pre">msg</span></code> öğesinin tüm üyelerinin değerleri
+her <strong>harici</strong> işlev çağrısı için değişebilir. Buna kütüphane fonksiyonlarına yapılan çağrılar
+da dahildir.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Sözleşmeler, bir bloğa dahil edilen bir işlem bağlamında değil de zincir dışı değerlendirildiğinde,
+“block.*” ve “tx.*” ifadelerinin herhangi bir belirli blok veya işlemden gelen değerleri ifade ettiğini
+varsaymamalısınız. Bu değerler, sözleşmeyi yürüten ESM uygulaması tarafından sağlanır ve isteğe bağlı olabilir.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ne yaptığınızı bilmiyorsanız, rasgelelik kaynağı olarak <code class="docutils literal notranslate"><span class="pre">block.timestamp</span></code> veya <code class="docutils literal notranslate"><span class="pre">blockhash</span></code>’e güvenmeyin.</p>
+<p>Hem zaman bilgisi hem de blok hash’i madenciler tarafından bir dereceye kadar etkilenebilir.
+Madencilik topluluğunda bulunan kötü aktörler, örneğin seçilen bir hash üzerinde bir kumarhane
+ödeme fonksiyonu çalıştırabilir ve herhangi bir para almazlarsa farklı bir hash’i çözmeyi yeniden deneyebilirler.</p>
+<p>Mevcut blok zaman bilgisi, son bloğun zaman bilgisinden kesinlikle daha büyük olmalıdır. Ancak kabul
+edilebilecek tek garanti zaman bilgisi, standart zincirdeki iki ardışık bloğun zaman bilgileri arasında
+bir yerde olmasıdır.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ölçeklenebilirlik nedeniyle blok hash’leri tüm bloklar için mevcut değildir. Yalnızca en son 256 bloğun
+hash’lerine erişebilirsiniz, bunun dışındaki tüm değerler sıfır olacaktır.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Daha önce <code class="docutils literal notranslate"><span class="pre">blockhash</span></code> işlevi <code class="docutils literal notranslate"><span class="pre">block.blockhash</span></code> olarak biliniyordu, bu işlev 0.4.22 sürümünde kullanımdan
+kaldırılmış ve 0.5.0 sürümünde tamamen kaldırılmıştır.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Daha önce <code class="docutils literal notranslate"><span class="pre">gasleft</span></code> işlevi <code class="docutils literal notranslate"><span class="pre">msg.gas</span></code> olarak biliniyordu, bu işlev 0.4.21 sürümünde kullanımdan kaldırılmış
+ve 0.5.0 sürümünde tamamen kaldırılmıştır.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>0.7.0 sürümünde <code class="docutils literal notranslate"><span class="pre">now</span></code> takma adı (<code class="docutils literal notranslate"><span class="pre">block.timestamp</span></code> için) kaldırıldı.</p>
+</div>
+</section>
+<section id="abi-sifreleme-ve-sifreyi-cozme-fonksiyonlari">
+<span id="index-3"></span><h3>ABI Şifreleme ve Şifreyi Çözme Fonksiyonları<a class="headerlink" href="#abi-sifreleme-ve-sifreyi-cozme-fonksiyonlari" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">abi.decode(bytes</span> <span class="pre">memory</span> <span class="pre">encodedData,</span> <span class="pre">(...))</span> <span class="pre">returns</span> <span class="pre">(...)</span></code>: ABI verilen verinin şifresini çözerken, tipler ikinci argüman olarak parantez içinde verilir. Örneğin: <code class="docutils literal notranslate"><span class="pre">(uint</span> <span class="pre">a,</span> <span class="pre">uint[2]</span> <span class="pre">memory</span> <span class="pre">b,</span> <span class="pre">bytes</span> <span class="pre">memory</span> <span class="pre">c)</span> <span class="pre">=</span> <span class="pre">abi.decode(data,</span> <span class="pre">(uint,</span> <span class="pre">uint[2],</span> <span class="pre">bytes))</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">abi.encode(...)</span> <span class="pre">returns</span> <span class="pre">(bytes</span> <span class="pre">memory)</span></code>: ABI verilen argümanları şifreler</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">abi.encodePacked(...)</span> <span class="pre">returns</span> <span class="pre">(bytes</span> <span class="pre">memory)</span></code>: Verilen argümanların <a class="reference internal" href="abi-spec.html#abi-packed-mode"><span class="std std-ref">paketlenmiş şifreleme</span></a> işlemini gerçekleştirir. Paketli şifrelemenin belirsiz olabileceğine dikkat edin!</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">abi.encodeWithSelector(bytes4</span> <span class="pre">selector,</span> <span class="pre">...)</span> <span class="pre">returns</span> <span class="pre">(bytes</span> <span class="pre">memory)</span></code>: ABI, verilen bağımsız değişkenleri ikinciden başlayarak şifreler ve verilen dört baytlık seçicinin önüne ekler.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">abi.encodeWithSignature(string</span> <span class="pre">memory</span> <span class="pre">signature,</span> <span class="pre">...)</span> <span class="pre">returns</span> <span class="pre">(bytes</span> <span class="pre">memory)</span></code>: Şuna eşdeğerdir <code class="docutils literal notranslate"><span class="pre">abi.encodeWithSelector(bytes4(keccak256(bytes(signature))),</span> <span class="pre">...)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">abi.encodeCall(function</span> <span class="pre">functionPointer,</span> <span class="pre">(...))</span> <span class="pre">returns</span> <span class="pre">(bytes</span> <span class="pre">memory)</span></code>: ABI, <code class="docutils literal notranslate"><span class="pre">functionPointer</span></code> çağrısını veri grupları içinde bulunan argümanlarla şifreler. Tam bir tür denetimi gerçekleştirerek türlerin fonksiyon imzasıyla eşleşmesini sağlar. Sonuç <code class="docutils literal notranslate"><span class="pre">abi.encodeWithSelector(functionPointer.selector,</span> <span class="pre">(...))</span></code> değerine eşittir</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Bu şifreleme fonksiyonları, harici bir fonksiyonu çağırmadan harici fonksiyon çağrıları
+için veri oluşturmak amacıyla kullanılabilir. Ayrıca, <code class="docutils literal notranslate"><span class="pre">keccak256(abi.encodePacked(a,</span> <span class="pre">b))</span></code>
+yapılandırılmış verilerin hashini hesaplamanın bir yoludur (ancak farklı fonksiyon parametre
+türleri kullanarak bir “hash çakışması” oluşturmanın mümkün olduğunu unutmayın).</p>
+</div>
+<p>Şifreleme ile ilgili ayrıntılar için <a class="reference internal" href="abi-spec.html#abi"><span class="std std-ref">ABI</span></a> ve
+<a class="reference internal" href="abi-spec.html#abi-packed-mode"><span class="std std-ref">sıkıca paketlenmiş şifreleme</span></a> hakkındaki belgelere bakabilirsiniz.</p>
+</section>
+<section id="byte-uyeleri">
+<span id="index-4"></span><h3>Byte Üyeleri<a class="headerlink" href="#byte-uyeleri" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes.concat(...)</span> <span class="pre">returns</span> <span class="pre">(bytes</span> <span class="pre">memory)</span></code>: <a class="reference internal" href="types.html#bytes-concat"><span class="std std-ref">Değişken sayıda bayt ve bytes1, …, bytes32 argümanlarını bir bayt dizisine birleştirir</span></a></p></li>
+</ul>
+</section>
+<section id="string-uyeleri">
+<span id="index-5"></span><h3>String Üyeleri<a class="headerlink" href="#string-uyeleri" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">string.concat(...)</span> <span class="pre">returns</span> <span class="pre">(string</span> <span class="pre">memory)</span></code>: <a class="reference internal" href="types.html#string-concat"><span class="std std-ref">Değişken sayıda string argümanını tek bir string dizisinde birleştirir</span></a></p></li>
+</ul>
+</section>
+<section id="hata-isleme">
+<span id="index-6"></span><h3>Hata İşleme<a class="headerlink" href="#hata-isleme" title="Permalink to this heading"></a></h3>
+<p>Hata işleme ve hangi fonksiyonun ne zaman kullanılacağı hakkında daha fazla
+bilgi için <a class="reference internal" href="control-structures.html#assert-and-require"><span class="std std-ref">assert ve require</span></a> bölümüne bakın.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">assert(bool</span> <span class="pre">condition)</span></code></dt><dd><p>Panik hatasına ve dolayısıyla koşul karşılanmazsa durum değişikliğinin tersine dönmesine neden olur - dahili hatalar için kullanılır.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">require(bool</span> <span class="pre">condition)</span></code></dt><dd><p>koşul karşılanmazsa geri döner - girişlerdeki veya harici bileşenlerdeki hatalar için kullanılır.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">require(bool</span> <span class="pre">condition,</span> <span class="pre">string</span> <span class="pre">memory</span> <span class="pre">message)</span></code></dt><dd><p>koşul karşılanmazsa geri döner - girişlerdeki veya harici bileşenlerdeki hatalar için kullanılır. Ayrıca bir hata mesajı da sağlar.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">revert()</span></code></dt><dd><p>yürütmeyi iptal eder ve durum değişikliklerini geri alır</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">revert(string</span> <span class="pre">memory</span> <span class="pre">reason)</span></code></dt><dd><p>açıklayıcı bir string sağlayarak yürütmeyi iptal eder ve durum değişikliklerini geri alır</p>
+</dd>
+</dl>
+</section>
+<section id="matematiksel-ve-kriptografik-fonksiyonlar">
+<span id="mathematical-and-cryptographic-functions"></span><span id="index-7"></span><h3>Matematiksel ve Kriptografik Fonksiyonlar<a class="headerlink" href="#matematiksel-ve-kriptografik-fonksiyonlar" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">addmod(uint</span> <span class="pre">x,</span> <span class="pre">uint</span> <span class="pre">y,</span> <span class="pre">uint</span> <span class="pre">k)</span> <span class="pre">returns</span> <span class="pre">(uint)</span></code></dt><dd><p>toplama işleminin isteğe bağlı kesinlikte gerçekleştirildiği ve <code class="docutils literal notranslate"><span class="pre">2**256``da</span> <span class="pre">kapsamadığı</span> <span class="pre">``(x</span> <span class="pre">+</span> <span class="pre">y)</span> <span class="pre">%</span> <span class="pre">k</span></code> değerini hesaplar. Sürüm 0.5.0’den başlayarak “k!= 0” olduğunu iddia eder.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">mulmod(uint</span> <span class="pre">x,</span> <span class="pre">uint</span> <span class="pre">y,</span> <span class="pre">uint</span> <span class="pre">k)</span> <span class="pre">returns</span> <span class="pre">(uint)</span></code></dt><dd><p>çarpmanın isteğe bağlı kesinlikte gerçekleştirildiği ve <code class="docutils literal notranslate"><span class="pre">2**256</span></code> değerinde kapsamadığı <code class="docutils literal notranslate"><span class="pre">(x</span> <span class="pre">*</span> <span class="pre">y)</span> <span class="pre">%</span> <span class="pre">k</span></code> değerini hesaplar. Sürüm 0.5.0’dan başlayarak <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">!=</span> <span class="pre">0</span></code> olduğunu iddia eder.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">keccak256(bytes</span> <span class="pre">memory)</span> <span class="pre">returns</span> <span class="pre">(bytes32)</span></code></dt><dd><p>girdinin Keccak-256 hash’ini hesaplar</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Eskiden <code class="docutils literal notranslate"><span class="pre">keccak256</span></code> için <code class="docutils literal notranslate"><span class="pre">sha3</span></code> adında bir takma ad vardı, ancak bu ad 0.5.0 sürümünde kaldırıldı.</p>
+</div>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">sha256(bytes</span> <span class="pre">memory)</span> <span class="pre">returns</span> <span class="pre">(bytes32)</span></code></dt><dd><p>girdinin SHA-256 hash’ini hesaplar</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ripemd160(bytes</span> <span class="pre">memory)</span> <span class="pre">returns</span> <span class="pre">(bytes20)</span></code></dt><dd><p>girdinin RIPEMD-160 hash’ini hesaplar</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ecrecover(bytes32</span> <span class="pre">hash,</span> <span class="pre">uint8</span> <span class="pre">v,</span> <span class="pre">bytes32</span> <span class="pre">r,</span> <span class="pre">bytes32</span> <span class="pre">s)</span> <span class="pre">returns</span> <span class="pre">(address)</span></code></dt><dd><p>eliptik eğri imzasından açık anahtarla ilişkili adresi kurtarır veya hata durumunda sıfır döndürür.
+Fonksiyon parametreleri imzanın ECDSA değerlerine karşılık gelir:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">r</span></code> = imzanın ilk 32 byte’ı</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">s</span></code> = imzanın ikinci 32 byte’ı</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code> = imzanın son 1 byte’ı</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">ecrecover</span></code> yalnızca bir <code class="docutils literal notranslate"><span class="pre">address</span></code> döndürür, <code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code> döndürmez. Kurtarılan adrese para aktarmanız gerekirse,
+dönüştürme için <a class="reference internal" href="types.html#address"><span class="std std-ref">address payable</span></a> bölümüne bakabilirsiniz.</p>
+<p>Daha fazla ayrıntı için <a class="reference external" href="https://ethereum.stackexchange.com/questions/1777/workflow-on-signing-a-string-with-private-key-followed-by-signature-verificatio">örnek kullanım</a> bölümünü okuyun.</p>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Eğer <code class="docutils literal notranslate"><span class="pre">ecrecover</span></code> kullanıyorsanız, geçerli bir imzanın ilgili özel anahtarın (private key) bilinmesini
+gerektirmeden farklı bir geçerli imzaya dönüştürülebileceğini unutmayın. Homestead hard fork’unda bu sorun
+_transaction_ signatures için düzeltildi (bkz. <a class="reference external" href="https://eips.ethereum.org/EIPS/eip-2#specification">EIP-2</a>),
+ancak ecrecover fonksiyonu değişmeden kaldı.</p>
+<p>İmzaların benzersiz olmasını istemediğiniz veya bunları öğeleri tanımlamak için kullanmadığınız sürece
+bu genellikle bir sorun değildir. OpenZeppelin, bu sorun olmadan <code class="docutils literal notranslate"><span class="pre">ecrecover</span></code> için bir wrapper olarak
+kullanabileceğiniz bir <a class="reference external" href="https://docs.openzeppelin.com/contracts/2.x/api/cryptography#ECDSA">ECDSA yardımcı kütüphanesine</a> sahiptir.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Bir <em>özel blok zincirinde</em> <code class="docutils literal notranslate"><span class="pre">sha256</span></code>, <code class="docutils literal notranslate"><span class="pre">ripemd160</span></code> veya <code class="docutils literal notranslate"><span class="pre">ecrecover</span></code> çalıştırırken, Out-of-Gas (Bitmiş Gas) ile karşılaşabilirsiniz. Bunun nedeni, bu
+fonksiyonların “önceden derlenmiş sözleşmeler” olarak uygulanması ve yalnızca ilk mesajı aldıktan sonra gerçekten var olmalarıdır (sözleşme kodları sabit
+kodlanmış olsa da). Mevcut olmayan sözleşmelere gönderilen mesajlar daha pahalıdır ve bu nedenle yürütme sırasında Out-of-Gas (Bitmiş Gas) hatasıyla karşılaşabilir.
+Bu sorun için geçici bir çözüm, gerçek sözleşmelerinizde kullanmadan önce her bir sözleşmeye Wei (örneğin 1) göndermektir. Bu sorun, ana veya test ağında bir geçerli değildir.</p>
+</div>
+</section>
+<section id="adres-tipleri-uyeleri">
+<span id="address-related"></span><span id="index-8"></span><h3>Adres Tipleri Üyeleri<a class="headerlink" href="#adres-tipleri-uyeleri" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;address&gt;.balance</span></code> (<code class="docutils literal notranslate"><span class="pre">uint256</span></code>)</dt><dd><p>Wei biçimindeki <a class="reference internal" href="types.html#address"><span class="std std-ref">Adresler</span></a> bakiyesi</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;address&gt;.code</span></code> (<code class="docutils literal notranslate"><span class="pre">bytes</span> <span class="pre">memory</span></code>)</dt><dd><p>ref:<cite>address</cite> adresindeki kod (boş olabilir)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;address&gt;.codehash</span></code> (<code class="docutils literal notranslate"><span class="pre">bytes32</span></code>)</dt><dd><p>ref:<cite>address</cite> kod hash’i</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;address</span> <span class="pre">payable&gt;.transfer(uint256</span> <span class="pre">amount)</span></code></dt><dd><p>verilen Wei miktarını <a class="reference internal" href="types.html#address"><span class="std std-ref">Adresler</span></a> ‘ine gönderir, başarısız olması durumunda geri döner, 2300 gas ücreti iletir, ayarlanabilir değildir</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;address</span> <span class="pre">payable&gt;.send(uint256</span> <span class="pre">amount)</span> <span class="pre">returns</span> <span class="pre">(bool)</span></code></dt><dd><p>verilen Wei miktarını <a class="reference internal" href="types.html#address"><span class="std std-ref">Adresler</span></a> ‘ine gönderir, başarısız olması durumunda <code class="docutils literal notranslate"><span class="pre">false</span></code> döndürür, 2300 gas ücreti iletir, ayarlanabilir değildir</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;address&gt;.call(bytes</span> <span class="pre">memory)</span> <span class="pre">returns</span> <span class="pre">(bool,</span> <span class="pre">bytes</span> <span class="pre">memory)</span></code></dt><dd><p>verilen yük ile düşük seviyeli <code class="docutils literal notranslate"><span class="pre">CALL</span></code> yayınlar, başarı koşulu ve dönüş verisi döndürür, mevcut tüm gas’ı iletir, ayarlanabilirdir</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;address&gt;.delegatecall(bytes</span> <span class="pre">memory)</span> <span class="pre">returns</span> <span class="pre">(bool,</span> <span class="pre">bytes</span> <span class="pre">memory)</span></code></dt><dd><p>verilen yük ile düşük seviyeli <code class="docutils literal notranslate"><span class="pre">DELEGATECALL</span></code> yayınlar, başarı koşulu ve dönüş verisi döndürür, mevcut tüm gazı iletir, ayarlanabilirdir</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;address&gt;.staticcall(bytes</span> <span class="pre">memory)</span> <span class="pre">returns</span> <span class="pre">(bool,</span> <span class="pre">bytes</span> <span class="pre">memory)</span></code></dt><dd><p>verilen yük ile düşük seviyeli <code class="docutils literal notranslate"><span class="pre">STATICCALL</span></code> yayınlar, başarı koşulunu ve dönüş verilerini döndürür, mevcut tüm gazı iletir, ayarlanabilirdir</p>
+</dd>
+</dl>
+<p>Daha fazla bilgi için <a class="reference internal" href="types.html#address"><span class="std std-ref">Adresler</span></a> ile ilgili bölüme bakın.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Başka bir sözleşme fonksiyonunu çalıştırırken mümkün olduğunca <code class="docutils literal notranslate"><span class="pre">.call()</span></code> kullanmaktan kaçınmalısınız,
+çünkü bu tür denetimi, fonksiyon varlığı denetimini ve argüman paketlemeyi atlar.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">send</span></code> kullanmanın bazı tehlikeleri vardır: Çağrı yığını derinliği 1024 ise transfer  başarısız olur
+(bu her zaman çağıran kişi tarafından zorlanabilir) ve ayrıca alıcının gas’ı biterse de başarısız olur.
+Bu nedenle, güvenli Ether transferleri yapmak için, her zaman <code class="docutils literal notranslate"><span class="pre">send</span></code> dönüş değerini kontrol edin, <code class="docutils literal notranslate"><span class="pre">transfer</span></code>
+kullanın veya daha da iyisi: Alıcının parayı çektiği bir model kullanın.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>ESM’nin mevcut olmayan bir sözleşmeye yapılan bir çağrının her zaman başarılı olacağını düşünmesi
+nedeniyle, Solidity harici çağrılar gerçekleştirirken <code class="docutils literal notranslate"><span class="pre">extcodesize</span></code> işlem kodunu kullanarak ekstra
+bir kontrol yapar. Bu, çağrılmak üzere olan sözleşmenin ya gerçekten var olmasını (kod içermesini)
+ya da bir istisnanın ortaya çıkmasını sağlar.</p>
+<p>Sözleşme örnekleri yerine adresler üzerinde çalışan düşük seviyeli çağrılar (yani <code class="docutils literal notranslate"><span class="pre">.call()</span></code>, <code class="docutils literal notranslate"><span class="pre">.delegatecall()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">.staticcall()</span></code>, <code class="docutils literal notranslate"><span class="pre">.send()</span></code> ve <code class="docutils literal notranslate"><span class="pre">.transfer()</span></code>) Bu kontrolü <strong>içermezler</strong>, bu da onları gas açısından daha ucuz
+ama aynı zamanda daha az güvenli hale getirir.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>0.5.0 sürümünden önce, Solidity adres üyelerine bir sözleşme örneği tarafından erişilmesine izin veriyordu,
+örnek vermek gerekirse <code class="docutils literal notranslate"><span class="pre">this.balance</span></code>. Bu fonksiyon artık yasaklanmıştır ve adrese yönelik olarak açık bir dönüşüm yapılmalıdır: <code class="docutils literal notranslate"><span class="pre">address(this).balance</span></code>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Durum değişkenlerine düşük seviyeli bir “delegatecall” yoluyla erişiliyorsa eğer, çağrılan sözleşmenin
+çağıran sözleşme tarafından depolama değişkenlerine adıyla doğru şekilde erişebilmesi için iki sözleşmenin
+depolama düzeninin aynı hizada olması gerekir. Üst düzey kütüphanelerde olduğu gibi depolama işaretçilerinin(pointer)
+fonksiyon argümanları olarak aktarılması durumunda bu durum elbette geçerli değildir.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>0.5.0 sürümünden önce, <code class="docutils literal notranslate"><span class="pre">.call</span></code>, <code class="docutils literal notranslate"><span class="pre">.delegatecall</span></code> ve <code class="docutils literal notranslate"><span class="pre">.staticcall</span></code> yalnızca başarı koşulunu döndürüyordu,
+dönüş verisini döndürmüyordu.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>0.5.0 sürümünden önce, <code class="docutils literal notranslate"><span class="pre">delegatecall</span></code> ile benzer ancak biraz farklı anlamlara sahip <code class="docutils literal notranslate"><span class="pre">callcode</span></code> adlı bir üye de bulunmaktaydı.</p>
+</div>
+</section>
+<section id="sozlesme-ile-ilgili">
+<span id="index-9"></span><h3>Sözleşme İle İlgili<a class="headerlink" href="#sozlesme-ile-ilgili" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">this</span></code> (mevcut sözleşmenin türü)</dt><dd><p>mevcut sözleşme, açıkça <a class="reference internal" href="types.html#address"><span class="std std-ref">Adresler</span></a>’ine dönüştürülebilir</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">selfdestruct(ödenebilir</span> <span class="pre">alıcı</span> <span class="pre">adresi)</span></code></dt><dd><p>Mevcut sözleşmeyi yok eder, fonlarını verilen <span class="xref std std-ref">address`e gönderir ve yürütür.
+``selfdestruct`</span>’ın ESM’den miras kalan bazı özelliklere sahip olduğunu unutmayın:</p>
+<ul class="simple">
+<li><p>alıcı sözleşmenin alma(receive) fonksiyonu yürütülmez.</p></li>
+<li><p>sözleşme sadece işlemin sonunda gerçekten yok edilir ve <code class="docutils literal notranslate"><span class="pre">revert</span></code> bu yok edilme işlemini “geri alabilir”.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Ayrıca, geçerli sözleşmenin tüm fonksiyonları, geçerli fonksiyon da dahil olmak üzere doğrudan çağrılabilir.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>0.5.0 sürümünden önce, <code class="docutils literal notranslate"><span class="pre">selfdestruct</span></code> ile aynı semantiğe sahip <code class="docutils literal notranslate"><span class="pre">suicide</span></code> adlı bir fonksiyon bulunmaktaydı.</p>
+</div>
+</section>
+<section id="type-bilgileri">
+<span id="meta-type"></span><span id="index-10"></span><h3>Type Bilgileri<a class="headerlink" href="#type-bilgileri" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">type(X)</span></code> ifadesi <code class="docutils literal notranslate"><span class="pre">X</span></code> türü hakkında bilgi almak için kullanılabilir. Şu anda,
+bu özellik için sınırlı bir destek bulunmaktadır (<code class="docutils literal notranslate"><span class="pre">X</span></code> bir sözleşme veya tamsayı türü olabilir),
+ancak gelecekte genişletilebilir.</p>
+<p>Aşağıdaki özellikler bir sözleşme tipi(type) <code class="docutils literal notranslate"><span class="pre">C</span></code> için kullanılabilir:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">type(C).name</span></code></dt><dd><p>Sözleşmenin ismi.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">type(C).creationCode</span></code></dt><dd><p>Sözleşmenin oluşturma bayt kodunu içeren bellek bayt dizisi. Bu, özellikle
+<code class="docutils literal notranslate"><span class="pre">create2</span></code> işlem kodu kullanılarak özel oluşturma rutinleri oluşturmak için
+satır içi derlemede kullanılabilir. Bu özelliğe sözleşmenin kendisinden veya
+türetilmiş herhangi bir sözleşmeden <strong>erişilemez</strong>. Bytecode’un çağrı bölgesisin
+bytecode’una dahil edilmesine neden olur ve bu nedenle bunun gibi döngüsel
+referanslar mümkün değildir.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">type(C).runtimeCode</span></code></dt><dd><p>Sözleşmenin çalışma zamanı bayt kodunu içeren bellek bayt dizisi. Bu, genellikle
+<code class="docutils literal notranslate"><span class="pre">C</span></code> yapıcısı tarafından dağıtılan koddur. Eğer <code class="docutils literal notranslate"><span class="pre">C``nin</span> <span class="pre">inline</span> <span class="pre">assembly</span> <span class="pre">kullanan</span>
+<span class="pre">bir</span> <span class="pre">kurucusu</span> <span class="pre">varsa,</span> <span class="pre">bu</span> <span class="pre">gerçekte</span> <span class="pre">dağıtılan</span> <span class="pre">bytecode'dan</span> <span class="pre">farklı</span> <span class="pre">olabilir.</span> <span class="pre">Ayrıca,</span>
+<span class="pre">kütüphanelerin</span> <span class="pre">normal</span> <span class="pre">çağrılara</span> <span class="pre">karşı</span> <span class="pre">koruma</span> <span class="pre">sağlamak</span> <span class="pre">için</span> <span class="pre">dağıtım</span> <span class="pre">sırasında</span>
+<span class="pre">çalışma</span> <span class="pre">zamanı</span> <span class="pre">bayt</span> <span class="pre">kodlarını</span> <span class="pre">değiştirdiklerini</span> <span class="pre">unutmayın.</span> <span class="pre">Bu</span> <span class="pre">özellik</span> <span class="pre">için</span> <span class="pre">de</span>
+<span class="pre">``.creationCode</span></code> ile aynı kısıtlamalar geçerlidir.</p>
+</dd>
+</dl>
+<p>Yukarıdaki özelliklere ek olarak, bir arayüz tipi <code class="docutils literal notranslate"><span class="pre">I</span></code> için aşağıdaki
+özellikler kullanılabilir:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">type(I).interfaceId</span></code>:</dt><dd><p>Verilen <code class="docutils literal notranslate"><span class="pre">I</span></code> arayüzünün <code class="docutils literal notranslate"><span class="pre">EIP-165</span> <span class="pre">&lt;https://eips.ethereum.org/EIPS/eip-165&gt;`_</span>
+<span class="pre">arayüz</span> <span class="pre">tanımlayıcısını</span> <span class="pre">içeren</span> <span class="pre">bir</span> <span class="pre">``bytes4</span></code> değeri. Bu tanımlayıcı, miras alınan
+tüm fonksiyonlar hariç olmak üzere, arayüzün kendi içinde tanımlanan tüm fonksiyon
+seçicilerinin <code class="docutils literal notranslate"><span class="pre">XOR</span></code> ‘u olarak tanımlanır.</p>
+</dd>
+</dl>
+<p>Aşağıdaki özellikler <code class="docutils literal notranslate"><span class="pre">T</span></code> tamsayı(integer) türü için kullanılabilir:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">type(T).min</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">T</span></code> tipi tarafından temsil edilebilen en küçük değer.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">type(T).max</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">T</span></code> tipi tarafından temsil edilebilen en büyük değer.</p>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="types.html" class="btn btn-neutral float-left" title="Türler" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="control-structures.html" class="btn btn-neutral float-right" title="İfadeler ve Kontrol Yapıları" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

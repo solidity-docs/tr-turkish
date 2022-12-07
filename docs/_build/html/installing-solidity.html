@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solidity Derleyicisini Yükleme &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Solidity by Example" href="solidity-by-example.html" />
+    <link rel="prev" title="Akıllı Sözleşmelere Giriş" href="introduction-to-smart-contracts.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Solidity Derleyicisini Yükleme</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#surum">Sürüm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#remix">Remix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#npm-node-js">npm / Node.js</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker">Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linux-paketleri">Linux Paketleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#macos-paketleri">macOS Paketleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#statik-binaryler">Statik Binaryler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#kaynagindan-kurulum">Kaynağından Kurulum</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#on-kosullar-tum-isletim-sistemleri">Ön Koşullar - Tüm İşletim Sistemleri</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#minimum-derleyici-surumleri">Minimum Derleyici Sürümleri</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#on-kosullar-macos">Ön Koşullar - macOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#on-kosullar-windows">Ön Koşullar - Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#depoyu-klonlamak">Depoyu Klonlamak</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#komut-satiri-kullanarak-derlemek">Komut Satırı Kullanarak Derlemek</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#cmake-ayarlari">CMake Ayarları</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#smt-cozuculeri">SMT Çözücüleri</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#surum-dizgisi-string-detaylari">Sürüm Dizgisi (String) Detayları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#surumleme-hakkinda-onemli-bilgi">Sürümleme Hakkında Önemli Bilgi</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Solidity Derleyicisini Yükleme</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/installing-solidity.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="solidity-derleyicisini-yukleme">
+<span id="installing-solidity"></span><span id="index-0"></span><h1>Solidity Derleyicisini Yükleme<a class="headerlink" href="#solidity-derleyicisini-yukleme" title="Permalink to this heading"></a></h1>
+<section id="surum">
+<h2>Sürüm<a class="headerlink" href="#surum" title="Permalink to this heading"></a></h2>
+<p>Solidity sürümleri <a class="reference external" href="https://semver.org">Semantic Sürümlemeyi</a> takip eder. Ek
+olarak, ana sürüm 0’a (yani 0.x.y) sahip yama düzeyindeki sürümler, kırılma değişiklikleri(breaking changes)
+içermeyecektir. Bu, 0.x.y sürümü ile derlenen kodun z &gt; y olduğu durumlarda 0.x.z ile derlenmesinin umulabileceği anlamına gelir.</p>
+<p>Sürümlere ek olarak, geliştiricilerin gelecek özellikleri denemelerini ve erken
+geri bildirim sağlamalarını kolaylaştırmak amacıyla <strong>gece geliştirme yapıları</strong>
+(Nightly Development Builds diye de bilinir) sağlıyoruz. Bununla birlikte, nightly
+yapılar genellikle çok kararlı olsalar da, geliştirme kolundaki (branch) en yeni
+kodları içerdiklerini ve her zaman çalışacaklarının garanti edilmediğini unutmayın.
+Tüm emeklerimize karşın, hala gerçek sürümün bir parçası olmayacak belgelenmemiş
+ve/veya arızalı değişiklikler içerebilirler. Bunlar üretim amaçlı kullanım için uygun değillerdir.</p>
+<p>Sözleşmeleri derleyip yüklerken Solidity’nin yayınlanan en son sürümünü kullanmalısınız. Bunun nedeni,
+kırılma değişikliklerinin yanı sıra yeni özelliklerin tanıtılması ve eski sürümlerdeki hataların düzenli
+olarak düzeltilmesinden kaynaklanmaktadır. Bu <a class="reference external" href="https://semver.org/#spec-item-4">hızlı sürüm değişikliklerini belirtmek için</a>
+şu anda 0.x sürüm numarası kullanıyoruz.</p>
+</section>
+<section id="remix">
+<h2>Remix<a class="headerlink" href="#remix" title="Permalink to this heading"></a></h2>
+<p><em>Solidity’i hızlı bir şekilde öğrenmek ve küçük akıllı sözleşmeler geliştirmek için Remix’i kullanmanızı tavsiye ediyoruz.</em></p>
+<p><a class="reference external" href="https://remix.ethereum.org/">Remix’i online bir şekilde kullanabilirsiniz</a>, bunun için herhangi bir şey indirip kurmanıza gerek yoktur.
+Remix’i internet bağlantısı olmadan da kullanmak istiyorsanız, <a class="reference external" href="https://github.com/ethereum/remix-live/tree/gh-pages">https://github.com/ethereum/remix-live/tree/gh-pages</a> adresine gidip
+sayfada açıklandığı gibi <code class="docutils literal notranslate"><span class="pre">.zip</span></code> dosyasını indirebilirsiniz. Remix, birden fazla Solidity sürümü yüklemenize gerek kalmadan gece
+yapılarını da test etmek için uygun bir seçenektir.</p>
+<p>Bu sayfada bulunan diğer seçenekler de komut satırı için Solidity derleyicisini bilgisayarınıza
+nasıl kuracağınızı detaylı bir şekilde anlatmaktadır. Eğer daha büyük bir sözleşme üzerinde
+çalışıyorsanız veya daha fazla derleme seçeneğine ihtiyacınız varsa lütfen bir komut satırı
+derleyicisi seçin.</p>
+</section>
+<section id="npm-node-js">
+<span id="solcjs"></span><h2>npm / Node.js<a class="headerlink" href="#npm-node-js" title="Permalink to this heading"></a></h2>
+<p>Solidity derleyicisi olan <code class="docutils literal notranslate"><span class="pre">solcjs</span></code> programını kurmanın kullanışlı ve taşınabilir bir yolu
+için <code class="docutils literal notranslate"><span class="pre">npm</span></code> programını kullanabilirsiniz. <cite>solcjs</cite> programı, bu sayfanın ilerleyen kısımlarında
+açıklanacak olan derleyiciye erişim yollarından daha az özelliğe sahiptir. <code class="docutils literal notranslate"><span class="pre">solc</span></code>.ref:<cite>commandline-compiler`(komut satırı derleyicisi) dokümantasyonu
+tam özellikli derleyici olan ``solc`</cite> kullandığınızı varsayar. <code class="docutils literal notranslate"><span class="pre">solcjs</span></code> kullanımı için oluşturulan
+belgeler kendi <a class="reference external" href="https://github.com/ethereum/solc-js">deposu</a> içinde bulunmaktadır.</p>
+<p>Not: solc-js projesi, Emscripten kullanılarak oluşturulan C++ <cite>solc</cite>
+projesinden türetilmiştir, bu da her ikisinin de aynı derleyici kaynak
+kodunu kullandığı anlamına gelir. Aynı zamanda <cite>solc-js</cite> doğrudan JavaScript
+projelerinde (Remix gibi) kullanılabilmektedir. Talimatlar için lütfen solc-js deposuna göz atın.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm install -g solc
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Komut satırında çalışabilen kod``solcjs`` olarak adlandırılmıştır (Komut satırına “solcjs” yazarak çalıştırabilirsiniz).</p>
+<p><code class="docutils literal notranslate"><span class="pre">solcjs</span></code> komut satırı seçenekleri <code class="docutils literal notranslate"><span class="pre">solc</span></code> ile uyumlu değildir. Aynı zamanda çalışmak için <code class="docutils literal notranslate"><span class="pre">solc</span></code> komutuna ihtiyaç
+duyan araçlar (örneğin <code class="docutils literal notranslate"><span class="pre">geth</span></code> gibi) <code class="docutils literal notranslate"><span class="pre">solcjs</span></code> ile çalışmayacaktır.</p>
+</div>
+</section>
+<section id="docker">
+<h2>Docker<a class="headerlink" href="#docker" title="Permalink to this heading"></a></h2>
+<p>Solidity yapılarında bulunan Docker imajları, <code class="docutils literal notranslate"><span class="pre">ethereum</span></code> kuruluşundaki <code class="docutils literal notranslate"><span class="pre">solc</span></code> imajlarını da kullanarak elde edilebilir.
+Yayınlanan en son sürüm için <code class="docutils literal notranslate"><span class="pre">stable</span></code> etiketini ve geliştirme kolundaki (branch) sağlam olmayabilecek stabil olmayan değişiklikler
+için <code class="docutils literal notranslate"><span class="pre">nightly</span></code> etiketini kullanabilirsiniz.</p>
+<p>Docker imajı derleyicinin yürütülebilir dosyasını çalıştırır, bu sayede tüm değişkenleri derleyiciye iletebilirsiniz.
+Örneğin, aşağıdaki komut <code class="docutils literal notranslate"><span class="pre">solc</span></code> imajının (elinizde mevcut değilse) kararlı bir sürümünü çeker ve <code class="docutils literal notranslate"><span class="pre">--help</span></code> parametresini ileterek
+yeni bir konteynerde çalıştırır.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run ethereum/solc:stable --help
+</pre></div>
+</div>
+<p>Etikette derleme sürümlerini de belirtebilirsiniz, örneğin 0.5.4 sürümü için:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run ethereum/solc:0.5.4 --help
+</pre></div>
+</div>
+<p>Docker imajını kullanarak Solidity dosyalarını ana makinede derlemek istiyorsanız,
+girdi ve çıktı için yerel bir klasör bağladıktan sonra derlenecek olan sözleşmeyi belirtin. Örnek vermek gerekirse:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run -v /local/path:/sources ethereum/solc:stable -o /sources/output --abi --bin /sources/Contract.sol
+</pre></div>
+</div>
+<p>Ayrıca spesifik bir JSON arayüzünü de kullanabilirsiniz (Hardhat,Truffle gibi derleyiciyi araçlarıyla birlikte kullanırken tavsiye edilir).
+Bu arayüzü kullanırken, JSON girdisi bağımsız olduğu sürece herhangi bir dizini bağlamak gerekli değildir
+(yani <a class="reference internal" href="path-resolution.html#initial-vfs-content-standard-json-with-import-callback"><span class="std std-ref">içeri aktarılan(import) geri çağrısı (callback)</span></a>
+tarafından yüklenmesi gereken herhangi bir harici dosyaya referans göstermez).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run ethereum/solc:stable --standard-json &lt; input.json &gt; output.json
+</pre></div>
+</div>
+</section>
+<section id="linux-paketleri">
+<h2>Linux Paketleri<a class="headerlink" href="#linux-paketleri" title="Permalink to this heading"></a></h2>
+<p>Solidity’nin binary paketleri <a class="reference external" href="https://github.com/ethereum/solidity/releases">solidity/releases</a> adresinde mevcuttur.</p>
+<p>Ayrıca Ubuntu için PPA’larımız da bulunmaktadır, aşağıdaki komutları kullanarak en son kararlı sürümü edinebilirsiniz:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo add-apt-repository ppa:ethereum/ethereum
+sudo apt-get update
+sudo apt-get install solc
+</pre></div>
+</div>
+<p>Gece sürümü de bu komutlar kullanılarak kurulabilir:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo add-apt-repository ppa:ethereum/ethereum
+sudo add-apt-repository ppa:ethereum/ethereum-dev
+sudo apt-get update
+sudo apt-get install solc
+</pre></div>
+</div>
+<p>Ayrıca, bazı Linux dağıtımları kendi paketlerini sağlamaktadırlar. Fakat bu paketlerin
+bakımı doğrudan bizim tarafımızdan yapılmamaktadır. Bu paketler genellikle ilgili
+paket sorumluları tarafından güncel tutulmaktadır.</p>
+<p>Örnek vermek gerekirse, Arch Linux en son geliştirme sürümü için paketlere sahiptir:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pacman -S solidity
+</pre></div>
+</div>
+<p>Ayrıca bir <a class="reference external" href="https://snapcraft.io/solc">snap paketi</a> vardır, ancak <strong>şu anda bakımı yapılmamaktadır</strong>.
+Bu paket <a class="reference external" href="https://snapcraft.io/docs/core/install">desteklenen tüm Linux dağıtımlarına</a> yüklenebilir.
+Solc’un en son çıkan kararlı sürümünü yüklemek için:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo snap install solc
+</pre></div>
+</div>
+<p>Solidity’nin en son değişiklikleri içeren son çıkan geliştirme sürümünün test edilmesine yardımcı olmak istiyorsanız, lütfen aşağıdaki komutları kullanın:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo snap install solc --edge
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">solc</span></code> snap`i katı bir sınırlama sistemine sahiptir. Bu snap paketleri için uygulanabilecek
+en güvenli moddur, tabi bu modda yalnızca <code class="docutils literal notranslate"><span class="pre">/home</span></code> ve <code class="docutils literal notranslate"><span class="pre">/media</span></code> dizinlerinizdeki dosyalara
+erişmek gibi sınırlamalarla birlikte gelmektedir. Daha fazla bilgi için lütfen <a class="reference external" href="https://snapcraft.io/blog/demystifying-snap-confinement">Sıkı Snap Sınırlaması
+Sistemini Açıklamak</a> bölümüne gidin.</p>
+</div>
+</section>
+<section id="macos-paketleri">
+<h2>macOS Paketleri<a class="headerlink" href="#macos-paketleri" title="Permalink to this heading"></a></h2>
+<p>Solidity derleyicisini, kaynaktan oluşturulmuş bir sürüm olarak Homebrew aracılığıyla
+dağıtıyoruz. Önceden oluşturulmuş olan “bottles”lar(binary paketleri)
+şu anda desteklenmemektedir.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew update
+brew upgrade
+brew tap ethereum/ethereum
+brew install solidity
+</pre></div>
+</div>
+<p>Solidity’nin en son 0.4.x / 0.5.x sürümünü yüklemek için sırasıyla <code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">solidity&#64;4</span></code>
+ve <code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">solidity&#64;5</span></code> de kullanabilirsiniz.</p>
+<p>Solidity’nin belirli bir sürümüne ihtiyacınız varsa, doğrudan Github’dan bir Homebrew “formula”sını
+(Formula, paket tanımı için kullanılan bir ifadedir) yükleyebilirsiniz.</p>
+<p>Github’daki <a class="reference external" href="https://github.com/ethereum/homebrew-ethereum/commits/master/solidity.rb">solidity.rb “commit”lerini görüntüleyin</a>.</p>
+<p>İstediğiniz bir sürümün commit hash’ini kopyalayabilir ve kendi makinenizde kontrol edebilirsiniz.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/ethereum/homebrew-ethereum.git
+<span class="nb">cd</span> homebrew-ethereum
+git checkout &lt;your-hash-goes-here&gt;
+</pre></div>
+</div>
+<p>Bunu <code class="docutils literal notranslate"><span class="pre">brew</span></code> kullanarak yükleyin:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew unlink solidity
+<span class="c1"># eg. Install 0.4.8</span>
+brew install solidity.rb
+</pre></div>
+</div>
+</section>
+<section id="statik-binaryler">
+<h2>Statik Binaryler<a class="headerlink" href="#statik-binaryler" title="Permalink to this heading"></a></h2>
+<p>Desteklenen tüm platformlar için geçmiş ve güncel derleyici sürümlerinin statik yapılarını içeren
+bir depoyu <a class="reference external" href="https://github.com/ethereum/solc-bin/">solc-bin</a> adresinde tutuyoruz. Bu adreste aynı zamanda nightly yapıları da bulabilirsiniz.</p>
+<p>Bu depo, son kullanıcıların ikili dosya sistemlerini kullanıma hazır hale getirmeleri için hızlı ve kolay bir yol
+olmasının yanı sıra üçüncü taraf araçlarla da dost olmayı (kolay bir şekilde etkileşimde bulunmayı) amaçlamaktadır:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://binaries.soliditylang.org">https://binaries.soliditylang.org</a> adresine yansıtılan bu içerik herhangi bir kimlik doğrulama, hız
+sınırlaması veya git kullanma ihtiyacı olmadan HTTPS üzerinden kolayca indirilebilir.</p></li>
+<li><p>İçerik, tarayıcıda çalışan araçlar tarafından doğrudan yüklenebilmesi için doğru <cite>Content-Type</cite>
+başlıklarıyla ve serbest CORS yapılandırmasıyla sunulur.</p></li>
+<li><p>Binaryler için herhangi bir kurulum veya paketten çıkarma işlemi gerekmez (gerekli DLL’lerle
+birlikte gelen eski Windows yapıları hariç).</p></li>
+<li><p>Biz yüksek düzeyde geriye dönük uyumluluk için çabalamaktayız. Dosyalar eklendikten sonra, eski konumunda
+bulunan bir kısayol bağlantısı veya yönlendirme sağlanmadan kaldırılmaz veya taşınmaz. Ayrıca bu dosyalar
+hiçbir zaman değiştirilmez ve her zaman orijinal  sağlama toplamı ile eşleşmelidirler. Buradaki tek istisna,
+olduğu gibi bırakıldığında yarardan çok zarar verme potansiyeli olan bozuk veya kullanılamaz dosyalar için geçerlidir.</p></li>
+<li><p>Dosyalar hem HTTP hem de HTTPS protokolleri üzerinden sunulur. Dosya listesini güvenli bir şekilde aldığınız (git, HTTPS,
+IPFS aracılığıyla veya yerel olarak önbelleğe aldığınız) ve indirdikten sonra ikili sayı sistemi dosyalarının hash’lerini
+doğruladığınız sürece, ikili dosyalar için HTTPS protokolünü kullanmanız gerekmez.</p></li>
+</ul>
+<p>Aynı ikili sayı sistemi dosyaları genellikle <a href="#id1"><span class="problematic" id="id2">`Github üzerindeki Solidity sürüm sayfasında`_</span></a> bulunmaktadır.
+Aradaki fark, Github sürüm sayfasındaki eski sürümleri genellikle güncellemiyor olmamızdır. Bu, adlandırma
+kuralı değişirse onları yeniden adlandırmadığımız ve yayınlandığı sırada desteklenmeyen platformlar için
+derlemeler eklemediğimiz anlamına gelir. Bu sadece <code class="docutils literal notranslate"><span class="pre">solc-bin</span></code> içinde gerçekleşir.</p>
+<p><code class="docutils literal notranslate"><span class="pre">solc-bin</span></code> deposu, her biri tek bir platformu temsil eden birkaç üst düzey dizin içerir. Her biri mevcut
+ikili sayı sistemi dosyalarını listeleyen bir <code class="docutils literal notranslate"><span class="pre">list.json</span></code> dosyası içerir. Örneğin <code class="docutils literal notranslate"><span class="pre">emscripten-wasm32/list.json</span></code>
+dosyasında bulunan 0.7.4 sürümü hakkındaki bilgileri aşağıda bulabilirsiniz:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.7.4&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;build&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;commit.3f05b770&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;longVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.7.4+commit.3f05b770&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;keccak256&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;sha256&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;urls&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;bzzr://16c5f09109c793db99fe35f037c6092b061bd39260ee7a677c8a97f18c955ab1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;dweb:/ipfs/QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Bu şu anlama gelmektedir:</p>
+<ul class="simple">
+<li><p>Binary dosyasını aynı dizinde <a class="reference external" href="https://github.com/ethereum/solc-bin/blob/gh-pages/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js">solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js</a>
+adı altında bulabilirsiniz.  Dosyanın bir kısayol bağlantısı olabileceğini ve dosyayı indirmek için
+eğer git kullanmıyorsanız veya dosya sisteminiz kısayol bağlantılarını desteklemiyorsa bu dosyayı
+kendiniz çözümlemeniz gerekebileceğini unutmayın.</p></li>
+<li><p>Binary dosyası ayrıca <a class="reference external" href="https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js">https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js</a>
+adresine de yansıtılır. Bu durumda git kullanımı gerekli değildir ve kısayol bağlantıları
+ya dosyanın bir kopyasını sunarak ya da bir HTTP yönlendirmesi döndürerek dosyanın şeffaf
+bir şekilde çözümlenmesini sağlar.</p></li>
+<li><p>Dosya ayrıca IPFS üzerinde <a class="reference external" href="https://gateway.ipfs.io/ipfs/QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS">QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS</a> adresinde de mevcuttur.</p></li>
+<li><p>Dosya, gelecekte Swarm’da bulunan <a class="reference external" href="https://swarm-gateways.net/bzz:/16c5f09109c793db99fe35f037c6092b061bd39260ee7a677c8a97f18c955ab1/">16c5f09109c793db99fe35f037c6092b061bd39260ee7a677c8a97f18c955ab1</a> adresinde mevcut olabilir.</p></li>
+<li><p>Binary’nin bütünlüğünü keccak256 hash değerini <code class="docutils literal notranslate"><span class="pre">0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3</span></code>
+ile karşılaştırarak da doğrulayabilirsiniz.  Hash, komut satırında <a class="reference external" href="https://github.com/maandree/sha3sum">sha3sum</a> tarafından sağlanan
+<code class="docutils literal notranslate"><span class="pre">keccak256sum</span></code> yardımcı programı veya JavaScript’te <a href="#id3"><span class="problematic" id="id4">`ethereumjs-util'de bulunan keccak256()`_</span></a> fonksiyonu
+kullanılarak da hesaplanabilir.</p></li>
+<li><p>Binary’nin bütünlüğünü sha256 hash değerini <code class="docutils literal notranslate"><span class="pre">0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2</span></code> ile karşılaştırarak da doğrulayabilirsiniz.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Güçlü bir şekilde geriye dönük uyumluluk gereksinimi sebebiyle depo bazı eski öğeler içerir, ancak
+yeni araçlar yazarken bunları kullanmaktan kaçınmalısınız:</p>
+<ul class="simple">
+<li><p>En iyi performansı istiyorsanız <code class="docutils literal notranslate"><span class="pre">bin/</span></code> yerine <code class="docutils literal notranslate"><span class="pre">emscripten-wasm32/</span></code> son çare (fallback) (<code class="docutils literal notranslate"><span class="pre">emscripten-asmjs/</span></code> geri
+dönüşü ile) kullanın. Biz 0.6.1 sürümüne kadar sadece asm.js ikili sayı sistemi dosyalarını sağlamıştık.
+0.6.2`den itibaren çok daha iyi performans sağlayan <a href="#id5"><span class="problematic" id="id6">`WebAssembly derlemelerine`_</span></a> geçtik. Eski sürümleri
+wasm için yeniden oluşturduk ancak orijinal asm.js dosyaları <code class="docutils literal notranslate"><span class="pre">bin/</span></code> içinde kaldı. Çünkü isim çakışmalarını
+önlemek amacıyla yenilerinin ayrı bir dizine yerleştirilmesi gerekiyordu.</p></li>
+<li><p>Bir wasm veya asm.js ikili sayı sistemi dosyasını indirdiğinizden emin olmak istiyorsanız <code class="docutils literal notranslate"><span class="pre">bin/</span></code>
+ve <code class="docutils literal notranslate"><span class="pre">wasm/</span></code> dizinleri yerine <code class="docutils literal notranslate"><span class="pre">emscripten-asmjs/</span></code> ve <code class="docutils literal notranslate"><span class="pre">emscripten-wasm32/</span></code> dizinlerini kullanın.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">list.js</span></code> ve <code class="docutils literal notranslate"><span class="pre">list.txt</span></code> yerine <code class="docutils literal notranslate"><span class="pre">list.json</span></code> kullanın. JSON liste formatı eskilerde bulunan
+tüm bilgileri ve daha fazlasını içerir.</p></li>
+<li><p><a class="reference external" href="https://solc-bin.ethereum.org">https://solc-bin.ethereum.org</a> yerine <a class="reference external" href="https://binaries.soliditylang.org">https://binaries.soliditylang.org</a> kullanın. İşleri basit tutmak
+için derleyiciyle ilgili neredeyse her şeyi yeni <code class="docutils literal notranslate"><span class="pre">soliditylang.org</span></code> alan adı altına taşıdık ve bu durum
+<code class="docutils literal notranslate"><span class="pre">solc-bin</span></code> için de geçerlidir. Yeni alan adı önerilse de, eski alan adı hala tam olarak
+desteklenmekte ve aynı konuma işaret etmesi garanti edilmektedir.</p></li>
+</ul>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Binary dosyaları <a class="reference external" href="https://ethereum.github.io/solc-bin/">https://ethereum.github.io/solc-bin/</a> adresinde de mevcuttur, fakat
+bu sayfanın güncellenmesi 0.7.2 sürümünün yayınlanmasından hemen sonra durdurulmuştur. Aynı
+zamanda bu adres herhangi bir platform için yeni sürümler veya nightly yapılar almayacak ve
+emscripten olmayan yapılar da dahil olmak üzere yeni dizin yapısını sunmayacaktır.</p>
+<p>Eğer hala bu adresi kullanıyorsanız, lütfen bunun yerine  <a class="reference external" href="https://binaries.soliditylang.org">https://binaries.soliditylang.org</a>
+adresine kullanmaya devam edin. Bu, temeldeki barındırma hizmeti(hosting) üzerinde şeffaf bir şekilde
+değişiklik yapmamıza ve kesintiyi en aza indirmemize olanak tanır. Herhangi bir kontrole sahip
+olmadığımız <code class="docutils literal notranslate"><span class="pre">ethereum.github.io</span></code> alan adının aksine, <code class="docutils literal notranslate"><span class="pre">binaries.soliditylang.org</span></code> alan adının
+uzun vadede aynı URL yapısını koruyacağını ve çalışacağını garanti ediyoruz.</p>
+</div>
+</section>
+<section id="kaynagindan-kurulum">
+<span id="building-from-source"></span><h2>Kaynağından Kurulum<a class="headerlink" href="#kaynagindan-kurulum" title="Permalink to this heading"></a></h2>
+<section id="on-kosullar-tum-isletim-sistemleri">
+<h3>Ön Koşullar - Tüm İşletim Sistemleri<a class="headerlink" href="#on-kosullar-tum-isletim-sistemleri" title="Permalink to this heading"></a></h3>
+<p>Aşağıda Solidity’nin tüm geliştirmeleri için bağımlılıklar verilmiştir:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 39%" />
+<col style="width: 61%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Yazılım</p></th>
+<th class="head"><p>Notlar</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="https://cmake.org/download/">CMake</a> (sürüm 3.13+)</p></td>
+<td><p>Platformlar arası derleme dosyası oluşturucusu.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.boost.org">Boost</a> (Windows ‘ta 1.77+
+sürümü, aksi takdirde 1.65+)</p></td>
+<td><p>C++ kütüphaneleri.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://git-scm.com/download">Git</a></p></td>
+<td><p>Kaynak kodu almak için komut satırı aracı.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://github.com/Z3Prover/z3">z3</a> (sürüm 4.8+, Opsiyonel)</p></td>
+<td><p>SMT denetleyicisi ile kullanım için.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://cvc4.cs.stanford.edu/web/">cvc4</a> (Opsiyonel)</p></td>
+<td><p>SMT denetleyicisi ile kullanım için.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Solidity’nin 0.5.10’dan önceki sürümleri Boost’un 1.70+ olan sürümlerine doğru bir şekilde
+bağlanamayabilir. Olası bir geçici çözüm, solidity’yi yapılandırmak için cmake komutunu çalıştırmadan
+önce <code class="docutils literal notranslate"><span class="pre">&lt;Boost</span> <span class="pre">yükleme</span> <span class="pre">yolu&gt;/lib/cmake/Boost-1.70.0</span></code> adını geçici olarak yeniden adlandırmaktır.</p>
+<p>0.5.10’dan başlayarak Boost 1.70+ kadar olan sürümlerle bağlantı kurmak(linking) manuel müdahale olmadan çalışmalıdır.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Varsayılan derleme yapılandırması belirli bir Z3 sürümü (kodun en son güncellendiği zamandaki en son sürüm)
+gerektirir. Z3 sürümleri arasında yapılan değişiklikler genellikle biraz farklı (ancak yine de geçerli olan)
+sonuçların döndürülmesine neden olur. SMT testlerimiz bu farklılıkları hesaba katmaz ve muhtemelen yazıldıkları
+sürümden farklı olan bir sürümde başarısız olacaklardır. Bu, farklı bir sürüm kullanan bir derlemenin hatalı
+olduğu anlamına gelmez. CMake’e <code class="docutils literal notranslate"><span class="pre">-DSTRICT_Z3_VERSION=OFF</span></code> seçeneğini iletirseniz, yukarıdaki tabloda verilen
+gereksinimi karşılayan herhangi bir sürümle derleme yapabilirsiniz. Ancak bunu yaparsanız, SMT testlerini atlamak
+için lütfen <code class="docutils literal notranslate"><span class="pre">scripts/tests.sh</span></code> dosyasına <code class="docutils literal notranslate"><span class="pre">--no-smt</span></code> seçeneğini de eklemeyi unutmayın.</p>
+</div>
+<section id="minimum-derleyici-surumleri">
+<h4>Minimum Derleyici Sürümleri<a class="headerlink" href="#minimum-derleyici-surumleri" title="Permalink to this heading"></a></h4>
+<p>Aşağıdaki C++ derleyicileri ve minimum sürümleri Solidity kod tabanını derleyebilir:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://gcc.gnu.org">GCC</a>, version 8+</p></li>
+<li><p><a class="reference external" href="https://clang.llvm.org/">Clang</a>, version 7+</p></li>
+<li><p><a class="reference external" href="https://visualstudio.microsoft.com/vs/">MSVC</a>, version 2019+</p></li>
+</ul>
+</section>
+</section>
+<section id="on-kosullar-macos">
+<h3>Ön Koşullar - macOS<a class="headerlink" href="#on-kosullar-macos" title="Permalink to this heading"></a></h3>
+<p>macOS derlemeleri için, <a class="reference external" href="https://developer.apple.com/xcode/download/">Xcode`un en son sürümünün</a>
+yüklü olduğundan emin olun. Bu, <a class="reference external" href="https://en.wikipedia.org/wiki/Clang">Clang C++ derleyicisi</a>,
+<a class="reference external" href="https://en.wikipedia.org/wiki/Xcode">Xcode IDE</a> ve OS X üzerinde C++ uygulamaları oluşturmak
+için gerekli olan diğer Apple geliştirme araçlarını içerir.
+Xcode’u ilk kez yüklüyorsanız veya yeni bir sürüm yüklediyseniz, komut satırı derlemeleri yapmadan
+önce lisansı kabul etmeniz gerekecektir:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo xcodebuild -license accept
+</pre></div>
+</div>
+<p>OS X derleme betiğimiz, harici bağımlılıkları yüklemek için <a class="reference external" href="https://brew.sh">Homebrew</a> paket yöneticisini kullanır. Eğer sıfırdan başlamak
+isterseniz, Homebrew &lt;<a class="reference external" href="https://docs.brew.sh/FAQ#how-do-i-uninstall-homebrew">https://docs.brew.sh/FAQ#how-do-i-uninstall-homebrew</a>&gt;`_’i
+nasıl kaldıracağınız aşağıda açıklanmıştır.</p>
+</section>
+<section id="on-kosullar-windows">
+<h3>Ön Koşullar - Windows<a class="headerlink" href="#on-kosullar-windows" title="Permalink to this heading"></a></h3>
+<p>Solidity’nin Windows derlemeleri için aşağıdaki bağımlılıkları yüklemeniz gerekir:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 39%" />
+<col style="width: 61%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Yazılım</p></th>
+<th class="head"><p>Notlar</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.visualstudio.com/downloads/#build-tools-for-visual-studio-2019">Visual Studio 2019 Build Tools</a></p></td>
+<td><p>C++ derleyicisi</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://www.visualstudio.com/vs/">Visual Studio 2019</a> (Opsiyonel)</p></td>
+<td><p>C++ derleyicisi ve geliştirme ortamı</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://www.boost.org">Boost</a> (sürüm 1.77+)</p></td>
+<td><p>C++ kütüphaneleri.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Eğer zaten bir IDE’niz varsa ve yalnızca derleyici ve kütüphanelere ihtiyaç duyuyorsanız,
+Visual Studio 2019 Build Tools’u yükleyebilirsiniz.</p>
+<p>Visual Studio 2019 hem IDE hem de gerekli derleyici ve kütüphaneleri sağlar.
+Dolayısıyla, bir IDE’niz yoksa ve Solidity geliştirmeyi tercih ediyorsanız,
+Visual Studio 2019 her şeyi kolayca kurmanız için iyi bir tercih olabilir.</p>
+<p>Visual Studio 2019 Build Tools veya Visual Studio 2019’da yüklenmesi
+gereken bileşenlerin listesi aşağıda verilmiştir:</p>
+<ul class="simple">
+<li><p>Visual Studio C++ core features</p></li>
+<li><p>VC++ 2019 v141 toolset (x86,x64)</p></li>
+<li><p>Windows Universal CRT SDK</p></li>
+<li><p>Windows 8.1 SDK</p></li>
+<li><p>C++/CLI support</p></li>
+</ul>
+<p>Gerekli tüm harici bağımlılıkları yüklemek için kullanabileceğiniz bir yardımcı betiğimiz var:</p>
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>scripts\install_deps.ps1
+</pre></div>
+</div>
+<p>Bu <code class="docutils literal notranslate"><span class="pre">boost</span></code> ve <code class="docutils literal notranslate"><span class="pre">cmake</span></code>’i <code class="docutils literal notranslate"><span class="pre">deps</span></code> alt dizinine yükleyecektir.</p>
+</section>
+<section id="depoyu-klonlamak">
+<h3>Depoyu Klonlamak<a class="headerlink" href="#depoyu-klonlamak" title="Permalink to this heading"></a></h3>
+<p>Kaynak kodunu klonlamak için aşağıdaki komutu çalıştırın:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone --recursive https://github.com/ethereum/solidity.git
+<span class="nb">cd</span> solidity
+</pre></div>
+</div>
+<p>Solidity’nin geliştirilmesine yardımcı olmak istiyorsanız,
+Solidity’yi çatallamalı(fork) ve kişisel çatalınızı(fork) ikinci bir remote olarak eklemelisiniz:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git remote add personal git@github.com:<span class="o">[</span>username<span class="o">]</span>/solidity.git
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Bu yöntem, örneğin böyle bir derleyici tarafından üretilen her bayt kodunda bir bayrağın
+ayarlanmasına yol açan bir ön sürüm derlemesiyle sonuçlanacaktır. Yayınlanmış bir Solidity
+derleyicisini yeniden derlemek istiyorsanız, lütfen github sürüm sayfasındaki kaynak tarball’u kullanın:</p>
+<p><a class="reference external" href="https://github.com/ethereum/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz">https://github.com/ethereum/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz</a></p>
+<p>(github tarafından sağlanan “Kaynak kodu” değil).</p>
+</div>
+</section>
+<section id="komut-satiri-kullanarak-derlemek">
+<h3>Komut Satırı Kullanarak Derlemek<a class="headerlink" href="#komut-satiri-kullanarak-derlemek" title="Permalink to this heading"></a></h3>
+<p><strong>Derlemeden önce Harici Bağımlılıkları(yukarıda bulunan) yüklediğinizden emin olun.</strong></p>
+<p>Solidity projesi derlemeyi yapılandırmak için CMake kullanır.
+Tekrarlanan derlemeleri hızlandırmak için <a class="reference external" href="https://ccache.dev/">ccache</a> yüklemek isteyebilirsiniz.
+CMake bunu otomatik olarak alacaktır. Solidity’yi derlemek Linux,
+macOS ve diğer Unix’lerde de oldukça benzerdir:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir build
+<span class="nb">cd</span> build
+cmake .. <span class="o">&amp;&amp;</span> make
+</pre></div>
+</div>
+<p>veya Linux ve macOS’ta daha da kolay çalıştırabilirsiniz:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">#note: this will install binaries solc and soltest at usr/local/bin</span>
+./scripts/build.sh
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>BSD derlemeleri çalışmalıdır, fakat Solidity ekibi tarafından test edilmemiştir.</p>
+</div>
+<p>Ve Windows İçin:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir build
+<span class="nb">cd</span> build
+cmake -G <span class="s2">&quot;Visual Studio 16 2019&quot;</span> ..
+</pre></div>
+</div>
+<p>Eğer <code class="docutils literal notranslate"><span class="pre">scripts\install_deps.ps1</span></code> tarafından yüklenen boost sürümünü kullanmak isterseniz,
+<code class="docutils literal notranslate"><span class="pre">-DBoost_DIR=&quot;deps\boost\lib\cmake\Boost-*&quot;</span></code> ve <code class="docutils literal notranslate"><span class="pre">-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded</span></code>
+seçeneklerini <code class="docutils literal notranslate"><span class="pre">cmake</span></code> çağrısına argüman olarak iletmeniz gerekecektir.</p>
+<p>Bunun sonucunda bu yapı dizininde <strong>solidity.sln</strong> dosyası oluşturulmalıdır. Ayrıca
+bu dosyaya çift tıklandığında Visual Studio nun açılması gerekir. Biz <strong>Yayın</strong>
+yapılandırmasını oluşturmanızı öneririz, ancak diğerleri de çalışır.</p>
+<p>Alternatif olarak, Windows için komut satırında aşağıdaki gibi bir derleme de yapabilirsiniz:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake --build . --config Release
+</pre></div>
+</div>
+</section>
+</section>
+<section id="cmake-ayarlari">
+<h2>CMake Ayarları<a class="headerlink" href="#cmake-ayarlari" title="Permalink to this heading"></a></h2>
+<p>CMake ayarlarının ne olduğunu merak ediyorsanız <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">..</span> <span class="pre">-LH</span></code> komutunu çalıştırın.</p>
+<section id="smt-cozuculeri">
+<span id="smt-solvers-build"></span><h3>SMT Çözücüleri<a class="headerlink" href="#smt-cozuculeri" title="Permalink to this heading"></a></h3>
+<p>Solidity, SMT çözücülerine karşı derlenebilir ve sistemde bulunurlarsa default(varsayılan)
+olarak bunu yapacaklardır. Her çözücü bir <cite>cmake</cite> seçeneği ile devre dışı bırakılabilir.</p>
+<p><em>Not: Bazı durumlarda bu, derleme hataları için potansiyel olarak geçici bir çözüm de olabilir.</em></p>
+<p>Yapı klasörünün içinde bunları devre dışı bırakabilirsiniz, çünkü varsayılan olarak etkin durumdadırlar:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># disables only Z3 SMT Solver.</span>
+cmake .. -DUSE_Z3<span class="o">=</span>OFF
+
+<span class="c1"># disables only CVC4 SMT Solver.</span>
+cmake .. -DUSE_CVC4<span class="o">=</span>OFF
+
+<span class="c1"># disables both Z3 and CVC4</span>
+cmake .. -DUSE_CVC4<span class="o">=</span>OFF -DUSE_Z3<span class="o">=</span>OFF
+</pre></div>
+</div>
+</section>
+</section>
+<section id="surum-dizgisi-string-detaylari">
+<h2>Sürüm Dizgisi (String) Detayları<a class="headerlink" href="#surum-dizgisi-string-detaylari" title="Permalink to this heading"></a></h2>
+<p>Solidity sürüm dizgisi dört bölümden oluşur:</p>
+<ul class="simple">
+<li><p>Sürüm numarası</p></li>
+<li><p>Sürüm öncesi etiketi (genellikle develop.YYYY.MM.DD veya night..YYYY.MM.DD olarak ayarlanır)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">commit.GITHASH</span></code> biçiminde ilgili commit</p></li>
+<li><p>Platform ve derleyici ile ilgili ayrıntıları içeren, rasgele sayıda öğeye sahip platform</p></li>
+</ul>
+<p>Yerel değişiklikler varsa commit’in sonuna <code class="docutils literal notranslate"><span class="pre">.mod</span></code> diye eklenir.</p>
+<p>Tüm değişiklikler, Semver’in gerektirdiği şekilde, Solidity yayınlanma öncesi sürümün Semver yayınlanma
+öncesi sürümüne eşit olduğu ve Solidity’de bir işlem yapıldığında Semver’deki meta verilerinin de değiştiği
+bir şekilde gerçekleşir.</p>
+<p>Bir yayın örneği: <code class="docutils literal notranslate"><span class="pre">0.4.8+commit.60cc1668.Emscripten.clang</span></code>.</p>
+<p>Bir ön yayın örneği: <code class="docutils literal notranslate"><span class="pre">0.4.9-nightly.2017.1.17+commit.6ecb4aa3.Emscripten.clang</span></code></p>
+</section>
+<section id="surumleme-hakkinda-onemli-bilgi">
+<h2>Sürümleme Hakkında Önemli Bilgi<a class="headerlink" href="#surumleme-hakkinda-onemli-bilgi" title="Permalink to this heading"></a></h2>
+<p>Bir sürüm yapıldıktan sonra, yama sürüm seviyesi yükseltilir, çünkü sadece yama
+seviyesindeki değişikliklerin takip edildiğini varsayıyoruz. Değişiklikler birleştirildiğinde
+(merge) , SemVer’e ve değişikliğin ciddiyetine göre sürüm yükseltilmelidir. Son olarak, bir
+sürüm her zaman mevcut nightly derlemenin sürümüyle, ancak <code class="docutils literal notranslate"><span class="pre">prerelease</span></code> belirteci olmadan yapılır.</p>
+<p>Örnek:</p>
+<ol class="arabic simple">
+<li><p>0.4.0 sürümü çıktı.</p></li>
+<li><p>Nightly yapı şu andan itibaren 0.4.1 sürümüne sahiptir.</p></li>
+<li><p>İşleyişi bozmayan değişikliler tanıtıldı –&gt; sürümde değişiklik yok.</p></li>
+<li><p>İşleyişi bozan değişiklikler tanıtıldı –&gt; version 0.5.0’a yükseltildi.</p></li>
+<li><p>0.5.0 sürümü çıktı.</p></li>
+</ol>
+<p>Bu davranış <a class="reference internal" href="layout-of-source-files.html#version-pragma"><span class="std std-ref">version pragma</span></a> ile iyi çalışır.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="introduction-to-smart-contracts.html" class="btn btn-neutral float-left" title="Akıllı Sözleşmelere Giriş" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="solidity-by-example.html" class="btn btn-neutral float-right" title="Solidity by Example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

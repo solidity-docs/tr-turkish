@@ -2,14 +2,14 @@
 
 .. _abstract-contract:
 
-******************
+****************************
 Abstract Akıllı Sözleşmeler
-******************
+****************************
 
 Sözleşmeler, işlevlerinden en az biri uygulanmadığında veya bütün temel sözleme yapıcılar için argüman sağlamadığında abstract olarak işaretlenmelidir.
 Bu durumlardan herhangi biri geçerli değilse bile bir akıllı sözleşme abstract olarak işaretlenebilir.
 Örneğin bir akıllı sözleşmenin direkt olarak oluşturulmasını istemediğiniz durumlarda bunu gerçekleştirebilirsiniz.
-Abstract akıllı sözleşmeler :ref:`interface'lere` oldukça benzerdir ancak interface'ler çok daha kısıtlı bir
+Abstract akıllı sözleşmeler :ref:`interfaces` oldukça benzerdir ancak interface'ler çok daha kısıtlı bir
 yapıdadır.
 
 Aşağıdaki örnekte belirtildiği gibi, Abstract akıllı sözleşmeler ``abstract`` olarak işaretlenerek belirtilir.

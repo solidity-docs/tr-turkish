@@ -2,9 +2,9 @@
 
 .. _modifiers:
 
-******************
+*************************
 Fonksiyon Modifier'ları
-******************
+*************************
 
 Modifier'lar fonksiyonların tanımlandığı şekillerinden farklı davranmalarını sağlamak için kullanılabilir.
 Örneğin,

@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Depolama Alanındaki Durum Değişkenlerinin Düzeni &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/js/toggle.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Bellekteki Düzen" href="layout_in_memory.html" />
+    <link rel="prev" title="Solidity IR-based Codegen Changes" href="../ir-breaking-changes.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="../index.html">
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mapping-ler-ve-dinamik-diziler-arrays">Mapping’ler ve Dinamik Diziler(Arrays)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bytes-ve-string"><code class="docutils literal notranslate"><span class="pre">bytes</span></code> ve <code class="docutils literal notranslate"><span class="pre">string</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#json-ciktisi">JSON Çıktısı</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="../genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Depolama Alanındaki Durum Değişkenlerinin Düzeni</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/internals/layout_in_storage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="depolama-alanindaki-durum-degiskenlerinin-duzeni">
+<span id="index-0"></span><h1>Depolama Alanındaki Durum Değişkenlerinin Düzeni<a class="headerlink" href="#depolama-alanindaki-durum-degiskenlerinin-duzeni" title="Permalink to this heading"></a></h1>
+<p id="storage-inplace-encoding">Sözleşmelerin durum değişkenleri, birden fazla değerin bazen aynı depolama yuvasını(slot)
+kullanacağı şekilde kompakt bir şekilde depolanır. Dinamik olarak boyutlandırılmış diziler(arrays)
+ve mappingler (aşağıya bakınız) hariç olmak üzere, diğer tüm veriler <code class="docutils literal notranslate"><span class="pre">0</span></code> yuvasında saklanan ilk
+durum değişkeninden başlamak üzere bitişik bir şekilde öğe öğe saklanır. Her değişken için, değişkenin
+türüne göre bayt cinsinden bir boyut belirlenir. 32 bayttan daha az bir değere ihtiyaç duyan birden
+fazla bitişik öğe aşağıdaki kurallara uygun olarak eğer mümkünse tek bir depolama yuvasında paketlenir:</p>
+<ul class="simple">
+<li><p>Bir depolama yuvasındaki ilk öğe alt sıraya hizalanmış olarak saklanır.</p></li>
+<li><p>Değer türleri, depolanmak için yalnızca gerek duydukları kadar bayt kullanır.</p></li>
+<li><p>Bir değer türü bir depolama yuvasının kalan kısmına sığmazsa, bir sonraki depolama yuvasında saklanır.</p></li>
+<li><p>Struct’lar ve dizi(array) verileri için her zaman yeni bir yuva başlatılır. Ve öğeler bu kurallara göre sıkıca paketlenir.</p></li>
+<li><p>Struct veya dizi (array) verilerini izleyen öğeler için her zaman yeni bir depolama yuvası başlatır.</p></li>
+</ul>
+<p>Kalıtım kullanan sözleşmeler için durum değişkenlerinin sıralaması, en temeldeki sözleşmeden başlayarak
+sözleşmelerin C3-doğrusallaştırılmış sırasına göre belirlenir. Eğer yukarıdaki kurallara da uygunsa,
+farklı sözleşmelerdeki durum değişkenleri aynı depolama yuvasını paylaşabilir.</p>
+<p>Structure’ların ve dizilerin(arrays) elemanları, ayrı ayrı değerler şeklinde verilmiş gibi birbirlerinden sonra saklanırlar.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>32 bayttan daha küçük değerdeki elemanları kullanırken, sözleşmenizin gas kullanımı daha yüksek olabilir.
+Bunun nedeni, ESM’nin bir seferde 32 bayt üzerinde çalışmasıdır. Bu nedenle, eleman bundan daha küçükse,
+ESM’nin elemanın boyutunu 32 bayttan istenen boyuta düşürmek için daha fazla işlem kullanması gerekir.</p>
+<p>Depolama değerleriyle uğraşıyorsanız, küçültülmüş boyutlu türleri kullanmak faydalı olabilir, çünkü derleyici
+birden fazla öğeyi tek bir depolama yuvasına yerleştirecek ve böylece birden fazla okuma veya yazma işlemini
+tek bir işlemde birleştirecektir. Ancak bir yuvadaki tüm değerleri aynı anda okumuyor veya yazmıyorsanız, bunun
+ters bir etkisi olabilir: Çok değerli bir depolama yuvasına bir değer yazıldığı zaman, depolama yuvasının önce
+okunması ve ardından aynı yuvadaki diğer verilerin yok edilmemesi için yeni değerler ile birleştirilmesi gerekir.</p>
+<p>Fonksiyon argümanları veya bellek değerleriyle uğraşırken, derleyici bu değerleri paketlemediği için bu durumun
+herhangi bir faydası yoktur.</p>
+<p>Son olarak, ESM’nin bunu optimize etmesine izin vermek için, depolama değişkenlerinizi ve <code class="docutils literal notranslate"><span class="pre">struct</span></code> üyelerinizi
+sıkıca paketlenebilecekleri şekilde sıralamaya çalıştığınızdan emin olun. Örneğin, saklama değişkenlerinizi
+<code class="docutils literal notranslate"><span class="pre">uint128,</span> <span class="pre">uint256,</span> <span class="pre">uint128</span></code> yerine <code class="docutils literal notranslate"><span class="pre">uint128,</span> <span class="pre">uint128,</span> <span class="pre">uint256</span></code> şeklinde bildirdiğinizde, ilk örnek yalnızca
+iki saklama alanı kaplarken ikincisi üç saklama alanı kaplayacaktır.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Depolama alanındaki durum değişkenlerinin düzeni, depolama pointer’larının
+kütüphanelere aktarılabilmesi nedeniyle Solidity’nin harici arayüzünün bir
+parçası olarak kabul edilir. Bu, bu bölümde özetlenen kurallarda yapılacak
+herhangi bir değişikliğin dilde işleyişi bozan bir değişiklik olarak kabul
+edileceği ve kritik yapısı nedeniyle uygulanmadan önce çok dikkatli bir şekilde
+düşünülmesi gerekeceği anlamına gelir. Böyle bir işleyişi bozan değişiklik
+durumunda, derleyicinin eski düzeni(layout) destekleyecek bir bytecode üreteceği
+bir uyumluluk modu yayınlamak isteriz.</p>
+</div>
+<section id="mapping-ler-ve-dinamik-diziler-arrays">
+<h2>Mapping’ler ve Dinamik Diziler(Arrays)<a class="headerlink" href="#mapping-ler-ve-dinamik-diziler-arrays" title="Permalink to this heading"></a></h2>
+<p id="storage-hashed-encoding">Tahmin edilemeyen boyutları nedeniyle, mapping’ler ve dinamik boyutlu dizi türleri
+kendilerinden önceki ve sonraki durum değişkenlerinin “arasında” saklanamaz. Bunun
+yerine, <a class="reference internal" href="#storage-inplace-encoding"><span class="std std-ref">yukarıdaki</span></a> depolama kurallarına göre yalnızca
+32 bayt kapladıkları kabul edilir ve içerdikleri öğeler bir Keccak-256 hash’i kullanılarak
+hesaplanan farklı bir depolama yuvasından başlayarak depolanır.</p>
+<p>Mapping veya dizinin depolama konumunun <a class="reference internal" href="#storage-inplace-encoding"><span class="std std-ref">depolama düzeni kuralları</span></a>
+uygulandıktan sonra <code class="docutils literal notranslate"><span class="pre">p</span></code> yuvası olduğunu varsayalım. Dinamik diziler için, bu yuva dizideki
+eleman sayısını saklar (bayt dizileri ve stringler bir istisnadır, bkz. <a class="reference internal" href="#bytes-and-string"><span class="std std-ref">aşağıda</span></a>).
+Mapping’ler için yuva boş kalır, ancak yine de yan yana duran iki mapping olsa bile içeriklerinin farklı
+depolama konumlarında sonlanmasını sağlamak için gereklidir.</p>
+<p>Dizi(array) verileri <code class="docutils literal notranslate"><span class="pre">keccak256(p)</span></code> adresinden başlayarak yerleştirilir ve statik olarak boyutlandırılmış
+dizi verileriyle aynı biçimde düzenlenir: Elemanlar birbiri ardına sıralanır ve elemanlar 16 bayttan uzun
+değilse potansiyel olarak depolama yuvalarını paylaşırlar. Dinamik dizilerin dinamik dizileri bu kuralı
+özyinelemeli(recursive) şekilde uygular. <code class="docutils literal notranslate"><span class="pre">x</span></code> türünün <code class="docutils literal notranslate"><span class="pre">uint24[][]</span></code> olduğu <code class="docutils literal notranslate"><span class="pre">x[i][j]</span></code> öğesinin konumu aşağıdaki
+gibi hesaplanır (yine <code class="docutils literal notranslate"><span class="pre">x</span></code> öğesinin kendisinin <code class="docutils literal notranslate"><span class="pre">p</span></code> yuvasında saklandığını varsayarak): Yuva
+<code class="docutils literal notranslate"><span class="pre">keccak256(keccak256(p)</span> <span class="pre">+</span> <span class="pre">i)</span> <span class="pre">+</span> <span class="pre">floor(j</span> <span class="pre">/</span> <span class="pre">floor(256</span> <span class="pre">/</span> <span class="pre">24))</span></code> ve eleman <code class="docutils literal notranslate"><span class="pre">v</span></code> yuva verisinden <code class="docutils literal notranslate"><span class="pre">(v</span> <span class="pre">&gt;&gt;</span> <span class="pre">((j</span> <span class="pre">%</span> <span class="pre">floor(256</span> <span class="pre">/</span> <span class="pre">24))</span> <span class="pre">*</span> <span class="pre">24))</span> <span class="pre">&amp;</span> <span class="pre">type(uint24).max</span></code>.</p>
+<p>Bir <code class="docutils literal notranslate"><span class="pre">k</span></code> mapping anahtarına karşılık gelen değer <code class="docutils literal notranslate"><span class="pre">keccak256(h(k)</span> <span class="pre">.</span> <span class="pre">p)</span></code> adresinde bulunur; burada <code class="docutils literal notranslate"><span class="pre">.</span></code> birleştirme,
+<code class="docutils literal notranslate"><span class="pre">h</span></code> ise türüne bağlı olarak anahtara uygulanan bir fonksiyondur:</p>
+<ul class="simple">
+<li><p>değer türleri için, <code class="docutils literal notranslate"><span class="pre">h</span></code> değeri bellekte depolarken olduğu gibi 32 bayt olarak doldurur.</p></li>
+<li><p>stringler ve byte dizileri için, <code class="docutils literal notranslate"><span class="pre">h(k)</span></code> sadece doldurulmamış veridir.</p></li>
+</ul>
+<p>Mapping değeri değer olmayan bir türse, hesaplanan yuva verinin başlangıcını işaret eder. Örneğin, değer struct
+türündeyse, üyeye ulaşmak için struct üyesine karşılık gelen bir ofset eklemeniz gerekir.</p>
+<p>Örnek olarak, aşağıdaki sözleşmeye bakalım:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC40LjAgPDAuOS4wOwoKCmNvbnRyYWN0IEMgewogICAgc3RydWN0IFMgeyB1aW50MTYgYTsgdWludDE2IGI7IHVpbnQyNTYgYzsgfQogICAgdWludCB4OwogICAgbWFwcGluZyh1aW50ID0+IG1hcHBpbmcodWludCA9PiBTKSkgZGF0YTsKfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.4.0</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">C</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">struct</span><span class="w"> </span><span class="nv">S</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kt">uint16</span><span class="w"> </span><span class="nv">a</span><span class="p">;</span><span class="w"> </span><span class="kt">uint16</span><span class="w"> </span><span class="nv">b</span><span class="p">;</span><span class="w"> </span><span class="kt">uint256</span><span class="w"> </span><span class="nv">c</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint</span><span class="w"> </span><span class="nv">x</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">mapping</span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="kt">mapping</span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span>S<span class="p">))</span><span class="w"> </span>data<span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Let us compute the storage location of <code class="docutils literal notranslate"><span class="pre">data[4][9].c</span></code>.
+The position of the mapping itself is <code class="docutils literal notranslate"><span class="pre">1</span></code> (the variable <code class="docutils literal notranslate"><span class="pre">x</span></code> with 32 bytes precedes it).
+This means <code class="docutils literal notranslate"><span class="pre">data[4]</span></code> is stored at <code class="docutils literal notranslate"><span class="pre">keccak256(uint256(4)</span> <span class="pre">.</span> <span class="pre">uint256(1))</span></code>. The type of <code class="docutils literal notranslate"><span class="pre">data[4]</span></code> is
+again a mapping and the data for <code class="docutils literal notranslate"><span class="pre">data[4][9]</span></code> starts at slot
+<code class="docutils literal notranslate"><span class="pre">keccak256(uint256(9)</span> <span class="pre">.</span> <span class="pre">keccak256(uint256(4)</span> <span class="pre">.</span> <span class="pre">uint256(1)))</span></code>.
+The slot offset of the member <code class="docutils literal notranslate"><span class="pre">c</span></code> inside the struct <code class="docutils literal notranslate"><span class="pre">S</span></code> is <code class="docutils literal notranslate"><span class="pre">1</span></code> because <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> are packed
+in a single slot. This means the slot for
+<code class="docutils literal notranslate"><span class="pre">data[4][9].c</span></code> is <code class="docutils literal notranslate"><span class="pre">keccak256(uint256(9)</span> <span class="pre">.</span> <span class="pre">keccak256(uint256(4)</span> <span class="pre">.</span> <span class="pre">uint256(1)))</span> <span class="pre">+</span> <span class="pre">1</span></code>.
+The type of the value is <code class="docutils literal notranslate"><span class="pre">uint256</span></code>, so it uses a single slot.</p>
+<section id="bytes-ve-string">
+<span id="bytes-and-string"></span><h3><code class="docutils literal notranslate"><span class="pre">bytes</span></code> ve <code class="docutils literal notranslate"><span class="pre">string</span></code><a class="headerlink" href="#bytes-ve-string" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">bytes</span></code> ve <code class="docutils literal notranslate"><span class="pre">string</span></code> aynı şekilde şifrelenir. Genel olarak, şifreleme <code class="docutils literal notranslate"><span class="pre">bytes1[]</span></code> şifrelemesine benzer;
+dizinin kendisi için bir yuva ve bu yuvanın konumunun <code class="docutils literal notranslate"><span class="pre">keccak256</span></code> hash`i kullanılarak hesaplanan bir veri
+alanı vardır. Ancak, küçük değerler için (32 bayttan daha küçük) dizi elemanları uzunluklarıyla birlikte aynı
+yuvada saklanır.</p>
+<p>Özellikle: veri en fazla <code class="docutils literal notranslate"><span class="pre">31</span></code> bayt uzunluğundaysa, elemanlar yüksek sıralı baytlarda (sola hizalı bir şekilde)
+saklanır ve en düşük sıralı baytta <code class="docutils literal notranslate"><span class="pre">uzunluk</span> <span class="pre">*</span> <span class="pre">2</span></code> değeri saklanır. <code class="docutils literal notranslate"><span class="pre">32</span></code> veya daha fazla bayt uzunluğundaki
+verileri saklayan bayt dizileri için, <code class="docutils literal notranslate"><span class="pre">p</span></code> ana yuvası <code class="docutils literal notranslate"><span class="pre">length</span> <span class="pre">*</span> <span class="pre">2</span> <span class="pre">+</span> <span class="pre">1</span></code> değerini saklar ve veriler her zamanki
+gibi <code class="docutils literal notranslate"><span class="pre">keccak256(p)</span></code> içinde saklanır. Bu, en düşük bit’in ayarlanıp ayarlanmadığını kontrol ederek kısa bir
+diziyi uzun bir diziden ayırt edebileceğiniz anlamına gelir: kısa (ayarlanmamış) ve uzun (ayarlanmış).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Geçersiz olarak şifrelenmiş yuvaların işlenmesi şu anda desteklenmemektedir ancak gelecekte bu özellik eklenebilir.
+IR aracılığıyla derleme yapıyorsanız, geçersiz olarak kodlanmış bir yuvayı okumak <code class="docutils literal notranslate"><span class="pre">Panic(0x22)</span></code> hatasıyla sonuçlanır.</p>
+</div>
+</section>
+</section>
+<section id="json-ciktisi">
+<h2>JSON Çıktısı<a class="headerlink" href="#json-ciktisi" title="Permalink to this heading"></a></h2>
+<p id="storage-layout-top-level">Bir sözleşmenin depolama düzeni <a class="reference internal" href="../using-the-compiler.html#compiler-api"><span class="std std-ref">standart JSON arayüzü</span></a> aracılığıyla talep edilebilir.
+Çıktı, <code class="docutils literal notranslate"><span class="pre">storage</span></code> ve <code class="docutils literal notranslate"><span class="pre">types</span></code> olmak üzere iki anahtar içeren bir JSON nesnesidir.  <code class="docutils literal notranslate"><span class="pre">storage</span></code> nesnesi,
+her bir elemanın aşağıdaki forma sahip olduğu bir dizidir:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=ewogICAgImFzdElkIjogMiwKICAgICJjb250cmFjdCI6ICJmaWxlQTpBIiwKICAgICJsYWJlbCI6ICJ4IiwKICAgICJvZmZzZXQiOiAwLAogICAgInNsb3QiOiAiMCIsCiAgICAidHlwZSI6ICJ0X3VpbnQyNTYiCn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-Solidity notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s">&quot;astId&quot;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s">&quot;contract&quot;</span><span class="o">:</span> <span class="s">&quot;fileA:A&quot;</span><span class="p">,</span>
+    <span class="s">&quot;label&quot;</span><span class="o">:</span> <span class="s">&quot;x&quot;</span><span class="p">,</span>
+    <span class="s">&quot;offset&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;slot&quot;</span><span class="o">:</span> <span class="s">&quot;0&quot;</span><span class="p">,</span>
+    <span class="s">&quot;type&quot;</span><span class="o">:</span> <span class="s">&quot;t_uint256&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Yukarıdaki örnek, <code class="docutils literal notranslate"><span class="pre">fileA</span></code> kaynak biriminden <code class="docutils literal notranslate"><span class="pre">contract</span> <span class="pre">A</span> <span class="pre">{</span> <span class="pre">uint</span> <span class="pre">x;</span> <span class="pre">}</span></code> depolama düzenidir ve</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">astId</span></code> durum değişkeninin bildiriminin AST node’unun id’sidir</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">contract</span></code>, ön ek olarak yolunu da içeren sözleşmenin adıdır</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">label</span></code> durum değişkeninin adıdır</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">offset</span></code> şifrelemeye göre depolama yuvası içindeki bayt cinsinden ofsettir</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">slot</span></code> durum değişkeninin bulunduğu veya başladığı depolama yuvasıdır. Bu sayı çok büyük olabilir ve bu nedenle JSON değeri bir dize olarak gösterilir.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code> değişkenin tip bilgisi için anahtar olarak kullanılan bir tanımlayıcıdır (aşağıda açıklanmıştır)</p></li>
+</ul>
+<p>Verilen <code class="docutils literal notranslate"><span class="pre">typep</span></code>, bu durumda <code class="docutils literal notranslate"><span class="pre">t_uint256</span></code>, <code class="docutils literal notranslate"><span class="pre">types</span></code> içinde şu forma sahip bir elemanı temsil eder:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=ewogICAgImVuY29kaW5nIjogImlucGxhY2UiLAogICAgImxhYmVsIjogInVpbnQyNTYiLAogICAgIm51bWJlck9mQnl0ZXMiOiAiMzIiLAp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-Solidity notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s">&quot;encoding&quot;</span><span class="o">:</span> <span class="s">&quot;inplace&quot;</span><span class="p">,</span>
+    <span class="s">&quot;label&quot;</span><span class="o">:</span> <span class="s">&quot;uint256&quot;</span><span class="p">,</span>
+    <span class="s">&quot;numberOfBytes&quot;</span><span class="o">:</span> <span class="s">&quot;32&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>nerede</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">encoding</span></code> verinin depolama alanında nasıl kodlandığı, olası değerler şunlardır:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">inplace</span></code>: veri depolama alanında bitişik olarak yerleştirilir (bkz <a class="reference internal" href="#storage-inplace-encoding"><span class="std std-ref">above</span></a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mapping</span></code>: Keccak-256 hash tabanlı yöntem (bkz <a class="reference internal" href="#storage-hashed-encoding"><span class="std std-ref">above</span></a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dynamic_array</span></code>: Keccak-256 hash tabanlı yöntem (bkz <a class="reference internal" href="#storage-hashed-encoding"><span class="std std-ref">above</span></a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes</span></code>: veri boyutuna bağlı olarak tek slot veya Keccak-256 hash tabanlı (bkz <a class="reference internal" href="#bytes-and-string"><span class="std std-ref">above</span></a>).</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">label</span></code> kanonik tip adıdır.</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">numberOfBytes</span></code> kullanılan bayt sayısıdır (ondalık bir dize olarak).</dt><dd><p>Eğer <code class="docutils literal notranslate"><span class="pre">numberOfBytes</span> <span class="pre">&gt;</span> <span class="pre">32</span></code> ise bunun birden fazla slot kullanıldığı anlamına geldiğini unutmayın.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Bazı türler yukarıdaki dört bilginin yanı sıra ekstra bilgilere de sahiptir.
+Mappingler <code class="docutils literal notranslate"><span class="pre">key</span></code> ve <code class="docutils literal notranslate"><span class="pre">value</span></code> türlerini içerir (yine bu tür mappingindeki
+bir girdiye referansta bulunur), diziler <code class="docutils literal notranslate"><span class="pre">base</span></code> türüne sahiptir ve structlar
+<code class="docutils literal notranslate"><span class="pre">members</span></code> türlerini üst düzey <code class="docutils literal notranslate"><span class="pre">storage</span></code> ile aynı formatta listeler (bkz <a class="reference internal" href="#storage-layout-top-level"><span class="std std-ref">above</span></a>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Bir sözleşmenin depolama düzeninin JSON çıktısı hala deneysel olarak kabul edilir
+ve Solidity’nin işleyişi bozmayan sürümlerinde değiştirilebilir.</p>
+</div>
+<p>Aşağıdaki örnekte, değer ve referans türleri, paketlenmiş olarak şifrelenmiş türler
+ve iç içe geçmiş türler içeren bir sözleşme ve depolama düzeni gösterilmektedir.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC40LjAgPDAuOS4wOwpjb250cmFjdCBBIHsKICAgIHN0cnVjdCBTIHsKICAgICAgICB1aW50MTI4IGE7CiAgICAgICAgdWludDEyOCBiOwogICAgICAgIHVpbnRbMl0gc3RhdGljQXJyYXk7CiAgICAgICAgdWludFtdIGR5bkFycmF5OwogICAgfQoKICAgIHVpbnQgeDsKICAgIHVpbnQgeTsKICAgIFMgczsKICAgIGFkZHJlc3MgYWRkcjsKICAgIG1hcHBpbmcgKHVpbnQgPT4gbWFwcGluZyAoYWRkcmVzcyA9PiBib29sKSkgbWFwOwogICAgdWludFtdIGFycmF5OwogICAgc3RyaW5nIHMxOwogICAgYnl0ZXMgYjE7Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.4.0</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+<span class="k">contract</span><span class="w"> </span><span class="ni">A</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">struct</span><span class="w"> </span><span class="nv">S</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">uint128</span><span class="w"> </span><span class="nv">a</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kt">uint128</span><span class="w"> </span><span class="nv">b</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kt">uint</span><span class="p">[</span><span class="m m-Decimal">2</span><span class="p">]</span><span class="w"> </span>staticArray<span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kt">uint</span><span class="p">[]</span><span class="w"> </span>dynArray<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">uint</span><span class="w"> </span><span class="nv">x</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint</span><span class="w"> </span><span class="nv">y</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span>S<span class="w"> </span>s<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">address</span><span class="w"> </span><span class="nv">addr</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">mapping</span><span class="w"> </span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="kt">mapping</span><span class="w"> </span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="kt">bool</span><span class="p">))</span><span class="w"> </span>map<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint</span><span class="p">[]</span><span class="w"> </span>array<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="nv">s1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">bytes</span><span class="w"> </span><span class="nv">b1</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;storage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;astId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;contract&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fileA:A&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;slot&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t_uint256&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;astId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">17</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;contract&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fileA:A&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;y&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;slot&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t_uint256&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;astId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;contract&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fileA:A&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;slot&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t_struct(S)13_storage&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;astId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;contract&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fileA:A&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;addr&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;slot&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;6&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t_address&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;astId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;contract&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fileA:A&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;map&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;slot&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;7&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t_mapping(t_uint256,t_mapping(t_address,t_bool))&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;astId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">31</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;contract&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fileA:A&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;slot&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;8&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t_array(t_uint256)dyn_storage&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;astId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">33</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;contract&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fileA:A&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;slot&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;9&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t_string_storage&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;astId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">35</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;contract&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fileA:A&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;b1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;slot&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;10&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t_bytes_storage&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">],</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;types&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;t_address&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;encoding&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;inplace&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;address&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;numberOfBytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;20&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;t_array(t_uint256)2_storage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;base&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t_uint256&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;encoding&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;inplace&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uint256[2]&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;numberOfBytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;64&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;t_array(t_uint256)dyn_storage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;base&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t_uint256&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;encoding&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dynamic_array&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uint256[]&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;numberOfBytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;32&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;t_bool&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;encoding&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;inplace&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bool&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;numberOfBytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;t_bytes_storage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;encoding&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bytes&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bytes&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;numberOfBytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;32&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;t_mapping(t_address,t_bool)&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;encoding&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mapping&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t_address&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mapping(address =&gt; bool)&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;numberOfBytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;32&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t_bool&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;t_mapping(t_uint256,t_mapping(t_address,t_bool))&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;encoding&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mapping&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t_uint256&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mapping(uint256 =&gt; mapping(address =&gt; bool))&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;numberOfBytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;32&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t_mapping(t_address,t_bool)&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;t_string_storage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;encoding&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bytes&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;numberOfBytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;32&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;t_struct(S)13_storage&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;encoding&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;inplace&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;struct A.S&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;members&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;astId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;contract&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fileA:A&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;slot&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t_uint128&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;astId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;contract&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fileA:A&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;slot&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t_uint128&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;astId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;contract&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fileA:A&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;staticArray&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;slot&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t_array(t_uint256)2_storage&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;astId&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;contract&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fileA:A&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dynArray&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;slot&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t_array(t_uint256)dyn_storage&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">],</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;numberOfBytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;128&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;t_uint128&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;encoding&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;inplace&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uint128&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;numberOfBytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;16&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;t_uint256&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;encoding&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;inplace&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uint256&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;numberOfBytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;32&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../ir-breaking-changes.html" class="btn btn-neutral float-left" title="Solidity IR-based Codegen Changes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="layout_in_memory.html" class="btn btn-neutral float-right" title="Bellekteki Düzen" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="../credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

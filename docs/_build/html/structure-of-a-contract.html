@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bir Sözleşmenin Yapısı &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Türler" href="types.html" />
+    <link rel="prev" title="Solidity Kaynak Dosyasının Düzeni" href="layout-of-source-files.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Bir Sözleşmenin Yapısı</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#durum-degiskenleri">Durum Değişkenleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fonksiyonlar">Fonksiyonlar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fonksiyon-degistiriciler-modifier-lar">Fonksiyon Değiştiriciler (Modifier’lar)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#olaylar-event">Olaylar (Event)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hatalar">Hatalar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yapi-struct-tipleri">Yapı (Struct) Tipleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enum-tipleri">Enum Tipleri</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Bir Sözleşmenin Yapısı</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/structure-of-a-contract.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bir-sozlesmenin-yapisi">
+<span id="contract-structure"></span><span id="index-0"></span><h1>Bir Sözleşmenin Yapısı<a class="headerlink" href="#bir-sozlesmenin-yapisi" title="Permalink to this heading"></a></h1>
+<p>Solidity’deki sözleşmeler, nesne yönelimli dillerdeki sınıflara benzer.
+Her kontrat içerisinde şu beyanları bulundurabilir: <a class="reference internal" href="#structure-state-variables"><span class="std std-ref">Durum Değişkenleri</span></a>, <a class="reference internal" href="#structure-functions"><span class="std std-ref">Fonksiyonlar</span></a>,
+<a class="reference internal" href="#structure-function-modifiers"><span class="std std-ref">Fonksiyon Değiştiriciler (Modifier’lar)</span></a>, <a class="reference internal" href="#structure-events"><span class="std std-ref">Olaylar (Event)</span></a>, <a class="reference internal" href="#structure-errors"><span class="std std-ref">Hatalar</span></a>, <a class="reference internal" href="#structure-struct-types"><span class="std std-ref">Yapı (Struct) Tipleri</span></a> ve <a class="reference internal" href="#structure-enum-types"><span class="std std-ref">Enum Tipleri</span></a>.
+Ayrıca, sözleşmeler bilgileri diğer sözleşmelerden kalıt alabilir.</p>
+<p>Aynı zamanda <a class="reference internal" href="contracts.html#libraries"><span class="std std-ref">libraries</span></a> ve <a class="reference internal" href="contracts.html#interfaces"><span class="std std-ref">interfaces</span></a> adı verilen özel sözleşme türleri de vardır.</p>
+<p><a class="reference internal" href="contracts.html#contracts"><span class="std std-ref">contracts</span></a> ile ilgili bölüm, bu bölümden daha fazla ayrıntı içerdiğinden
+hızlı bir bakış açısı elde etmek adına faydalıdır.</p>
+<section id="durum-degiskenleri">
+<span id="structure-state-variables"></span><h2>Durum Değişkenleri<a class="headerlink" href="#durum-degiskenleri" title="Permalink to this heading"></a></h2>
+<p>Durum değişkenleri, değerleri sözleşmenin deposunda kalıcı olarak saklanan değişkenlerdir.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC40LjAgPDAuOS4wOwoKY29udHJhY3QgU2ltcGxlU3RvcmFnZSB7CiAgICB1aW50IHN0b3JlZERhdGE7IC8vIER1cnVtIGRlxJ9pxZ9rZW5pCiAgICAvLyAuLi4KfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.4.0</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">SimpleStorage</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint</span><span class="w"> </span><span class="nv">storedData</span><span class="p">;</span><span class="w"> </span><span class="c1">// Durum değişkeni</span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Geçerli durum değişkeni tiplerini görmek için <a class="reference internal" href="types.html#types"><span class="std std-ref">Türler</span></a> bölümüne ve
+görünürlük hakkındaki olası seçenekler için <a class="reference internal" href="contracts.html#visibility-and-getters"><span class="std std-ref">Görünürlük ve Getter Fonksiyonlar</span></a> bölümüne bakabilirsiniz.</p>
+</section>
+<section id="fonksiyonlar">
+<span id="structure-functions"></span><h2>Fonksiyonlar<a class="headerlink" href="#fonksiyonlar" title="Permalink to this heading"></a></h2>
+<p>Fonksiyonlar, yürütülebilir kod birimleridir. Fonksiyonlar genellikle
+bir sözleşme içinde tanımlanabilecekleri gibi sözleşmelerin dışında da tanımlanabilirler.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC43LjEgPDAuOS4wOwoKY29udHJhY3QgU2ltcGxlQXVjdGlvbiB7CiAgICBmdW5jdGlvbiBiaWQoKSBwdWJsaWMgcGF5YWJsZSB7IC8vIEZvbmtzaXlvbgogICAgICAgIC8vIC4uLgogICAgfQp9CgovLyBIZWxwZXIgZm9ua3NpeW9udSBzw7Z6bGXFn21lbmluIGTEscWfxLFuZGEgdGFuxLFtbGFubcSxxZ90xLFyCmZ1bmN0aW9uIGhlbHBlcih1aW50IHgpIHB1cmUgcmV0dXJucyAodWludCkgewogICAgcmV0dXJuIHggKiAyOwp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.7.1</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">SimpleAuction</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">bid</span><span class="p">()</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="kt">payable</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Fonksiyon</span>
+<span class="w">        </span><span class="c1">// ...</span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// Helper fonksiyonu sözleşmenin dışında tanımlanmıştır</span>
+<span class="kt">function</span><span class="w"> </span><span class="nv">helper</span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">x</span><span class="p">)</span><span class="w"> </span>pure<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">uint</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">return</span><span class="w"> </span>x<span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m m-Decimal">2</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="control-structures.html#function-calls"><span class="std std-ref">Fonksiyon Çağrıları</span></a> dahili veya harici olarak gerçekleşebilir ve diğer sözleşmelere göre farklı <a class="reference internal" href="contracts.html#visibility-and-getters"><span class="std std-ref">visibility</span></a>
+seviyelerine sahiptir. <a class="reference internal" href="contracts.html#functions"><span class="std std-ref">Functions</span></a> parametre ve değişkenleri birbiri arasında geçirmek için
+<a class="reference internal" href="contracts.html#function-parameters-return-variables"><span class="std std-ref">parameters and return variables</span></a> kabul eder.</p>
+</section>
+<section id="fonksiyon-degistiriciler-modifier-lar">
+<span id="structure-function-modifiers"></span><h2>Fonksiyon Değiştiriciler (Modifier’lar)<a class="headerlink" href="#fonksiyon-degistiriciler-modifier-lar" title="Permalink to this heading"></a></h2>
+<p>Fonksiyon değiştiriciler fonksiyonların semantiğini bildirimsel bir şekilde değiştirmek için kullanılabilir.
+(sözleşmeler bölümündeki <a class="reference internal" href="contracts.html#modifiers"><span class="std std-ref">Fonksiyon Modifier’ları</span></a> kısmına bakın).</p>
+<p>Aşırı yükleme (Overloading), yani aynı değiştirici adını farklı parametrelerle kullanma durumu
+mümkün değildir.</p>
+<p>Fonksiyonlar gibi, değiştiriciler de <a class="reference internal" href="contracts.html#modifier-overriding"><span class="std std-ref">overridden</span></a> olabilir.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC40LjIyIDwwLjkuMDsKCmNvbnRyYWN0IFB1cmNoYXNlIHsKICAgIGFkZHJlc3MgcHVibGljIHNlbGxlcjsKCiAgICBtb2RpZmllciBvbmx5U2VsbGVyKCkgeyAvLyBEZcSfacWfdGlyaWNpCiAgICAgICAgcmVxdWlyZSgKICAgICAgICAgICAgbXNnLnNlbmRlciA9PSBzZWxsZXIsCiAgICAgICAgICAgICJPbmx5IHNlbGxlciBjYW4gY2FsbCB0aGlzLiIKICAgICAgICApOwogICAgICAgIF87CiAgICB9CgogICAgZnVuY3Rpb24gYWJvcnQoKSBwdWJsaWMgdmlldyBvbmx5U2VsbGVyIHsgLy8gRGXEn2nFn3RpcmljaSBrdWxsYW7EsW3EsQogICAgICAgIC8vIC4uLgogICAgfQp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.4.22</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">Purchase</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">address</span><span class="w"> </span><span class="k">public </span><span class="nv">seller</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">modifier</span><span class="w"> </span>onlySeller<span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Değiştirici</span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span><span class="w"></span>
+<span class="w">            </span><span class="k">msg.sender</span><span class="w"> </span><span class="o">==</span><span class="w"> </span>seller<span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Only seller can call this.&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span>_<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">abort</span><span class="p">()</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>view<span class="w"> </span>onlySeller<span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Değiştirici kullanımı</span>
+<span class="w">        </span><span class="c1">// ...</span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="olaylar-event">
+<span id="structure-events"></span><h2>Olaylar (Event)<a class="headerlink" href="#olaylar-event" title="Permalink to this heading"></a></h2>
+<p>Olaylar, EVM için yapılacak olan kayıt işlemlerine kolaylık sağlayan arayüzlerdir.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC40LjIxIDwwLjkuMDsKCmNvbnRyYWN0IFNpbXBsZUF1Y3Rpb24gewogICAgZXZlbnQgSGlnaGVzdEJpZEluY3JlYXNlZChhZGRyZXNzIGJpZGRlciwgdWludCBhbW91bnQpOyAvLyBPbGF5CgogICAgZnVuY3Rpb24gYmlkKCkgcHVibGljIHBheWFibGUgewogICAgICAgIC8vIC4uLgogICAgICAgIGVtaXQgSGlnaGVzdEJpZEluY3JlYXNlZChtc2cuc2VuZGVyLCBtc2cudmFsdWUpOyAvLyBUZXRpa2xleWljaSBvbGF5CiAgICB9Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.4.21</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">SimpleAuction</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">event</span><span class="w"> </span><span class="nv">HighestBidIncreased</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">bidder</span><span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">amount</span><span class="p">);</span><span class="w"> </span><span class="c1">// Olay</span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">bid</span><span class="p">()</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="kt">payable</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// ...</span>
+<span class="w">        </span>emit<span class="w"> </span>HighestBidIncreased<span class="p">(</span><span class="k">msg.sender</span><span class="p">,</span><span class="w"> </span><span class="k">msg.value</span><span class="p">);</span><span class="w"> </span><span class="c1">// Tetikleyici olay</span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Olayların nasıl bildirildiği ve bir dapp içinden nasıl kullanılabileceği hakkında bilgi almak için
+sözleşmeler bölümündeki <a class="reference internal" href="contracts.html#events"><span class="std std-ref">Eventler</span></a> e bakabilirsiniz.</p>
+</section>
+<section id="hatalar">
+<span id="structure-errors"></span><h2>Hatalar<a class="headerlink" href="#hatalar" title="Permalink to this heading"></a></h2>
+<p>Hatalar, kodunuzdaki hatalı durumlar için açıklayıcı adlar ve veriler tanımlamanıza olanak sunar.
+Hatalar <a class="reference internal" href="control-structures.html#revert-statement"><span class="std std-ref">revert statements</span></a> içerisinde kullanılabilir.
+String tanımlamaları ile karşılaştırıldığında, hatalar çok daha zahmetsizdir
+ve ek verileri kodlamanıza olanak tanır. Hatayı kullanıcıya
+açıklamak için NatSpec’i kullanabilirsiniz.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5IF4wLjguNDsKCi8vLyBUcmFuc2ZlciBpw6dpbiB5ZXRlcmxpIHBhcmEgeW9rLiBgcmVxdWVzdGVkYCBrYWRhciBtaWt0YXIgaXN0ZW5kaSwKLy8vIGFuY2FrIHNhZGVjZSBgYXZhaWxhYmxlYCBtaWt0YXJkYSB2YXIuCmVycm9yIE5vdEVub3VnaEZ1bmRzKHVpbnQgcmVxdWVzdGVkLCB1aW50IGF2YWlsYWJsZSk7Cgpjb250cmFjdCBUb2tlbiB7CiAgICBtYXBwaW5nKGFkZHJlc3MgPT4gdWludCkgYmFsYW5jZXM7CiAgICBmdW5jdGlvbiB0cmFuc2ZlcihhZGRyZXNzIHRvLCB1aW50IGFtb3VudCkgcHVibGljIHsKICAgICAgICB1aW50IGJhbGFuY2UgPSBiYWxhbmNlc1ttc2cuc2VuZGVyXTsKICAgICAgICBpZiAoYmFsYW5jZSA8IGFtb3VudCkKICAgICAgICAgICAgcmV2ZXJ0IE5vdEVub3VnaEZ1bmRzKGFtb3VudCwgYmFsYW5jZSk7CiAgICAgICAgYmFsYW5jZXNbbXNnLnNlbmRlcl0gLT0gYW1vdW50OwogICAgICAgIGJhbGFuY2VzW3RvXSArPSBhbW91bnQ7CiAgICAgICAgLy8gLi4uCiAgICB9Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">^</span><span class="k">0.8.4</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">/// Transfer için yeterli para yok. `requested` kadar miktar istendi,</span>
+<span class="c1">/// ancak sadece `available` miktarda var.</span>
+error<span class="w"> </span>NotEnoughFunds<span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">requested</span><span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">available</span><span class="p">);</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">Token</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">mapping</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="kt">uint</span><span class="p">)</span><span class="w"> </span>balances<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">transfer</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">to</span><span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">amount</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">uint</span><span class="w"> </span><span class="nv">balance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>balances<span class="p">[</span><span class="k">msg.sender</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span><span class="kt">if</span><span class="w"> </span><span class="p">(</span>balance<span class="w"> </span><span class="o">&lt;</span><span class="w"> </span>amount<span class="p">)</span><span class="w"></span>
+<span class="w">            </span>revert<span class="w"> </span>NotEnoughFunds<span class="p">(</span>amount<span class="p">,</span><span class="w"> </span>balance<span class="p">);</span><span class="w"></span>
+<span class="w">        </span>balances<span class="p">[</span><span class="k">msg.sender</span><span class="p">]</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span>amount<span class="p">;</span><span class="w"></span>
+<span class="w">        </span>balances<span class="p">[</span>to<span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span>amount<span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// ...</span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Daha fazla bilgi için sözleşmeler bölümündeki <a class="reference internal" href="contracts.html#errors"><span class="std std-ref">Hata ve Geri Alma Durumları</span></a> a bakın.</p>
+</section>
+<section id="yapi-struct-tipleri">
+<span id="structure-struct-types"></span><h2>Yapı (Struct) Tipleri<a class="headerlink" href="#yapi-struct-tipleri" title="Permalink to this heading"></a></h2>
+<p>Yapılar, birkaç değişkeni grup halinde bir arada bulunduran özel tanımlı türlerdir (tipler
+bölümündeki <a class="reference internal" href="types.html#structs"><span class="std std-ref">Yapılar</span></a> kısmına bakın).</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC40LjAgPDAuOS4wOwoKY29udHJhY3QgQmFsbG90IHsKICAgIHN0cnVjdCBWb3RlciB7IC8vIFlhcMSxCiAgICAgICAgdWludCB3ZWlnaHQ7CiAgICAgICAgYm9vbCB2b3RlZDsKICAgICAgICBhZGRyZXNzIGRlbGVnYXRlOwogICAgICAgIHVpbnQgdm90ZTsKICAgIH0KfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.4.0</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">Ballot</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">struct</span><span class="w"> </span><span class="nv">Voter</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Yapı</span>
+<span class="w">        </span><span class="kt">uint</span><span class="w"> </span><span class="nv">weight</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="nv">voted</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kt">address</span><span class="w"> </span><span class="nv">delegate</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kt">uint</span><span class="w"> </span><span class="nv">vote</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="enum-tipleri">
+<span id="structure-enum-types"></span><h2>Enum Tipleri<a class="headerlink" href="#enum-tipleri" title="Permalink to this heading"></a></h2>
+<p>Enum’lar ‘sabit değerlerden’ oluşan ve sınırlı sayıda setler halinde
+oluşturabileceğiniz özel tipler oluşturmanızı sağlar (tipler bölümündeki
+<a class="reference internal" href="types.html#enums"><span class="std std-ref">Numaralandırmalar (Enums)</span></a> kısmına bakın).</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC40LjAgPDAuOS4wOwoKY29udHJhY3QgUHVyY2hhc2UgewogICAgZW51bSBTdGF0ZSB7IENyZWF0ZWQsIExvY2tlZCwgSW5hY3RpdmUgfSAvLyBFbnVtCn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.4.0</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">Purchase</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">enum</span><span class="w"> </span><span class="nv">State</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>Created<span class="p">,</span><span class="w"> </span>Locked<span class="p">,</span><span class="w"> </span>Inactive<span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c1">// Enum</span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="layout-of-source-files.html" class="btn btn-neutral float-left" title="Solidity Kaynak Dosyasının Düzeni" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="types.html" class="btn btn-neutral float-right" title="Türler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

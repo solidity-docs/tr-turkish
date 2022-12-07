@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Akıllı Sözleşmelere Giriş &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Solidity Derleyicisini Yükleme" href="installing-solidity.html" />
+    <link rel="prev" title="Solidity" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Akıllı Sözleşmelere Giriş</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basit-bir-akilli-sozlesme">Basit Bir Akıllı Sözleşme</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#depolama">Depolama</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#alt-para-birimi-ornegi">Alt Para Birimi Örneği</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blok-zinciri-temelleri">Blok Zinciri Temelleri</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#islemler-transactions">İşlemler (Transactions)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bloklar">Bloklar</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ethereum-sanal-makinasi">Ethereum Sanal Makinası</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#genel-bakis">Genel Bakış</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hesaplar">Hesaplar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#islemler">İşlemler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gas">Gas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#depolama-bellek-ve-yigin">Depolama, Bellek ve Yığın</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#yonerge-seti">Yönerge Seti</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mesaj-cagirilari">Mesaj Çağırıları</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#delegatecall-cagri-kodu-ve-kutuphaneler">Delegatecall / Çağrı Kodu ve Kütüphaneler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kayitlar-logs">Kayıtlar (Logs)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#devre-disi-birakma-ve-kendini-imha">Devre Dışı Bırakma ve Kendini İmha</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#onceden-derlenmis-sozlesmeler-precompiled-contracts">Önceden Derlenmiş Sözleşmeler (Precompiled Contracts)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Akıllı Sözleşmelere Giriş</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/introduction-to-smart-contracts.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="akilli-sozlesmelere-giris">
+<h1>Akıllı Sözleşmelere Giriş<a class="headerlink" href="#akilli-sozlesmelere-giris" title="Permalink to this heading"></a></h1>
+<section id="basit-bir-akilli-sozlesme">
+<span id="simple-smart-contract"></span><h2>Basit Bir Akıllı Sözleşme<a class="headerlink" href="#basit-bir-akilli-sozlesme" title="Permalink to this heading"></a></h2>
+<p>Bir değişkenin değerini atayan ve bunu diğer sözleşmelerin erişimine sunan temel bir örnekle başlayalım.
+Şu an her şeyi anlamadıysanız sorun değil, birazdan daha fazla ayrıntıya gireceğiz.</p>
+<section id="depolama">
+<h3>Depolama<a class="headerlink" href="#depolama" title="Permalink to this heading"></a></h3>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC40LjE2IDwwLjkuMDsKCmNvbnRyYWN0IFNpbXBsZVN0b3JhZ2UgewogICAgdWludCBzdG9yZWREYXRhOwoKICAgIGZ1bmN0aW9uIHNldCh1aW50IHgpIHB1YmxpYyB7CiAgICAgICAgc3RvcmVkRGF0YSA9IHg7CiAgICB9CgogICAgZnVuY3Rpb24gZ2V0KCkgcHVibGljIHZpZXcgcmV0dXJucyAodWludCkgewogICAgICAgIHJldHVybiBzdG9yZWREYXRhOwogICAgfQp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.4.16</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">SimpleStorage</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint</span><span class="w"> </span><span class="nv">storedData</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">set</span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">x</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>storedData<span class="w"> </span><span class="o">=</span><span class="w"> </span>x<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">get</span><span class="p">()</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>view<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">uint</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">return</span><span class="w"> </span>storedData<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>İlk satır size kaynak kodunun GPL 3.0 sürümü altında lisanslanmış
+olduğunu söyler. Kaynak kodu yayınlamanın standart olduğu bir ortamda
+makine tarafından okunabilen lisans belirleyicileri önemlidir.</p>
+<p>Bir sonraki satır, kaynak kodun Solidity 0.4.16’dan başlayarak 0.9.0’a kadar (0.9.0 hariç) olan sürümler için yazıldığını belirtir.
+Bu, sözleşmenin farklı sonuçlar verebileceği yeni bir derleyici sürümü ile derlenemez olmasını sağlamak içindir.
+<a class="reference internal" href="layout-of-source-files.html#pragma"><span class="std std-ref">Pragmalar</span></a>, derleyiciler için kaynak kodun nasıl ele alınacağına ilişkin ortak talimatlardır
+(ör. <a class="reference external" href="https://en.wikipedia.org/wiki/Pragma_once">pragma once</a>).</p>
+<p>Solidity kapsamında olan bir sözleşme, Ethereum blok zinciri ağında belirli bir adreste bulunan kod (<em>fonksiyonlar</em>) ve veri (<em>durum</em>) bütünüdür.
+<code class="docutils literal notranslate"><span class="pre">uint</span> <span class="pre">storeData;</span></code> satırı, <code class="docutils literal notranslate"><span class="pre">uint</span></code> türünde (<em>256</em> bitlik bir <em>u</em>nsigned (pozitif) <em>int</em>eger ) <code class="docutils literal notranslate"><span class="pre">storedData</span></code> adlı bir
+durum değişkeni tanımlar . Bunu, veritabanını yöneten kodun fonksiyonlarını
+çağırarak sorgulayabileceğiniz ve değiştirebileceğiniz, veritabanındaki bir bilgi olarak düşünebilirsiniz.
+Ve bu örnektede, “set” ve “get” fonksiyonları değişkenin değerini değiştirmek veya çağırmak için tanımlanmıştır.</p>
+<p>Mevcut sözleşmenizde bulunan bir durum değişkenine erişmek için genellikle <code class="docutils literal notranslate"><span class="pre">this.</span></code> önekini eklemezsiniz, doğrudan adı üzerinden erişirsiniz.
+Diğer bazı dillerin aksine, bu öneki atlamak sadece kodun görünüşünü iyileştirmek için değildir. Bu düzenleme değişkene
+erişmek için de tamamen farklı sonuçlar doğurabilir, fakat bu konuya daha sonra detaylıca değineceğiz.</p>
+<p>Bu sözleşme, (Ethereum temel yapısı nedeniyle) herhangi birinin, tanımladığınız bu
+değişkenin (yayınlamanızı engelleyecek (uygulanabilir) bir yol olmadan) dünyadaki herkes
+tarafından erişilebilmesi için saklamaktan başka pek bir işe yaramıyor.
+Herhangi biri <code class="docutils literal notranslate"><span class="pre">set</span></code> fonksiyonunu farklı bir değer tanımlamak için tekrar çağırabilir
+ve değişkeninizin üzerine yazdırabilir, fakat bu değiştirilen değişkenin kayıtları blok zincirinin
+geçmişinde saklanmaya devam eder. İlerleyen zamanlarda, değişkeni yalnızca sizin değiştirebilmeniz
+için nasıl erişim kısıtlamalarını koyabileceğinizi göreceksiniz.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Unicode metni kullanırken dikkatli olunması gerekir, çünkü benzer görünümlü (hatta aynı)
+karakterler farklı kod işlevlerine sahip olabilir ve farklı bir bayt dizisi olarak kodlanabilirler.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Sözleşmenizin tüm tanımlayıcı değerleri (sözleşme isimleri, fonksiyon isimleri ve değişken
+isimleri) ASCII karakter seti ile sınırlıdır. UTF-8 ile kodlanmış verileri string değişkenlerinde
+saklamak mümkündür.</p>
+</div>
+</section>
+<section id="alt-para-birimi-ornegi">
+<span id="index-0"></span><h3>Alt Para Birimi Örneği<a class="headerlink" href="#alt-para-birimi-ornegi" title="Permalink to this heading"></a></h3>
+<p>Aşağıdaki sözleşme, bir kripto para biriminin en basit biçiminin bir örneğidir.
+Bu sözleşme, yalnızca sözleşme sahibinin (oluşturucusunun) yeni paralar oluşturmasına
+izin verir (farklı para oluşturma planları ayarlamak mümkündür).
+Herkes kullanıcı adı ve parolayla kayıt olmadan birbirine para gönderebilir.
+Tüm bunlar için tek ihtiyacınız olan şey sadece Ethereum anahtar çiftidir.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5IF4wLjguNDsKCmNvbnRyYWN0IENvaW4gewogICAgLy8gInB1YmxpYyIgYW5haHRhciBrZWxpbWVzaSwgZGXEn2nFn2tlbmxlcmkKICAgIC8vIGRpxJ9lciBzw7Z6bGXFn21lbGVyIHRhcmFmxLFuZGFuIGVyacWfaWxlYmlsaXIga8SxbGFyCiAgICBhZGRyZXNzIHB1YmxpYyBtaW50ZXI7CiAgICBtYXBwaW5nIChhZGRyZXNzID0+IHVpbnQpIHB1YmxpYyBiYWxhbmNlczsKCiAgICAvLyBFdmVudCdsZXIgaXN0ZW1jaWxlcmluIHPDtnpsZcWfbWUgw7x6ZXJpbmRlIHlhcHTEscSfxLFuxLF6CiAgICAvLyBkZcSfacWfaWtsaWtsZXJlIHRlcGtpIHZlcm1lbGVyaW5pIHNhxJ9sYXIKICAgIGV2ZW50IFNlbnQoYWRkcmVzcyBmcm9tLCBhZGRyZXNzIHRvLCB1aW50IGFtb3VudCk7CgogICAgLy8gQ29uc3RydWN0b3Iga29kdSBzYWRlY2Ugc8O2emxlxZ9tZQogICAgLy8gb2x1xZ90dXJ1bGR1xJ91bmRhIMOnYWzEscWfxLFyCiAgICBjb25zdHJ1Y3RvcigpIHsKICAgICAgICBtaW50ZXIgPSBtc2cuc2VuZGVyOwogICAgfQoKICAgIC8vIFllbmkgb2x1xZ90dXJ1bGFuIGJpciBtaWt0YXIgcGFyYXnEsSBhZHJlc2UgZ8O2bmRlcmlyCiAgICAvLyBZYWxuxLF6Y2Egc8O2emxlxZ9tZSB5YXJhdMSxY8Sxc8SxIHRhcmFmxLFuZGFuIMOnYcSfcsSxbGFiaWxpcgogICAgZnVuY3Rpb24gbWludChhZGRyZXNzIHJlY2VpdmVyLCB1aW50IGFtb3VudCkgcHVibGljIHsKICAgICAgICByZXF1aXJlKG1zZy5zZW5kZXIgPT0gbWludGVyKTsKICAgICAgICBiYWxhbmNlc1tyZWNlaXZlcl0gKz0gYW1vdW50OwogICAgfQoKICAgIC8vIEVycm9yJ2xlciBiaXIgacWfbGVtaW4gbmVkZW4gYmHFn2FyxLFzxLF6IG9sZHXEn3UgaGFra8SxbmRhCiAgICAvLyBiaWxnaSBhbG1hbsSxesSxIHNhxJ9sYXIuIEZvbmtzaXlvbnUgw6dhxJ/EsXJhbiBracWfaXllCiAgICAvLyBiaWxnaWxlbmRpcm1lIGFtYWPEsXlsYSBiaXIgc29udcOnIGTDtm5kw7xyw7xybGVyLgogICAgZXJyb3IgSW5zdWZmaWNpZW50QmFsYW5jZSh1aW50IHJlcXVlc3RlZCwgdWludCBhdmFpbGFibGUpOwoKICAgIC8vIEZvbmtzaXlvbnUgw6dhxJ/EsXJhbiBracWfaW5pbiB2YXIgb2xhbiBwYXJhbGFyxLFuZGFuCiAgICAvLyBhbMSxY8SxIGFkcmVzZSBwYXJhIGfDtm5kZXJpci4KICAgIGZ1bmN0aW9uIHNlbmQoYWRkcmVzcyByZWNlaXZlciwgdWludCBhbW91bnQpIHB1YmxpYyB7CiAgICAgICAgaWYgKGFtb3VudCA+IGJhbGFuY2VzW21zZy5zZW5kZXJdKQogICAgICAgICAgICByZXZlcnQgSW5zdWZmaWNpZW50QmFsYW5jZSh7CiAgICAgICAgICAgICAgICByZXF1ZXN0ZWQ6IGFtb3VudCwKICAgICAgICAgICAgICAgIGF2YWlsYWJsZTogYmFsYW5jZXNbbXNnLnNlbmRlcl0KICAgICAgICAgICAgfSk7CgogICAgICAgIGJhbGFuY2VzW21zZy5zZW5kZXJdIC09IGFtb3VudDsKICAgICAgICBiYWxhbmNlc1tyZWNlaXZlcl0gKz0gYW1vdW50OwogICAgICAgIGVtaXQgU2VudChtc2cuc2VuZGVyLCByZWNlaXZlciwgYW1vdW50KTsKICAgIH0KfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">^</span><span class="k">0.8.4</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">Coin</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// &quot;public&quot; anahtar kelimesi, değişkenleri</span>
+<span class="w">    </span><span class="c1">// diğer sözleşmeler tarafından erişilebilir kılar</span>
+<span class="w">    </span><span class="kt">address</span><span class="w"> </span><span class="k">public </span><span class="nv">minter</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">mapping</span><span class="w"> </span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="kt">uint</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>balances<span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Event&#39;ler istemcilerin sözleşme üzerinde yaptığınız</span>
+<span class="w">    </span><span class="c1">// değişikliklere tepki vermelerini sağlar</span>
+<span class="w">    </span><span class="kt">event</span><span class="w"> </span><span class="nv">Sent</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">from</span><span class="p">,</span><span class="w"> </span><span class="kt">address</span><span class="w"> </span><span class="nv">to</span><span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">amount</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Constructor kodu sadece sözleşme</span>
+<span class="w">    </span><span class="c1">// oluşturulduğunda çalışır</span>
+<span class="w">    </span><span class="kt">constructor</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>minter<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">msg.sender</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Yeni oluşturulan bir miktar parayı adrese gönderir</span>
+<span class="w">    </span><span class="c1">// Yalnızca sözleşme yaratıcısı tarafından çağrılabilir</span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">mint</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">receiver</span><span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">amount</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span><span class="k">msg.sender</span><span class="w"> </span><span class="o">==</span><span class="w"> </span>minter<span class="p">);</span><span class="w"></span>
+<span class="w">        </span>balances<span class="p">[</span>receiver<span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span>amount<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Error&#39;ler bir işlemin neden başarısız olduğu hakkında</span>
+<span class="w">    </span><span class="c1">// bilgi almanızı sağlar. Fonksiyonu çağıran kişiye</span>
+<span class="w">    </span><span class="c1">// bilgilendirme amacıyla bir sonuç döndürürler.</span>
+<span class="w">    </span>error<span class="w"> </span>InsufficientBalance<span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">requested</span><span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">available</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Fonksiyonu çağıran kişinin var olan paralarından</span>
+<span class="w">    </span><span class="c1">// alıcı adrese para gönderir.</span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">send</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">receiver</span><span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">amount</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">if</span><span class="w"> </span><span class="p">(</span>amount<span class="w"> </span><span class="o">&gt;</span><span class="w"> </span>balances<span class="p">[</span><span class="k">msg.sender</span><span class="p">])</span><span class="w"></span>
+<span class="w">            </span>revert<span class="w"> </span>InsufficientBalance<span class="p">({</span><span class="w"></span>
+<span class="w">                </span>requested<span class="p">:</span><span class="w"> </span>amount<span class="p">,</span><span class="w"></span>
+<span class="w">                </span>available<span class="p">:</span><span class="w"> </span>balances<span class="p">[</span><span class="k">msg.sender</span><span class="p">]</span><span class="w"></span>
+<span class="w">            </span><span class="p">});</span><span class="w"></span>
+
+<span class="w">        </span>balances<span class="p">[</span><span class="k">msg.sender</span><span class="p">]</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span>amount<span class="p">;</span><span class="w"></span>
+<span class="w">        </span>balances<span class="p">[</span>receiver<span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span>amount<span class="p">;</span><span class="w"></span>
+<span class="w">        </span>emit<span class="w"> </span>Sent<span class="p">(</span><span class="k">msg.sender</span><span class="p">,</span><span class="w"> </span>receiver<span class="p">,</span><span class="w"> </span>amount<span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Bu sözleşmede bazı yeni kavramlar tanıtılıyor, hadi hepsini teker teker inceleyelim.</p>
+<p><code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">public</span> <span class="pre">minter;</span></code> satırı <a class="reference internal" href="types.html#address"><span class="std std-ref">address</span></a> türündeki bir durum değişkenini tanımlıyor.
+<code class="docutils literal notranslate"><span class="pre">address</span></code> değişken türü, herhangi bir aritmetik işlemin uygulanmasına izin vermeyen 160 bitlik bir değerdir.
+Sözleşmelerin adreslerini veya <a class="reference internal" href="#accounts"><span class="std std-ref">harici hesaplar</span></a>’a ait bir anahtar çiftinin
+teki olan public key hash’ini saklamak için uygundur.</p>
+<p><code class="docutils literal notranslate"><span class="pre">public</span></code> anahtar sözcüğü otomatik olarak durum değişkeninin mevcut değerine sözleşme dışından da erişmenizi sağlayan
+bir fonksiyonu oluşturur. Bu anahtar kelime olmadan, diğer sözleşmelerin bu değişkene erişme yolu yoktur.
+Derleyici tarafından oluşturulan fonksiyonun kodu aşağıdakine eşdeğerdir
+(şimdilik <code class="docutils literal notranslate"><span class="pre">external</span></code> ve <code class="docutils literal notranslate"><span class="pre">view</span></code> i göz ardı edin):</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=ZnVuY3Rpb24gbWludGVyKCkgZXh0ZXJuYWwgdmlldyByZXR1cm5zIChhZGRyZXNzKSB7IHJldHVybiBtaW50ZXI7IH0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="kt">function</span><span class="w"> </span><span class="nv">minter</span><span class="p">()</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span>view<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">address</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kt">return</span><span class="w"> </span>minter<span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Yukarıdaki gibi bir fonksiyonu koda kendiniz de ekleyebilirsiniz, fakat aynı isimde olan bir fonksiyon ve
+durum değişkeniniz olur. Bunu yapmanıza gerek yoktur, bu işi derleyici sizin yerinize halleder.</p>
+<p id="index-1">Diğer satır olan <code class="docutils literal notranslate"><span class="pre">mapping</span> <span class="pre">(address</span> <span class="pre">=&gt;</span> <span class="pre">uint)</span> <span class="pre">public</span> <span class="pre">balances;</span></code> de bir public durum değişkeni oluşturuyor,
+fakat bu değişken biraz daha karmaşık bir veri yapısına sahip. Burada bulunan
+ref:<cite>mapping &lt;mapping-types&gt;</cite> türü adresleri <a class="reference internal" href="types.html#integers"><span class="std std-ref">unsigned integers</span></a> ile eşliyor.</p>
+<p>Mapping’ler, sanal bir şekilde tanımlanıp değer atanan <a class="reference external" href="https://en.wikipedia.org/wiki/Hash_table">hash tabloları</a>
+olarak görülebilir. Bu yapıda mümkün olan her anahtar değeri tanımlandığı andan itibaren bulunur ve bu anahtarların
+eşlendiği değer (byte gösterminde) sıfırdır.  Ancak, bir mapping’in ne tüm anahtarlarının ne de tüm değerlerinin bir listesini
+elde etmek mümkün değildir. Bunun için mapping’e eklediğiniz değerleri kaydedin veya buna gerek duyulmayacak
+bir durumda kullanın. Hatta daha da iyisi bir liste tutun ya da daha uygun bir veri türünü kullanmayı deneyin.</p>
+<p><code class="docutils literal notranslate"><span class="pre">public</span></code> anahtar kelimesi ile oluşturulmuş aşağıda bulunan <a class="reference internal" href="contracts.html#getter-functions"><span class="std std-ref">çağırıcı fonksiyon</span></a>, mapping örneğine
+göre biraz daha karmaşık bir yapıya sahiptir:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=ZnVuY3Rpb24gYmFsYW5jZXMoYWRkcmVzcyBfYWNjb3VudCkgZXh0ZXJuYWwgdmlldyByZXR1cm5zICh1aW50KSB7CiAgICByZXR1cm4gYmFsYW5jZXNbX2FjY291bnRdOwp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="kt">function</span><span class="w"> </span><span class="nv">balances</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">_account</span><span class="p">)</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span>view<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">uint</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">return</span><span class="w"> </span>balances<span class="p">[</span>_account<span class="p">];</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Bu fonksiyonu tek bir hesabın bakiyesini sorgulamak için kullanabilirsiniz.</p>
+<p id="index-2"><code class="docutils literal notranslate"><span class="pre">event</span> <span class="pre">Sent(address</span> <span class="pre">from,</span> <span class="pre">address</span> <span class="pre">to,</span> <span class="pre">uint</span> <span class="pre">amount);</span></code> satırı <code class="docutils literal notranslate"><span class="pre">send</span></code> fonksiyonunun son
+satırında yayılan (emit) bir <a class="reference internal" href="contracts.html#events"><span class="std std-ref">”olay (event)”</span></a> bildirir.
+Web uygulamaları gibi Ethereum istemcileri, blok zincirinde yayılan (emit) bu olaylardan (event) fazla maliyet olmadan veri alabilir.
+Event yayılır yayılmaz, veri alıcısı <code class="docutils literal notranslate"><span class="pre">from</span></code>, <code class="docutils literal notranslate"><span class="pre">to</span></code> ve <code class="docutils literal notranslate"><span class="pre">amount</span></code> argümanlarını alır,
+bu da alım satım işlemlerinin takip edilmesini mümkün kılar.</p>
+<p>Bu olayı(event) dinlemek amacıyla, <code class="docutils literal notranslate"><span class="pre">Coin</span></code> sözleşme nesnesini oluşturmak için <a class="reference external" href="https://github.com/ethereum/web3.js/">web3.js</a>
+kütüphanesini kullanan aşağıdaki JavaScript kodunu kullanabilirsiniz. Ve herhangi bir kullanıcı arayüzü (user interface),
+otomatik olarak oluşturulan <code class="docutils literal notranslate"><span class="pre">balances</span></code> fonksiyonunu yukarıdan sizin için çağırır:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Q29pbi5TZW50KCkud2F0Y2goe30sICcnLCBmdW5jdGlvbihlcnJvciwgcmVzdWx0KSB7CiAgICBpZiAoIWVycm9yKSB7CiAgICAgICAgY29uc29sZS5sb2coIkNvaW4gdHJhbnNmZXI6ICIgKyByZXN1bHQuYXJncy5hbW91bnQgKwogICAgICAgICAgICAiIGNvaW5zIHdlcmUgc2VudCBmcm9tICIgKyByZXN1bHQuYXJncy5mcm9tICsKICAgICAgICAgICAgIiB0byAiICsgcmVzdWx0LmFyZ3MudG8gKyAiLiIpOwogICAgICAgIGNvbnNvbGUubG9nKCJCYWxhbmNlcyBub3c6XG4iICsKICAgICAgICAgICAgIlNlbmRlcjogIiArIENvaW4uYmFsYW5jZXMuY2FsbChyZXN1bHQuYXJncy5mcm9tKSArCiAgICAgICAgICAgICJSZWNlaXZlcjogIiArIENvaW4uYmFsYW5jZXMuY2FsbChyZXN1bHQuYXJncy50bykpOwogICAgfQp9KQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-Solidity notranslate"><div class="highlight"><pre><span></span><span class="n">Coin</span><span class="p">.</span><span class="n">Sent</span><span class="p">().</span><span class="n">watch</span><span class="p">({},</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">console</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;Coin transfer: &quot;</span> <span class="o">+</span> <span class="n">result</span><span class="p">.</span><span class="n">args</span><span class="p">.</span><span class="n">amount</span> <span class="o">+</span>
+            <span class="s">&quot; coins were sent from &quot;</span> <span class="o">+</span> <span class="n">result</span><span class="p">.</span><span class="n">args</span><span class="p">.</span><span class="k">from</span> <span class="o">+</span>
+            <span class="s">&quot; to &quot;</span> <span class="o">+</span> <span class="n">result</span><span class="p">.</span><span class="n">args</span><span class="p">.</span><span class="n">to</span> <span class="o">+</span> <span class="s">&quot;.&quot;</span><span class="p">);</span>
+        <span class="n">console</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;Balances now:</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span>
+            <span class="s">&quot;Sender: &quot;</span> <span class="o">+</span> <span class="n">Coin</span><span class="p">.</span><span class="n">balances</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">args</span><span class="p">.</span><span class="k">from</span><span class="p">)</span> <span class="o">+</span>
+            <span class="s">&quot;Receiver: &quot;</span> <span class="o">+</span> <span class="n">Coin</span><span class="p">.</span><span class="n">balances</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">args</span><span class="p">.</span><span class="n">to</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p id="index-3"><a class="reference internal" href="contracts.html#constructor"><span class="std std-ref">constructor</span></a> fonksiyonu, sözleşmenin oluşturulması sırasında çalıştırılan
+ve daha sonra çağırılamayan özel bir fonksiyondur. Bu örnekte ise constructor fonksiyonu sözleşmeyi oluşturan kişinin adresini kalıcı olarak depoluyor.
+<code class="docutils literal notranslate"><span class="pre">msg</span></code> değişkeni (<code class="docutils literal notranslate"><span class="pre">tx</span></code> ve <code class="docutils literal notranslate"><span class="pre">block</span></code> ile birlikte), blok zincirine erişim izini veren özellikleri olan <span class="xref std std-ref">özel bir global değişken &lt;special-variables-functions&gt;`dir.
+``msg.sender`</span> her zaman varsayılan fonksiyonu (external) çağıran kişinin adresini döndürür.</p>
+<p>Sözleşmeyi oluşturan ve hem kullanıcıların hemde sözleşmelerin çağırabileceği fonksiyonlar <code class="docutils literal notranslate"><span class="pre">mint</span></code> ve <code class="docutils literal notranslate"><span class="pre">send</span></code> dir.</p>
+<p><code class="docutils literal notranslate"><span class="pre">mint</span></code> fonksiyonu yeni oluşturulan bir miktar parayı başka bir adrese gönderir. ref:<cite>require &lt;assert-and-require&gt;</cite>
+fonksiyon çağrısı, karşılanmadığı takdirde tüm değişiklikleri geri döndüren koşulları tanımlar.
+Bu örnekte, <code class="docutils literal notranslate"><span class="pre">require(msg.sender</span> <span class="pre">==</span> <span class="pre">minter);</span></code> yalnızca sözleşme yaratıcısının <code class="docutils literal notranslate"><span class="pre">mint</span></code> fonksiyonunu çağırabilmesini sağlar.
+Genel olarak, sözleşme yaratıcısı istediği kadar para basabilir, fakat belirili bir noktadan sonra bu durum “owerflow” adı verilen bir olaya yol açacaktır.
+Varsayılan <a class="reference internal" href="control-structures.html#unchecked"><span class="std std-ref">Checked arithmetic</span></a> nedeniyle, <code class="docutils literal notranslate"><span class="pre">balances[receiver]</span> <span class="pre">+=</span> <span class="pre">amount;</span></code> ifadesi
+taşarsa, yani  <code class="docutils literal notranslate"><span class="pre">balances[receiver]</span> <span class="pre">+</span> <span class="pre">amount</span></code> ifadesi <code class="docutils literal notranslate"><span class="pre">uint</span></code> maksimum değerinden (<code class="docutils literal notranslate"><span class="pre">2**256</span> <span class="pre">-</span> <span class="pre">1</span></code>)
+büyükse işlemin geri döndürüleceğini unutmayın. Bu, <code class="docutils literal notranslate"><span class="pre">send</span></code> fonksiyonundaki
+<code class="docutils literal notranslate"><span class="pre">balances[receiver]</span> <span class="pre">+=</span> <span class="pre">amount;</span></code> ifadesi için de geçerlidir.</p>
+<p><span class="xref std std-ref">Hatalar</span>, bir koşulun veya işlemin neden başarısız olduğu hakkında
+fonksiyonu çağıran kişiye daha fazla bilgi sağlamanıza olanak tanır. Hatalar
+<a class="reference internal" href="control-structures.html#revert-statement"><span class="std std-ref">revert ifadesi</span></a> ile birlikte kullanılır. <code class="docutils literal notranslate"><span class="pre">revert</span></code> ifadesi,
+<code class="docutils literal notranslate"><span class="pre">require</span></code> fonksiyonuna benzer bir şekilde tüm değişiklikleri koşulsuz olarak iptal eder
+ve geri alır, ancak aynı zamanda bir hatanın daha kolay hata ayıklanabilmesi veya tepki
+verilebilmesi için hatanın adını ve çağıran kişiye (ve nihayetinde ön uç uygulamaya veya
+blok gezginine) sağlanacak ek verileri sağlamanıza olanak tanır.</p>
+<p><code class="docutils literal notranslate"><span class="pre">send</span></code> fonksiyonu, herhangi biri tarafından (hali hazırda bir miktar paraya sahip olan)
+başka birine para göndermek için kullanılabilir. Gönderen kişinin göndermek için yeterli
+bakiyesi yoksa, <code class="docutils literal notranslate"><span class="pre">if</span></code> koşulu doğru (true) olarak değerlendirilir. Sonuç olarak <code class="docutils literal notranslate"><span class="pre">revert</span></code>
+fonksiyonu, <a href="#id1"><span class="problematic" id="id2">``</span></a>InsufficientBalance``(Yetersiz bakiye) hatasını kullanarak göndericiye hata
+ayrıntılarını sağlarken işlemin başarısız olmasına neden olacaktır.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Bu sözleşmeyi bir adrese para (coin) göndermek için kullanırsanız, bir blok zinciri
+gezgininde (explorer) o adrese baktığınızda hiçbir şey göremezsiniz, çünkü para (coin)
+gönderdiğiniz kayıt ve değişen bakiyeler yalnızca bu coin sözleşmesinin veri deposunda
+saklanır. Event’leri kullanarak, yeni coin’inizin işlemlerini ve bakiyelerini izleyen
+bir “blok zinciri gezgini (explorer)” oluşturabilirsiniz, ancak coin sahiplerinin adreslerini
+değil, coin’in sözleşme adresini incelemeniz gerekir.</p>
+</div>
+</section>
+</section>
+<section id="blok-zinciri-temelleri">
+<span id="blockchain-basics"></span><h2>Blok Zinciri Temelleri<a class="headerlink" href="#blok-zinciri-temelleri" title="Permalink to this heading"></a></h2>
+<p>Bir kavram olarak blok zincirleri anlamak programcılar için çok zor değildir. Bunun nedeni,
+komplikasyonların (madencilik (mining), <a class="reference external" href="https://en.wikipedia.org/wiki/Cryptographic_hash_function">hashing</a>,
+<a class="reference external" href="https://en.wikipedia.org/wiki/Elliptic_curve_cryptography">elliptic-curve cryptography</a>,
+<a class="reference external" href="https://en.wikipedia.org/wiki/Peer-to-peer">peer-to-peer networks</a>, etc.) çoğunun sadece platform
+için belirli bir dizi özellik ve vaat sağlamak için orada olmasıdır. Bu özellikleri olduğu gibi
+kabul ettiğinizde, altta yatan teknoloji hakkında endişelenmenize gerek kalmaz - yoksa  Amazon’un
+AWS’sini kullanmak için dahili olarak nasıl çalıştığını bilmek zorunda mısınız?</p>
+<section id="islemler-transactions">
+<span id="index-4"></span><h3>İşlemler (Transactions)<a class="headerlink" href="#islemler-transactions" title="Permalink to this heading"></a></h3>
+<p>Blok zinciri, küresel olarak paylaşılan, işlemsel bir veritabanıdır.
+Bu, herkesin yalnızca ağa katılarak veritabanındaki girdileri okuyabileceği anlamına gelir.
+Veritabanındaki bir şeyi değiştirmek istiyorsanız, diğerleri tarafından kabul edilmesi gereken bir “işlem” oluşturmanız gerekir.
+İşlem kelimesi, yapmak istediğiniz değişikliğin (aynı anda iki değeri değiştirmek istediğinizi
+varsayın) ya hiç yapılmadığını ya da tamamen uygulanmasını ifade eder. Ayrıca, işleminiz
+veritabanına uygulanırken başka hiçbir işlem onu değiştiremez.</p>
+<p>Örnek olarak, elektronik para birimindeki tüm hesapların bakiyelerini
+listeleyen bir tablo hayal düşünün. Bir hesaptan diğerine transfer talep edilirse,
+veri tabanının işlemsel yapısı, tutar bir hesaptan çıkarılırsa, her zaman diğer hesaba
+eklenmesini sağlar. Herhangi bir nedenden dolayı tutarın hedef hesaba eklenmesi mümkün değilse,
+kaynak hesaptaki bakiye de değiştirilmez.</p>
+<p>Ayrıca, bir işlem her zaman gönderen (yaratıcı) tarafından şifreli olarak imzalanır. Bu,
+veritabanındaki belirli değişikliklere erişimi korumayı kolaylaştırır. Kripto para birimi
+örneğinde, basit bir kontrol, yalnızca anahtarları hesaba katan bir kişinin hesaptan para
+aktarabilmesini sağlar.</p>
+</section>
+<section id="bloklar">
+<span id="index-5"></span><h3>Bloklar<a class="headerlink" href="#bloklar" title="Permalink to this heading"></a></h3>
+<p>Üstesinden gelinmesi gereken en büyük engellerden biri (Bitcoin açısından) “çifte harcama
+saldırısı” olarak adlandırılan bir olaydır: Ağda bir cüzdanı boşaltmak isteyen eşzamanlı iki
+işlem varsa ne olur? İşlemlerden sadece biri geçerli olabilir, tipik olarak önce kabul edilmiş
+olanı. Sorun, “ilk” in eşler arası ağda (peer-to-peer network) nesnel bir terim olmamasıdır.</p>
+<p>Özetle tüm bunları düşünmenize gerk yoktur. İşlemlerin global olarak kabul edilen bir sırası
+sizin için seçilecek ve çatışma çözülecektir. İşlemler “blok” adı verilen bir yapıda bir araya
+getirilecek ve daha sonra yürütülerek tüm katılımcı düğümler arasında dağıtılacaktır. Eğer iki
+işlem birbiriyle çelişirse, ikinci olan işlem reddedilecek ve bloğun bir parçası olmayacaktır.</p>
+<p>Bu bloklar zaman içinde doğrusal bir dizi oluşturur ve “blok zinciri” kelimesi de zaten buradan
+türemiştir. Bloklar zincire oldukça düzenli aralıklarla eklenir - Ethereum için bu süre kabaca
+her 17 saniye birdir.</p>
+<p>“Sıra seçim mekanizmasının” (“madencilik” olarak adlandırılır) bir parçası olarak zaman zaman
+bloklar geri alınabilir, ancak bu sadece zincirin en “ucunda” gerçekleşir. Belirli bir bloğun üzerine
+ne kadar çok blok eklenirse, bu bloğun geri döndürülme olasılığı o kadar azalır. Yani işlemleriniz
+geri alınabilir ve hatta blok zincirinden kaldırılabilir, ancak ne kadar uzun süre beklerseniz, bu
+olasılık o kadar azalacaktır.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>İşlemlerin bir sonraki bloğa veya gelecekteki herhangi bir bloğa dahil
+edileceği garanti edilmez, çünkü işlemin hangi bloğa dahil edileceğini belirlemek,
+işlemi gönderen kişiye değil madencilere bağlıdır.</p>
+<p>Sözleşmenizin gelecekteki çağrılarını planlamak istiyorsanız, bir akıllı sözleşme
+otomasyon aracı veya bir oracle hizmeti kullanabilirsiniz.</p>
+</div>
+<span class="target" id="the-ethereum-virtual-machine"></span></section>
+</section>
+<section id="ethereum-sanal-makinasi">
+<span id="index-6"></span><h2>Ethereum Sanal Makinası<a class="headerlink" href="#ethereum-sanal-makinasi" title="Permalink to this heading"></a></h2>
+<section id="genel-bakis">
+<h3>Genel Bakış<a class="headerlink" href="#genel-bakis" title="Permalink to this heading"></a></h3>
+<p>Ethereum Sanal Makinesi veya ESM, Ethereum’daki akıllı sözleşmeler
+için çalışma ortamıdır. Bu alan yalnızca korumalı bir alan değil, aynı
+zamanda tamamen yalıtılmış bir alandır; yani ESM içinde çalışan kodun ağa,
+dosya sistemine ya da diğer süreçlere erişimi yoktur. Akıllı sözleşmelerin
+diğer akıllı sözleşmelere erişimi bile sınırlıdır.</p>
+</section>
+<section id="hesaplar">
+<span id="accounts"></span><span id="index-7"></span><h3>Hesaplar<a class="headerlink" href="#hesaplar" title="Permalink to this heading"></a></h3>
+<p>Ethereum’da aynı adres alanını paylaşan iki tür hesap vardır:
+Public anahtar çiftleri (yani insanlar) tarafından kontrol edilen
+<strong>harici hesaplar</strong> ve hesapla birlikte depolanan kod tarafından kontrol
+edilen <strong>sözleşme hesapları</strong>.</p>
+<p>Harici bir hesabın adresi açık (public) anahtardan belirlenirken, bir sözleşmenin
+adresi sözleşmenin oluşturulduğu anda belirlenir (“nonce” olarak adlandırılan yaratıcı
+adres ve bu adresten gönderilen işlem sayısından türetilir).</p>
+<p>Hesabın kod depolayıp depolamadığına bakılmaksızın, iki tür ESM tarafından
+eşit olarak değerlendirilir.</p>
+<p>Her hesabın, 256-bit sözcükleri <strong>storage</strong> adı verilen 256-bit sözcüklere eşleyen
+kalıcı bir anahtar-değer deposu vardır.</p>
+<p>Ayrıca, her hesabın Ether cinsinden bir <strong>bakiyesi</strong> vardır (tam olarak “Wei”
+cinsinden, <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">ether</span></code> <code class="docutils literal notranslate"><span class="pre">10**18</span> <span class="pre">wei</span></code> dir) ve bu Ether içeren işlemler gönderilerek
+değiştirilebilir.</p>
+</section>
+<section id="islemler">
+<span id="index-8"></span><h3>İşlemler<a class="headerlink" href="#islemler" title="Permalink to this heading"></a></h3>
+<p>İşlem, bir hesaptan diğerine gönderilen bir mesajdır (aynı veya boş olabilir, aşağıya bakınız).
+İkili verileri (“yük” olarak adlandırılır) ve Ether içerebilir.</p>
+<p>Hedef hesap kod içeriyorsa, bu kod çalıştırılır ve sonucunda elde erilen veri yükü girdi olarak
+kabul edilir.</p>
+<p>Hedef hesap ayarlanmamışsa (işlemin alıcısı yoksa veya alıcı <code class="docutils literal notranslate"><span class="pre">null</span></code>
+olarak ayarlanmışsa), işlem <strong>yeni bir sözleşme</strong> oluşturur.
+Daha önce de belirtildiği gibi, bu sözleşmenin adresi sıfır adres değil,
+göndericiden ve gönderilen işlem sayısından (“nonce”) türetilen bir adrestir.
+Böyle bir sözleşme oluşturma işleminin yükü ESM bytecode’u olarak alınır ve çalıştırılır.
+Bu uygulamanın çıktı verileri kalıcı olarak sözleşmenin kodu olarak saklanır.
+Bu, bir sözleşme oluşturmak için sözleşmenin gerçek kodunu değil, aslında yürütüldüğünde
+bu kodu döndüren kodu gönderdiğiniz anlamına gelir.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Bir sözleşme oluşturulurken, kodu hala boştur.
+Bu nedenle, constructor fonksiyonu çalışmayı bitirene
+kadar yapım aşamasındaki sözleşmeyi geri çağırmamalısınız.</p>
+</div>
+</section>
+<section id="gas">
+<span id="index-9"></span><h3>Gas<a class="headerlink" href="#gas" title="Permalink to this heading"></a></h3>
+<p>Oluşturulduktan sonra, her işlem, işlemin kaynağı (<code class="docutils literal notranslate"><span class="pre">tx.origin</span></code>) tarafından
+ödenmesi gereken belirli bir <strong>gas</strong> miktarı ile ücretlendirilir.
+ESM işlemi gerçekleştirirken, gas belirli kurallara göre kademeli olarak tüketilir.
+Gas herhangi bir noktada tükenirse (yani negatif olursa), yürütmeyi sona erdiren ve
+mevcut çağrı çerçevesinde durumunda yapılan tüm değişiklikleri geri alan bir out-of-gas
+(gas bitti) istisnası tetiklenir.</p>
+<p>Bu mekanizma, ESM’in çalışma süresinin tasarruflu bir şekilde kullanılmasını teşvik eder
+ve aynı zamanda ESM yürütücülerinin (yani madencilerin / stakerların) çalışmalarını telafi eder.
+Her blok maksimum miktarda gaza sahip olduğundan, bir bloğu doğrulamak için gereken iş miktarını da sınırlanmış olur.</p>
+<p><strong>Gas ücreti</strong>, işlemin yaratıcısı tarafından yani gönderen hesabından <code class="docutils literal notranslate"><span class="pre">gaz_ücreti</span> <span class="pre">*</span> <span class="pre">gaz</span></code> miktarında ödemek zorunda olduğu bir değerdir.
+Uygulamadan sonra bir miktar gaz kalırsa, bu miktar işlemi çalıştıran kişiye iade edilir.
+Değişikliği geri döndüren bir istisna olması durumunda, kullanılmış gas’ın iadesi yapılmaz.</p>
+<p>ESM yürütücüleri bir işlemi ağa dahil edip etmemeyi seçebildiğinden, işlem gönderenler
+düşük bir gas fiyatı belirleyerek sistemi kötüye kullanamazlar.</p>
+</section>
+<section id="depolama-bellek-ve-yigin">
+<span id="index-10"></span><h3>Depolama, Bellek ve Yığın<a class="headerlink" href="#depolama-bellek-ve-yigin" title="Permalink to this heading"></a></h3>
+<p>Ethereum Sanal Makinesi’nin veri depolayabileceği üç alan vardır:
+storage (depolama), memory (bellek) ve stack (yığın).</p>
+<p>Her hesap, fonksiyon çağrıları ve işlemler arasında kalıcı olan <strong>storage</strong>
+adlı bir veri alanına sahiptir. Depolama, 256 bit kelimeleri 256 bit kelimelerle eşleyen bir anahtar/değer deposudur.
+Bir sözleşmenin içinden depolamayı belirtmek mümkün değildir, depolamayı okumak da maliyetlidir ancak depolamayı
+başlatmak ve değiştirmek daha da maliyetlidir. Bu maliyet nedeniyle, kalıcı depolama alanında depoladığınız verinin
+miktarını sözleşmenin çalışması için gereken en azami miktara indirmelisiniz.
+Ayrıca türetilmiş hesaplamalar, önbelleğe alma ve toplamalar gibi verileri sözleşmenin dışında depolamalısınız.
+Bir sözleşme, kendi depolama alanı dışında herhangi bir depolama alanını ne okuyabilir ne de bu alandaki verileri değiştirebilir.</p>
+<p>İkincisi ise, <strong>memory</strong> (bellek) olarak adlandırılan ve bir sözleşmenin her ileti çağrısı
+için yeniden oluşturulmuş bir örneğini alan bir veri alanıdır. Bellek doğrusaldır ve bayt
+düzeyinde adreslenebilir, ancak okumalar 256 bit genişlikle sınırlıyken, yazmalar 8 bit veya
+256 bit genişliğinde olabilir. Daha önceden dokunulmamış bir bellek kelimesine (yani bir kelime
+içindeki herhangi bir ofsete) erişirken (okurken veya yazarken) bellek bir kelime (256 bit)
+kadar genişletilir. Bu genişletilme sırasında gas maliyeti ödenmelidir. Bellek büyüdükçe
+daha maliyetli olmaya başlıyacaktır (söz konusu artış maliyetin karesi olarak artmaya devam
+edecektir).</p>
+<p>ESM, kayıt makinesi değil yığın makinesi olduğundan tüm hesaplamalar
+<strong>stack</strong> (yığın) adı verilen bir veri alanında gerçekleştirilir.
+Bu alan maksimum 1024 eleman boyutuna sahiptir ve 256 bitlik kelimeler içerir.
+Yığına erişim aşağıdaki şekilde üst uçla sınırlıdır: En üstteki 16 elemandan
+birini yığının en üstüne kopyalamak veya en üstteki elemanı altındaki 16 elemandan
+biriyle değiştirmek mümkündür. Diğer tüm işlemler yığından en üstteki iki
+(veya işleme bağlı olarak bir veya daha fazla) elemanı alır ve sonucu yığının üzerine iter.
+Elbette yığına daha derin erişim sağlamak için yığın elemanlarını depolama alanına veya
+belleğe taşımak mümkündür, ancak önce yığının üst kısmını çıkarmadan yığının daha derinlerindeki
+rastgele elemanlara erişmek mümkün değildir.</p>
+</section>
+<section id="yonerge-seti">
+<span id="index-11"></span><h3>Yönerge Seti<a class="headerlink" href="#yonerge-seti" title="Permalink to this heading"></a></h3>
+<p>ESM’nin komut seti, uzlaşma sorunlarına neden olabilecek yanlış veya tutarsız
+uygulamalardan kaçınmak için minimum düzeyde tutulmuştur. Tüm komutlar temel
+veri tipi olan 256 bitlik kelimeler veya bellek dilimleri (veya diğer bayt dizileri)
+üzerinde çalışır. Her zamanki aritmetik, bit, mantıksal ve karşılaştırma işlemleri mevcuttur.
+Koşullu ve koşulsuz atlamalar mümkündür. Ayrıca, sözleşmeler mevcut bloğun numarası ve zaman bilgisi gibi ilgili özelliklerine erişebilir.</p>
+<p>Tam bir liste için lütfen satır içi montaj belgelerinin bir parçası olarak <a class="reference internal" href="yul.html#opcodes"><span class="std std-ref">işlem kodu (opcode) listeleri</span></a> belgesine bakın.</p>
+</section>
+<section id="mesaj-cagirilari">
+<span id="index-12"></span><h3>Mesaj Çağırıları<a class="headerlink" href="#mesaj-cagirilari" title="Permalink to this heading"></a></h3>
+<p>Sözleşmeler, mesaj çağrıları aracılığıyla diğer sözleşmeleri çağırabilir
+veya sözleşme dışı hesaplara Ether gönderebilir. Mesaj çağrıları, bir kaynak,
+bir hedef, veri yükü, Ether, gas ve geri dönüş verilerine sahip olmaları bakımından
+işlemlere benzerler. Aslında, her işlem üst düzey bir mesaj çağrısından oluşur
+ve bu da başka mesaj çağrıları oluşturabilir.</p>
+<p>Bir sözleşme, kalan <strong>gas’ın</strong> ne kadarının iç mesaj çağrısı ile gönderilmesi
+gerektiğine ve ne kadarını tutmak istediğine karar verebilir.
+İç çağrıda yetersiz-gas dışında bir istisna meydana gelirse (veya başka bir istisna),
+bu durum yığına yerleştirilen bir hata değeri ile bildirilir. Bu durumda,
+sadece çağrı ile birlikte gönderilen gas miktarı kullanılır.
+Solidity dilinde, bu gibi istisnaların oluşması varsayılan olarak manuel
+başka zincirleme istisnalar da yaratmaya meyilli olduğundan totalde yığınını
+“kabarcıklandıran” durum olarak nitelendirilir.</p>
+<p>Daha önce de belirtildiği gibi, çağrılan sözleşme (arayan ile aynı olabilir)
+belleğin yeni temizlenmiş bir örneğini alır ve <strong>calldata</strong> adı verilen ayrı
+bir alanda sağlanacak olan çağrı yüküne (payload) erişebilir. Yürütmeyi tamamladıktan
+sonra, arayanın belleğinde arayan tarafından önceden ayrılmış bir konumda saklanacak
+olan verileri döndürebilir. Tüm bu çağrılar tamamen eşzamanlıdır.</p>
+<p>Çağrılar, 1024 bitlik alanla ile sınırlıdır; bu, daha karmaşık işlemler için
+tekrarlamalı çağrılar yerine döngüler tercih edileceği anlamına gelir. Ayrıca,
+bir mesaj çağrısında gazın sadece 63 / 64’ü iletilebilir; bu, pratikte 1000 bit’ten
+daha az bir alan sınırlamasına neden olur.</p>
+</section>
+<section id="delegatecall-cagri-kodu-ve-kutuphaneler">
+<span id="index-13"></span><h3>Delegatecall / Çağrı Kodu ve Kütüphaneler<a class="headerlink" href="#delegatecall-cagri-kodu-ve-kutuphaneler" title="Permalink to this heading"></a></h3>
+<p>Bir mesaj çağrısı ile temelde aynı anlama gelen <strong>delegatecall</strong>, hedef
+adresteki kodun arama sözleşmesi bağlamında (yani adresinde) yürütülmesi ve
+<code class="docutils literal notranslate"><span class="pre">msg.sender</span></code> ve <code class="docutils literal notranslate"><span class="pre">msg.value</span></code> değerlerinin değiştirilememesi gibi özellikleri
+ile mesaj çağrısının özel bir çeşidi olarak kabul edilir.</p>
+<p>Bu, bir sözleşmenin çalışma zamanında farklı bir adresten dinamik olarak
+kod yükleyebileceği anlamına gelir. Depolama, geçerli adres ve bakiye hala
+çağıran sözleşmeye atıfta bulunurken, yalnızca kod çağrılan adresten aktarılır.</p>
+<p>Karmaşık bir veri yapısını uygulamak için bir sözleşmenin depolama alanına
+uygulanabilen ve yeniden kullanılabilen bir kütüphane kodu örnek olarak verilebilir.</p>
+</section>
+<section id="kayitlar-logs">
+<span id="index-14"></span><h3>Kayıtlar (Logs)<a class="headerlink" href="#kayitlar-logs" title="Permalink to this heading"></a></h3>
+<p>Verileri, tamamen blok seviyesine kadar haritalayan özel olarak indekslenmiş bir veri
+yapısında depolamak mümkündür. <strong>Kayıtlar</strong> (log) olarak adlandırılan bu özellik, Solidity
+tarafından <a class="reference internal" href="contracts.html#events"><span class="std std-ref">event’lerin</span></a> uygulanmasını için kullanılır. Sözleşmeler, oluşturulduktan
+sonra kayıt verilerine erişemez, ancak bunlara blok zincirinin dışından etkin bir şekilde
+erişilebilir. Kayıt edilen verilerinin bir kısmı <a class="reference external" href="https://en.wikipedia.org/wiki/Bloom_filter">bloom filtrelerinde</a> depolandığından, bu verileri verimli ve
+kriptografik olarak güvenli bir şekilde aramak mümkündür,  böylece tüm zinciri indirmek zorunda
+kalmayan ağ elemanları(peer) (“hafif istemciler” olarak adlandırılır) yine de bu günlükleri
+bulabilir.</p>
+</section>
+<section id="create">
+<span id="index-15"></span><h3>Create<a class="headerlink" href="#create" title="Permalink to this heading"></a></h3>
+<p>Sözleşmeler, özel bir opcode kullanarak başka sözleşmeler bile oluşturabilir
+(bunu, hedef adresi boş bırakarak yaparlar). Bu arama çağrıları ve normal mesaj
+çağrıları arasındaki tek fark, açığa çıkan veri yükünün yürütülmesi ve sonucun kod
+olarak saklanarak arayan tarafın(yaratıcının) yığındaki yeni sözleşmenin adresini almasıdır.</p>
+</section>
+<section id="devre-disi-birakma-ve-kendini-imha">
+<span id="index-16"></span><h3>Devre Dışı Bırakma ve Kendini İmha<a class="headerlink" href="#devre-disi-birakma-ve-kendini-imha" title="Permalink to this heading"></a></h3>
+<p>Blok zincirinden bir kodu kaldırmanın tek yolu, söz konusu adresteki bir sözleşmenin
+selfdestruct işlemini gerçekleştirmesidir. Bu adreste depolanan kalan Ether belirlenen
+bir hedefe gönderilir ve ardından depolama ve kod durumdan kaldırılır. Teoride sözleşmeyi
+kaldırmak iyi bir fikir gibi görünse de, biri kaldırılan sözleşmelere Ether gönderirse,
+Ether sonsuza dek kaybolacağından potansiyel olarak tehlikelidir.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Bir sözleşme <code class="docutils literal notranslate"><span class="pre">selfdestruct</span></code> ile kaldırılsa bile, hala blok zinciri
+geçmişinin bir parçasıdır ve muhtemelen çoğu Ethereum node`u tarafından
+saklanmaktadır. Yani <code class="docutils literal notranslate"><span class="pre">selfdestruct</span></code> kullanmak sabit diskten veri silmekle
+aynı şey değildir.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Bir sözleşmenin kodu <code class="docutils literal notranslate"><span class="pre">selfdestruct</span></code> çağrısı içermese bile, <code class="docutils literal notranslate"><span class="pre">delegatecall</span></code>
+veya <code class="docutils literal notranslate"><span class="pre">callcode</span></code> kullanarak bu işlemi gerçekleştirebilir.</p>
+</div>
+<p>Sözleşmelerinizi devre dışı bırakmak istiyorsanız, bunun yerine tüm fonksiyonların
+geri alınmasına neden olan bazı iç durumları değiştirerek bunları devre dışı bırakmalısınız.
+Bu, Ether’i derhal iade ettiğinden sözleşmeyi kullanmayı imkansız kılar.</p>
+</section>
+<section id="onceden-derlenmis-sozlesmeler-precompiled-contracts">
+<span id="precompiledcontracts"></span><span id="index-17"></span><h3>Önceden Derlenmiş Sözleşmeler (Precompiled Contracts)<a class="headerlink" href="#onceden-derlenmis-sozlesmeler-precompiled-contracts" title="Permalink to this heading"></a></h3>
+<p>Özel olan bir dizi küçük sözleşme adresi vardır: <code class="docutils literal notranslate"><span class="pre">1</span></code> ile (<code class="docutils literal notranslate"><span class="pre">8</span></code> dahil)
+<code class="docutils literal notranslate"><span class="pre">8</span></code> arasındaki adres aralığı, diğer sözleşmeler gibi çağrılabilen “önceden
+derlenmiş sözleşmeler” içerir, ancak davranışları (ve gaz tüketimleri) bu adreste
+saklanan ESM kodu tarafından tanımlanmaz (kod içermezler), bunun yerine ESM kendi
+yürütme ortamında yürütülür.</p>
+<p>Farklı ESM uyumlu zincirler, önceden derlenmiş farklı bir sözleşme seti kullanabilir.
+Gelecekte Ethereum ana zincirine önceden derlenmiş yeni sözleşmelerin eklenmesi de
+mümkün olabilir, ancak mantıklı olarak bunların her zaman <code class="docutils literal notranslate"><span class="pre">1</span></code> ile <code class="docutils literal notranslate"><span class="pre">0xffff</span></code>
+(dahil) aralığında olmasını beklemelisiniz.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Solidity" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="installing-solidity.html" class="btn btn-neutral float-right" title="Solidity Derleyicisini Yükleme" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

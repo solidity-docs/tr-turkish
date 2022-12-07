@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NatSpec Formatı &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Güvenlikle İlgili Değerlendirmeler" href="security-considerations.html" />
+    <link rel="prev" title="Solidity v0.8.0 İşleyişi Bozan Değişiklikler" href="080-breaking-changes.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">NatSpec Formatı</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dokumantasyon-ornegi">Dokümantasyon Örneği</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tags">Tags</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dinamik-ifade-bicimleri">Dinamik İfade Biçimleri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kalitim-notlari">Kalıtım Notları</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dokumantasyon-ciktisi">Dokümantasyon Çıktısı</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#kullanici-dokumantasyonu">Kullanıcı Dokümantasyonu</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gelistirici-dokumantasyonu">Geliştirici Dokümantasyonu</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">NatSpec Formatı</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/natspec-format.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="natspec-formati">
+<span id="natspec"></span><h1>NatSpec Formatı<a class="headerlink" href="#natspec-formati" title="Permalink to this heading"></a></h1>
+<p>Solidity sözleşmeleri, fonksiyonlar, dönüş değişkenleri ve daha fazlası için zengin
+dokümantasyon sağlamak üzere özel bir yorum biçimi kullanabilir. Bu özel form Ethereum
+Doğal Dil Belirtim Formatı( Ethereum Natural Language Specification Format) (NatSpec) olarak adlandırılır.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>NatSpec, <a class="reference external" href="https://en.wikipedia.org/wiki/Doxygen">Doxygen</a>’den esinlenmiştir.
+Doxygen tarzı yorumlar ve etiketler kullansa da, Doxygen ile olan sıkı uyumluluğunu
+sürdürme niyeti yoktur. Lütfen aşağıda listelenen desteklenmiş etiketleri dikkatlice inceleyin.</p>
+<p>Bu dokümantasyon, geliştirici odaklı mesajlar ve son kullanıcıya yönelik mesajlar olarak
+bölümlere ayrılmıştır. Bu mesajlar son kullanıcıya (insan) sözleşme ile etkileşime gireceği
+(örneğin bir işlem imzalayacağı) zaman gösterilebilir.</p>
+<p>Solidity sözleşmelerinin tüm genel arayüzler (ABI’deki her şey) için NatSpec kullanılarak
+tamamen açıklanması önerilir.</p>
+<p>NatSpec, akıllı sözleşme yazarının kullanacağı ve Solidity derleyicisi tarafından anlaşılan
+yorumlar için biçimlendirme içerir. Ayrıca bu yorumları makine tarafından okunabilir bir
+biçime dönüştüren Solidity derleyicisinin çıktısı da aşağıda detaylı olarak açıklanmıştır.</p>
+<p>NatSpec, üçüncü taraf araçlar tarafından kullanılan ek açıklamaları da içerebilir. Bunlar
+büyük olasılıkla <code class="docutils literal notranslate"><span class="pre">&#64;custom:&lt;name&gt;</span></code> etiketi aracılığıyla gerçekleştirilir ve iyi bir kullanım
+örneği analiz ve doğrulama araçlarıdır.</p>
+</div>
+<section id="dokumantasyon-ornegi">
+<span id="header-doc-example"></span><h2>Dokümantasyon Örneği<a class="headerlink" href="#dokumantasyon-ornegi" title="Permalink to this heading"></a></h2>
+<p>Dokümantasyon, Doxygen notasyon formatı kullanılarak her <code class="docutils literal notranslate"><span class="pre">contract</span></code> , <code class="docutils literal notranslate"><span class="pre">interface</span></code> ,
+<code class="docutils literal notranslate"><span class="pre">library</span></code> , <code class="docutils literal notranslate"><span class="pre">function</span></code> ve <code class="docutils literal notranslate"><span class="pre">event</span></code> üzerine eklenir. Bir <code class="docutils literal notranslate"><span class="pre">public</span></code> durum değişkeni,
+NatSpec’in kullanım amaçları doğrultusunda bir <code class="docutils literal notranslate"><span class="pre">fonksiyon</span></code> a eşdeğerdir.</p>
+<ul class="simple">
+<li><p>Solidity için tek veya çok satırlı yorumlar için <code class="docutils literal notranslate"><span class="pre">//</span></code> veya <code class="docutils literal notranslate"><span class="pre">/**</span></code> ve <code class="docutils literal notranslate"><span class="pre">*/</span></code>
+ile sonlandırmayı tercih edebilirsiniz.</p></li>
+<li><p>Vyper için, iç içeriğe yalın yorumlarla girintili <code class="docutils literal notranslate"><span class="pre">&quot;&quot;&quot;</span></code> kullanın. Vyper
+belgelerine &lt;<a class="reference external" href="https://vyper.readthedocs.io/en/latest/natspec.html">https://vyper.readthedocs.io/en/latest/natspec.html</a>&gt;`__ bakınız.</p></li>
+</ul>
+<p>Aşağıdaki örnekte, mevcut tüm etiketler kullanılarak bir sözleşme ve bir fonksiyon gösterilmektedir.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Solidity derleyicisi, etiketleri yalnızca external veya public olmaları durumunda
+yorumlamaktadır. Internal ve private fonksiyonlarınız için benzer yorumlar
+kullanabilirsiniz, ancak bunlar çözümlenmeyecektir.</p>
+<p>Bu özellik belki gelecekte değişebilir.</p>
+</div>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC44LjIgPCAwLjkuMDsKCi8vLyBAdGl0bGUgQcSfYcOnbGFyIGnDp2luIGJpciBzaW3DvGxhdMO2cgovLy8gQGF1dGhvciBMYXJyeSBBLiBHYXJkbmVyCi8vLyBAbm90aWNlIEJ1IHPDtnpsZcWfbWV5aSB5YWxuxLF6Y2EgZW4gc2FkZSBzaW11bGFzeW9ubGFyIGnDp2luIGt1bGxhbmFiaWxpcnNpbml6Ci8vLyBAZGV2IFTDvG0gZm9ua3NpeW9uIMOnYcSfcsSxbGFyxLEgxZ91IGFuZGEgeWFuIGV0a2lsZXIgb2xtYWRhbiB1eWd1bGFubWFrdGFkxLFyCi8vLyBAY3VzdG9tOmV4cGVyaW1lbnRhbCBCdSBkZW5leXNlbCBiaXIgc8O2emxlxZ9tZWRpci4KY29udHJhY3QgVHJlZSB7CiAgICAvLy8gQG5vdGljZSBDYW5sxLEgYcSfYcOnbGFyIGnDp2luIGHEn2HDpyB5YcWfxLFuxLEgecSxbCBvbGFyYWsgaGVzYXBsYXnEsW4sIMO8c3Qgc2F5xLF5YSB5dXZhcmxhecSxbgogICAgLy8vIEBkZXYgQWxleGFuZHIgTi4gVGV0ZWFyaW5nIGFsZ29yaXRtYXPEsSBkb8SfcnVsdcSfdSBhcnTEsXJhYmlsaXIKICAgIC8vLyBAcGFyYW0gcmluZ3MgRGVuZHJva3Jvbm9sb2ppayDDtnJuZWt0ZW4gZWxkZSBlZGlsZW4gaGFsa2Egc2F5xLFzxLEKICAgIC8vLyBAcmV0dXJuIFnEsWwgY2luc2luZGVuIHlhxZ8sIGvEsXNtaSB5xLFsbGFyIGnDp2luIHl1dmFybGFuxLFyCiAgICBmdW5jdGlvbiBhZ2UodWludDI1NiByaW5ncykgZXh0ZXJuYWwgdmlydHVhbCBwdXJlIHJldHVybnMgKHVpbnQyNTYpIHsKICAgICAgICByZXR1cm4gcmluZ3MgKyAxOwogICAgfQoKICAgIC8vLyBAbm90aWNlIEHEn2FjxLFuIHNhaGlwIG9sZHXEn3UgeWFwcmFrIG1pa3RhcsSxbsSxIGTDtm5kw7xyw7xyLgogICAgLy8vIEBkZXYgWWFsbsSxemNhIHNhYml0IGJpciBzYXnEsSBkw7ZuZMO8csO8ci4KICAgIGZ1bmN0aW9uIGxlYXZlcygpIGV4dGVybmFsIHZpcnR1YWwgcHVyZSByZXR1cm5zKHVpbnQyNTYpIHsKICAgICAgICByZXR1cm4gMjsKICAgIH0KfQoKY29udHJhY3QgUGxhbnQgewogICAgZnVuY3Rpb24gbGVhdmVzKCkgZXh0ZXJuYWwgdmlydHVhbCBwdXJlIHJldHVybnModWludDI1NikgewogICAgICAgIHJldHVybiAzOwogICAgfQp9Cgpjb250cmFjdCBLdW1xdWF0VHJlZSBpcyBUcmVlLCBQbGFudCB7CiAgICBmdW5jdGlvbiBhZ2UodWludDI1NiByaW5ncykgZXh0ZXJuYWwgb3ZlcnJpZGUgcHVyZSByZXR1cm5zICh1aW50MjU2KSB7CiAgICAgICAgcmV0dXJuIHJpbmdzICsgMjsKICAgIH0KCiAgICAvLy8gQnUgc3Blc2lmaWsgYcSfYcOnIHTDvHLDvG7DvG4gc2FoaXAgb2xkdcSfdSB5YXByYWsgbWlrdGFyxLFuxLEgZMO2bmTDvHLDvHIKICAgIC8vLyBAaW5oZXJpdGRvYyBUcmVlCiAgICBmdW5jdGlvbiBsZWF2ZXMoKSBleHRlcm5hbCBvdmVycmlkZShUcmVlLCBQbGFudCkgcHVyZSByZXR1cm5zKHVpbnQyNTYpIHsKICAgICAgICByZXR1cm4gMzsKICAgIH0KfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-Solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// </span><span class="cs">SPDX-License-Identifier:</span><span class="c1"> GPL-3.0</span>
+<span class="k">pragma solidity</span> <span class="o">&gt;=</span><span class="mf">0.8</span><span class="p">.</span><span class="mi">2</span> <span class="o">&lt;</span> <span class="mf">0.9</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span>
+
+<span class="c1">/// </span><span class="cs">@title</span><span class="c1"> Ağaçlar için bir simülatör</span>
+<span class="c1">/// </span><span class="cs">@author</span><span class="c1"> Larry A. Gardner</span>
+<span class="c1">/// </span><span class="cs">@notice</span><span class="c1"> Bu sözleşmeyi yalnızca en sade simulasyonlar için kullanabilirsiniz</span>
+<span class="c1">/// </span><span class="cs">@dev</span><span class="c1"> Tüm fonksiyon çağrıları şu anda yan etkiler olmadan uygulanmaktadır</span>
+<span class="c1">/// </span><span class="cs">@custom:experimental</span><span class="c1"> Bu deneysel bir sözleşmedir.</span>
+<span class="kd">contract</span> <span class="n">Tree</span> <span class="p">{</span>
+    <span class="c1">/// </span><span class="cs">@notice</span><span class="c1"> Canlı ağaçlar için ağaç yaşını yıl olarak hesaplayın, üst sayıya yuvarlayın</span>
+    <span class="c1">/// </span><span class="cs">@dev</span><span class="c1"> Alexandr N. Tetearing algoritması doğruluğu artırabilir</span>
+    <span class="c1">/// </span><span class="cs">@param</span><span class="c1"> rings Dendrokronolojik örnekten elde edilen halka sayısı</span>
+    <span class="c1">/// </span><span class="cs">@return</span><span class="c1"> Yıl cinsinden yaş, kısmi yıllar için yuvarlanır</span>
+    <span class="kd">function</span> <span class="n">age</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">rings</span><span class="p">)</span> <span class="k">external</span> <span class="k">virtual</span> <span class="k">pure</span> <span class="k">returns</span> <span class="p">(</span><span class="kt">uint256</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">rings</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// </span><span class="cs">@notice</span><span class="c1"> Ağacın sahip olduğu yaprak miktarını döndürür.</span>
+    <span class="c1">/// </span><span class="cs">@dev</span><span class="c1"> Yalnızca sabit bir sayı döndürür.</span>
+    <span class="kd">function</span> <span class="n">leaves</span><span class="p">()</span> <span class="k">external</span> <span class="k">virtual</span> <span class="k">pure</span> <span class="k">returns</span><span class="p">(</span><span class="kt">uint256</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">contract</span> <span class="n">Plant</span> <span class="p">{</span>
+    <span class="kd">function</span> <span class="n">leaves</span><span class="p">()</span> <span class="k">external</span> <span class="k">virtual</span> <span class="k">pure</span> <span class="k">returns</span><span class="p">(</span><span class="kt">uint256</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">contract</span> <span class="n">KumquatTree</span> <span class="k">is</span> <span class="n">Tree</span><span class="p">,</span> <span class="n">Plant</span> <span class="p">{</span>
+    <span class="kd">function</span> <span class="n">age</span><span class="p">(</span><span class="kt">uint256</span> <span class="n">rings</span><span class="p">)</span> <span class="k">external</span> <span class="k">override</span> <span class="k">pure</span> <span class="k">returns</span> <span class="p">(</span><span class="kt">uint256</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">rings</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// Bu spesifik ağaç türünün sahip olduğu yaprak miktarını döndürür</span>
+    <span class="c1">/// </span><span class="cs">@inheritdoc</span><span class="c1"> Tree</span>
+    <span class="kd">function</span> <span class="n">leaves</span><span class="p">()</span> <span class="k">external</span> <span class="k">override</span><span class="p">(</span><span class="n">Tree</span><span class="p">,</span> <span class="n">Plant</span><span class="p">)</span> <span class="k">pure</span> <span class="k">returns</span><span class="p">(</span><span class="kt">uint256</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="tags">
+<span id="header-tags"></span><h2>Tags<a class="headerlink" href="#tags" title="Permalink to this heading"></a></h2>
+<p>Tüm etiketler opsiyoneldir. Aşağıdaki tabloda her bir NatSpec etiketinin amacı ve
+nerede kullanılabileceği açıklanmaktadır. Özel bir durum olarak, hiçbir etiket
+kullanılmazsa Solidity derleyicisi bir <code class="docutils literal notranslate"><span class="pre">///</span></code> veya <code class="docutils literal notranslate"><span class="pre">/**</span></code> yorumunu <code class="docutils literal notranslate"><span class="pre">&#64;notice</span></code>
+ile etiketlenmiş gibi yorumlayacaktır.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 51%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Etiket</p></th>
+<th class="head"></th>
+<th class="head"><p>Bağlam</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&#64;title</span></code></p></td>
+<td><p>Sözleşmeyi/arayüzü tanımlaması gereken bir başlık</p></td>
+<td><p>contract, library, interface</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&#64;author</span></code></p></td>
+<td><p>Yazarın adı</p></td>
+<td><p>contract, library, interface</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&#64;notice</span></code></p></td>
+<td><p>Son kullanıcıya bunun ne işe yaradığını açıklayın</p></td>
+<td><p>contract, library, interface, function, public state variable, event</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&#64;dev</span></code></p></td>
+<td><p>Bir geliştiriciye ekstra ayrıntıları açıklayın</p></td>
+<td><p>contract, library, interface, function, state variable, event</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&#64;param</span></code></p></td>
+<td><p>Tıpkı Doxygen’de olduğu gibi bir parametreyi belgeler
+(parametre adının ardından gelmelidir)</p></td>
+<td><p>function, event</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&#64;return</span></code></p></td>
+<td><p>Bir sözleşmenin fonksiyonunun dönüş değişkenlerini belgeler</p></td>
+<td><p>function, public state variable</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&#64;inheritdoc</span></code></p></td>
+<td><p>Temel fonksiyondaki tüm eksik etiketleri kopyalar (ardından sözleşme adı gelmelidir)</p></td>
+<td><p>function, public state variable</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&#64;custom:...</span></code></p></td>
+<td><p>Özel etiket, semantiği uygulama tanımlıdır</p></td>
+<td><p>everywhere</p></td>
+</tr>
+</tbody>
+</table>
+<p>Fonksiyonunuz <code class="docutils literal notranslate"><span class="pre">(int</span> <span class="pre">quotient,</span> <span class="pre">int</span> <span class="pre">remainder)</span></code> gibi birden fazla değer döndürüyorsa,
+<code class="docutils literal notranslate"><span class="pre">&#64;param</span></code> ifadeleriyle aynı formatta birden fazla <code class="docutils literal notranslate"><span class="pre">&#64;return</span></code> ifadesi kullanın.</p>
+<p>Özel etiketler <code class="docutils literal notranslate"><span class="pre">&#64;custom:</span></code> ile başlar ve ardından bir veya daha fazla küçük harf
+veya kısa çizgi gelmelidir. Ancak kısa çizgi ile başlayamaz. Her yerde kullanılabilirler
+ve geliştirici belgelerinin bir parçasıdırlar.</p>
+<section id="dinamik-ifade-bicimleri">
+<span id="header-dynamic"></span><h3>Dinamik İfade Biçimleri<a class="headerlink" href="#dinamik-ifade-bicimleri" title="Permalink to this heading"></a></h3>
+<p>Solidity derleyicisi, NatSpec belgelerini Solidity kaynak kodunuzdan bu kılavuzda
+açıklandığı gibi JSON çıktısına aktaracaktır. Bu JSON çıktısının kullanıcısı, örneğin
+son kullanıcı istemci yazılımı, bunu son kullanıcıya doğrudan sunabilir veya bazı ön
+işlemler uygulayabilir.</p>
+<p>Örneğin, bazı istemci yazılımları render edecektir:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8vIEBub3RpY2UgVGhpcyBmdW5jdGlvbiB3aWxsIG11bHRpcGx5IGBhYCBieSA3"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-Solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">/// </span><span class="cs">@notice</span><span class="c1"> This function will multiply `a` by 7</span>
+</pre></div>
+</div>
+<p>son kullanıcıya:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>This function will multiply 10 by 7
+</pre></div>
+</div>
+<p>eğer bir fonksiyon çağrılıyorsa ve <code class="docutils literal notranslate"><span class="pre">a</span></code> girdisine 10 değeri atanmışsa.</p>
+<p>Bu dinamik ifadelerin belirtilmesi Solidity dokümantasyonunun kapsamı dışındadır
+ve bu konuda daha fazla bilgiyi <a class="reference external" href="https://github.com/aragon/radspec">the radspec project</a>
+adresinden edinebilirsiniz.</p>
+</section>
+<section id="kalitim-notlari">
+<span id="header-inheritance"></span><h3>Kalıtım Notları<a class="headerlink" href="#kalitim-notlari" title="Permalink to this heading"></a></h3>
+<p>NatSpec içermeyen fonksiyonlar otomatik olarak temel fonksiyonlarının dokümantasyonunu
+devralacaktır. Bununla ilgili istisnalar şunlardır:</p>
+<ul class="simple">
+<li><p>Parametre adları farklı olduğunda.</p></li>
+<li><p>Birden fazla temel fonksiyon olduğunda.</p></li>
+<li><p>Kalıtım için hangi sözleşmenin kullanılması gerektiğini belirten açık bir <code class="docutils literal notranslate"><span class="pre">&#64;inheritdoc</span></code> etiketi olduğunda.</p></li>
+</ul>
+</section>
+</section>
+<section id="dokumantasyon-ciktisi">
+<span id="header-output"></span><h2>Dokümantasyon Çıktısı<a class="headerlink" href="#dokumantasyon-ciktisi" title="Permalink to this heading"></a></h2>
+<p>Derleyici tarafından çözümlendiğinde, yukarıdaki örnekteki gibi belgeler iki farklı
+JSON dosyası üretecektir. Biri son kullanıcı tarafından bir fonksiyon çalıştırıldığında
+bildirim olarak tüketilmek üzere, diğeri ise geliştirici tarafından kullanılmak üzere
+tasarlanmıştır.</p>
+<p>Yukarıdaki sözleşme <code class="docutils literal notranslate"><span class="pre">ex1.sol</span></code> olarak kaydedilirse,
+belgeleri kullanarak oluşturabilirsiniz:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=c29sYyAtLXVzZXJkb2MgLS1kZXZkb2MgZXgxLnNvbA=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-Solidity notranslate"><div class="highlight"><pre><span></span><span class="n">solc</span> <span class="o">--</span><span class="n">userdoc</span> <span class="o">--</span><span class="n">devdoc</span> <span class="n">ex1</span><span class="p">.</span><span class="n">sol</span>
+</pre></div>
+</div>
+<p>Çıktı aşağıda verilmiştir.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Solidity 0.6.11 sürümünden itibaren NatSpec çıktısı ayrıca bir <code class="docutils literal notranslate"><span class="pre">version</span></code> ve
+bir <code class="docutils literal notranslate"><span class="pre">kind</span></code> alanı içerir. Şu anda <code class="docutils literal notranslate"><span class="pre">version</span></code> <code class="docutils literal notranslate"><span class="pre">1</span></code> olarak ayarlanmıştır ve
+<code class="docutils literal notranslate"><span class="pre">kind</span></code> <code class="docutils literal notranslate"><span class="pre">user</span></code> veya <code class="docutils literal notranslate"><span class="pre">dev</span></code> alanlarından biri olmalıdır. Gelecekte, eski
+sürümleri kullanımdan kaldırarak yeni sürümlerin tanıtılması mümkündür.</p>
+</div>
+<section id="kullanici-dokumantasyonu">
+<span id="header-user-doc"></span><h3>Kullanıcı Dokümantasyonu<a class="headerlink" href="#kullanici-dokumantasyonu" title="Permalink to this heading"></a></h3>
+<p>Yukarıdaki dokümantasyon çıktı olarak aşağıdaki kullanıcı dokümantasyonu JSON dosyasını üretecektir:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=ewogICJ2ZXJzaW9uIiA6IDEsCiAgImtpbmQiIDogInVzZXIiLAogICJtZXRob2RzIiA6CiAgewogICAgImFnZSh1aW50MjU2KSIgOgogICAgewogICAgICAibm90aWNlIiA6ICJDYWxjdWxhdGUgdHJlZSBhZ2UgaW4geWVhcnMsIHJvdW5kZWQgdXAsIGZvciBsaXZlIHRyZWVzIgogICAgfQogIH0sCiAgIm5vdGljZSIgOiAiWW91IGNhbiB1c2UgdGhpcyBjb250cmFjdCBmb3Igb25seSB0aGUgbW9zdCBiYXNpYyBzaW11bGF0aW9uIgp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-Solidity notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s">&quot;version&quot;</span> <span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">&quot;kind&quot;</span> <span class="o">:</span> <span class="s">&quot;user&quot;</span><span class="p">,</span>
+  <span class="s">&quot;methods&quot;</span> <span class="o">:</span>
+  <span class="p">{</span>
+    <span class="s">&quot;age(uint256)&quot;</span> <span class="o">:</span>
+    <span class="p">{</span>
+      <span class="s">&quot;notice&quot;</span> <span class="o">:</span> <span class="s">&quot;Calculate tree age in years, rounded up, for live trees&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s">&quot;notice&quot;</span> <span class="o">:</span> <span class="s">&quot;You can use this contract for only the most basic simulation&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Metodları bulmak için anahtarın sadece fonksiyonun adı değil, <a class="reference internal" href="abi-spec.html#abi-function-selector"><span class="std std-ref">Contract ABI</span></a> da tanımlandığı gibi fonksiyonun kanonik imzası olduğunu
+unutmayın.</p>
+</section>
+<section id="gelistirici-dokumantasyonu">
+<span id="header-developer-doc"></span><h3>Geliştirici Dokümantasyonu<a class="headerlink" href="#gelistirici-dokumantasyonu" title="Permalink to this heading"></a></h3>
+<p>Kullanıcı dokümantasyon dosyasının yanı sıra, bir geliştirici dokümantasyon JSON
+dosyası da üretilmeli ve aşağıdaki gibi görünmelidir:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=ewogICJ2ZXJzaW9uIiA6IDEsCiAgImtpbmQiIDogImRldiIsCiAgImF1dGhvciIgOiAiTGFycnkgQS4gR2FyZG5lciIsCiAgImRldGFpbHMiIDogIkFsbCBmdW5jdGlvbiBjYWxscyBhcmUgY3VycmVudGx5IGltcGxlbWVudGVkIHdpdGhvdXQgc2lkZSBlZmZlY3RzIiwKICAiY3VzdG9tOmV4cGVyaW1lbnRhbCIgOiAiVGhpcyBpcyBhbiBleHBlcmltZW50YWwgY29udHJhY3QuIiwKICAibWV0aG9kcyIgOgogIHsKICAgICJhZ2UodWludDI1NikiIDoKICAgIHsKICAgICAgImRldGFpbHMiIDogIlRoZSBBbGV4YW5kciBOLiBUZXRlYXJpbmcgYWxnb3JpdGhtIGNvdWxkIGluY3JlYXNlIHByZWNpc2lvbiIsCiAgICAgICJwYXJhbXMiIDoKICAgICAgewogICAgICAgICJyaW5ncyIgOiAiVGhlIG51bWJlciBvZiByaW5ncyBmcm9tIGRlbmRyb2Nocm9ub2xvZ2ljYWwgc2FtcGxlIgogICAgICB9LAogICAgICAicmV0dXJuIiA6ICJhZ2UgaW4geWVhcnMsIHJvdW5kZWQgdXAgZm9yIHBhcnRpYWwgeWVhcnMiCiAgICB9CiAgfSwKICAidGl0bGUiIDogIkEgc2ltdWxhdG9yIGZvciB0cmVlcyIKfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-Solidity notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s">&quot;version&quot;</span> <span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s">&quot;kind&quot;</span> <span class="o">:</span> <span class="s">&quot;dev&quot;</span><span class="p">,</span>
+  <span class="s">&quot;author&quot;</span> <span class="o">:</span> <span class="s">&quot;Larry A. Gardner&quot;</span><span class="p">,</span>
+  <span class="s">&quot;details&quot;</span> <span class="o">:</span> <span class="s">&quot;All function calls are currently implemented without side effects&quot;</span><span class="p">,</span>
+  <span class="s">&quot;custom:experimental&quot;</span> <span class="o">:</span> <span class="s">&quot;This is an experimental contract.&quot;</span><span class="p">,</span>
+  <span class="s">&quot;methods&quot;</span> <span class="o">:</span>
+  <span class="p">{</span>
+    <span class="s">&quot;age(uint256)&quot;</span> <span class="o">:</span>
+    <span class="p">{</span>
+      <span class="s">&quot;details&quot;</span> <span class="o">:</span> <span class="s">&quot;The Alexandr N. Tetearing algorithm could increase precision&quot;</span><span class="p">,</span>
+      <span class="s">&quot;params&quot;</span> <span class="o">:</span>
+      <span class="p">{</span>
+        <span class="s">&quot;rings&quot;</span> <span class="o">:</span> <span class="s">&quot;The number of rings from dendrochronological sample&quot;</span>
+      <span class="p">},</span>
+      <span class="s">&quot;return&quot;</span> <span class="o">:</span> <span class="s">&quot;age in years, rounded up for partial years&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s">&quot;title&quot;</span> <span class="o">:</span> <span class="s">&quot;A simulator for trees&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="080-breaking-changes.html" class="btn btn-neutral float-left" title="Solidity v0.8.0 İşleyişi Bozan Değişiklikler" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="security-considerations.html" class="btn btn-neutral float-right" title="Güvenlikle İlgili Değerlendirmeler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

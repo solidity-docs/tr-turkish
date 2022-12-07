@@ -20,8 +20,8 @@ Bu, işlemlerin her zaman işlenenlerden birinin türünde gerçekleştirildiği
 Hangi örtük dönüşümlerin mümkün olduğu hakkında daha fazla ayrıntı için, lütfen türlerle ilgili bölümlere bakın.
 
 Aşağıdaki örnekte, toplamanın işlenenleri olarak ``y`` ve ``z``, aynı türe sahip değildir, fakat ``uint8`` örtük olarak
- ``uint16`` türüne dönüştürülebilirken bunun tersi mümkün değildir. Bu sebeple, ``uint16`` türünde bir dönüştürme yapılmadan önce 
-``y`` türü, ``z`` türüne dönüştürülür.  ``y + z`` ifadesinden elde edilen tür, ``uint16``dır.
+``uint16`` türüne dönüştürülebilirken bunun tersi mümkün değildir. Bu sebeple, ``uint16`` türünde bir dönüştürme yapılmadan önce 
+``y`` türü, ``z`` türüne dönüştürülür.  ``y + z`` ifadesinden elde edilen tür, ``uint16`` dır.
 Toplama işleminin sonucu ``uint32`` türünde bir değişkene atandığı için, toplama işleminden sonra yeniden örtük dönüştürme gerçekleşir.
 
 .. code-block:: solidity
@@ -110,10 +110,10 @@ Dizinin hedef sabit bayt türünden daha uzun olması durumunda, sonunda kesme g
 .. _types-conversion-literals:
 
 İfadeler (Literals) ve Temel Türler Arasındaki Dönüşümler
-=================================================
+==========================================================
 
 Tamsayı Türleri
--------------
+--------------------
 
 Ondalık ve onaltılık sayı ifadeleri, onu kesmeden temsil edecek kadar büyük herhangi bir tamsayı türüne örtük olarak dönüştürülebilir:
 
@@ -123,11 +123,11 @@ Ondalık ve onaltılık sayı ifadeleri, onu kesmeden temsil edecek kadar büyü
     uint32 b = 1234; // uygun
     uint16 c = 0x123456; // hatalı, çünkü 0x3456 olacak şekilde kesilmek zorundadır
 
-.. not::
+.. note::
     0.8.0 sürümünden önce, herhangi bir ondalık veya onaltılık sayı ifadeleri bir tamsayı türüne açıkça dönüştürülebilirdi. 0.8.0'dan itibaren, bu tür açık dönüştürmeler, örtülü dönüştürmeler kadar katıdır, yani, yalnızca ifade elde edilen aralığa uyuyorsa bunlara izin verilir.  
 
 Sabit Boyutlu Bayt Dizileri
-----------------------
+---------------------------------
 
 Ondalık sayı ifadeleri örtük olarak sabit boyutlu bayt dizilerine dönüştürülemez. Onaltılık sayı ifadeleri olabilir, ancak yalnızca onaltılık basamak sayısı bayt türünün boyutuna tam olarak uyuyorsa. Bir istisna olarak, sıfır değerine sahip hem ondalık hem de onaltılık ifadeler herhangi bir sabit boyutlu bayt türüne dönüştürülebilir:
 
@@ -155,7 +155,7 @@ String ifadeleri ve onaltılı string ifadeleri, karakter sayıları bayt türü
 Adresler
 ---------
 
- :ref:`adres_ifadeleri <_address_literals:>` bölümünde açıklandığı gibi, sağlama toplamı (checksum) testini geçen doğru boyuttaki onaltılık ifadeler ``address`` türündedir. Başka hiçbir ifade ``address`` türüne örtük olarak dönüştürülemez.
+ :ref:`address_literals` bölümünde açıklandığı gibi, sağlama toplamı (checksum) testini geçen doğru boyuttaki onaltılık ifadeler ``address`` türündedir. Başka hiçbir ifade ``address`` türüne örtük olarak dönüştürülemez.
 
 ``bytes20`` değişkeninden ya da herhangi bir tam sayı türünden ``adress`` değişkenine yapılacak açık dönüştürmeler, ``address payable`` ile sonuçlanır.
 

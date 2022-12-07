@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kaynaklar &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Import Path Resolution" href="path-resolution.html" />
+    <link rel="prev" title="SMTChecker and Formal Verification" href="smtchecker.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Kaynaklar</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#genel-kaynaklar">Genel Kaynaklar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#entegre-ethereum-gelistirme-ortamlari">Entegre (Ethereum) Geliştirme Ortamları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#editor-entegrasyonlari">Editör Entegrasyonları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#solidity-araclari">Solidity Araçları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ucuncu-parti-solidity-ayristiricilari-ve-gramerleri">Üçüncü Parti Solidity Ayrıştırıcıları ve Gramerleri</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Kaynaklar</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/resources.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="kaynaklar">
+<h1>Kaynaklar<a class="headerlink" href="#kaynaklar" title="Permalink to this heading"></a></h1>
+<section id="genel-kaynaklar">
+<h2>Genel Kaynaklar<a class="headerlink" href="#genel-kaynaklar" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://ethereum.org/en/developers/">Ethereum.org Geliştirici Portalı</a></p></li>
+<li><p><a class="reference external" href="https://ethereum.stackexchange.com/">Ethereum StackExchange</a></p></li>
+<li><p><a class="reference external" href="https://soliditylang.org/">Solidity Portal</a></p></li>
+<li><p><a class="reference external" href="https://github.com/ethereum/solidity/blob/develop/Changelog.md">Solidity Değişiklik Günlüğü</a></p></li>
+<li><p><a class="reference external" href="https://github.com/ethereum/solidity/">Solidity Kaynak Kodu GitHub’da</a></p></li>
+<li><p><a class="reference external" href="https://matrix.to/#/#ethereum_solidity:gitter.im">Solidity Language Users Chat</a></p></li>
+<li><p><a class="reference external" href="https://matrix.to/#/#ethereum_solidity-dev:gitter.im">Solidity Compiler Developers Chat</a></p></li>
+<li><p><a class="reference external" href="https://github.com/bkrem/awesome-solidity">Awesome Solidity</a></p></li>
+<li><p><a class="reference external" href="https://solidity-by-example.org/">Solidity by Example</a></p></li>
+<li><p><a class="reference external" href="https://github.com/solidity-docs">Solidity Dokümantasyon Topluluğu Çevirileri</a></p></li>
+</ul>
+</section>
+<section id="entegre-ethereum-gelistirme-ortamlari">
+<h2>Entegre (Ethereum) Geliştirme Ortamları<a class="headerlink" href="#entegre-ethereum-gelistirme-ortamlari" title="Permalink to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://eth-brownie.readthedocs.io/en/stable/">Brownie</a>
+Ethereum Sanal Makinesini hedefleyen akıllı sözleşmeler için Python tabanlı geliştirme ve test çerçevesi.</p></li>
+<li><p><a class="reference external" href="https://dapp.tools/">Dapp</a>
+Komut satırından akıllı sözleşmeler oluşturmak, test etmek ve dağıtmak için bir araç.</p></li>
+<li><p><a class="reference external" href="https://framework.embarklabs.io/">Embark</a>
+Merkezi olmayan uygulamalar oluşturmak ve dağıtmak için geliştirici platformu.</p></li>
+<li><p><a class="reference external" href="https://github.com/gakonst/foundry">Foundry</a>
+Rust ile yazılmış Ethereum uygulama geliştirme için hızlı, taşınabilir ve modüler araç seti.</p></li>
+<li><p><a class="reference external" href="https://hardhat.org/">Hardhat</a>
+Yerel Ethereum ağı, hata ayıklama özellikleri ve eklenti ekosistemi ile Ethereum geliştirme ortamı.</p></li>
+<li><p><a class="reference external" href="https://remix.ethereum.org/">Remix</a>
+Sunucu tarafı bileşenleri olmayan entegre derleyici ve Solidity çalışma zamanı ortamına sahip tarayıcı tabanlı IDE.</p></li>
+<li><p><a class="reference external" href="https://www.trufflesuite.com/truffle">Truffle</a>
+Ethereum geliştirme çerçevesi.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="editor-entegrasyonlari">
+<h2>Editör Entegrasyonları<a class="headerlink" href="#editor-entegrasyonlari" title="Permalink to this heading"></a></h2>
+<ul>
+<li><p>Atom</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/0mkara/etheratom">Etheratom</a></dt><dd><p>Sözdizimi vurgulama, derleme ve çalışma zamanı ortamı (Backend node ve VM uyumlu) içeren Atom editörü için eklenti.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://atom.io/packages/linter-solidity">Atom Solidity Linter</a></dt><dd><p>Solidity linting sağlayan Atom editörü için eklenti.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://atom.io/packages/linter-solium">Atom Solium Linter</a></dt><dd><p>Solium’u (şimdi Ethlint) temel olarak kullanan Atom için yapılandırılabilir Solidity linter.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Emacs</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/ethereum/emacs-solidity/">Emacs Solidity</a></dt><dd><p>Emacs editörü için sözdizimi vurgulama ve derleme hatası raporlama sağlayan eklenti.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>IntelliJ</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://plugins.jetbrains.com/plugin/9475-intellij-solidity">IntelliJ IDEA eklentisi</a></dt><dd><p>IntelliJ IDEA (ve diğer tüm JetBrains IDE’leri) için Solidity eklentisi</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Sublime</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://packagecontrol.io/packages/Ethereum/">SublimeText için paket - Solidity dil sözdizimi</a></dt><dd><p>SublimeText editörü için Solidity sözdizimi vurgulama.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Vim</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/tomlion/vim-solidity/">Vim Solidity</a></dt><dd><p>Vim düzenleyicisi için sözdizimi vurgulama sağlayan eklenti.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/vim-syntastic/syntastic">Vim Syntastic</a></dt><dd><p>Derleme denetimi sağlayan Vim düzenleyicisi için eklenti.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Visual Studio Code</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://juan.blanco.ws/solidity-contracts-in-visual-studio-code/">Visual Studio Kod uzantısı</a></dt><dd><p>Microsoft Visual Studio Code için sözdizimi vurgulama ve Solidity derleyicisi içeren Solidity eklentisi.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=tintinweb.solidity-visual-auditor">Solidity Görsel Denetçi uzantısı</a></dt><dd><p>Visual Studio Code’a güvenlik merkezli sözdizimi ve anlamsal vurgulama ekler.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="solidity-araclari">
+<h2>Solidity Araçları<a class="headerlink" href="#solidity-araclari" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://gist.github.com/chriseth/8f533d133fa0c15b0d6eaf3ec502c82b">ABI - Solidity arayüz dönüştürücüsü</a></dt><dd><p>Akıllı bir sözleşmenin ABI’sinden sözleşme arayüzleri oluşturmak için bir betik.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/gnidan/abi-to-sol">abi-to-sol</a></dt><dd><p>Belirli bir ABI JSON’dan Solidity arayüz kaynağı oluşturmak için araç.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/DigixGlobal/doxity">Doxity</a></dt><dd><p>Solidity için Dokümantasyon Oluşturucu.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/duaraghav8/Ethlint">Ethlint</a></dt><dd><p>Solidity’deki stil ve güvenlik sorunlarını tanımlamak ve düzeltmek için Linter.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/Arachnid/evmdis">evmdis</a></dt><dd><p>Ham EVM işlemlerinden daha yüksek bir soyutlama düzeyi sağlamak için bytecode üzerinde statik analiz gerçekleştiren EVM Disassembler.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/ethereum/evmlab/">EVM Lab</a></dt><dd><p>EVM ile etkileşim için zengin araç paketi. Bir VM, Etherchain API ve gaz maliyeti göstergeli bir izleme görüntüleyici içerir.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/dapphub/dapptools/tree/master/src/hevm#readme">hevm</a></dt><dd><p>EVM hata ayıklayıcı ve sembolik yürütme motoru.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/clemlak/leafleth">leafleth</a></dt><dd><p>Solidity akıllı sözleşmeleri için bir dokümantasyon oluşturucu.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://piet.slock.it/">PIET</a></dt><dd><p>Basit bir grafik arayüz aracılığıyla Solidity akıllı sözleşmelerini geliştirmek, denetlemek ve kullanmak için bir araç.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/scaffold-eth/scaffold-eth">Scaffold-ETH</a></dt><dd><p>Hızlı ürün yinelemelerine odaklanan forklanabilir Ethereum geliştirme yığını.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://www.npmjs.com/package/sol2uml">sol2uml</a></dt><dd><p>Solidity sözleşmeleri için Birleşik Modelleme Dili (UML) sınıf diyagramı oluşturucu.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/crytic/solc-select">solc-select</a></dt><dd><p>Solidity derleyici sürümleri arasında hızlıca geçiş yapmak için bir betik.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/prettier-solidity/prettier-plugin-solidity">Solidity prettier eklentisi</a></dt><dd><p>Solidity için prettier.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/raineorshine/solidity-repl">Solidity REPL</a></dt><dd><p>Solidity’yi bir komut satırı Solidity konsolu ile anında deneyin.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/raineorshine/solgraph">solgraph</a></dt><dd><p>Solidity kontrol akışını görselleştirin ve potansiyel güvenlik açıklarını vurgulayın.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/protofire/solhint">Solhint</a></dt><dd><p>Akıllı sözleşme doğrulaması için güvenlik, stil kılavuzu ve en iyi uygulama kuralları sağlayan Solidity linter.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://sourcify.dev/">Sourcify</a></dt><dd><p>Merkezi olmayan otomatik sözleşme doğrulama hizmeti ve sözleşme meta verilerinin halka açık deposu.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/ConsenSys/surya/">Sūrya</a></dt><dd><p>Akıllı sözleşme sistemleri için bir dizi görsel çıktı ve sözleşmelerin yapısı hakkında bilgi sunan yardımcı araç. Ayrıca fonksiyon çağrı grafiğini sorgulamayı da destekler.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/agroce/universalmutator">Universal Mutator</a></dt><dd><p>Yapılandırılabilir kurallar ve Solidity ve Vyper desteği ile mutasyon üretimi için bir araç.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="ucuncu-parti-solidity-ayristiricilari-ve-gramerleri">
+<h2>Üçüncü Parti Solidity Ayrıştırıcıları ve Gramerleri<a class="headerlink" href="#ucuncu-parti-solidity-ayristiricilari-ve-gramerleri" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt><a class="reference external" href="https://github.com/solidity-parser/parser">Solidity Parser for JavaScript</a></dt><dd><p>Sağlam bir ANTLR4 gramerinin üzerine inşa edilmiş JS için bir Solidity ayrıştırıcısı.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="smtchecker.html" class="btn btn-neutral float-left" title="SMTChecker and Formal Verification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="path-resolution.html" class="btn btn-neutral float-right" title="Import Path Resolution" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

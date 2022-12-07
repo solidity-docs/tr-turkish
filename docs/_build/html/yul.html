@@ -1,0 +1,1927 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yul &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Style Guide" href="style-guide.html" />
+    <link rel="prev" title="Import Path Resolution" href="path-resolution.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Yul</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#motivasyon-ve-ust-duzey-tanimi">Motivasyon ve Üst-düzey Tanımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#basit-bir-ornek">Basit Bir Örnek</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tek-basina-kullanim">Tek Başına Kullanım</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yul-un-resmi-olmayan-tanimi">Yul’un Resmi Olmayan Tanımı</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sozdizimi-syntax">Sözdizimi (Syntax)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#degismezler-literal">Değişmezler (Literal)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fonksiyon-cagrilari">Fonksiyon Çağrıları</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#degisken-atamalari">Değişken Atamaları</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#atamalar">Atamalar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#if">If</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#switch">Switch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#donguler-loop">Döngüler (Loop)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fonksiyon-atamalari">Fonksiyon Atamaları</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#yul-tanimlamasi">Yul Tanımlaması</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dilbilgisi-ile-ilgili-kisitlamalar">Dilbilgisi ile İlgili Kısıtlamalar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kapsam-belirleme-kurallari">Kapsam Belirleme Kuralları</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resmi-sartname">Resmi Şartname</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#evm-dialect">EVM Dialect</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#datasize-dataoffset-datacopy">datasize, dataoffset, datacopy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setimmutable-loadimmutable">setimmutable, loadimmutable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linkersymbol">linkersymbol</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memoryguard">memoryguard</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#verbatim">verbatim</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#specification-of-yul-object">Specification of Yul Object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yul-optimizer">Yul Optimizer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#optimizasyon-adim-sirasi">Optimizasyon Adım Sırası</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#tamamlanmis-erc20-ornegi">Tamamlanmış ERC20 Örneği</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Yul</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/yul.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="yul">
+<span id="id1"></span><h1>Yul<a class="headerlink" href="#yul" title="Permalink to this heading"></a></h1>
+<p id="index-0">Yul (önceden JULIA veya IULIA olarak da adlandırılmıştır), farklı backend’ler için bayt koduna derlenebilen bir ara dildir.</p>
+<p>EVM 1.0, EVM 1.5 ve Ewasm desteği planlanmış olup, her üç platformda
+kullanılabilir bir ortak paydası olacak şekilde
+tasarlanmıştır. Halihazırda Solidity içinde bağımsız modda ve
+“inline (satır-içi) Assembly” için kullanılabilir ve Solidity derleyicisinin Yul’u bir ara dil olarak
+kullanan  deneysel bir uygulaması bulunmaktadır. Yul, üst düzey optimizasyon aşamaları için
+tüm hedef platformlara eşit olarak fayda sağlayabilecek  iyi bir araçtır.</p>
+<section id="motivasyon-ve-ust-duzey-tanimi">
+<h2>Motivasyon ve Üst-düzey Tanımı<a class="headerlink" href="#motivasyon-ve-ust-duzey-tanimi" title="Permalink to this heading"></a></h2>
+<p>Yul’un tasarımı birkaç hedef doğrultusunda çalışmaktadır:</p>
+<ol class="arabic simple">
+<li><p>Yul’da yazılan programlar, yazılan kod Solidity veya bir başka üst düzey dilden bir derleyici tarafından oluşturulmuş olsa bile okunabilir olmalıdır.</p></li>
+<li><p>Kontrol akışı, manuel incelemeye, resmi doğrulamaya ve optimizasyona yardımcı olmak amacıyla anlaşılması kolay olmalıdır.</p></li>
+<li><p>Yul’den bytecode’a çeviri mümkün olduğunca basit olmalıdır.</p></li>
+<li><p>Yul, programın tüm optimizasyonu için uygun olmalıdır..</p></li>
+</ol>
+<p>Yul, birinci ve ikinci amaca ulaşmak için <code class="docutils literal notranslate"><span class="pre">for</span></code> döngüleri, <code class="docutils literal notranslate"><span class="pre">if</span></code> ve <code class="docutils literal notranslate"><span class="pre">switch</span></code> ifadeleri
+ve fonksiyon çağrıları gibi üst düzey yapılar sağlar. Bunlar, assembly programları için
+kontrol akışını yeterince ifade edebilir olmalıdır.
+Bu nedenle, <code class="docutils literal notranslate"><span class="pre">SWAP</span></code>, <code class="docutils literal notranslate"><span class="pre">DUP</span></code>, <code class="docutils literal notranslate"><span class="pre">JUMPDEST</span></code>, <code class="docutils literal notranslate"><span class="pre">JUMP</span></code> ve <code class="docutils literal notranslate"><span class="pre">JUMPI</span></code>
+için belirgin ifadeler sağlanmamaktadır, çünkü ilk ikisi veri akışını ve
+son ikisi de kontrol akışını belirsizleştirmektedir. Ayrıca, <code class="docutils literal notranslate"><span class="pre">mul(add(x,y),</span> <span class="pre">7)</span></code> biçimindeki fonksiyonel
+ifadeler, <code class="docutils literal notranslate"><span class="pre">7</span> <span class="pre">y</span> <span class="pre">x</span> <span class="pre">add</span> <span class="pre">mul</span></code> gibi saf işlem kodu ifadelerine tercih edilir,
+çünkü birinci biçimde, hangi işlemcinin hangi işlem kodu için kullanıldığını görmek çok daha kolaydır.</p>
+<p>Stack (yığın) makineleri için tasarlanmış olsa da, Yul stack karmaşıklığını ortaya çıkarmaz.
+Programcı veya denetçinin stack hakkında endişelenmesine gerek yoktur.</p>
+<p>Üçüncü hedef, daha üst düzey yapılar çok düzenli
+bir şekilde bytecode’a derlenerek elde edilir.
+Derleyici tarafından gerçekleştirilen lokal olmayan tek işlem,
+kullanıcının atadığı tanımlayıcıların (fonksiyonlar, değişkenler, …)
+ad araması ve yığından (stack) yerel değişkenlerin temizlenmesidir.</p>
+<p>Değerler ve referanslar gibi kavramlar arasındaki karışıklığı
+önlemek için Yul statik olarak yazılır. Aynı zamanda,
+okunabilirliğe yardımcı olmak için her zaman ihmal edilebilecek
+bir varsayılan tür (genellikle hedef makinenin tamsayı sözcüğü) vardır.</p>
+<p>Dili basit ve esnek tutmak için Yul, saf haliyle herhangi
+bir gömülü işlem, fonksiyon veya türe sahip değildir.
+Bunlar, Yul’un farklı hedef platformların ve özellik kümelerinin
+gereksinimlerine göre özelleştirilmesine izin veren
+bir Yul diyalekti belirlenirken semantikleriyle birlikte eklenir.</p>
+<p>Şu anda, Yul’un belirlenmiş yalnızca bir tane diyalekti var. Bu diyalekt,
+gömülü fonksiyonlar olarak EVM işlem kodlarını kullanır (aşağıya bakınız)
+ve yalnızca EVM’nin yerel 256 bit türü olan <code class="docutils literal notranslate"><span class="pre">u256</span></code> türünü tanımlar.
+Bu nedenle, aşağıdaki örneklerde türlerden bahsetmeyeceğiz.</p>
+</section>
+<section id="basit-bir-ornek">
+<h2>Basit Bir Örnek<a class="headerlink" href="#basit-bir-ornek" title="Permalink to this heading"></a></h2>
+<p>Aşağıdaki örnek program EVM diyalektiyle yazılmıştır ve üs alma işlemini hesaplar.
+<code class="docutils literal notranslate"><span class="pre">solc</span> <span class="pre">--strict-assembly</span></code> kullanılarak derlenebilir.
+Yerleşik fonksiyonlar olan <code class="docutils literal notranslate"><span class="pre">mul</span></code> ve <code class="docutils literal notranslate"><span class="pre">div</span></code>, sırasıyla çarpma ve bölme işlemlerini yapar.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ewogICAgZnVuY3Rpb24gcG93ZXIoYmFzZSwgZXhwb25lbnQpIC0+IHJlc3VsdAogICAgewogICAgICAgIHN3aXRjaCBleHBvbmVudAogICAgICAgIGNhc2UgMCB7IHJlc3VsdCA6PSAxIH0KICAgICAgICBjYXNlIDEgeyByZXN1bHQgOj0gYmFzZSB9CiAgICAgICAgZGVmYXVsdAogICAgICAgIHsKICAgICAgICAgICAgcmVzdWx0IDo9IHBvd2VyKG11bChiYXNlLCBiYXNlKSwgZGl2KGV4cG9uZW50LCAyKSkKICAgICAgICAgICAgc3dpdGNoIG1vZChleHBvbmVudCwgMikKICAgICAgICAgICAgICAgIGNhc2UgMSB7IHJlc3VsdCA6PSBtdWwoYmFzZSwgcmVzdWx0KSB9CiAgICAgICAgfQogICAgfQp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="k">function</span> <span class="n">power</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">exponent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">result</span>
+    <span class="p">{</span>
+        <span class="k">switch</span> <span class="n">exponent</span>
+        <span class="k">case</span> <span class="mi">0</span> <span class="p">{</span> <span class="n">result</span> <span class="o">:=</span> <span class="mi">1</span> <span class="p">}</span>
+        <span class="k">case</span> <span class="mi">1</span> <span class="p">{</span> <span class="n">result</span> <span class="o">:=</span> <span class="n">base</span> <span class="p">}</span>
+        <span class="k">default</span>
+        <span class="p">{</span>
+            <span class="n">result</span> <span class="o">:=</span> <span class="n">power</span><span class="p">(</span><span class="nf">mul</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">base</span><span class="p">),</span> <span class="nf">div</span><span class="p">(</span><span class="n">exponent</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+            <span class="k">switch</span> <span class="nf">mod</span><span class="p">(</span><span class="n">exponent</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="k">case</span> <span class="mi">1</span> <span class="p">{</span> <span class="n">result</span> <span class="o">:=</span> <span class="nf">mul</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span> <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Aynı fonksiyonu özyineleme (recursion) yerine bir for döngüsü
+kullanarak da uygulamak mümkündür. Burada <code class="docutils literal notranslate"><span class="pre">lt(a,</span> <span class="pre">b)</span></code>, <code class="docutils literal notranslate"><span class="pre">a</span></code>’nın <code class="docutils literal notranslate"><span class="pre">b</span></code>’den küçük olup olmadığını hesaplar.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ewogICAgZnVuY3Rpb24gcG93ZXIoYmFzZSwgZXhwb25lbnQpIC0+IHJlc3VsdAogICAgewogICAgICAgIHJlc3VsdCA6PSAxCiAgICAgICAgZm9yIHsgbGV0IGkgOj0gMCB9IGx0KGksIGV4cG9uZW50KSB7IGkgOj0gYWRkKGksIDEpIH0KICAgICAgICB7CiAgICAgICAgICAgIHJlc3VsdCA6PSBtdWwocmVzdWx0LCBiYXNlKQogICAgICAgIH0KICAgIH0KfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="k">function</span> <span class="n">power</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">exponent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">result</span>
+    <span class="p">{</span>
+        <span class="n">result</span> <span class="o">:=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="p">{</span> <span class="ow">let</span> <span class="nv">i</span> <span class="o">:=</span> <span class="mi">0</span> <span class="p">}</span> <span class="nf">lt</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">exponent</span><span class="p">)</span> <span class="p">{</span> <span class="n">i</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="p">}</span>
+        <span class="p">{</span>
+            <span class="n">result</span> <span class="o">:=</span> <span class="nf">mul</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="#erc20yul"><span class="std std-ref">Bölümün sonunda</span></a>, ERC-20 standardı ile ilgili eksiksiz bir uygulama bulunabilir.</p>
+</section>
+<section id="tek-basina-kullanim">
+<h2>Tek Başına Kullanım<a class="headerlink" href="#tek-basina-kullanim" title="Permalink to this heading"></a></h2>
+<p>Yul’u Solidity derleyicisini kullanarak EVM diyalektinde tek başına kullanabilirsiniz.
+Bu, Yul nesne notasyonunu kullanır, böylece sözleşmeleri deploy etmek için koda veri
+olarak atıfta bulunulabilir. Bu Yul modu, komut satırı derleyicisi
+( <code class="docutils literal notranslate"><span class="pre">--strict-assembly</span></code> kullanın) ve <a class="reference internal" href="using-the-compiler.html#compiler-api"><span class="std std-ref">standard-json arayüzü</span></a> için kullanılabilir:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;language&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Yul&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;sources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;input.yul&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{ sstore(0, 1) }&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;settings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;outputSelection&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;*&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;*&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;*&quot;</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;optimizer&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;details&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;yul&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Yul aktif geliştirme aşamasındadır ve bayt kodu oluşturma, yalnızca hedef olarak EVM 1.0
+ile Yul’un EVM diyalekti için tam olarak uygulanabilir.</p>
+</div>
+</section>
+<section id="yul-un-resmi-olmayan-tanimi">
+<h2>Yul’un Resmi Olmayan Tanımı<a class="headerlink" href="#yul-un-resmi-olmayan-tanimi" title="Permalink to this heading"></a></h2>
+<p>Aşağıda Yul dilinin bütün yönleri hakkında konuşacağız. Örneklerde varsayılan EVM diyalektini kullanacağız.</p>
+<section id="sozdizimi-syntax">
+<h3>Sözdizimi (Syntax)<a class="headerlink" href="#sozdizimi-syntax" title="Permalink to this heading"></a></h3>
+<p>Yul, yorumları, değişmez değerleri ve tanımlayıcıları Solidity ile aynı şekilde ayrıştırır,
+böylece örneğin yorumları belirtmek için  <code class="docutils literal notranslate"><span class="pre">//</span></code> ve <code class="docutils literal notranslate"><span class="pre">/*</span> <span class="pre">*/</span></code> kullanabilirsiniz.
+Bir istisna vardır: Yul’daki tanımlayıcılar noktalar içerebilir: <code class="docutils literal notranslate"><span class="pre">.</span></code>.</p>
+<p>Yul, kod, veri ve alt nesnelerden oluşan “nesneler” belirleyebilir.
+Bununla ilgili ayrıntılar için lütfen aşağıdaki <a class="reference internal" href="#yul-object"><span class="std std-ref">Yul Nesneleri</span></a> bölümüne bakın.
+Bu bölümde, bu tür bir nesnenin sadece kod kısmı ile ilgileniyoruz.
+Bu kod bölümü her zaman süslü parantezlerle ayrılmış bir bloktan oluşur.
+Çoğu araç, bir nesnenin olması beklenen yerde yalnızca bir
+kod bloğu tanımlamayı destekler.</p>
+<p>Bir kod bloğu içinde aşağıdaki öğeler kullanılabilir
+(daha fazla ayrıntı için sonraki bölümlere bakınız):</p>
+<ul class="simple">
+<li><p>değişmez değerler (literal), yani <code class="docutils literal notranslate"><span class="pre">0x123</span></code>, <code class="docutils literal notranslate"><span class="pre">42</span></code> veya <code class="docutils literal notranslate"><span class="pre">&quot;abc&quot;</span></code> (32 karaktere kadar string’ler)</p></li>
+<li><p>gömülü fonksiyonlara yapılan çağrılar, örneğin <code class="docutils literal notranslate"><span class="pre">add(1,</span> <span class="pre">mload(0))</span></code></p></li>
+<li><p>değişken tanımlamaları, örneğin <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">x</span> <span class="pre">:=</span> <span class="pre">7</span></code>, <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">x</span> <span class="pre">:=</span> <span class="pre">add(y,</span> <span class="pre">3)</span></code> veya <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">x</span></code> (başlangıç değeri olarak 0 atanır)</p></li>
+<li><p>tanımlayıcılar (değişkenler), örneğin <code class="docutils literal notranslate"><span class="pre">add(3,</span> <span class="pre">x)</span></code></p></li>
+<li><p>atamalar, örneğin <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">:=</span> <span class="pre">add(y,</span> <span class="pre">3)</span></code></p></li>
+<li><p>yerel değişkenlerin kapsam dahilinde olduğu bloklar, ör., örneğin <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">let</span> <span class="pre">x</span> <span class="pre">:=</span> <span class="pre">3</span> <span class="pre">{</span> <span class="pre">let</span> <span class="pre">y</span> <span class="pre">:=</span> <span class="pre">add(x,</span> <span class="pre">1)</span> <span class="pre">}</span> <span class="pre">}</span></code></p></li>
+<li><p>if ifadeleri, örneğin <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">lt(a,</span> <span class="pre">b)</span> <span class="pre">{</span> <span class="pre">sstore(0,</span> <span class="pre">1)</span> <span class="pre">}</span></code></p></li>
+<li><p>switch ifadeleri, örneğin <code class="docutils literal notranslate"><span class="pre">switch</span> <span class="pre">mload(0)</span> <span class="pre">case</span> <span class="pre">0</span> <span class="pre">{</span> <span class="pre">revert()</span> <span class="pre">}</span> <span class="pre">default</span> <span class="pre">{</span> <span class="pre">mstore(0,</span> <span class="pre">1)</span> <span class="pre">}</span></code></p></li>
+<li><p>for döngünleri, örneğin <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">{</span> <span class="pre">let</span> <span class="pre">i</span> <span class="pre">:=</span> <span class="pre">0}</span> <span class="pre">lt(i,</span> <span class="pre">10)</span> <span class="pre">{</span> <span class="pre">i</span> <span class="pre">:=</span> <span class="pre">add(i,</span> <span class="pre">1)</span> <span class="pre">}</span> <span class="pre">{</span> <span class="pre">mstore(i,</span> <span class="pre">7)</span> <span class="pre">}</span></code></p></li>
+<li><p>fonksiyon tanımlamaları, örneğin <code class="docutils literal notranslate"><span class="pre">function</span> <span class="pre">f(a,</span> <span class="pre">b)</span> <span class="pre">-&gt;</span> <span class="pre">c</span> <span class="pre">{</span> <span class="pre">c</span> <span class="pre">:=</span> <span class="pre">add(a,</span> <span class="pre">b)</span> <span class="pre">}</span></code></p></li>
+</ul>
+<p>Birden fazla sözdizimsel öğe, yalnızca boşlukla ayrılmış olarak birbirini
+takip edebilir, yani <code class="docutils literal notranslate"><span class="pre">;</span></code> ile sonlandırma yoktur veya yeni satıra geçilmelidir.</p>
+</section>
+<section id="degismezler-literal">
+<h3>Değişmezler (Literal)<a class="headerlink" href="#degismezler-literal" title="Permalink to this heading"></a></h3>
+<p>Değişmezler olarak şunları kullanabilirsiniz:</p>
+<ul class="simple">
+<li><p>Ondalık (decimal) veya onaltılık (hexadecimal) notasyonda tamsayı sabitleri..</p></li>
+<li><p>ASCII dizeleri (ör. <code class="docutils literal notranslate"><span class="pre">&quot;abc&quot;</span></code>), <code class="docutils literal notranslate"><span class="pre">\xNN</span></code> onaltılı çıkışlarını ve <code class="docutils literal notranslate"><span class="pre">N</span></code>’nin onaltılık basamaklar olduğu <code class="docutils literal notranslate"><span class="pre">\uNNNN</span></code> Unicode çıkışlarını içerebilir.</p></li>
+<li><p>Onaltılık string’ler (örneğin <code class="docutils literal notranslate"><span class="pre">hex&quot;616263&quot;</span></code>).</p></li>
+</ul>
+<p>Yul’un EVM diyalektinde, değişmezler aşağıdaki gibi 256 bitlik sözcükleri temsil eder.:</p>
+<ul class="simple">
+<li><p>Ondalık veya onaltılık sabitler <code class="docutils literal notranslate"><span class="pre">2**256</span></code> değerinden küçük olmalıdır.
+Soldan okumalı (big-endian) kodlamada bu değere sahip 256 bitlik kelimeyi işaretsiz bir tamsayı olarak temsil ederler.</p></li>
+<li><p>Bir ASCII string ifadesi ilk önce bir bayt dizisi olarak görüntülenir
+ve bunu çıkartılmamış bir ASCII karakterini değeri
+ASCII kodu olan tek bir bayt olarak, <code class="docutils literal notranslate"><span class="pre">\xNN</span></code> çıkışını bu değere sahip tek bayt olarak
+ve <code class="docutils literal notranslate"><span class="pre">\uNNNN</span></code> çıkışını o kod noktasındaki UTF-8 bayt dizisi olarak gerçekleştirir.
+Bayt dizisi 32 baytı geçmemelidir.
+Bayt dizisi, 32 bayta ulaşmak için sağdaki sıfırlarla doldurulur;
+başka bir deyişle, dize sola hizalı olarak saklanır. Sıfırlarla doldurulmuş bayt dizisi,
+en önemli 8 biti ilk bayttakilerden oluşan 256 bitlik bir kelimeyi temsil eder,
+yani baytlar soldan okumalı (big-endian) biçiminde yorumlanır.</p></li>
+<li><p>Bir onaltılık string, önce her bir bitişik onaltılık basamak çifti
+bir bayt olarak görüntülenecek şekilde bir bayt dizisi olarak görüntülenir.
+Bayt dizisi 32 baytı (yani 64 onaltılık basamak) geçmemelidir ve yukarıdaki gibi işlem görür.</p></li>
+</ul>
+<p>EVM için derlenirken bu, uygun bir PUSHi komutuna dönüştürülecektir.
+Aşağıdaki örnekte, 3 ve 2 eklenerek 5 elde edilir
+ve ardından bitsel <code class="docutils literal notranslate"><span class="pre">and</span></code> ile “abc” string’i hesaplanır.
+Sonuç değeri, <code class="docutils literal notranslate"><span class="pre">x</span></code> adlı yerel bir değişkene atanır.</p>
+<p>Yukarıdaki 32 baytlık sınır, değişmez (literal) bağımsız değişkenler gerektiren gömülü
+fonksiyonlara geçirilen string değişmezleri (string literal) için geçerli değildir
+(örneğin, <code class="docutils literal notranslate"><span class="pre">setimmutable</span></code> veya <code class="docutils literal notranslate"><span class="pre">loadimmutable</span></code>). Bu dizeler asla oluşturulan bayt kodunda bitmez.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=bGV0IHggOj0gYW5kKCJhYmMiLCBhZGQoMywgMikp"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="ow">let</span> <span class="nv">x</span> <span class="o">:=</span> <span class="nf">and</span><span class="p">(</span><span class="s">&quot;abc&quot;</span><span class="p">,</span> <span class="nf">add</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Unless it is the default type, the type of a literal
+has to be specified after a colon:
+Varsayılan tür olmadığı sürece, bir değişmez (literal) türünün
+iki nokta üst üste (:) işaretinden sonra belirtilmesi gerekir:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=Ly8gQnUgZGVybGVubWV5ZWNlayAodTMyIHZlIHUyNTYgdMO8csO8IGhlbsO8eiB1eWd1bGFubWFkxLEpCmxldCB4IDo9IGFuZCgiYWJjIjp1MzIsIGFkZCgzOnUyNTYsIDI6dTI1Nikp"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="c1">// Bu derlenmeyecek (u32 ve u256 türü henüz uygulanmadı)</span>
+<span class="ow">let</span> <span class="nv">x</span> <span class="o">:=</span> <span class="nf">and</span><span class="p">(</span><span class="s">&quot;abc&quot;</span><span class="p">:</span><span class="n">u32</span><span class="p">,</span> <span class="nf">add</span><span class="p">(</span><span class="mi">3</span><span class="p">:</span><span class="n">u256</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="n">u256</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="fonksiyon-cagrilari">
+<h3>Fonksiyon Çağrıları<a class="headerlink" href="#fonksiyon-cagrilari" title="Permalink to this heading"></a></h3>
+<p>Hem gömülü hem de kullanıcı tanımlı fonksiyonlar (aşağıya bakın)
+önceki örnekte gösterildiği gibi çağrılabilir.
+Fonksiyon tek bir değer döndürürse, tekrar doğrudan bir ifadenin
+içinde kullanılabilir. Birden fazla değer döndürürse,
+yerel değişkenlere atanmaları gerekir.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ZnVuY3Rpb24gZih4LCB5KSAtPiBhLCBiIHsgLyogLi4uICovIH0KbXN0b3JlKDB4ODAsIGFkZChtbG9hZCgweDgwKSwgMykpCi8vIEJ1cmFkYSwga3VsbGFuxLFjxLEgdGFuxLFtbMSxIGBmYCBmb25rc2l5b251IGlraSBkZcSfZXIgZMO2bmTDvHLDvHIuCmxldCB4LCB5IDo9IGYoMSwgbWxvYWQoMCkp"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+<span class="nf">mstore</span><span class="p">(</span><span class="mh">0x80</span><span class="p">,</span> <span class="nf">add</span><span class="p">(</span><span class="nf">mload</span><span class="p">(</span><span class="mh">0x80</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+<span class="c1">// Burada, kullanıcı tanımlı `f` fonksiyonu iki değer döndürür.</span>
+<span class="ow">let</span> <span class="nv">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">:=</span> <span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nf">mload</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>EVM’nin gömülü fonksiyonları için, fonksiyonel ifadeler
+doğrudan bir işlem kodu akışına çevrilebilir:
+İşlem kodlarını elde etmek için ifadeyi sağdan sola
+okumanız yeterlidir. Örnekteki ilk satır söz konusu olduğunda,
+bu <code class="docutils literal notranslate"><span class="pre">PUSH1</span> <span class="pre">3</span> <span class="pre">PUSH1</span> <span class="pre">0x80</span> <span class="pre">MLOAD</span> <span class="pre">ADD</span> <span class="pre">PUSH1</span> <span class="pre">0x80</span> <span class="pre">MSTORE</span></code>’dur.</p>
+<p>Kullanıcı tanımlı fonksiyonlara yapılan çağrılar için,
+bağımsız değişkenler de yığına sağdan sola doğru yerleştirilir
+ve bu, bağımsız değişken listelerinin değerlendirilme sırasıdır.
+Yine de, return edilen değerler yığında (stack) soldan sağa olması beklenir,
+yani bu örnekte, <code class="docutils literal notranslate"><span class="pre">y</span></code> yığının üstünde ve <code class="docutils literal notranslate"><span class="pre">x</span></code> onun altındadır.</p>
+</section>
+<section id="degisken-atamalari">
+<h3>Değişken Atamaları<a class="headerlink" href="#degisken-atamalari" title="Permalink to this heading"></a></h3>
+<p>Değişkenleri atamak için <code class="docutils literal notranslate"><span class="pre">let</span></code> anahtar sözcüğünü kullanabilirsiniz.
+Bir değişken sadece tanımlandığı <code class="docutils literal notranslate"><span class="pre">{...}</span></code>-blokunun içinde görünür.
+EVM’ye derlenirken, değişken için ayrılmış yeni bir yığın (stack)
+yuvası oluşturulur ve bloğun sonuna ulaşıldığında otomatik
+olarak tekrar kaldırılır. Değişken için bir başlangıç
+değeri atayabilirsiniz. Bir değer atamazsanız,
+değişken sıfıra eşitlenerek başlatılır.</p>
+<p>Değişkenler yığında depolandığından, belleği veya hafızayı
+doğrudan etkilemezler, ancak gömülü fonksiyonlar olan <code class="docutils literal notranslate"><span class="pre">mstore</span></code>,
+<code class="docutils literal notranslate"><span class="pre">mload</span></code>, <code class="docutils literal notranslate"><span class="pre">sstore</span></code> ve <code class="docutils literal notranslate"><span class="pre">sload</span></code>’da belleğe veya hafıza
+konumlarına işaretçiler (pointer) olarak kullanılabilirler. Gelecekteki
+diyalektler, bu tür işaretçiler için belirlenmiş türler sağlayabilir.</p>
+<p>Bir değişkene referans verildiğinde, mevcut değeri kopyalanır.
+EVM için bu, bir <code class="docutils literal notranslate"><span class="pre">DUP</span></code> talimatı anlamına gelir.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ewogICAgbGV0IHplcm8gOj0gMAogICAgbGV0IHYgOj0gY2FsbGRhdGFsb2FkKHplcm8pCiAgICB7CiAgICAgICAgbGV0IHkgOj0gYWRkKHNsb2FkKHYpLCAxKQogICAgICAgIHYgOj0geQogICAgfSAvLyB5IGJ1cmFkYSAic2VyYmVzdCBixLFyYWvEsWxtxLHFn3TEsXIiCiAgICBzc3RvcmUodiwgemVybykKfSAvLyB2IHZlIHPEsWbEsXIgYnVyYWRhICJzZXJiZXN0IGLEsXJha8SxbG3EscWfdMSxciI="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="ow">let</span> <span class="nv">zero</span> <span class="o">:=</span> <span class="mi">0</span>
+    <span class="ow">let</span> <span class="nv">v</span> <span class="o">:=</span> <span class="nf">calldataload</span><span class="p">(</span><span class="n">zero</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="ow">let</span> <span class="nv">y</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="nf">sload</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">:=</span> <span class="n">y</span>
+    <span class="p">}</span> <span class="c1">// y burada &quot;serbest bırakılmıştır&quot;</span>
+    <span class="nf">sstore</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">zero</span><span class="p">)</span>
+<span class="p">}</span> <span class="c1">// v ve sıfır burada &quot;serbest bırakılmıştır&quot;</span>
+</pre></div>
+</div>
+<p>Atanan değişkenin varsayılan (default) türden farklı bir türde olması gerekiyorsa,
+iki nokta üst üste işareti ile bunu belirtirsiniz. Ayrıca, birden
+çok değer döndüren bir fonksiyon çağrısından atama yaptığınızda,
+tek bir ifadede birden çok değişken atayabilirsiniz.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=Ly8gQnUgZGVybGVubWV5ZWNlayAodTMyIHZlIHUyNTYgdMO8csO8IGhlbsO8eiB1eWd1bGFubWFkxLEpCnsKICAgIGxldCB6ZXJvOnUzMiA6PSAwOnUzMgogICAgbGV0IHY6dTI1NiwgdDp1MzIgOj0gZigpCiAgICBsZXQgeCwgeSA6PSBnKCkKfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="c1">// Bu derlenmeyecek (u32 ve u256 türü henüz uygulanmadı)</span>
+<span class="p">{</span>
+    <span class="ow">let</span> <span class="nv">zero</span><span class="p">:</span><span class="n">u32</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">:</span><span class="n">u32</span>
+    <span class="ow">let</span> <span class="nv">v</span><span class="p">:</span><span class="n">u256</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span><span class="n">u32</span> <span class="o">:=</span> <span class="n">f</span><span class="p">()</span>
+    <span class="ow">let</span> <span class="nv">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">:=</span> <span class="n">g</span><span class="p">()</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Optimize edici ayarlarına bağlı olarak derleyici,
+değişken hala kod bloğu kapsamında olsa bile, son kez kullanıldıktan
+sonra yığın yuvalarını serbest bırakabilir.</p>
+</section>
+<section id="atamalar">
+<h3>Atamalar<a class="headerlink" href="#atamalar" title="Permalink to this heading"></a></h3>
+<p>Değişkenler, tanımlarından sonra <code class="docutils literal notranslate"><span class="pre">:=</span></code> operatörü kullanılarak
+atanabilir. Aynı anda birden fazla değişken atamak mümkündür.
+Bunun için değerlerin sayı ve türlerinin eşleşmesi gerekir.
+Birden çok return parametresi olan bir fonksiyondan döndürülen
+değerleri atamak istiyorsanız, birden çok değişken
+tanımlamanız gerekir. Aynı değişken, bir atamanın
+sol tarafında birden çok kez bulunamaz,
+örn. <code class="docutils literal notranslate"><span class="pre">x,</span> <span class="pre">x</span> <span class="pre">:=</span> <span class="pre">f()</span></code> geçersizdir.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=bGV0IHYgOj0gMAovLyB2IGRlxJ9pxZ9rZW5pbmkgdGVrcmFyIGF0YW1hCnYgOj0gMgpsZXQgdCA6PSBhZGQodiwgMikKZnVuY3Rpb24gZigpIC0+IGEsIGIgeyB9Ci8vIGJpcmRlbiDDp29rIGRlxJ9lciBhdGFtYQp2LCB0IDo9IGYoKQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="ow">let</span> <span class="nv">v</span> <span class="o">:=</span> <span class="mi">0</span>
+<span class="c1">// v değişkenini tekrar atama</span>
+<span class="n">v</span> <span class="o">:=</span> <span class="mi">2</span>
+<span class="ow">let</span> <span class="nv">t</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="k">function</span> <span class="n">f</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="p">{</span> <span class="p">}</span>
+<span class="c1">// birden çok değer atama</span>
+<span class="n">v</span><span class="p">,</span> <span class="n">t</span> <span class="o">:=</span> <span class="n">f</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="if">
+<h3>If<a class="headerlink" href="#if" title="Permalink to this heading"></a></h3>
+<p>if ifadesi, koşullu olarak kod çalıştırmak için kullanılabilir.
+“else” bloğu tanımlanamaz. Birden fazla alternatife ihtiyacınız varsa,
+bunun yerine “switch” kullanmayı düşünebilirsiniz (aşağıya göz atın).</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=aWYgbHQoY2FsbGRhdGFzaXplKCksIDQpIHsgcmV2ZXJ0KDAsIDApIH0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="nf">lt</span><span class="p">(</span><span class="nf">calldatasize</span><span class="p">(),</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span> <span class="nf">revert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>Kod bloğu için süslü parantez gereklidir.</p>
+</section>
+<section id="switch">
+<h3>Switch<a class="headerlink" href="#switch" title="Permalink to this heading"></a></h3>
+<p>if ifadesinin genişletilmiş bir versiyonu olarak bir switch
+ifadesi kullanabilirsiniz. Switch, bir ifadenin değerini alır ve onu birkaç
+değişmez sabitle karşılaştırır. Eşleşen sabite karşılık gelen kısım değerlendirmeye alınır.
+Diğer programlama dillerinin aksine, güvenlik nedeniyle, kontrol akışı
+bir durumdan diğerine devam etmez. Değişmez sabitlerin hiçbiri eşleşmezse
+alınan ve <code class="docutils literal notranslate"><span class="pre">default</span></code> olarak adlandırılan bir varsayılan ifade veya bir alternatif durum olabilir.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ewogICAgbGV0IHggOj0gMAogICAgc3dpdGNoIGNhbGxkYXRhbG9hZCg0KQogICAgY2FzZSAwIHsKICAgICAgICB4IDo9IGNhbGxkYXRhbG9hZCgweDI0KQogICAgfQogICAgZGVmYXVsdCB7CiAgICAgICAgeCA6PSBjYWxsZGF0YWxvYWQoMHg0NCkKICAgIH0KICAgIHNzdG9yZSgwLCBkaXYoeCwgMikpCn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="ow">let</span> <span class="nv">x</span> <span class="o">:=</span> <span class="mi">0</span>
+    <span class="k">switch</span> <span class="nf">calldataload</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="k">case</span> <span class="mi">0</span> <span class="p">{</span>
+        <span class="n">x</span> <span class="o">:=</span> <span class="nf">calldataload</span><span class="p">(</span><span class="mh">0x24</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">default</span> <span class="p">{</span>
+        <span class="n">x</span> <span class="o">:=</span> <span class="nf">calldataload</span><span class="p">(</span><span class="mh">0x44</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nf">sstore</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nf">div</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Switch ifadesindeki case’ler süslü parantezle çevrelenmez, ancak case’lerin kod blokları
+için süslü parantezle çevreleme zorunluluğu vardır.</p>
+</section>
+<section id="donguler-loop">
+<h3>Döngüler (Loop)<a class="headerlink" href="#donguler-loop" title="Permalink to this heading"></a></h3>
+<p>Yul, bir başlatma bölümü, bir koşul,
+bir iterasyon sonrası bölümü ve bir kod gövdesi içeren
+döngüleri destekler. Koşul bölümü bir ifade
+olmalıdır, diğer üçü ise bloklar şeklindedir. Başlatma bölümünde herhangi
+bir değişken en üst düzeyde atanırsa, bu
+değişkenlerin kapsamı döngünün diğer tüm bölümlerine kadar genişler.</p>
+<p><code class="docutils literal notranslate"><span class="pre">break</span></code> ve <code class="docutils literal notranslate"><span class="pre">continue</span></code> ifadeleri kod gövdesinde sırasıyla döngüden çıkmak
+veya iterasyon sonrası bölümüne atlamak için kullanılabilir.</p>
+<p>Aşağıdaki örnek, bellekteki bir alanın toplamını hesaplar.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ewogICAgbGV0IHggOj0gMAogICAgZm9yIHsgbGV0IGkgOj0gMCB9IGx0KGksIDB4MTAwKSB7IGkgOj0gYWRkKGksIDB4MjApIH0gewogICAgICAgIHggOj0gYWRkKHgsIG1sb2FkKGkpKQogICAgfQp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="ow">let</span> <span class="nv">x</span> <span class="o">:=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="p">{</span> <span class="ow">let</span> <span class="nv">i</span> <span class="o">:=</span> <span class="mi">0</span> <span class="p">}</span> <span class="nf">lt</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mh">0x100</span><span class="p">)</span> <span class="p">{</span> <span class="n">i</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">)</span> <span class="p">}</span> <span class="p">{</span>
+        <span class="n">x</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nf">mload</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For döngüleri, while döngülerinin yerine de kullanılabilir:
+Başlatma ve iterasyon sonrası bölümlerini boş bırakmanız yeterlidir.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ewogICAgbGV0IHggOj0gMAogICAgbGV0IGkgOj0gMAogICAgZm9yIHsgfSBsdChpLCAweDEwMCkgeyB9IHsgICAgIC8vIHdoaWxlKGkgPCAweDEwMCkKICAgICAgICB4IDo9IGFkZCh4LCBtbG9hZChpKSkKICAgICAgICBpIDo9IGFkZChpLCAweDIwKQogICAgfQp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="ow">let</span> <span class="nv">x</span> <span class="o">:=</span> <span class="mi">0</span>
+    <span class="ow">let</span> <span class="nv">i</span> <span class="o">:=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="p">{</span> <span class="p">}</span> <span class="nf">lt</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mh">0x100</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span> <span class="p">{</span>     <span class="c1">// while(i &lt; 0x100)</span>
+        <span class="n">x</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nf">mload</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="n">i</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="fonksiyon-atamalari">
+<h3>Fonksiyon Atamaları<a class="headerlink" href="#fonksiyon-atamalari" title="Permalink to this heading"></a></h3>
+<p>Yul, fonksiyonların tanımlanmasına izin verir. Bunlar, hiçbir zaman bir
+sözleşmenin harici arayüzünün parçası olmadıkları ve Solidity fonksiyonlarından ayrı
+bir ad alanının parçası oldukları için Solidity’deki fonksiyonlarla karıştırılmamalıdır.</p>
+<p>EVM için, Yul fonksiyonları bağımsız değişkenlerini (ve bir return PC’sini)
+yığından alır ve ayrıca sonuçları yığına koyar.
+Kullanıcı tanımlı fonksiyonlar ve gömülü fonksiyonlar tam olarak aynı şekilde çağrılır.</p>
+<p>Fonksiyonlar herhangi bir yerde tanımlanabilir ve tanımlandıkları
+blokta görülebilir olurlar. Bir fonksiyonun içinde, o fonksiyonun
+dışında tanımlanan yerel değişkenlere erişemezsiniz.</p>
+<p>Fonksiyonlar, Solidity’ye benzer şekilde parametreleri atar ve değişkenleri döndürür.
+Bir değer döndürmek için, onu return değişken(ler)ine atarsınız.</p>
+<dl class="simple">
+<dt>Birden çok değer döndüren bir fonksiyonu çağırırsanız, bunları</dt><dd><p><code class="docutils literal notranslate"><span class="pre">a,</span> <span class="pre">b</span> <span class="pre">:=</span> <span class="pre">f(x)</span></code> veya <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">a,</span> <span class="pre">b</span> <span class="pre">:=</span> <span class="pre">f(x)</span></code> kullanarak birden çok değişkene atamanız gerekir.</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">leave</span></code> ifadesi, geçerli fonksiyondan çıkmak için kullanılabilir.
+Diğer dillerdeki <code class="docutils literal notranslate"><span class="pre">return</span></code> ifadesi gibi çalışır, sadece döndürmek için
+bir değer almaz, sadece fonksiyonlardan çıkar ve fonksiyon, dönüş (return)
+değişkenlerine o anda atanmış olan değerleri döndürür.</p>
+<p>EVM diyalektinin, yalnızca geçerli yul fonksiyonundan değil,
+tam çalıştırma bağlamından (dahili mesaj çağrısı) çıkan
+<code class="docutils literal notranslate"><span class="pre">return</span></code> adlı gömülü bir fonksiyonu olduğunu unutmayın.</p>
+<p>Aşağıdaki örnek, power adlı fonksiyonun kare-ve-çarpma yöntemiyle bir uygulamasıdır.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ewogICAgZnVuY3Rpb24gcG93ZXIoYmFzZSwgZXhwb25lbnQpIC0+IHJlc3VsdCB7CiAgICAgICAgc3dpdGNoIGV4cG9uZW50CiAgICAgICAgY2FzZSAwIHsgcmVzdWx0IDo9IDEgfQogICAgICAgIGNhc2UgMSB7IHJlc3VsdCA6PSBiYXNlIH0KICAgICAgICBkZWZhdWx0IHsKICAgICAgICAgICAgcmVzdWx0IDo9IHBvd2VyKG11bChiYXNlLCBiYXNlKSwgZGl2KGV4cG9uZW50LCAyKSkKICAgICAgICAgICAgc3dpdGNoIG1vZChleHBvbmVudCwgMikKICAgICAgICAgICAgICAgIGNhc2UgMSB7IHJlc3VsdCA6PSBtdWwoYmFzZSwgcmVzdWx0KSB9CiAgICAgICAgfQogICAgfQp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="k">function</span> <span class="n">power</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">exponent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">result</span> <span class="p">{</span>
+        <span class="k">switch</span> <span class="n">exponent</span>
+        <span class="k">case</span> <span class="mi">0</span> <span class="p">{</span> <span class="n">result</span> <span class="o">:=</span> <span class="mi">1</span> <span class="p">}</span>
+        <span class="k">case</span> <span class="mi">1</span> <span class="p">{</span> <span class="n">result</span> <span class="o">:=</span> <span class="n">base</span> <span class="p">}</span>
+        <span class="k">default</span> <span class="p">{</span>
+            <span class="n">result</span> <span class="o">:=</span> <span class="n">power</span><span class="p">(</span><span class="nf">mul</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">base</span><span class="p">),</span> <span class="nf">div</span><span class="p">(</span><span class="n">exponent</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+            <span class="k">switch</span> <span class="nf">mod</span><span class="p">(</span><span class="n">exponent</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="k">case</span> <span class="mi">1</span> <span class="p">{</span> <span class="n">result</span> <span class="o">:=</span> <span class="nf">mul</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span> <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="yul-tanimlamasi">
+<h2>Yul Tanımlaması<a class="headerlink" href="#yul-tanimlamasi" title="Permalink to this heading"></a></h2>
+<p>Bu bölüm Yul kodunu resmi olarak açıklar. Yul kodu genellikle
+kendi bölümlerinde açıklandığı üzere Yul nesnelerinin içine yerleştirilir.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Block = &#39;{&#39; Statement* &#39;}&#39;
+Statement =
+    Block |
+    FunctionDefinition |
+    VariableDeclaration |
+    Assignment |
+    If |
+    Expression |
+    Switch |
+    ForLoop |
+    BreakContinue |
+    Leave
+FunctionDefinition =
+    &#39;function&#39; Identifier &#39;(&#39; TypedIdentifierList? &#39;)&#39;
+    ( &#39;-&gt;&#39; TypedIdentifierList )? Block
+VariableDeclaration =
+    &#39;let&#39; TypedIdentifierList ( &#39;:=&#39; Expression )?
+Assignment =
+    IdentifierList &#39;:=&#39; Expression
+Expression =
+    FunctionCall | Identifier | Literal
+If =
+    &#39;if&#39; Expression Block
+Switch =
+    &#39;switch&#39; Expression ( Case+ Default? | Default )
+Case =
+    &#39;case&#39; Literal Block
+Default =
+    &#39;default&#39; Block
+ForLoop =
+    &#39;for&#39; Block Expression Block Block
+BreakContinue =
+    &#39;break&#39; | &#39;continue&#39;
+Leave = &#39;leave&#39;
+FunctionCall =
+    Identifier &#39;(&#39; ( Expression ( &#39;,&#39; Expression )* )? &#39;)&#39;
+Identifier = [a-zA-Z_$] [a-zA-Z_$0-9.]*
+IdentifierList = Identifier ( &#39;,&#39; Identifier)*
+TypeName = Identifier
+TypedIdentifierList = Identifier ( &#39;:&#39; TypeName )? ( &#39;,&#39; Identifier ( &#39;:&#39; TypeName )? )*
+Literal =
+    (NumberLiteral | StringLiteral | TrueLiteral | FalseLiteral) ( &#39;:&#39; TypeName )?
+NumberLiteral = HexNumber | DecimalNumber
+StringLiteral = &#39;&quot;&#39; ([^&quot;\r\n\\] | &#39;\\&#39; .)* &#39;&quot;&#39;
+TrueLiteral = &#39;true&#39;
+FalseLiteral = &#39;false&#39;
+HexNumber = &#39;0x&#39; [0-9a-fA-F]+
+DecimalNumber = [0-9]+
+</pre></div>
+</div>
+<section id="dilbilgisi-ile-ilgili-kisitlamalar">
+<h3>Dilbilgisi ile İlgili Kısıtlamalar<a class="headerlink" href="#dilbilgisi-ile-ilgili-kisitlamalar" title="Permalink to this heading"></a></h3>
+<p>Doğrudan dilbilgisi tarafından dayatılanların dışında,
+aşağıdaki kısıtlamalar geçerlidir:</p>
+<p>Switc ifadelerinin en az bir case’i (durumu) olmalıdır (default case dahil).
+Tüm case değerlerinin aynı türe ve farklı değerlere sahip olması gerekir.
+İfade türünün tüm olası değerleri kapsam dahilindeyse, default bir case
+ifadesine izin verilmez (yani, hem doğru hem de yanlış bir duruma sahip
+bir <code class="docutils literal notranslate"><span class="pre">bool</span></code> ifadesine sahip bir switch, default bir case’e izin vermez).</p>
+<p>Her ifade sıfır veya daha fazla değer olarak ele alınır.
+Tanımlayıcılar (identifier) ve Değişmez Değerler (literal) tam
+bir değer olarak ele alınır ve fonksiyon çağrıları,
+çağrılan fonksiyonun return değişkenlerinin sayısına eşit sayıda değer olarak ele alınır.</p>
+<p>Değişken bildirimlerinde ve atamalarında,
+eğer varsa sağ taraftaki ifadenin,
+sol taraftaki değişkenlerin sayısına eşit sayıda değer alması gerekir.
+Bu, birden fazla değeri ele alan bir ifadeye
+izin verilen tek durumdur. Aynı değişken
+adı, bir atamanın veya değişken bildiriminin
+sol tarafında birden fazla olamaz.</p>
+<p>Aynı zamanda komut olan ifadeler (yani blok seviyesinde)
+0 değeri olarak değerlendirilmelidir.</p>
+<p>Diğer tüm durumlarda, ifadeler tam olarak tek bir değere göre ele alınmalıdır.</p>
+<p><code class="docutils literal notranslate"><span class="pre">continue</span></code> veya <code class="docutils literal notranslate"><span class="pre">break</span></code> ifadesi yalnızca aşağıdaki gibi bir for-loop gövdesi içinde kullanılabilir.
+İfadeyi içeren en içteki loop döngüsünü düşünün.
+Döngü ve ifade aynı fonksiyonda olmalı veya her ikisi de en üst seviyede olmalıdır.
+İfade, loop döngüsünün gövde bloğunda olmalıdır;
+döngünün başlatma bloğunda veya güncelleme bloğunda olamaz.
+Bu kısıtlamanın yalnızca <code class="docutils literal notranslate"><span class="pre">continue</span></code> veya <code class="docutils literal notranslate"><span class="pre">break</span></code> deyimini içeren en
+içteki döngü için geçerli olduğunu vurgulamakta fayda var:
+bu en içteki döngü (loop) ve dolayısıyla <code class="docutils literal notranslate"><span class="pre">continue</span></code> veya <code class="docutils literal notranslate"><span class="pre">break</span></code> ifadesi,
+bir dış döngünün herhangi bir yerinde, muhtemelen bir dış döngünün başlatma bloğunda
+veya güncelleme bloğunda görünebilir. Örneğin, aşağıdakiler yasaldır, çünkü <code class="docutils literal notranslate"><span class="pre">break</span></code>,
+dış döngünün güncelleme bloğunda da meydana gelmesine rağmen,
+iç döngünün gövde bloğunda meydana gelir:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=Zm9yIHt9IHRydWUgeyBmb3Ige30gdHJ1ZSB7fSB7IGJyZWFrIH0gfQp7Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">{}</span> <span class="n">true</span> <span class="p">{</span> <span class="k">for</span> <span class="p">{}</span> <span class="n">true</span> <span class="p">{}</span> <span class="p">{</span> <span class="n">break</span> <span class="p">}</span> <span class="p">}</span>
+<span class="p">{</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For döngüsünün koşul kısmı tam olarak bir değere göre değerlendirilmelidir.</p>
+<p><code class="docutils literal notranslate"><span class="pre">leave</span></code> ifadesi yalnızca bir fonksiyon içinde kullanılabilir.</p>
+<p>Fonksiyonlar, döngü başlatma blokları söz konusu olduğunda herhangi bir yerde tanımlanamaz.</p>
+<p>Değişmezler kendi türlerinden daha büyük olamaz. Tanımlanan en büyük tür 256 bit genişliğindedir.</p>
+<p>Atamalar ve fonksiyon çağrıları sırasında ilgili değerlerin türlerinin eşleşmesi gerekir.
+Örtülü (implicit) tür dönüşümü yoktur. Genel olarak tür dönüştürme, yalnızca diyalekt
+bir türün değerini alan ve farklı bir türün değerini döndüren
+uygun bir gömülü fonksiyon sağladığında gerçekleştirilebilir.</p>
+</section>
+<section id="kapsam-belirleme-kurallari">
+<h3>Kapsam Belirleme Kuralları<a class="headerlink" href="#kapsam-belirleme-kurallari" title="Permalink to this heading"></a></h3>
+<p>Yul’daki kapsamlar (scope) Bloklara bağlıdır (fonksiyonlar ve aşağıda açıklandığı
+gibi for döngüsü hariç) ve tüm bildirimler
+(<code class="docutils literal notranslate"><span class="pre">FunctionDefinition</span></code>, <code class="docutils literal notranslate"><span class="pre">VariableDeclaration</span></code>)
+bu kapsamlara yeni tanımlayıcılar (identifier) getirir.</p>
+<p>Tanımlayıcılar, tanımlandıkları blokta görünürler
+(tüm alt düğümler ve alt bloklar dahil): fonksiyonlar tüm blokta
+(hatta tanımlandıkları yerden önce bile) görünürken, değişkenler
+yalnızca <code class="docutils literal notranslate"><span class="pre">VariableDeclaration</span></code>’dan sonraki ifadeden başlayarak görünür.</p>
+<p>Özellikle, değişkenlere kendi değişken
+atamalarının sağ tarafında referans verilemez.
+Fonksiyonlara, atamalarından önce
+referans verilebilir (eğer görünürlerse).</p>
+<p>Genel kapsam belirleme kuralının bir istisnası olarak,
+for döngüsünün  “init” bölümünün (ilk blok) kapsamı, for döngüsünün diğer tüm bölümlerini içine alır.
+Bu, init bölümünde bildirilen (ancak init parçasının içindeki bir bloğun içerisinde değil)
+değişkenlerin ve fonksiyonların for döngüsünün diğer tüm bölümlerinde görünür olduğu anlamına gelir.</p>
+<p>For döngüsünün diğer bölümlerinde bildirilen tanımlayıcılar, normal
+sözdizimsel kapsam belirleme kurallarına uyar.</p>
+<dl class="simple">
+<dt>Bu demektir ki <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">{</span> <span class="pre">I...</span> <span class="pre">}</span> <span class="pre">C</span> <span class="pre">{</span> <span class="pre">P...</span> <span class="pre">}</span> <span class="pre">{</span> <span class="pre">B...</span> <span class="pre">}</span></code> şeklindeki bir for döngüsü</dt><dd><p><code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">I...</span> <span class="pre">for</span> <span class="pre">{}</span> <span class="pre">C</span> <span class="pre">{</span> <span class="pre">P...</span> <span class="pre">}</span> <span class="pre">{</span> <span class="pre">B...</span> <span class="pre">}</span> <span class="pre">}</span></code> ifadesine eşittir.</p>
+</dd>
+</dl>
+<p>Fonksiyonların parametreleri ve return parametreleri fonksiyon
+gövdesinde görünür ve isimleri farklı olmalıdır.</p>
+<p>Fonksiyonların içinde, o fonksiyonun dışında bildirilen
+bir değişkene referans vermek mümkün değildir.</p>
+<p>Gölgelemeye (shadowing) izin verilmez, yani aynı ada sahip başka bir tanımlayıcının da
+görünür olduğu bir noktada, geçerli işlevin dışında bildirildiği için
+ona başvurmak mümkün olmasa bile bir tanımlayıcı (identifier) atayamazsınız.</p>
+</section>
+<section id="resmi-sartname">
+<h3>Resmi Şartname<a class="headerlink" href="#resmi-sartname" title="Permalink to this heading"></a></h3>
+<p>AST’nin çeşitli düğümlerinde(node) aşırı yüklenmiş bir E değerlendirme fonksiyonu
+sağlayarak resmi olarak Yul’u tanımlarız. Gömülü fonksiyonların yan etkileri olabileceğinden,
+E iki durum nesnesini (state object) ve AST düğümünü alır ve iki yeni durum
+nesnesi ve değişken sayıda başka değer döndürür.
+Bu iki durum nesnesinden birisi global durum nesnesi
+(EVM bağlamında blok zincirinin belleği, depolanması ve durumudur)
+ve diğeri de yerel durum nesnesidir
+(yerel değişkenlerin durumu, yani EVM’deki yığının bir bölümü).</p>
+<p>AST düğümü bir ifadeyse, E iki durum nesnesini ve <code class="docutils literal notranslate"><span class="pre">break</span></code>, <code class="docutils literal notranslate"><span class="pre">continue</span></code> ve <code class="docutils literal notranslate"><span class="pre">leave</span></code>
+komutları için kullanılan bir “mod”u döndürür.
+AST düğümü bir ifadeyse, E, iki durum nesnesini
+ve ifadenin değerlendirdiği sayıda değeri döndürür.</p>
+<p>Bu üst düzey açıklama için global durumun (state) kesin hatları belirtilmemiştir.
+L yerel durumu , <code class="docutils literal notranslate"><span class="pre">i</span></code> tanımlayıcılarının <code class="docutils literal notranslate"><span class="pre">L[i]</span> <span class="pre">=</span> <span class="pre">v</span></code> olarak
+gösterilen <code class="docutils literal notranslate"><span class="pre">v</span></code> değerlerine eşlenmesidir.</p>
+<p>Bir <code class="docutils literal notranslate"><span class="pre">v</span></code> tanımlayıcısı (identifier) için, tanımlayıcının adı <code class="docutils literal notranslate"><span class="pre">$v</span></code> olsun.</p>
+<p>AST düğümleri (node) için bir destructuring notasyonu kullanacağız.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>E(G, L, &lt;{St1, ..., Stn}&gt;: Block) =
+    let G1, L1, mode = E(G, L, St1, ..., Stn)
+    L2, L1&#39;in L tanımlayıcılarına bir kısıtlaması olsun
+    G1, L2, mode
+E(G, L, St1, ..., Stn: Statement) =
+    if n is zero:
+        G, L, regular
+    else:
+        let G1, L1, mode = E(G, L, St1)
+        eğer mode regular ise
+            E(G1, L1, St2, ..., Stn)
+        değilse
+            G1, L1, mode
+E(G, L, FunctionDefinition) =
+    G, L, regular
+E(G, L, &lt;let var_1, ..., var_n := rhs&gt;: VariableDeclaration) =
+    E(G, L, &lt;var_1, ..., var_n := rhs&gt;: Assignment)
+E(G, L, &lt;let var_1, ..., var_n&gt;: VariableDeclaration) =
+    L1 in L nin kopyası olduğu durumda L1[$var_i] = 0 for i = 1, ..., n
+    G, L1, regular
+E(G, L, &lt;var_1, ..., var_n := rhs&gt;: Assignment) =
+    let G1, L1, v1, ..., vn = E(G, L, rhs)
+    L2 nin L1 in kopyası olduğu durumda L2[$var_i] = vi for i = 1, ..., n
+    G, L2, regular
+E(G, L, &lt;for { i1, ..., in } condition post body&gt;: ForLoop) =
+    if n &gt;= 1:
+        let G1, L, mode = E(G, L, i1, ..., in)
+        // mode regular olmalı veya sözdizimsel kısıtlamalar nedeniyle terk edilmelidir
+        eğer mode leave ise o zaman
+            G1, L1 değişkenleri L, leave değişkenlerine kısıtlıdır
+        değilse
+            let G2, L2, mode = E(G1, L1, for {} condition post body)
+            G2, L2 değişkenleri L, mode değişkenlerine kısıtlıdır
+    else:
+        let G1, L1, v = E(G, L, condition)
+        if v is false:
+            G1, L1, regular
+        else:
+            let G2, L2, mode = E(G1, L, body)
+            if mode is break:
+                G2, L2, regular
+            otherwise if mode is leave:
+                G2, L2, leave
+            else:
+                G3, L3, mode = E(G2, L2, post)
+                if mode is leave:
+                    G2, L3, leave
+                otherwise
+                    E(G3, L3, for {} condition post body)
+E(G, L, break: BreakContinue) =
+    G, L, break
+E(G, L, continue: BreakContinue) =
+    G, L, continue
+E(G, L, leave: Leave) =
+    G, L, leave
+E(G, L, &lt;if condition body&gt;: If) =
+    let G0, L0, v = E(G, L, condition)
+    if v is true:
+        E(G0, L0, body)
+    else:
+        G0, L0, regular
+E(G, L, &lt;switch condition case l1:t1 st1 ... case ln:tn stn&gt;: Switch) =
+    E(G, L, switch condition case l1:t1 st1 ... case ln:tn stn default {})
+E(G, L, &lt;switch condition case l1:t1 st1 ... case ln:tn stn default st&#39;&gt;: Switch) =
+    let G0, L0, v = E(G, L, condition)
+    // i = 1 .. n
+    // Değişmezleri (literal) değerlendirin, bağlam önemli değil
+    let _, _, v1 = E(G0, L0, l1)
+    ...
+    let _, _, vn = E(G0, L0, ln)
+    vi = v olacak şekilde en küçük i varsa:
+        E(G0, L0, sti)
+    else:
+        E(G0, L0, st&#39;)
+
+E(G, L, &lt;name&gt;: Identifier) =
+    G, L, L[$name]
+E(G, L, &lt;fname(arg1, ..., argn)&gt;: FunctionCall) =
+    G1, L1, vn = E(G, L, argn)
+    ...
+    G(n-1), L(n-1), v2 = E(G(n-2), L(n-2), arg2)
+    Gn, Ln, v1 = E(G(n-1), L(n-1), arg1)
+    Let &lt;function fname (param1, ..., paramn) -&gt; ret1, ..., retm block&gt;
+    be the function of name $fname visible at the point of the call.
+    Let L&#39; be a new local state such that
+    L&#39;[$parami] = vi and L&#39;[$reti] = 0 for all i.
+    Let G&#39;&#39;, L&#39;&#39;, mode = E(Gn, L&#39;, block)
+    G&#39;&#39;, Ln, L&#39;&#39;[$ret1], ..., L&#39;&#39;[$retm]
+E(G, L, l: StringLiteral) = G, L, str(l),
+    burada str, EVM diyalekti için yukarıdaki &#39;Değişmezler&#39; bölümünde
+    tanımlanan string değerlendirme fonksiyonudur.
+E(G, L, n: HexNumber) = G, L, hex(n)
+    burada hex, bir onaltılık (hexadecimal) basamak dizisini soldan okumalı (big endian)
+    değerine dönüştüren onaltılık değerlendirme fonksiyonudur.
+E(G, L, n: DecimalNumber) = G, L, dec(n),
+    where dec is the decimal evaluation function,
+    which turns a sequence of decimal digits into their big endian value
+    burada dec, ondalık (decimal) basamak dizisini soldan okumalı (büyük endian) değerine
+    dönüştüren ondalık değerlendirme fonksiyonudur.
+</pre></div>
+</div>
+</section>
+<section id="evm-dialect">
+<span id="opcodes"></span><h3>EVM Dialect<a class="headerlink" href="#evm-dialect" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>Yul’un varsayılan lehçesi şu anda EVM’nin mevcut sürümü için olan EVM lehçesidir.</dt><dd><p>EVM’nin bir sürümü ile birlikte. Bu lehçede kullanılabilen tek tür,
+Ethereum Sanal Makinesinin 256 bit yerel türü olan <code class="docutils literal notranslate"><span class="pre">u256</span></code>’dır.
+Bu tür, lehçenin varsayılan türü olduğu için görmezden gelinebilir.</p>
+</dd>
+</dl>
+<p>Aşağıdaki tablo tüm gömülü fonksiyonları (EVM sürümüne bağlı olarak)
+listeler ve fonksiyonun / işlem kodunun semantiğinin kısa bir
+açıklamasını sunar. Bu belge, Ethereum sanal makinesinin tam bir açıklaması
+olmak istemediği için kesin semantikleriyle ilgileniyorsanız,
+lütfen farklı bir belgeye bakınız.</p>
+<p><code class="docutils literal notranslate"><span class="pre">-</span></code> ile işaretlenen işlem kodları bir sonuç döndürmez ve diğerleri tam olarak bir değer döndürür.
+<code class="docutils literal notranslate"><span class="pre">F</span></code>, <code class="docutils literal notranslate"><span class="pre">H</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>, <code class="docutils literal notranslate"><span class="pre">C</span></code>, <code class="docutils literal notranslate"><span class="pre">I</span></code> ve <code class="docutils literal notranslate"><span class="pre">L</span></code> ile işaretlenen işlem kodları sırasıyla Frontier, Homestead,
+Byzantium, Constantinople, Istanbul veya London’dan beri mevcuttur.</p>
+<p>Aşağıda, <code class="docutils literal notranslate"><span class="pre">mem[a...b)</span></code>, <code class="docutils literal notranslate"><span class="pre">a</span></code> konumundan başlayan ancak <code class="docutils literal notranslate"><span class="pre">b</span></code> konumuna kadar
+olmayan bellek baytlarını belirtir ve <code class="docutils literal notranslate"><span class="pre">storage[p]</span></code>, <code class="docutils literal notranslate"><span class="pre">p</span></code> yuvasındaki depolama içeriğini belirtir.</p>
+<p>Yul, yerel değişkenleri ve kontrol akışını yönettiğinden,
+bu özelliklere müdahale eden işlem kodları mevcut değildir. Bu, <code class="docutils literal notranslate"><span class="pre">dup</span></code> ve <code class="docutils literal notranslate"><span class="pre">swap</span></code> talimatlarının
+yanı sıra <code class="docutils literal notranslate"><span class="pre">jump</span></code> talimatlarını, etiketleri ve <code class="docutils literal notranslate"><span class="pre">push</span></code> talimatlarını içerir.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 5%" />
+<col style="width: 3%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Komut</p></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"><p>Açıklama</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>stop()</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>F</p></td>
+<td><p>çalışmayı durdurur, return(0, 0) ile eşdeğerdir</p></td>
+</tr>
+<tr class="row-odd"><td><p>add(x, y)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x + y</p></td>
+</tr>
+<tr class="row-even"><td><p>sub(x, y)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x - y</p></td>
+</tr>
+<tr class="row-odd"><td><p>mul(x, y)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x * y</p></td>
+</tr>
+<tr class="row-even"><td><p>div(x, y)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x / y veya 0 eğer y == 0 ise</p></td>
+</tr>
+<tr class="row-odd"><td><p>sdiv(x, y)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x / y, ikinin tümleyenindeki işaretli sayılar için,
+y == 0 ise 0</p></td>
+</tr>
+<tr class="row-even"><td><p>mod(x, y)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x % y, y == 0 ise 0</p></td>
+</tr>
+<tr class="row-odd"><td><p>smod(x, y)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x % y, ikinin tümleyenindeki işaretli sayılar için,
+y == 0 ise 0</p></td>
+</tr>
+<tr class="row-even"><td><p>exp(x, y)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x in y ninci kuvveti</p></td>
+</tr>
+<tr class="row-odd"><td><p>not(x)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x’in bit düzeyinde “değil”i (x’in her biti reddedilir)</p></td>
+</tr>
+<tr class="row-even"><td><p>lt(x, y)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x &lt; y ise 1, değilse 0</p></td>
+</tr>
+<tr class="row-odd"><td><p>gt(x, y)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x &gt; y ise 1, 0 değilse 0</p></td>
+</tr>
+<tr class="row-even"><td><p>slt(x, y)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x &lt; y ise 1, değilse 0, ikinin tümleyenindeki
+işaretli sayılar için</p></td>
+</tr>
+<tr class="row-odd"><td><p>sgt(x, y)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x &gt; y ise 1, değilse 0, ikinin tümleyenindeki
+işaretli sayılar için</p></td>
+</tr>
+<tr class="row-even"><td><p>eq(x, y)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x == y ise 1, değilse 0</p></td>
+</tr>
+<tr class="row-odd"><td><p>iszero(x)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x == 0 ise 1, değilse 0</p></td>
+</tr>
+<tr class="row-even"><td><p>and(x, y)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x ve y için bit düzeyinde “and”</p></td>
+</tr>
+<tr class="row-odd"><td><p>or(x, y)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x ve y için bit düzeyinde “or”</p></td>
+</tr>
+<tr class="row-even"><td><p>xor(x, y)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x ve y için bit düzeyinde “xor”</p></td>
+</tr>
+<tr class="row-odd"><td><p>byte(n, x)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>x’in n. baytı, burada en önemli bayt 0. bayttır</p></td>
+</tr>
+<tr class="row-even"><td><p>shl(x, y)</p></td>
+<td></td>
+<td><p>C</p></td>
+<td><p>y ile x bit sola mantıksal kaydırma</p></td>
+</tr>
+<tr class="row-odd"><td><p>shr(x, y)</p></td>
+<td></td>
+<td><p>C</p></td>
+<td><p>y ile x bit sağa mantıksal kaydırma</p></td>
+</tr>
+<tr class="row-even"><td><p>sar(x, y)</p></td>
+<td></td>
+<td><p>C</p></td>
+<td><p>işaretli aritmetik kaydırma sağa y ile x bit</p></td>
+</tr>
+<tr class="row-odd"><td><p>addmod(x, y, m)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>(x + y) % m keyfi kesinlikli aritmetik ile, m == 0 ise 0</p></td>
+</tr>
+<tr class="row-even"><td><p>mulmod(x, y, m)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>(x * y) % m keyfi kesinlikli aritmetik ile, m == 0 ise 0</p></td>
+</tr>
+<tr class="row-odd"><td><p>signextend(i, x)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>işaret, en önemsizden başlayarak (i*8+7). bitten
+başlayarak genişler</p></td>
+</tr>
+<tr class="row-even"><td><p>keccak256(p, n)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>keccak(mem[p…(p+n)))</p></td>
+</tr>
+<tr class="row-odd"><td><p>pc()</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>koddaki geçerli konum</p></td>
+</tr>
+<tr class="row-even"><td><p>pop(x)</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>F</p></td>
+<td><p>x değerini at</p></td>
+</tr>
+<tr class="row-odd"><td><p>mload(p)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>mem[p…(p+32))</p></td>
+</tr>
+<tr class="row-even"><td><p>mstore(p, v)</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>F</p></td>
+<td><p>mem[p…(p+32)) := v</p></td>
+</tr>
+<tr class="row-odd"><td><p>mstore8(p, v)</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>F</p></td>
+<td><p>mem[p] := v &amp; 0xff (yalnızca tek bir baytı değiştirir)</p></td>
+</tr>
+<tr class="row-even"><td><p>sload(p)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>storage[p]</p></td>
+</tr>
+<tr class="row-odd"><td><p>sstore(p, v)</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>F</p></td>
+<td><p>storage[p] := v</p></td>
+</tr>
+<tr class="row-even"><td><p>msize()</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>bellek boyutu, yani erişilen en büyük bellek indeksi</p></td>
+</tr>
+<tr class="row-odd"><td><p>gas()</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>gaz hala uygulama için kullanılabilir</p></td>
+</tr>
+<tr class="row-even"><td><p>address()</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>mevcut sözleşmenin / uygulama bağlamının adresi</p></td>
+</tr>
+<tr class="row-odd"><td><p>balance(a)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>a adresindeki wei bakiyesi</p></td>
+</tr>
+<tr class="row-even"><td><p>selfbalance()</p></td>
+<td></td>
+<td><p>I</p></td>
+<td><p>balance(address()) ile eşdeğer, ancak daha ucuz</p></td>
+</tr>
+<tr class="row-odd"><td><p>caller()</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>sender’ı çağırır (<code class="docutils literal notranslate"><span class="pre">delegatecall</span></code>’u’ hariç tutarak)</p></td>
+</tr>
+<tr class="row-even"><td><p>callvalue()</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>mevcut çağrı ile birlikte gönderilen wei</p></td>
+</tr>
+<tr class="row-odd"><td><p>calldataload(p)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>p konumundan başlayan çağrı verileri (32 bayt)</p></td>
+</tr>
+<tr class="row-even"><td><p>calldatasize()</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>bayt cinsinden çağrı verilerinin boyutu</p></td>
+</tr>
+<tr class="row-odd"><td><p>calldatacopy(t, f, s)</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>F</p></td>
+<td><p>f konumundaki çağrı verilerinden t konumundaki
+mem’e s bayt kopyalayın</p></td>
+</tr>
+<tr class="row-even"><td><p>codesize()</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>mevcut sözleşme / uygulama bağlamının kodunun boyutu</p></td>
+</tr>
+<tr class="row-odd"><td><p>codecopy(t, f, s)</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>F</p></td>
+<td><p>s baytını f konumundaki koddan t konumundaki mem’e kopyalayın</p></td>
+</tr>
+<tr class="row-even"><td><p>extcodesize(a)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>a adresindeki kodun boyutu</p></td>
+</tr>
+<tr class="row-odd"><td><p>extcodecopy(a, t, f, s)</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>F</p></td>
+<td><p>codecopy(t, f, s) gibi ama a adresindeki kodu alır</p></td>
+</tr>
+<tr class="row-even"><td><p>returndatasize()</p></td>
+<td></td>
+<td><p>B</p></td>
+<td><p>son returndata’nın boyutu</p></td>
+</tr>
+<tr class="row-odd"><td><p>returndatacopy(t, f, s)</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>B</p></td>
+<td><p>f konumundaki returndata’dan t konumundaki mem’e
+s bayt kopyalayın</p></td>
+</tr>
+<tr class="row-even"><td><p>extcodehash(a)</p></td>
+<td></td>
+<td><p>C</p></td>
+<td><p>a adresinin hash kodu</p></td>
+</tr>
+<tr class="row-odd"><td><p>create(v, p, n)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>mem[p…(p+n)) koduyla yeni sözleşme oluştur ve v wei gönder
+ve yeni adresi return et; hata durumunda 0 döndürür</p></td>
+</tr>
+<tr class="row-even"><td><p>create2(v, p, n, s)</p></td>
+<td></td>
+<td><p>C</p></td>
+<td><p>keccak256(0xff . this .s .keccak256(mem[p…(p+n))) adresinde
+mem[p…(p+n)) koduyla yeni sözleşme oluşturun ve v wei gönderin
+ve yeni adresi döndürün, burada 0xff 1 baytlık bir değerdir,
+bu 20 baytlık bir değer olarak mevcut sözleşmenin adresidir ve
+s, soldan okumalı (big-endian) 256 bitlik bir değerdir;
+hata durumunda 0 döndürür</p></td>
+</tr>
+<tr class="row-odd"><td><p>call(g, a, v, in,
+insize, out, outsize)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>a adresindeki mem[in…(in+insize) girişli
+çağrı sözleşmesi, g gaz, v wei ve
+mem[out…(out+outsize)) ise çıkış alanı
+hata durumunda 0 döndürür (örn. gazın bitmesi) başarı durumunda
+ise 1 döndürür <a class="reference internal" href="#yul-call-return-area"><span class="std std-ref">Daha fazla bilgi</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p>callcode(g, a, v, in,
+insize, out, outsize)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">call</span></code> ile aynıdır, ancak yalnızca a kodunu kullanın</p>
+</div></blockquote>
+<p>ve aksi takdirde mevcut sözleşme bağlamında kalın
+<a class="reference internal" href="#yul-call-return-area"><span class="std std-ref">Daha fazla bilgi</span></a></p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>delegatecall(g, a, in,
+insize, out, outsize)</p></td>
+<td></td>
+<td><p>H</p></td>
+<td><blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">callcode</span></code> ile eşdeğerdir ama aynı zamanda <code class="docutils literal notranslate"><span class="pre">caller</span></code></p>
+</div></blockquote>
+<p>ve <code class="docutils literal notranslate"><span class="pre">callvalue</span></code> değerini de tutar
+<a class="reference internal" href="#yul-call-return-area"><span class="std std-ref">Daha fazla bilgi</span></a></p>
+</td>
+</tr>
+<tr class="row-even"><td><p>staticcall(g, a, in,
+insize, out, outsize)</p></td>
+<td></td>
+<td><p>B</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">call(g,</span> <span class="pre">a,</span> <span class="pre">0,</span> <span class="pre">in,</span> <span class="pre">insize,</span> <span class="pre">out,</span> <span class="pre">outsize)</span></code> ile eşdeğerdir
+ama durum değişikliklerine izin vermez
+<a class="reference internal" href="#yul-call-return-area"><span class="std std-ref">Daha fazla bilgi</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>return(p, s)</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>F</p></td>
+<td><p>yürütmeyi sonlandırır, veriyi dönderir mem[p…(p+s))</p></td>
+</tr>
+<tr class="row-even"><td><p>revert(p, s)</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>B</p></td>
+<td><p>yürütmeyi sonlandırır, durum değişikliklerini geri alır
+mem[p…(p+s) verisini dönderir</p></td>
+</tr>
+<tr class="row-odd"><td><p>selfdestruct(a)</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>F</p></td>
+<td><p>yürütmeyi sonlandırır, mevcut sözleşmeyi yok eder
+ve parayı a’ya gönderir</p></td>
+</tr>
+<tr class="row-even"><td><p>invalid()</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>F</p></td>
+<td><p>geçersiz talimatla yürütmeyi sonlandır</p></td>
+</tr>
+<tr class="row-odd"><td><p>log0(p, s)</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>F</p></td>
+<td><p>topic ve mem[p…(p+s)) datası olmadan log aç</p></td>
+</tr>
+<tr class="row-even"><td><p>log1(p, s, t1)</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>F</p></td>
+<td><p>t1 ve mem[p…(p+s)) datası ile log aç</p></td>
+</tr>
+<tr class="row-odd"><td><p>log2(p, s, t1, t2)</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>F</p></td>
+<td><p>t1, t2 topic’leri ve mem[p…(p+s)) datası ile log aç</p></td>
+</tr>
+<tr class="row-even"><td><p>log3(p, s, t1, t2, t3)</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>F</p></td>
+<td><p>t1, t2, t3 topic’leri ve mem[p…(p+s)) datası ile log aç</p></td>
+</tr>
+<tr class="row-odd"><td><p>log4(p, s, t1, t2, t3,
+t4)</p></td>
+<td><p><cite>-</cite></p></td>
+<td><p>F</p></td>
+<td><p>topics t1, t2, t3, t4 topic’leri ve mem[p…(p+s))
+datası ile log aç</p></td>
+</tr>
+<tr class="row-even"><td><p>chainid()</p></td>
+<td></td>
+<td><p>I</p></td>
+<td><p>Yürütme zincirinin kimliği (EIP-1344)</p></td>
+</tr>
+<tr class="row-odd"><td><p>basefee()</p></td>
+<td></td>
+<td><p>L</p></td>
+<td><p>mevcut bloğun taban ücreti (EIP-3198 ve EIP-1559)</p></td>
+</tr>
+<tr class="row-even"><td><p>origin()</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>işlem gönderen</p></td>
+</tr>
+<tr class="row-odd"><td><p>gasprice()</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>işlemin gaz fiyatı</p></td>
+</tr>
+<tr class="row-even"><td><p>blockhash(b)</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>b nolu bloğun hash değeri - mevcut hariç yalnızca
+son 256 blok için</p></td>
+</tr>
+<tr class="row-odd"><td><p>coinbase()</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>mevcut madencilik faydalanıcısı</p></td>
+</tr>
+<tr class="row-even"><td><p>timestamp()</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>çağlardan bu yana geçerli bloğun saniye cinsindenzaman damgası</p></td>
+</tr>
+<tr class="row-odd"><td><p>number()</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>mevcut blok numarası</p></td>
+</tr>
+<tr class="row-even"><td><p>difficulty()</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>mevcut bloğun zorluğu</p></td>
+</tr>
+<tr class="row-odd"><td><p>gaslimit()</p></td>
+<td></td>
+<td><p>F</p></td>
+<td><p>mevcut bloğun gaz limitini engelle</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note" id="yul-call-return-area">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">call*</span></code> komutları, return veya hata verilerinin yerleştirildiği bellekte bir alanı
+tanımlamak için <code class="docutils literal notranslate"><span class="pre">out</span></code> ve <code class="docutils literal notranslate"><span class="pre">outsize</span></code> parametrelerini kullanır. Bu alan, çağrılan sözleşmenin
+kaç bayt döndüğüne bağlı olarak yazılır. Daha fazla veri döndürürse, yalnızca ilk <code class="docutils literal notranslate"><span class="pre">outsize</span></code> baytlar yazılır.
+Geri kalan verilere <code class="docutils literal notranslate"><span class="pre">returndatacopy</span></code> işlem kodunu kullanarak erişebilirsiniz. Daha az veri döndürürse, kalan
+baytlara hiç dokunulmaz. Bu bellek alanının hangi bölümünün geri dönüş verilerini içerdiğini kontrol etmek için
+<code class="docutils literal notranslate"><span class="pre">returndatasize</span></code> işlem kodunu kullanmanız gerekir. Kalan baytlar, çağrıdan önceki değerlerini koruyacaktır.</p>
+</div>
+<p>Bazı dahili diyalektlerde ek fonksiyonlar vardır:</p>
+<section id="datasize-dataoffset-datacopy">
+<h4>datasize, dataoffset, datacopy<a class="headerlink" href="#datasize-dataoffset-datacopy" title="Permalink to this heading"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">datasize(x)</span></code>, <code class="docutils literal notranslate"><span class="pre">dataoffset(x)</span></code> ve <code class="docutils literal notranslate"><span class="pre">datacopy(t,</span> <span class="pre">f,</span> <span class="pre">l)</span></code> fonksiyonları bir
+Yul nesnesinin diğer bölümlerine erişmek için kullanılır.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">datasize</span></code> ve <code class="docutils literal notranslate"><span class="pre">dataoffset</span></code> argüman olarak yalnızca string değişmezlerini (diğer nesnelerin adlarını)</dt><dd><p>alabilir ve sırasıyla veri alanındaki boyutu ve ofseti döndürebilir.
+EVM için <code class="docutils literal notranslate"><span class="pre">datacopy</span></code> fonksiyonu <code class="docutils literal notranslate"><span class="pre">codecopy</span></code> fonksiyonu ile eşdeğerdir.</p>
+</dd>
+</dl>
+</section>
+<section id="setimmutable-loadimmutable">
+<h4>setimmutable, loadimmutable<a class="headerlink" href="#setimmutable-loadimmutable" title="Permalink to this heading"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">setimmutable(offset,</span> <span class="pre">&quot;name&quot;,</span> <span class="pre">value)</span></code> ve <code class="docutils literal notranslate"><span class="pre">loadimmutable(&quot;name&quot;)</span></code> fonksiyonları,
+Solidity’deki değişmez mekanizma için kullanılır ve saf Yul ile hoş bir şekilde eşleşmez.
+<code class="docutils literal notranslate"><span class="pre">setimmutable(offset,</span> <span class="pre">&quot;name&quot;,</span> <span class="pre">value)</span></code> çağrısı, verilen adlandırılmış değişmezi içeren sözleşmenin
+çalışma zamanı (runtime) kodunun ofsette <code class="docutils literal notranslate"><span class="pre">offset</span></code> belleğe kopyalandığını ve yer tutucuyu (placeholder) içeren
+bellekteki tüm konumlara (<code class="docutils literal notranslate"><span class="pre">offset</span></code>’e göre) <code class="docutils literal notranslate"><span class="pre">value</span></code> yazacağını varsayar.
+Bu, çalışma zamanı kodunda <code class="docutils literal notranslate"><span class="pre">loadimmutable(&quot;name&quot;)</span></code> çağrıları için oluşturulmuştur.</p>
+</section>
+<section id="linkersymbol">
+<h4>linkersymbol<a class="headerlink" href="#linkersymbol" title="Permalink to this heading"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">linkersymbol(&quot;library_id&quot;)</span></code> fonksiyonu, bağlayıcı (linker) tarafından değiştirilecek bir
+adres değişmezi (literal) için bir yer tutucudur (placeholder).
+İlk ve tek bağımsız değişkeni bir string değişmezi olmalıdır ve eklenecek adresi benzersiz şekilde temsil eder.
+Tanımlayıcılar (identifier) isteğe bağlı olabilir, ancak derleyici Solidity kaynaklarından Yul kodu ürettiğinde,
+o kitaplığı tanımlayan kaynak birimin adıyla nitelenmiş bir kitaplık adı kullanır.
+Kodu belirli bir kitaplık adresiyle ilişkilendirmek için, komut satırındaki</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">--libraries</span></code> seçeneğine aynı tanımlayıcı verilmelidir.</p>
+</div></blockquote>
+<p>Örneğin aşağıdaki kod</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=bGV0IGEgOj0gbGlua2Vyc3ltYm9sKCJmaWxlLnNvbDpNYXRoIik="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="ow">let</span> <span class="nv">a</span> <span class="o">:=</span> <span class="n">linkersymbol</span><span class="p">(</span><span class="s">&quot;file.sol:Math&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>bağlayıcı (linker) <code class="docutils literal notranslate"><span class="pre">--libraries</span> <span class="pre">&quot;file.sol:Math=0x1234567890123456789012345678901234567890</span></code>
+seçeneği ile çağrıldığında şu koda eşittir:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=bGV0IGEgOj0gMHgxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkw"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="ow">let</span> <span class="nv">a</span> <span class="o">:=</span> <span class="mh">0x1234567890123456789012345678901234567890</span>
+</pre></div>
+</div>
+<p>Solidity bağlayıcı (linker) hakkında ayrıntılar için <a class="reference internal" href="using-the-compiler.html#commandline-compiler"><span class="std std-ref">Komut Satırı Derleyicisini Kullanma</span></a> bölümüne bakın.</p>
+</section>
+<section id="memoryguard">
+<h4>memoryguard<a class="headerlink" href="#memoryguard" title="Permalink to this heading"></a></h4>
+<p>Bu fonksiyon, nesnelerle birlikte EVM lehçesinde mevcuttur.
+<code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">ptr</span> <span class="pre">:=</span> <span class="pre">memoryguard(size)</span></code> (<code class="docutils literal notranslate"><span class="pre">size</span></code>’ın’ değişmez bir sayı olması gerektiği yerde)
+çağıranı, yalnızca <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">size)</span></code> aralığında veya <code class="docutils literal notranslate"><span class="pre">ptr</span></code>’dan
+başlayan sınırsız aralıkta bellek kullandıklarında garanti verir.</p>
+<p>Bir <code class="docutils literal notranslate"><span class="pre">memoryguard</span></code> çağrısının varlığı, tüm bellek erişiminin
+bu kısıtlamaya bağlı olduğunu gösterdiğinden, optimize edicinin
+ek optimizasyon adımları gerçekleştirmesine izin verir, örneğin, aksi takdirde
+belleğe erişilemeyecek olan yığın (stack) değişkenlerini taşımaya çalışan yığın limiti kaçağı gibi.</p>
+<p>Yul optimizer, amaçları için yalnızca bellek aralığını <code class="docutils literal notranslate"><span class="pre">[size,</span> <span class="pre">ptr)</span></code> kullanmayı vaat eder.
+Optimize edicinin herhangi bir bellek ayırması gerekmiyorsa, <code class="docutils literal notranslate"><span class="pre">ptr</span> <span class="pre">==</span> <span class="pre">size</span></code> boyutunu tutar.</p>
+<p><code class="docutils literal notranslate"><span class="pre">memoryguard</span></code> birden çok kez çağrılabilir, ancak bir Yul alt nesnesinde bağımsız değişkenle
+aynı değişmeze sahip olması gerekir. Bir alt nesnede en az bir <code class="docutils literal notranslate"><span class="pre">memoryguard</span></code> çağrısı bulunursa,
+bunun üzerinde ek optimize edici adımlar çalıştırılır.</p>
+</section>
+<section id="verbatim">
+<span id="yul-verbatim"></span><h4>verbatim<a class="headerlink" href="#verbatim" title="Permalink to this heading"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">verbatim...</span></code> gömülü fonksiyonlar kümesi, Yul derleyicisi tarafından bilinmeyen işlem kodları
+için bayt kodu oluşturmanıza olanak tanır. Ayrıca, optimize edici tarafından
+değiştirilmeyecek olan bayt kodu dizileri oluşturmanıza da olanak tanır.</p>
+<p>Fonksiyonlar şu şekildedir: <code class="docutils literal notranslate"><span class="pre">verbatim_&lt;n&gt;i_&lt;m&gt;o(&quot;&lt;data&gt;&quot;,</span> <span class="pre">...)</span></code>, burada</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code> giriş (input) yığını yuvalarının/değişkenlerinin sayısını belirten 0 ile 99 arasında bir ondalık sayıdır</p></li>
+<li><p>çıktı (output) yığını yuvalarının / değişkenlerinin sayısını belirten 0 ile 99 arasında bir ondalık sayıdır</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code> bayt dizisini içeren bir string değişmezidir</p></li>
+</ul>
+<p>Örneğin, optimize edicinin sabit değer olan ikiye dokunmadan girişi
+iki ile çarpan bir fonksiyon tanımlamak istiyorsanız, şöyle kullanabilirsiniz:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=bGV0IHggOj0gY2FsbGRhdGFsb2FkKDApCmxldCBkb3VibGUgOj0gdmVyYmF0aW1fMWlfMW8oaGV4IjYwMDIwMiIsIHgp"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="ow">let</span> <span class="nv">x</span> <span class="o">:=</span> <span class="nf">calldataload</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="ow">let</span> <span class="nv">double</span> <span class="o">:=</span> <span class="n">verbatim_1i_1o</span><span class="p">(</span><span class="s">hex&quot;600202&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Bu kod, <code class="docutils literal notranslate"><span class="pre">x</span></code>’i doğrudan almak amacıyla
+(yine de optimize edici, <code class="docutils literal notranslate"><span class="pre">calldataload</span></code> işlem kodunun sonucunu
+doğrudan yeniden kullanabilir) bir <code class="docutils literal notranslate"><span class="pre">dup1</span></code> işlem kodunun
+ardından <code class="docutils literal notranslate"><span class="pre">600202</span></code> ile sonuçlanır. Kodun, kopyalanan <code class="docutils literal notranslate"><span class="pre">x</span></code> değerini tükettiği
+ve sonucu yığının en üstünde ürettiği varsayılır.
+Derleyici daha sonra <code class="docutils literal notranslate"><span class="pre">double</span></code> için bir yığın yuvası
+tahsis etmek ve sonucu orada saklamak için kod üretir.</p>
+<p>Tüm işlem kodlarında olduğu gibi, değişmez değerler en soldaki değişmez değer
+en üstte olacak şekilde yığın üzerinde düzenlenirken,
+return değerleri ise en sağdaki değişken, yığının
+en üstünde olacak şekilde düzenlendiği varsayılır.</p>
+<p><code class="docutils literal notranslate"><span class="pre">verbatim</span></code> isteğe bağlı işlem kodları ve hatta Solidity derleyicisi
+tarafından bilinmeyen işlem kodları oluşturmak için kullanılabildiğinden,
+optimize edici ile birlikte <code class="docutils literal notranslate"><span class="pre">verbatim</span></code> kullanılırken dikkatli olunmalıdır.
+Optimize edici kapatıldığında bile, kod oluşturucu yığın düzenini
+belirlemelidir, bu da örneğin yığın yüksekliğini değiştirmek
+için <code class="docutils literal notranslate"><span class="pre">verbatim</span></code> kullanmak istediğinizde tanımsız davranışa yol açabilir.</p>
+<p>Aşağıda, derleyici tarafından kontrol edilmeyen verbatim
+bayt kodundaki kısıtlamaların kapsamlı olmayan
+bir listesi bulunmaktadır. Bu kısıtlamaların ihlali,
+tanımlanmamış davranışlara neden olabilir.</p>
+<ul class="simple">
+<li><p>Kontrol akışı verbatim bloklarının içine veya dışına atlamamalıdır,
+ancak aynı verbatim bloğu içinde atlayabilir.</p></li>
+<li><p>Giriş ve çıkış parametreleri dışındaki yığın
+içeriklerine erişilmemelidir.</p></li>
+<li><p>Yığın yükseklik farkı tam olarak <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">-</span> <span class="pre">n</span></code> olmalıdır
+(çıkış yuvaları eksi giriş yuvaları).</p></li>
+<li><p>Verbatim bayt kodu, kapsayan bayt kodu hakkında herhangi
+bir varsayımda bulunamaz. Gerekli tüm parametreler
+yığın değişkenleri olarak iletilmelidir.</p></li>
+</ul>
+<p>Optimize edici “verbatim” bayt kodunu analiz etmez ve her zaman
+durumun tüm yönlerini değiştirdiğini ve bu nedenle <code class="docutils literal notranslate"><span class="pre">verbatim</span></code>
+fonksiyon çağrılarında yalnızca çok az optimizasyon yapabileceğini varsayar.</p>
+<p>Optimize edici, verbatim bayt kodunu opak bir kod bloğu olarak ele alır.
+Bölmez, ancak aynı verbatim bayt kodu bloklarıyla taşıyabilir,
+çoğaltabilir veya birleştirebilir.
+Bir “verbatim” bayt kodu bloğuna kontrol akışı
+tarafından ulaşılamıyorsa, kaldırılabilir.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>EVM iyileştirmelerinin mevcut akıllı sözleşmeleri bozup bozmayacağı
+konusundaki tartışmalar sırasında, <code class="docutils literal notranslate"><span class="pre">verbatim</span></code> içindeki özellikler,
+Solidity derleyicisinin kullandığı özelliklerle
+aynı değerlendirmeyi alamaz.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Karışıklığı önlemek için, “verbatim” string’i başlayan tüm tanımlayıcılar reserv edilmiştir ve
+kullanıcıların atadığı tanımlayıcılar için kullanılamaz.</p>
+</div>
+</section>
+</section>
+</section>
+<section id="specification-of-yul-object">
+<span id="yul-object"></span><h2>Specification of Yul Object<a class="headerlink" href="#specification-of-yul-object" title="Permalink to this heading"></a></h2>
+<p>Yul nesneleri, adlandırılmış kod ve veri bölümlerini gruplandırmak için kullanılır.
+<code class="docutils literal notranslate"><span class="pre">datasize</span></code>, <code class="docutils literal notranslate"><span class="pre">dataoffset</span></code> ve <code class="docutils literal notranslate"><span class="pre">datacopy</span></code> fonksiyonları
+bu bölümlere kod içinden erişmek için kullanılabilir.
+Onaltılı (hex) string’ler, onaltılı kodlamada verileri belirtmek için kullanılabilir,
+yerel (native) kodlamada normal string’ler kullanılır.
+Kod için <code class="docutils literal notranslate"><span class="pre">datacopy</span></code>, birleştirilmiş ikili (binary) gösterimine erişecektir.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Object = &#39;object&#39; StringLiteral &#39;{&#39; Code ( Object | Data )* &#39;}&#39;
+Code = &#39;code&#39; Block
+Data = &#39;data&#39; StringLiteral ( HexLiteral | StringLiteral )
+HexLiteral = &#39;hex&#39; (&#39;&quot;&#39; ([0-9a-fA-F]{2})* &#39;&quot;&#39; | &#39;\&#39;&#39; ([0-9a-fA-F]{2})* &#39;\&#39;&#39;)
+StringLiteral = &#39;&quot;&#39; ([^&quot;\r\n\\] | &#39;\\&#39; .)* &#39;&quot;&#39;
+</pre></div>
+</div>
+<p>Yukarıda <code class="docutils literal notranslate"><span class="pre">Block</span></code>, önceki bölümde Yul kodu dilbilgisinde açıklanan <code class="docutils literal notranslate"><span class="pre">Block</span></code> anlamına gelir.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">_deployed</span></code> ile biten bir ada sahip bir nesne, Yul optimizer tarafından deploy edilmiş
+kod olarak değerlendirilir. Bunun tek sonucu, optimize edicide bulgusal olarak farklı bir gaz maliyeti yöntemidir.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Adında <code class="docutils literal notranslate"><span class="pre">.</span></code> bulunan veri nesneleri veya alt nesneler tanımlanabilir,
+ancak bunlara <code class="docutils literal notranslate"><span class="pre">datasize</span></code>, <code class="docutils literal notranslate"><span class="pre">dataoffset</span></code> veya <code class="docutils literal notranslate"><span class="pre">datacopy</span></code> üzerinden erişim
+mümkün değildir, çünkü <code class="docutils literal notranslate"><span class="pre">.</span></code>, başka bir nesnenin içindeki
+nesnelere erişmek için ayırıcı olarak kullanılır.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;.metadata&quot;</span></code> adı verilen veri nesnesinin özel bir anlamı vardır:
+Koddan erişilemez ve nesnedeki konumundan bağımsız
+olarak her zaman bayt kodunun en sonuna eklenir.</p>
+<p>Gelecekte özel öneme sahip diğer veri nesneleri eklenebilir,
+ancak adları her zaman bir <code class="docutils literal notranslate"><span class="pre">.</span></code> ile başlayacaktır.</p>
+</div>
+<p>Örnek bir Yul Nesnesi aşağıda gösterilmiştir:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=Ly8gQmlyIHPDtnpsZcWfbWUsIGRhxJ/EsXTEsWxhY2FrIGtvZHUgdmV5YSBvbHXFn3R1cmFiaWxlY2XEn2kgZGnEn2VyIHPDtnpsZcWfbWVsZXJpCi8vIHRlbXNpbCBlZGVuIGFsdCBuZXNuZWxlcmUgc2FoaXAgdGVrIGJpciBuZXNuZWRlbiBvbHXFn3VyLgovLyBUZWsgImtvZCIgZMO8xJ/DvG3DvCwgbmVzbmVuaW4gecO8csO8dMO8bGViaWxpciBrb2R1ZHVyLgovLyBIZXIgKGRpxJ9lcikgYWRsYW5kxLFyxLFsbcSxxZ8gbmVzbmUgdmV5YSB2ZXJpIGLDtmzDvG3DvCBzZXJpbGXFn3RpcmlsaXIgdmUKLy8gIMO2emVsIGfDtm3DvGzDvCBmb25rc2l5b25sYXIgb2xhbiBkYXRhY29weSAvIGRhdGFvZmZzZXQgLyBkYXRhc2l6ZSBpw6dpbiBlcmnFn2lsZWJpbGlyIGhhbGUgZ2V0aXJpbGlyLgovLyBHZcOnZXJsaSBuZXNuZW5pbiBpw6dpbmRla2kgZ2XDp2VybGkgbmVzbmUsIGFsdCBuZXNuZWxlciB2ZQovLyB2ZXJpIMO2xJ9lbGVyaSBrYXBzYW0gacOnaW5kZWRpci4Kb2JqZWN0ICJDb250cmFjdDEiIHsKICAgIC8vIEJ1LCBzw7Z6bGXFn21lbmluIHlhcMSxY8SxIChjb25zdHJ1Y3Rvcikga29kdWR1ci4KICAgIGNvZGUgewogICAgICAgIGZ1bmN0aW9uIGFsbG9jYXRlKHNpemUpIC0+IHB0ciB7CiAgICAgICAgICAgIHB0ciA6PSBtbG9hZCgweDQwKQogICAgICAgICAgICBpZiBpc3plcm8ocHRyKSB7IHB0ciA6PSAweDYwIH0KICAgICAgICAgICAgbXN0b3JlKDB4NDAsIGFkZChwdHIsIHNpemUpKQogICAgICAgIH0KCiAgICAgICAgLy8gaWxrIG9sYXJhayAgIkNvbnRyYWN0MiIgb2x1xZ90dXIKICAgICAgICBsZXQgc2l6ZSA6PSBkYXRhc2l6ZSgiQ29udHJhY3QyIikKICAgICAgICBsZXQgb2Zmc2V0IDo9IGFsbG9jYXRlKHNpemUpCiAgICAgICAgLy8gQnUsIEVWTSBpw6dpbiBrb2Qga29weWFzxLFuYSBkw7Zuw7zFn2VjZWsKICAgICAgICBkYXRhY29weShvZmZzZXQsIGRhdGFvZmZzZXQoIkNvbnRyYWN0MiIpLCBzaXplKQogICAgICAgIC8vIHlhcMSxY8SxIHBhcmFtZXRyZXNpIHRlayBiaXIgc2F5xLFkxLFyIDB4MTIzNAogICAgICAgIG1zdG9yZShhZGQob2Zmc2V0LCBzaXplKSwgMHgxMjM0KQogICAgICAgIHBvcChjcmVhdGUob2Zmc2V0LCBhZGQoc2l6ZSwgMzIpLCAwKSkKCiAgICAgICAgLy8gxZ9pbWRpIMOnYWzEscWfbWEgemFtYW7EsSBuZXNuZXNpbmkgZMO2bmTDvHIKICAgICAgICAvLyAoxZ91IGFuZGEgecO8csO8dMO8bG1la3RlIG9sYW4ga29kLCB5YXDEsWPEsSBrb2R1ZHVyKQogICAgICAgIHNpemUgOj0gZGF0YXNpemUoIkNvbnRyYWN0MV9kZXBsb3llZCIpCiAgICAgICAgb2Zmc2V0IDo9IGFsbG9jYXRlKHNpemUpCiAgICAgICAgLy8gQnUsIEV3YXNtIGnDp2luIGJpciBtZW1vcnktPm1lbW9yeSBrb3B5YXPEsW5hIHZlCiAgICAgICAgLy8gRVZNIGnDp2luIGJpciBrb2Qga29weWFzxLFuYSBkw7Zuw7zFn2VjZWt0aXIuCiAgICAgICAgZGF0YWNvcHkob2Zmc2V0LCBkYXRhb2Zmc2V0KCJDb250cmFjdDFfZGVwbG95ZWQiKSwgc2l6ZSkKICAgICAgICByZXR1cm4ob2Zmc2V0LCBzaXplKQogICAgfQoKICAgIGRhdGEgIlRhYmxlMiIgaGV4IjQxMjMiCgogICAgb2JqZWN0ICJDb250cmFjdDFfZGVwbG95ZWQiIHsKICAgICAgICBjb2RlIHsKICAgICAgICAgICAgZnVuY3Rpb24gYWxsb2NhdGUoc2l6ZSkgLT4gcHRyIHsKICAgICAgICAgICAgICAgIHB0ciA6PSBtbG9hZCgweDQwKQogICAgICAgICAgICAgICAgaWYgaXN6ZXJvKHB0cikgeyBwdHIgOj0gMHg2MCB9CiAgICAgICAgICAgICAgICBtc3RvcmUoMHg0MCwgYWRkKHB0ciwgc2l6ZSkpCiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIC8vIHJ1bnRpbWUgY29kZQoKICAgICAgICAgICAgbXN0b3JlKDAsICJIZWxsbywgV29ybGQhIikKICAgICAgICAgICAgcmV0dXJuKDAsIDB4MjApCiAgICAgICAgfQogICAgfQoKICAgIC8vIEfDtm3DvGzDvCBuZXNuZS4gS3VsbGFuxLFtIGR1cnVtdSwgZMSxxZ9hcsSxbsSxbiBiaXIgZmFicmlrYSBzw7Z6bGXFn21lc2kgb2xtYXPEsSB2ZQogICAgLy8gU8O2emxlxZ9tZTInbmluIGZhYnJpa2EgdGFyYWbEsW5kYW4gb2x1xZ90dXJ1bGFjYWsga29kIG9sbWFzxLFkxLFyLgogICAgb2JqZWN0ICJDb250cmFjdDIiIHsKICAgICAgICBjb2RlIHsKICAgICAgICAgICAgLy8ga29kIGJ1cmF5YSAuLi4KICAgICAgICB9CgogICAgICAgIG9iamVjdCAiQ29udHJhY3QyX2RlcGxveWVkIiB7CiAgICAgICAgICAgIGNvZGUgewogICAgICAgICAgICAgICAgLy8ga29kIGJ1cmF5YSAuLi4KICAgICAgICAgICAgfQogICAgICAgIH0KCiAgICAgICAgZGF0YSAiVGFibGUxIiBoZXgiNDEyMyIKICAgIH0KfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="c1">// Bir sözleşme, dağıtılacak kodu veya oluşturabileceği diğer sözleşmeleri</span>
+<span class="c1">// temsil eden alt nesnelere sahip tek bir nesneden oluşur.</span>
+<span class="c1">// Tek &quot;kod&quot; düğümü, nesnenin yürütülebilir kodudur.</span>
+<span class="c1">// Her (diğer) adlandırılmış nesne veya veri bölümü serileştirilir ve</span>
+<span class="c1">//  özel gömülü fonksiyonlar olan datacopy / dataoffset / datasize için erişilebilir hale getirilir.</span>
+<span class="c1">// Geçerli nesnenin içindeki geçerli nesne, alt nesneler ve</span>
+<span class="c1">// veri öğeleri kapsam içindedir.</span>
+<span class="k">object</span> <span class="s">&quot;Contract1&quot;</span> <span class="p">{</span>
+    <span class="c1">// Bu, sözleşmenin yapıcı (constructor) kodudur.</span>
+    <span class="k">code</span> <span class="p">{</span>
+        <span class="k">function</span> <span class="n">allocate</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ptr</span> <span class="p">{</span>
+            <span class="n">ptr</span> <span class="o">:=</span> <span class="nf">mload</span><span class="p">(</span><span class="mh">0x40</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nf">iszero</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span> <span class="p">{</span> <span class="n">ptr</span> <span class="o">:=</span> <span class="mh">0x60</span> <span class="p">}</span>
+            <span class="nf">mstore</span><span class="p">(</span><span class="mh">0x40</span><span class="p">,</span> <span class="nf">add</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
+        <span class="p">}</span>
+
+        <span class="c1">// ilk olarak  &quot;Contract2&quot; oluştur</span>
+        <span class="ow">let</span> <span class="nv">size</span> <span class="o">:=</span> <span class="k k-Function">datasize</span><span class="p">(</span><span class="s">&quot;Contract2&quot;</span><span class="p">)</span>
+        <span class="ow">let</span> <span class="nv">offset</span> <span class="o">:=</span> <span class="n">allocate</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+        <span class="c1">// Bu, EVM için kod kopyasına dönüşecek</span>
+        <span class="k k-Function">datacopy</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="k k-Function">dataoffset</span><span class="p">(</span><span class="s">&quot;Contract2&quot;</span><span class="p">),</span> <span class="n">size</span><span class="p">)</span>
+        <span class="c1">// yapıcı parametresi tek bir sayıdır 0x1234</span>
+        <span class="nf">mstore</span><span class="p">(</span><span class="nf">add</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">size</span><span class="p">),</span> <span class="mh">0x1234</span><span class="p">)</span>
+        <span class="nf">pop</span><span class="p">(</span><span class="nf">create</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="nf">add</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span>
+
+        <span class="c1">// şimdi çalışma zamanı nesnesini döndür</span>
+        <span class="c1">// (şu anda yürütülmekte olan kod, yapıcı kodudur)</span>
+        <span class="n">size</span> <span class="o">:=</span> <span class="k k-Function">datasize</span><span class="p">(</span><span class="s">&quot;Contract1_deployed&quot;</span><span class="p">)</span>
+        <span class="n">offset</span> <span class="o">:=</span> <span class="n">allocate</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+        <span class="c1">// Bu, Ewasm için bir memory-&gt;memory kopyasına ve</span>
+        <span class="c1">// EVM için bir kod kopyasına dönüşecektir.</span>
+        <span class="k k-Function">datacopy</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="k k-Function">dataoffset</span><span class="p">(</span><span class="s">&quot;Contract1_deployed&quot;</span><span class="p">),</span> <span class="n">size</span><span class="p">)</span>
+        <span class="nf">return</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">data</span> <span class="s">&quot;Table2&quot;</span> <span class="s">hex&quot;4123&quot;</span>
+
+    <span class="k">object</span> <span class="s">&quot;Contract1_deployed&quot;</span> <span class="p">{</span>
+        <span class="k">code</span> <span class="p">{</span>
+            <span class="k">function</span> <span class="n">allocate</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ptr</span> <span class="p">{</span>
+                <span class="n">ptr</span> <span class="o">:=</span> <span class="nf">mload</span><span class="p">(</span><span class="mh">0x40</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nf">iszero</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span> <span class="p">{</span> <span class="n">ptr</span> <span class="o">:=</span> <span class="mh">0x60</span> <span class="p">}</span>
+                <span class="nf">mstore</span><span class="p">(</span><span class="mh">0x40</span><span class="p">,</span> <span class="nf">add</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
+            <span class="p">}</span>
+
+            <span class="c1">// runtime code</span>
+
+            <span class="nf">mstore</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&quot;Hello, World!&quot;</span><span class="p">)</span>
+            <span class="nf">return</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Gömülü nesne. Kullanım durumu, dışarının bir fabrika sözleşmesi olması ve</span>
+    <span class="c1">// Sözleşme2&#39;nin fabrika tarafından oluşturulacak kod olmasıdır.</span>
+    <span class="k">object</span> <span class="s">&quot;Contract2&quot;</span> <span class="p">{</span>
+        <span class="k">code</span> <span class="p">{</span>
+            <span class="c1">// kod buraya ...</span>
+        <span class="p">}</span>
+
+        <span class="k">object</span> <span class="s">&quot;Contract2_deployed&quot;</span> <span class="p">{</span>
+            <span class="k">code</span> <span class="p">{</span>
+                <span class="c1">// kod buraya ...</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">data</span> <span class="s">&quot;Table1&quot;</span> <span class="s">hex&quot;4123&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="yul-optimizer">
+<h2>Yul Optimizer<a class="headerlink" href="#yul-optimizer" title="Permalink to this heading"></a></h2>
+<p>Yul optimize edicisi Yul kodunda çalışır ve giriş, çıkış ve  ara durumlar için aynı dili kullanır.
+Bu, optimize edicinin kolay hata ayıklamasını ve doğrulanmasını sağlar.</p>
+<p>Farklı optimizasyon aşamaları ve optimize edicinin nasıl kullanılacağı hakkında
+daha fazla ayrıntı için lütfen <a class="reference internal" href="internals/optimizer.html#optimizer"><span class="std std-ref">optimize edici dökümantasyonu</span></a> bölümüne bakın.</p>
+<p>Solidity’yi bağımsız Yul modunda kullanmak istiyorsanız, optimize ediciyi <code class="docutils literal notranslate"><span class="pre">--optimize</span></code>
+kullanarak etkinleştirirsiniz ve isteğe bağlı olarak <code class="docutils literal notranslate"><span class="pre">--optimize-runs</span></code> ile
+<a class="reference internal" href="internals/optimizer.html#optimizer-parameter-runs"><span class="std std-ref">beklenen sözleşme yürütme sayısı</span></a> belirtirsiniz:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>solc --strict-assembly --optimize --optimize-runs <span class="m">200</span>
+</pre></div>
+</div>
+<p>Solidity modunda Yul optimizer, normal optimizer ile birlikte etkinleştirilir.</p>
+<section id="optimizasyon-adim-sirasi">
+<span id="optimization-step-sequence"></span><h3>Optimizasyon Adım Sırası<a class="headerlink" href="#optimizasyon-adim-sirasi" title="Permalink to this heading"></a></h3>
+<p>Varsayılan olarak Yul optimizer(optimize edici), önceden tanımlanmış optimizasyon adımları dizisini oluşturulan assembly’ye uygular.
+Bu sırayı geçersiz kılabilir ve <code class="docutils literal notranslate"><span class="pre">--yul-optimizations</span></code> seçeneğini kullanarak kendinizinkini uygulatabilirsiniz:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>solc --optimize --ir-optimized --yul-optimizations <span class="s1">&#39;dhfoD[xarrscLMcCTU]uljmul&#39;</span>
+</pre></div>
+</div>
+<p>Adımların sırası önemlidir ve çıktının kalitesini etkiler.
+Ayrıca, bir adımı uygulamak, daha önce uygulanmış olan diğerleri için yeni optimizasyon
+fırsatlarını ortaya çıkarabilir, bu nedenle adımları tekrarlamak genellikle faydalıdır.
+Dizinin bir kısmını köşeli parantezler (<code class="docutils literal notranslate"><span class="pre">[]</span></code>) içine alarak, optimize ediciye,
+sonuçta ortaya çıkan assemby’nin boyutunu artık iyileştirmeyene kadar o kısmı
+tekrar tekrar uygulamasını söylersiniz. Köşeli ayraçları tek bir sırada
+birden çok kez kullanabilirsiniz ancak iç içe geçemezler.</p>
+<p>Aşağıdaki optimizasyon adımları uygulanabilir:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 81%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Kısaltma</p></th>
+<th class="head"><p>Tam adı</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">f</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BlockFlattener</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">l</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CircularReferencesPruner</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">c</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CommonSubexpressionEliminator</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">C</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ConditionalSimplifier</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">U</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ConditionalUnsimplifier</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ControlFlowSimplifier</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">D</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DeadCodeEliminator</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">v</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">EquivalentFunctionCombiner</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">e</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ExpressionInliner</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">j</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ExpressionJoiner</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ExpressionSimplifier</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">x</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ExpressionSplitter</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">I</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ForLoopConditionIntoBody</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">O</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ForLoopConditionOutOfBody</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">o</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ForLoopInitRewriter</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">i</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FullInliner</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">g</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FunctionGrouper</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">h</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FunctionHoister</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">F</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FunctionSpecializer</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">T</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">LiteralRematerialiser</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">L</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">LoadResolver</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">M</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">LoopInvariantCodeMotion</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">r</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">RedundantAssignEliminator</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">R</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ReasoningBasedSimplifier</span></code> - son derece deneysel</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">m</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Rematerialiser</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">V</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SSAReverser</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">a</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SSATransform</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">t</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">StructuralSimplifier</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">u</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">UnusedPruner</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">p</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">UnusedFunctionParameterPruner</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">d</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">VarDeclInitializer</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Bazı adımlar <code class="docutils literal notranslate"><span class="pre">BlockFlattener</span></code>, <code class="docutils literal notranslate"><span class="pre">FunctionGrouper</span></code>, <code class="docutils literal notranslate"><span class="pre">ForLoopInitRewriter</span></code> tarafından sağlanan özelliklere bağlıdır.
+Bu nedenle Yul optimize edicisi, kullanıcı tarafından sağlanan herhangi bir adımı uygulamadan önce bunları uygular.</p>
+<p>ReasoningBasedSimplifier, şu anda varsayılan adımlar kümesinde etkinleştirilmeyen bir
+optimize edici adımıdır. Aritmetik ifadeleri ve boole koşullarını basitleştirmek için bir
+SMT çözücüsü kullanır. Henüz kapsamlı bir test veya doğrulama almamıştır ve tekrarlanamayan
+sonuçlar üretebilir, bu yüzden lütfen dikkatli kullanın!</p>
+</section>
+</section>
+<section id="tamamlanmis-erc20-ornegi">
+<span id="erc20yul"></span><h2>Tamamlanmış ERC20 Örneği<a class="headerlink" href="#tamamlanmis-erc20-ornegi" title="Permalink to this heading"></a></h2>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=b2JqZWN0ICJUb2tlbiIgewogICAgY29kZSB7CiAgICAgICAgLy8gT2x1xZ90dXJ1Y3V5dSBzxLFmxLFyIHl1dmFzxLFuZGEgc2FrbGF5xLFuLgogICAgICAgIHNzdG9yZSgwLCBjYWxsZXIoKSkKCiAgICAgICAgLy8gQ29udHJhdMSxIGRlcGxveSBlZGluCiAgICAgICAgZGF0YWNvcHkoMCwgZGF0YW9mZnNldCgicnVudGltZSIpLCBkYXRhc2l6ZSgicnVudGltZSIpKQogICAgICAgIHJldHVybigwLCBkYXRhc2l6ZSgicnVudGltZSIpKQogICAgfQogICAgb2JqZWN0ICJydW50aW1lIiB7CiAgICAgICAgY29kZSB7CiAgICAgICAgICAgIC8vIEV0aGVyIGfDtm5kZXJtZXllIGthcsWfxLEga29ydW1hCiAgICAgICAgICAgIHJlcXVpcmUoaXN6ZXJvKGNhbGx2YWx1ZSgpKSkKCiAgICAgICAgICAgIC8vIFRyYW5zZmVyIGVkaWNpCiAgICAgICAgICAgIHN3aXRjaCBzZWxlY3RvcigpCiAgICAgICAgICAgIGNhc2UgMHg3MGEwODIzMSAvKiAiYmFsYW5jZU9mKGFkZHJlc3MpIiAqLyB7CiAgICAgICAgICAgICAgICByZXR1cm5VaW50KGJhbGFuY2VPZihkZWNvZGVBc0FkZHJlc3MoMCkpKQogICAgICAgICAgICB9CiAgICAgICAgICAgIGNhc2UgMHgxODE2MGRkZCAvKiAidG90YWxTdXBwbHkoKSIgKi8gewogICAgICAgICAgICAgICAgcmV0dXJuVWludCh0b3RhbFN1cHBseSgpKQogICAgICAgICAgICB9CiAgICAgICAgICAgIGNhc2UgMHhhOTA1OWNiYiAvKiAidHJhbnNmZXIoYWRkcmVzcyx1aW50MjU2KSIgKi8gewogICAgICAgICAgICAgICAgdHJhbnNmZXIoZGVjb2RlQXNBZGRyZXNzKDApLCBkZWNvZGVBc1VpbnQoMSkpCiAgICAgICAgICAgICAgICByZXR1cm5UcnVlKCkKICAgICAgICAgICAgfQogICAgICAgICAgICBjYXNlIDB4MjNiODcyZGQgLyogInRyYW5zZmVyRnJvbShhZGRyZXNzLGFkZHJlc3MsdWludDI1NikiICovIHsKICAgICAgICAgICAgICAgIHRyYW5zZmVyRnJvbShkZWNvZGVBc0FkZHJlc3MoMCksIGRlY29kZUFzQWRkcmVzcygxKSwgZGVjb2RlQXNVaW50KDIpKQogICAgICAgICAgICAgICAgcmV0dXJuVHJ1ZSgpCiAgICAgICAgICAgIH0KICAgICAgICAgICAgY2FzZSAweDA5NWVhN2IzIC8qICJhcHByb3ZlKGFkZHJlc3MsdWludDI1NikiICovIHsKICAgICAgICAgICAgICAgIGFwcHJvdmUoZGVjb2RlQXNBZGRyZXNzKDApLCBkZWNvZGVBc1VpbnQoMSkpCiAgICAgICAgICAgICAgICByZXR1cm5UcnVlKCkKICAgICAgICAgICAgfQogICAgICAgICAgICBjYXNlIDB4ZGQ2MmVkM2UgLyogImFsbG93YW5jZShhZGRyZXNzLGFkZHJlc3MpIiAqLyB7CiAgICAgICAgICAgICAgICByZXR1cm5VaW50KGFsbG93YW5jZShkZWNvZGVBc0FkZHJlc3MoMCksIGRlY29kZUFzQWRkcmVzcygxKSkpCiAgICAgICAgICAgIH0KICAgICAgICAgICAgY2FzZSAweDQwYzEwZjE5IC8qICJtaW50KGFkZHJlc3MsdWludDI1NikiICovIHsKICAgICAgICAgICAgICAgIG1pbnQoZGVjb2RlQXNBZGRyZXNzKDApLCBkZWNvZGVBc1VpbnQoMSkpCiAgICAgICAgICAgICAgICByZXR1cm5UcnVlKCkKICAgICAgICAgICAgfQogICAgICAgICAgICBkZWZhdWx0IHsKICAgICAgICAgICAgICAgIHJldmVydCgwLCAwKQogICAgICAgICAgICB9CgogICAgICAgICAgICBmdW5jdGlvbiBtaW50KGFjY291bnQsIGFtb3VudCkgewogICAgICAgICAgICAgICAgcmVxdWlyZShjYWxsZWRCeU93bmVyKCkpCgogICAgICAgICAgICAgICAgbWludFRva2VucyhhbW91bnQpCiAgICAgICAgICAgICAgICBhZGRUb0JhbGFuY2UoYWNjb3VudCwgYW1vdW50KQogICAgICAgICAgICAgICAgZW1pdFRyYW5zZmVyKDAsIGFjY291bnQsIGFtb3VudCkKICAgICAgICAgICAgfQogICAgICAgICAgICBmdW5jdGlvbiB0cmFuc2Zlcih0bywgYW1vdW50KSB7CiAgICAgICAgICAgICAgICBleGVjdXRlVHJhbnNmZXIoY2FsbGVyKCksIHRvLCBhbW91bnQpCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZnVuY3Rpb24gYXBwcm92ZShzcGVuZGVyLCBhbW91bnQpIHsKICAgICAgICAgICAgICAgIHJldmVydElmWmVyb0FkZHJlc3Moc3BlbmRlcikKICAgICAgICAgICAgICAgIHNldEFsbG93YW5jZShjYWxsZXIoKSwgc3BlbmRlciwgYW1vdW50KQogICAgICAgICAgICAgICAgZW1pdEFwcHJvdmFsKGNhbGxlcigpLCBzcGVuZGVyLCBhbW91bnQpCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZnVuY3Rpb24gdHJhbnNmZXJGcm9tKGZyb20sIHRvLCBhbW91bnQpIHsKICAgICAgICAgICAgICAgIGRlY3JlYXNlQWxsb3dhbmNlQnkoZnJvbSwgY2FsbGVyKCksIGFtb3VudCkKICAgICAgICAgICAgICAgIGV4ZWN1dGVUcmFuc2Zlcihmcm9tLCB0bywgYW1vdW50KQogICAgICAgICAgICB9CgogICAgICAgICAgICBmdW5jdGlvbiBleGVjdXRlVHJhbnNmZXIoZnJvbSwgdG8sIGFtb3VudCkgewogICAgICAgICAgICAgICAgcmV2ZXJ0SWZaZXJvQWRkcmVzcyh0bykKICAgICAgICAgICAgICAgIGRlZHVjdEZyb21CYWxhbmNlKGZyb20sIGFtb3VudCkKICAgICAgICAgICAgICAgIGFkZFRvQmFsYW5jZSh0bywgYW1vdW50KQogICAgICAgICAgICAgICAgZW1pdFRyYW5zZmVyKGZyb20sIHRvLCBhbW91bnQpCiAgICAgICAgICAgIH0KCgogICAgICAgICAgICAvKiAtLS0tLS0tLS0tIGNhbGxkYXRhIGRlY29kaW5nIGZvbmtzaXlvbmxhcsSxIC0tLS0tLS0tLS0tICovCiAgICAgICAgICAgIGZ1bmN0aW9uIHNlbGVjdG9yKCkgLT4gcyB7CiAgICAgICAgICAgICAgICBzIDo9IGRpdihjYWxsZGF0YWxvYWQoMCksIDB4MTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwKQogICAgICAgICAgICB9CgogICAgICAgICAgICBmdW5jdGlvbiBkZWNvZGVBc0FkZHJlc3Mob2Zmc2V0KSAtPiB2IHsKICAgICAgICAgICAgICAgIHYgOj0gZGVjb2RlQXNVaW50KG9mZnNldCkKICAgICAgICAgICAgICAgIGlmIGlzemVybyhpc3plcm8oYW5kKHYsIG5vdCgweGZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmYpKSkpIHsKICAgICAgICAgICAgICAgICAgICByZXZlcnQoMCwgMCkKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgfQogICAgICAgICAgICBmdW5jdGlvbiBkZWNvZGVBc1VpbnQob2Zmc2V0KSAtPiB2IHsKICAgICAgICAgICAgICAgIGxldCBwb3MgOj0gYWRkKDQsIG11bChvZmZzZXQsIDB4MjApKQogICAgICAgICAgICAgICAgaWYgbHQoY2FsbGRhdGFzaXplKCksIGFkZChwb3MsIDB4MjApKSB7CiAgICAgICAgICAgICAgICAgICAgcmV2ZXJ0KDAsIDApCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICB2IDo9IGNhbGxkYXRhbG9hZChwb3MpCiAgICAgICAgICAgIH0KICAgICAgICAgICAgLyogLS0tLS0tLS0tLSBjYWxsZGF0YSBlbmNvZGluZyBmb25rc2l5b25sYXLEsSAtLS0tLS0tLS0tICovCiAgICAgICAgICAgIGZ1bmN0aW9uIHJldHVyblVpbnQodikgewogICAgICAgICAgICAgICAgbXN0b3JlKDAsIHYpCiAgICAgICAgICAgICAgICByZXR1cm4oMCwgMHgyMCkKICAgICAgICAgICAgfQogICAgICAgICAgICBmdW5jdGlvbiByZXR1cm5UcnVlKCkgewogICAgICAgICAgICAgICAgcmV0dXJuVWludCgxKQogICAgICAgICAgICB9CgogICAgICAgICAgICAvKiAtLS0tLS0tLSBvbGF5bGFyIChldmVudHMpIC0tLS0tLS0tLS0gKi8KICAgICAgICAgICAgZnVuY3Rpb24gZW1pdFRyYW5zZmVyKGZyb20sIHRvLCBhbW91bnQpIHsKICAgICAgICAgICAgICAgIGxldCBzaWduYXR1cmVIYXNoIDo9IDB4ZGRmMjUyYWQxYmUyYzg5YjY5YzJiMDY4ZmMzNzhkYWE5NTJiYTdmMTYzYzRhMTE2MjhmNTVhNGRmNTIzYjNlZgogICAgICAgICAgICAgICAgZW1pdEV2ZW50KHNpZ25hdHVyZUhhc2gsIGZyb20sIHRvLCBhbW91bnQpCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZnVuY3Rpb24gZW1pdEFwcHJvdmFsKGZyb20sIHNwZW5kZXIsIGFtb3VudCkgewogICAgICAgICAgICAgICAgbGV0IHNpZ25hdHVyZUhhc2ggOj0gMHg4YzViZTFlNWViZWM3ZDViZDE0ZjcxNDI3ZDFlODRmM2RkMDMxNGMwZjdiMjI5MWU1YjIwMGFjOGM3YzNiOTI1CiAgICAgICAgICAgICAgICBlbWl0RXZlbnQoc2lnbmF0dXJlSGFzaCwgZnJvbSwgc3BlbmRlciwgYW1vdW50KQogICAgICAgICAgICB9CiAgICAgICAgICAgIGZ1bmN0aW9uIGVtaXRFdmVudChzaWduYXR1cmVIYXNoLCBpbmRleGVkMSwgaW5kZXhlZDIsIG5vbkluZGV4ZWQpIHsKICAgICAgICAgICAgICAgIG1zdG9yZSgwLCBub25JbmRleGVkKQogICAgICAgICAgICAgICAgbG9nMygwLCAweDIwLCBzaWduYXR1cmVIYXNoLCBpbmRleGVkMSwgaW5kZXhlZDIpCiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIC8qIC0tLS0tLS0tIGRlcG9sYW1hIGTDvHplbmkgLS0tLS0tLS0tLSAqLwogICAgICAgICAgICBmdW5jdGlvbiBvd25lclBvcygpIC0+IHAgeyBwIDo9IDAgfQogICAgICAgICAgICBmdW5jdGlvbiB0b3RhbFN1cHBseVBvcygpIC0+IHAgeyBwIDo9IDEgfQogICAgICAgICAgICBmdW5jdGlvbiBhY2NvdW50VG9TdG9yYWdlT2Zmc2V0KGFjY291bnQpIC0+IG9mZnNldCB7CiAgICAgICAgICAgICAgICBvZmZzZXQgOj0gYWRkKDB4MTAwMCwgYWNjb3VudCkKICAgICAgICAgICAgfQogICAgICAgICAgICBmdW5jdGlvbiBhbGxvd2FuY2VTdG9yYWdlT2Zmc2V0KGFjY291bnQsIHNwZW5kZXIpIC0+IG9mZnNldCB7CiAgICAgICAgICAgICAgICBvZmZzZXQgOj0gYWNjb3VudFRvU3RvcmFnZU9mZnNldChhY2NvdW50KQogICAgICAgICAgICAgICAgbXN0b3JlKDAsIG9mZnNldCkKICAgICAgICAgICAgICAgIG1zdG9yZSgweDIwLCBzcGVuZGVyKQogICAgICAgICAgICAgICAgb2Zmc2V0IDo9IGtlY2NhazI1NigwLCAweDQwKQogICAgICAgICAgICB9CgogICAgICAgICAgICAvKiAtLS0tLS0tLSBkZXBvbGFtYSBlcmnFn2ltaSAtLS0tLS0tLS0tICovCiAgICAgICAgICAgIGZ1bmN0aW9uIG93bmVyKCkgLT4gbyB7CiAgICAgICAgICAgICAgICBvIDo9IHNsb2FkKG93bmVyUG9zKCkpCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZnVuY3Rpb24gdG90YWxTdXBwbHkoKSAtPiBzdXBwbHkgewogICAgICAgICAgICAgICAgc3VwcGx5IDo9IHNsb2FkKHRvdGFsU3VwcGx5UG9zKCkpCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZnVuY3Rpb24gbWludFRva2VucyhhbW91bnQpIHsKICAgICAgICAgICAgICAgIHNzdG9yZSh0b3RhbFN1cHBseVBvcygpLCBzYWZlQWRkKHRvdGFsU3VwcGx5KCksIGFtb3VudCkpCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZnVuY3Rpb24gYmFsYW5jZU9mKGFjY291bnQpIC0+IGJhbCB7CiAgICAgICAgICAgICAgICBiYWwgOj0gc2xvYWQoYWNjb3VudFRvU3RvcmFnZU9mZnNldChhY2NvdW50KSkKICAgICAgICAgICAgfQogICAgICAgICAgICBmdW5jdGlvbiBhZGRUb0JhbGFuY2UoYWNjb3VudCwgYW1vdW50KSB7CiAgICAgICAgICAgICAgICBsZXQgb2Zmc2V0IDo9IGFjY291bnRUb1N0b3JhZ2VPZmZzZXQoYWNjb3VudCkKICAgICAgICAgICAgICAgIHNzdG9yZShvZmZzZXQsIHNhZmVBZGQoc2xvYWQob2Zmc2V0KSwgYW1vdW50KSkKICAgICAgICAgICAgfQogICAgICAgICAgICBmdW5jdGlvbiBkZWR1Y3RGcm9tQmFsYW5jZShhY2NvdW50LCBhbW91bnQpIHsKICAgICAgICAgICAgICAgIGxldCBvZmZzZXQgOj0gYWNjb3VudFRvU3RvcmFnZU9mZnNldChhY2NvdW50KQogICAgICAgICAgICAgICAgbGV0IGJhbCA6PSBzbG9hZChvZmZzZXQpCiAgICAgICAgICAgICAgICByZXF1aXJlKGx0ZShhbW91bnQsIGJhbCkpCiAgICAgICAgICAgICAgICBzc3RvcmUob2Zmc2V0LCBzdWIoYmFsLCBhbW91bnQpKQogICAgICAgICAgICB9CiAgICAgICAgICAgIGZ1bmN0aW9uIGFsbG93YW5jZShhY2NvdW50LCBzcGVuZGVyKSAtPiBhbW91bnQgewogICAgICAgICAgICAgICAgYW1vdW50IDo9IHNsb2FkKGFsbG93YW5jZVN0b3JhZ2VPZmZzZXQoYWNjb3VudCwgc3BlbmRlcikpCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZnVuY3Rpb24gc2V0QWxsb3dhbmNlKGFjY291bnQsIHNwZW5kZXIsIGFtb3VudCkgewogICAgICAgICAgICAgICAgc3N0b3JlKGFsbG93YW5jZVN0b3JhZ2VPZmZzZXQoYWNjb3VudCwgc3BlbmRlciksIGFtb3VudCkKICAgICAgICAgICAgfQogICAgICAgICAgICBmdW5jdGlvbiBkZWNyZWFzZUFsbG93YW5jZUJ5KGFjY291bnQsIHNwZW5kZXIsIGFtb3VudCkgewogICAgICAgICAgICAgICAgbGV0IG9mZnNldCA6PSBhbGxvd2FuY2VTdG9yYWdlT2Zmc2V0KGFjY291bnQsIHNwZW5kZXIpCiAgICAgICAgICAgICAgICBsZXQgY3VycmVudEFsbG93YW5jZSA6PSBzbG9hZChvZmZzZXQpCiAgICAgICAgICAgICAgICByZXF1aXJlKGx0ZShhbW91bnQsIGN1cnJlbnRBbGxvd2FuY2UpKQogICAgICAgICAgICAgICAgc3N0b3JlKG9mZnNldCwgc3ViKGN1cnJlbnRBbGxvd2FuY2UsIGFtb3VudCkpCiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIC8qIC0tLS0tLS0tLS0gZmF5ZGFsxLEgZm9ua3NpeW9ubGFyIC0tLS0tLS0tLS0gKi8KICAgICAgICAgICAgZnVuY3Rpb24gbHRlKGEsIGIpIC0+IHIgewogICAgICAgICAgICAgICAgciA6PSBpc3plcm8oZ3QoYSwgYikpCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZnVuY3Rpb24gZ3RlKGEsIGIpIC0+IHIgewogICAgICAgICAgICAgICAgciA6PSBpc3plcm8obHQoYSwgYikpCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZnVuY3Rpb24gc2FmZUFkZChhLCBiKSAtPiByIHsKICAgICAgICAgICAgICAgIHIgOj0gYWRkKGEsIGIpCiAgICAgICAgICAgICAgICBpZiBvcihsdChyLCBhKSwgbHQociwgYikpIHsgcmV2ZXJ0KDAsIDApIH0KICAgICAgICAgICAgfQogICAgICAgICAgICBmdW5jdGlvbiBjYWxsZWRCeU93bmVyKCkgLT4gY2JvIHsKICAgICAgICAgICAgICAgIGNibyA6PSBlcShvd25lcigpLCBjYWxsZXIoKSkKICAgICAgICAgICAgfQogICAgICAgICAgICBmdW5jdGlvbiByZXZlcnRJZlplcm9BZGRyZXNzKGFkZHIpIHsKICAgICAgICAgICAgICAgIHJlcXVpcmUoYWRkcikKICAgICAgICAgICAgfQogICAgICAgICAgICBmdW5jdGlvbiByZXF1aXJlKGNvbmRpdGlvbikgewogICAgICAgICAgICAgICAgaWYgaXN6ZXJvKGNvbmRpdGlvbikgeyByZXZlcnQoMCwgMCkgfQogICAgICAgICAgICB9CiAgICAgICAgfQogICAgfQp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="k">object</span> <span class="s">&quot;Token&quot;</span> <span class="p">{</span>
+    <span class="k">code</span> <span class="p">{</span>
+        <span class="c1">// Oluşturucuyu sıfır yuvasında saklayın.</span>
+        <span class="nf">sstore</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nf">caller</span><span class="p">())</span>
+
+        <span class="c1">// Contratı deploy edin</span>
+        <span class="k k-Function">datacopy</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="k k-Function">dataoffset</span><span class="p">(</span><span class="s">&quot;runtime&quot;</span><span class="p">),</span> <span class="k k-Function">datasize</span><span class="p">(</span><span class="s">&quot;runtime&quot;</span><span class="p">))</span>
+        <span class="nf">return</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="k k-Function">datasize</span><span class="p">(</span><span class="s">&quot;runtime&quot;</span><span class="p">))</span>
+    <span class="p">}</span>
+    <span class="k">object</span> <span class="s">&quot;runtime&quot;</span> <span class="p">{</span>
+        <span class="k">code</span> <span class="p">{</span>
+            <span class="c1">// Ether göndermeye karşı koruma</span>
+            <span class="n">require</span><span class="p">(</span><span class="nf">iszero</span><span class="p">(</span><span class="nf">callvalue</span><span class="p">()))</span>
+
+            <span class="c1">// Transfer edici</span>
+            <span class="k">switch</span> <span class="n">selector</span><span class="p">()</span>
+            <span class="k">case</span> <span class="mh">0x70a08231</span> <span class="cm">/* &quot;balanceOf(address)&quot; */</span> <span class="p">{</span>
+                <span class="n">returnUint</span><span class="p">(</span><span class="n">balanceOf</span><span class="p">(</span><span class="n">decodeAsAddress</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+            <span class="p">}</span>
+            <span class="k">case</span> <span class="mh">0x18160ddd</span> <span class="cm">/* &quot;totalSupply()&quot; */</span> <span class="p">{</span>
+                <span class="n">returnUint</span><span class="p">(</span><span class="n">totalSupply</span><span class="p">())</span>
+            <span class="p">}</span>
+            <span class="k">case</span> <span class="mh">0xa9059cbb</span> <span class="cm">/* &quot;transfer(address,uint256)&quot; */</span> <span class="p">{</span>
+                <span class="n">transfer</span><span class="p">(</span><span class="n">decodeAsAddress</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">decodeAsUint</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+                <span class="n">returnTrue</span><span class="p">()</span>
+            <span class="p">}</span>
+            <span class="k">case</span> <span class="mh">0x23b872dd</span> <span class="cm">/* &quot;transferFrom(address,address,uint256)&quot; */</span> <span class="p">{</span>
+                <span class="n">transferFrom</span><span class="p">(</span><span class="n">decodeAsAddress</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">decodeAsAddress</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">decodeAsUint</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+                <span class="n">returnTrue</span><span class="p">()</span>
+            <span class="p">}</span>
+            <span class="k">case</span> <span class="mh">0x095ea7b3</span> <span class="cm">/* &quot;approve(address,uint256)&quot; */</span> <span class="p">{</span>
+                <span class="n">approve</span><span class="p">(</span><span class="n">decodeAsAddress</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">decodeAsUint</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+                <span class="n">returnTrue</span><span class="p">()</span>
+            <span class="p">}</span>
+            <span class="k">case</span> <span class="mh">0xdd62ed3e</span> <span class="cm">/* &quot;allowance(address,address)&quot; */</span> <span class="p">{</span>
+                <span class="n">returnUint</span><span class="p">(</span><span class="n">allowance</span><span class="p">(</span><span class="n">decodeAsAddress</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">decodeAsAddress</span><span class="p">(</span><span class="mi">1</span><span class="p">)))</span>
+            <span class="p">}</span>
+            <span class="k">case</span> <span class="mh">0x40c10f19</span> <span class="cm">/* &quot;mint(address,uint256)&quot; */</span> <span class="p">{</span>
+                <span class="n">mint</span><span class="p">(</span><span class="n">decodeAsAddress</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">decodeAsUint</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+                <span class="n">returnTrue</span><span class="p">()</span>
+            <span class="p">}</span>
+            <span class="k">default</span> <span class="p">{</span>
+                <span class="nf">revert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">}</span>
+
+            <span class="k">function</span> <span class="n">mint</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">require</span><span class="p">(</span><span class="n">calledByOwner</span><span class="p">())</span>
+
+                <span class="n">mintTokens</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span>
+                <span class="n">addToBalance</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span>
+                <span class="n">emitTransfer</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">account</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">transfer</span><span class="p">(</span><span class="n">to</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">executeTransfer</span><span class="p">(</span><span class="nf">caller</span><span class="p">(),</span> <span class="n">to</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">approve</span><span class="p">(</span><span class="n">spender</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">revertIfZeroAddress</span><span class="p">(</span><span class="n">spender</span><span class="p">)</span>
+                <span class="n">setAllowance</span><span class="p">(</span><span class="nf">caller</span><span class="p">(),</span> <span class="n">spender</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span>
+                <span class="n">emitApproval</span><span class="p">(</span><span class="nf">caller</span><span class="p">(),</span> <span class="n">spender</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">transferFrom</span><span class="p">(</span><span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">decreaseAllowanceBy</span><span class="p">(</span><span class="n">from</span><span class="p">,</span> <span class="nf">caller</span><span class="p">(),</span> <span class="n">amount</span><span class="p">)</span>
+                <span class="n">executeTransfer</span><span class="p">(</span><span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span>
+            <span class="p">}</span>
+
+            <span class="k">function</span> <span class="n">executeTransfer</span><span class="p">(</span><span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">revertIfZeroAddress</span><span class="p">(</span><span class="n">to</span><span class="p">)</span>
+                <span class="n">deductFromBalance</span><span class="p">(</span><span class="n">from</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span>
+                <span class="n">addToBalance</span><span class="p">(</span><span class="n">to</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span>
+                <span class="n">emitTransfer</span><span class="p">(</span><span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span>
+            <span class="p">}</span>
+
+
+            <span class="cm">/* ---------- calldata decoding fonksiyonları ----------- */</span>
+            <span class="k">function</span> <span class="n">selector</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">s</span> <span class="p">{</span>
+                <span class="n">s</span> <span class="o">:=</span> <span class="nf">div</span><span class="p">(</span><span class="nf">calldataload</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mh">0x100000000000000000000000000000000000000000000000000000000</span><span class="p">)</span>
+            <span class="p">}</span>
+
+            <span class="k">function</span> <span class="n">decodeAsAddress</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">v</span> <span class="p">{</span>
+                <span class="n">v</span> <span class="o">:=</span> <span class="n">decodeAsUint</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nf">iszero</span><span class="p">(</span><span class="nf">iszero</span><span class="p">(</span><span class="nf">and</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nf">not</span><span class="p">(</span><span class="mh">0xffffffffffffffffffffffffffffffffffffffff</span><span class="p">))))</span> <span class="p">{</span>
+                    <span class="nf">revert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">decodeAsUint</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">v</span> <span class="p">{</span>
+                <span class="ow">let</span> <span class="nv">pos</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="nf">mul</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">))</span>
+                <span class="k">if</span> <span class="nf">lt</span><span class="p">(</span><span class="nf">calldatasize</span><span class="p">(),</span> <span class="nf">add</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="nf">revert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="p">}</span>
+                <span class="n">v</span> <span class="o">:=</span> <span class="nf">calldataload</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="cm">/* ---------- calldata encoding fonksiyonları ---------- */</span>
+            <span class="k">function</span> <span class="n">returnUint</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nf">mstore</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+                <span class="nf">return</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">returnTrue</span><span class="p">()</span> <span class="p">{</span>
+                <span class="n">returnUint</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="p">}</span>
+
+            <span class="cm">/* -------- olaylar (events) ---------- */</span>
+            <span class="k">function</span> <span class="n">emitTransfer</span><span class="p">(</span><span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+                <span class="ow">let</span> <span class="nv">signatureHash</span> <span class="o">:=</span> <span class="mh">0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef</span>
+                <span class="n">emitEvent</span><span class="p">(</span><span class="n">signatureHash</span><span class="p">,</span> <span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">emitApproval</span><span class="p">(</span><span class="n">from</span><span class="p">,</span> <span class="n">spender</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+                <span class="ow">let</span> <span class="nv">signatureHash</span> <span class="o">:=</span> <span class="mh">0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925</span>
+                <span class="n">emitEvent</span><span class="p">(</span><span class="n">signatureHash</span><span class="p">,</span> <span class="n">from</span><span class="p">,</span> <span class="n">spender</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">emitEvent</span><span class="p">(</span><span class="n">signatureHash</span><span class="p">,</span> <span class="n">indexed1</span><span class="p">,</span> <span class="n">indexed2</span><span class="p">,</span> <span class="n">nonIndexed</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nf">mstore</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nonIndexed</span><span class="p">)</span>
+                <span class="nf">log3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">,</span> <span class="n">signatureHash</span><span class="p">,</span> <span class="n">indexed1</span><span class="p">,</span> <span class="n">indexed2</span><span class="p">)</span>
+            <span class="p">}</span>
+
+            <span class="cm">/* -------- depolama düzeni ---------- */</span>
+            <span class="k">function</span> <span class="n">ownerPos</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">p</span> <span class="p">{</span> <span class="n">p</span> <span class="o">:=</span> <span class="mi">0</span> <span class="p">}</span>
+            <span class="k">function</span> <span class="n">totalSupplyPos</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">p</span> <span class="p">{</span> <span class="n">p</span> <span class="o">:=</span> <span class="mi">1</span> <span class="p">}</span>
+            <span class="k">function</span> <span class="n">accountToStorageOffset</span><span class="p">(</span><span class="n">account</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">offset</span> <span class="p">{</span>
+                <span class="n">offset</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="mh">0x1000</span><span class="p">,</span> <span class="n">account</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">allowanceStorageOffset</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">spender</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">offset</span> <span class="p">{</span>
+                <span class="n">offset</span> <span class="o">:=</span> <span class="n">accountToStorageOffset</span><span class="p">(</span><span class="n">account</span><span class="p">)</span>
+                <span class="nf">mstore</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+                <span class="nf">mstore</span><span class="p">(</span><span class="mh">0x20</span><span class="p">,</span> <span class="n">spender</span><span class="p">)</span>
+                <span class="n">offset</span> <span class="o">:=</span> <span class="nf">keccak256</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mh">0x40</span><span class="p">)</span>
+            <span class="p">}</span>
+
+            <span class="cm">/* -------- depolama erişimi ---------- */</span>
+            <span class="k">function</span> <span class="n">owner</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">o</span> <span class="p">{</span>
+                <span class="n">o</span> <span class="o">:=</span> <span class="nf">sload</span><span class="p">(</span><span class="n">ownerPos</span><span class="p">())</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">totalSupply</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">supply</span> <span class="p">{</span>
+                <span class="n">supply</span> <span class="o">:=</span> <span class="nf">sload</span><span class="p">(</span><span class="n">totalSupplyPos</span><span class="p">())</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">mintTokens</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nf">sstore</span><span class="p">(</span><span class="n">totalSupplyPos</span><span class="p">(),</span> <span class="n">safeAdd</span><span class="p">(</span><span class="n">totalSupply</span><span class="p">(),</span> <span class="n">amount</span><span class="p">))</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">balanceOf</span><span class="p">(</span><span class="n">account</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bal</span> <span class="p">{</span>
+                <span class="n">bal</span> <span class="o">:=</span> <span class="nf">sload</span><span class="p">(</span><span class="n">accountToStorageOffset</span><span class="p">(</span><span class="n">account</span><span class="p">))</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">addToBalance</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+                <span class="ow">let</span> <span class="nv">offset</span> <span class="o">:=</span> <span class="n">accountToStorageOffset</span><span class="p">(</span><span class="n">account</span><span class="p">)</span>
+                <span class="nf">sstore</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">safeAdd</span><span class="p">(</span><span class="nf">sload</span><span class="p">(</span><span class="n">offset</span><span class="p">),</span> <span class="n">amount</span><span class="p">))</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">deductFromBalance</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+                <span class="ow">let</span> <span class="nv">offset</span> <span class="o">:=</span> <span class="n">accountToStorageOffset</span><span class="p">(</span><span class="n">account</span><span class="p">)</span>
+                <span class="ow">let</span> <span class="nv">bal</span> <span class="o">:=</span> <span class="nf">sload</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>
+                <span class="n">require</span><span class="p">(</span><span class="n">lte</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span> <span class="n">bal</span><span class="p">))</span>
+                <span class="nf">sstore</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="nf">sub</span><span class="p">(</span><span class="n">bal</span><span class="p">,</span> <span class="n">amount</span><span class="p">))</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">allowance</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">spender</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">amount</span> <span class="p">{</span>
+                <span class="n">amount</span> <span class="o">:=</span> <span class="nf">sload</span><span class="p">(</span><span class="n">allowanceStorageOffset</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">spender</span><span class="p">))</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">setAllowance</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">spender</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nf">sstore</span><span class="p">(</span><span class="n">allowanceStorageOffset</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">spender</span><span class="p">),</span> <span class="n">amount</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">decreaseAllowanceBy</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">spender</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span> <span class="p">{</span>
+                <span class="ow">let</span> <span class="nv">offset</span> <span class="o">:=</span> <span class="n">allowanceStorageOffset</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">spender</span><span class="p">)</span>
+                <span class="ow">let</span> <span class="nv">currentAllowance</span> <span class="o">:=</span> <span class="nf">sload</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>
+                <span class="n">require</span><span class="p">(</span><span class="n">lte</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span> <span class="n">currentAllowance</span><span class="p">))</span>
+                <span class="nf">sstore</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="nf">sub</span><span class="p">(</span><span class="n">currentAllowance</span><span class="p">,</span> <span class="n">amount</span><span class="p">))</span>
+            <span class="p">}</span>
+
+            <span class="cm">/* ---------- faydalı fonksiyonlar ---------- */</span>
+            <span class="k">function</span> <span class="n">lte</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="p">{</span>
+                <span class="n">r</span> <span class="o">:=</span> <span class="nf">iszero</span><span class="p">(</span><span class="nf">gt</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">gte</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="p">{</span>
+                <span class="n">r</span> <span class="o">:=</span> <span class="nf">iszero</span><span class="p">(</span><span class="nf">lt</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">safeAdd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="p">{</span>
+                <span class="n">r</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nf">or</span><span class="p">(</span><span class="nf">lt</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">a</span><span class="p">),</span> <span class="nf">lt</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span> <span class="p">{</span> <span class="nf">revert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">calledByOwner</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">cbo</span> <span class="p">{</span>
+                <span class="n">cbo</span> <span class="o">:=</span> <span class="nf">eq</span><span class="p">(</span><span class="n">owner</span><span class="p">(),</span> <span class="nf">caller</span><span class="p">())</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">revertIfZeroAddress</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">require</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="k">function</span> <span class="n">require</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="nf">iszero</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span> <span class="p">{</span> <span class="nf">revert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="path-resolution.html" class="btn btn-neutral float-left" title="Import Path Resolution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="style-guide.html" class="btn btn-neutral float-right" title="Style Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

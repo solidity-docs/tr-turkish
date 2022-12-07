@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solidity v0.5.0 İşleyişi Bozan Değişiklikler &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Solidity v0.6.0 İşleyişi Bozan Değişiklikler" href="060-breaking-changes.html" />
+    <link rel="prev" title="Sözleşme ABI Spesifikasyonu" href="abi-spec.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#yalnizca-anlamsal-semantik-degisiklikleri">Yalnızca Anlamsal (Semantik) Değişiklikleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#semantik-ve-sentaktik-degisiklikler">Semantik ve Sentaktik Değişiklikler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#aciklik-gereksinimleri">Açıklık Gereksinimleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#kullanimdan-kaldirilan-ogeler">Kullanımdan Kaldırılan Öğeler</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#komut-satiri-ve-json-arayuzleri">Komut Satırı ve JSON Arayüzleri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#constructor-lar">Constructor’lar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fonksiyonlar">Fonksiyonlar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#donusumler">Dönüşümler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#literaller-ve-sonekler">Literaller ve Sonekler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#degiskenler">Değişkenler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sozdizimi">Sözdizimi</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#eski-sozlesmelerle-birlikte-calisabilirlik">Eski Sözleşmelerle Birlikte Çalışabilirlik</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ornek">Örnek</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/050-breaking-changes.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="solidity-v0-5-0-isleyisi-bozan-degisiklikler">
+<h1>Solidity v0.5.0 İşleyişi Bozan Değişiklikler<a class="headerlink" href="#solidity-v0-5-0-isleyisi-bozan-degisiklikler" title="Permalink to this heading"></a></h1>
+<p>Bu bölüm, Solidity 0.5.0 sürümünde getirilen değişikliklerin, eski sürümlerdeki ana işleyişi bozan kısımlarını
+değişikliklerin arkasındaki gerekçeleri ve etkilenen kodun nasıl güncelleneceğini
+vurgular. Tam liste için <a class="reference external" href="https://github.com/ethereum/solidity/releases/tag/v0.5.0">sürüm değişiklik günlüğü</a>
+adresini kontrol edin.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Solidity v0.5.0 ile derlenen sözleşmeler, eski sürümlerle derlenen sözleşmelerle
+ve hatta kütüphanelerle yeniden derlenmeden veya yeniden dağıtılmadan arayüz
+oluşturmaya devam edebilir.  Arayüzleri veri konumlarını, görünürlük ve değişebilirlik
+belirleyicilerini içerecek şekilde değiştirmek yeterlidir. Aşağıdaki <a class="reference internal" href="#interoperability"><span class="std std-ref">Interoperability With Older Contracts</span></a>
+bölümüne bakınız.</p>
+</div>
+<section id="yalnizca-anlamsal-semantik-degisiklikleri">
+<h2>Yalnızca Anlamsal (Semantik) Değişiklikleri<a class="headerlink" href="#yalnizca-anlamsal-semantik-degisiklikleri" title="Permalink to this heading"></a></h2>
+<p>Bu bölümde yalnızca semantik olan, dolayısıyla mevcut kodda yeni ve farklı davranışları gizleme potansiyeli olan değişiklikler listelenmektedir.</p>
+<ul class="simple">
+<li><p>İşaretli sağa kaydırma artık uygun aritmetik kaydırma kullanır, yani sıfıra doğru yuvarlamak yerine negatif sonsuza doğru yuvarlar.  İşaretli ve işaretsiz kaydırma Constantinople’da özel işlem kodlarına sahip olacak ve şu an için Solidity tarafından taklit edilmektedir.</p></li>
+<li><p>Bir <code class="docutils literal notranslate"><span class="pre">do...while</span></code> döngüsündeki <code class="docutils literal notranslate"><span class="pre">continue</span></code> deyimi artık bu tür durumlarda yaygın davranış olan koşula atlıyor. Eskiden döngü gövdesine atlıyordu. Böylece, koşul yanlışsa, döngü sonlandırılır.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.call()</span></code>, <code class="docutils literal notranslate"><span class="pre">.delegatecall()</span></code> ve <code class="docutils literal notranslate"><span class="pre">.staticcall()</span></code> fonksiyonları, tek bir <code class="docutils literal notranslate"><span class="pre">bytes</span></code> parametresi verildiğinde artık dolgu yapmıyor.</p></li>
+<li><p>Pure ve view fonksiyonları artık EVM sürümü Byzantium veya üstü ise <code class="docutils literal notranslate"><span class="pre">CALL</span></code> yerine <code class="docutils literal notranslate"><span class="pre">STATICCALL</span></code> opcode`u kullanılarak çağrılmaktadır. Bu, EVM düzeyinde durum değişikliklerine izin vermez.</p></li>
+<li><p>ABI kodlayıcı artık harici fonksiyon çağrılarında ve <code class="docutils literal notranslate"><span class="pre">abi.encode</span></code> içinde kullanıldığında çağrı verilerinden (<code class="docutils literal notranslate"><span class="pre">msg.data</span></code> ve harici fonksiyon parametreleri) bayt dizilerini ve dizeleri düzgün bir şekilde doldurur. Dolgusuz kodlama için <code class="docutils literal notranslate"><span class="pre">abi.encodePacked</span></code> kullanın.</p></li>
+<li><p>ABI dekoderi, fonksiyonların başında ve <code class="docutils literal notranslate"><span class="pre">abi.decode()</span></code> içinde, aktarılan calldata çok kısaysa veya sınırların dışına işaret ediyorsa geri döner. Yüksek dereceli kirli bitlerin hala basitçe göz ardı edildiğini unutmayın.</p></li>
+<li><p>Tangerine Whistle’dan başlayarak harici fonksiyon çağrıları ile mevcut tüm gazı iletin.</p></li>
+</ul>
+</section>
+<section id="semantik-ve-sentaktik-degisiklikler">
+<h2>Semantik ve Sentaktik Değişiklikler<a class="headerlink" href="#semantik-ve-sentaktik-degisiklikler" title="Permalink to this heading"></a></h2>
+<p>Bu bölümde sözdizimi ve anlambilimi etkileyen değişiklikler vurgulanmaktadır.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.call()</span></code>, <code class="docutils literal notranslate"><span class="pre">.delegatecall()</span></code>, <code class="docutils literal notranslate"><span class="pre">staticcall()</span></code>, <code class="docutils literal notranslate"><span class="pre">keccak256()</span></code>, <code class="docutils literal notranslate"><span class="pre">sha256()</span></code> ve <code class="docutils literal notranslate"><span class="pre">ripemd160()</span></code> fonksiyonları artık sadece tek bir <code class="docutils literal notranslate"><span class="pre">bytes</span></code> argümanı kabul etmektedir. Ayrıca, argüman doldurulmamıştır. Bu, argümanların nasıl birleştirildiğini daha açık ve net hale getirmek için değiştirildi. Her <code class="docutils literal notranslate"><span class="pre">.call()</span></code> (ve ailesi) <code class="docutils literal notranslate"><span class="pre">.call(&quot;&quot;)</span></code> olarak ve her <code class="docutils literal notranslate"><span class="pre">.call(signature,</span> <span class="pre">a,</span> <span class="pre">b,</span> <span class="pre">c)</span></code> <code class="docutils literal notranslate"><span class="pre">.call(abi.encodeWithSignature(signature,</span> <span class="pre">a,</span> <span class="pre">b,</span> <span class="pre">c))</span></code> olarak değiştirildi (sonuncusu yalnızca değer türleri için çalışır).  Her <code class="docutils literal notranslate"><span class="pre">keccak256(a,</span> <span class="pre">b,</span> <span class="pre">c)</span></code> ifadesini <code class="docutils literal notranslate"><span class="pre">keccak256(abi.encodePacked(a,</span> <span class="pre">b,</span> <span class="pre">c))</span></code> olarak değiştirin. İşleyişi bozan bir değişiklik olmasa da, geliştiricilerin <code class="docutils literal notranslate"><span class="pre">x.call(bytes4(keccak256(&quot;f(uint256)&quot;),</span> <span class="pre">a,</span> <span class="pre">b)</span></code> öğesini <code class="docutils literal notranslate"><span class="pre">x.call(abi.encodeWithSignature(&quot;f(uint256)&quot;,</span> <span class="pre">a,</span> <span class="pre">b))</span></code> olarak değiştirmeleri önerilir.</p></li>
+<li><p>Geri dönüş verilerine erişim sağlamak için <code class="docutils literal notranslate"><span class="pre">.call()</span></code>, <code class="docutils literal notranslate"><span class="pre">.delegatecall()</span></code> ve <code class="docutils literal notranslate"><span class="pre">.staticcall()</span></code> fonksiyonları artık <code class="docutils literal notranslate"><span class="pre">(bool,</span> <span class="pre">bytes</span> <span class="pre">memory)</span></code> döndürmektedir.  <code class="docutils literal notranslate"><span class="pre">bool</span> <span class="pre">success</span> <span class="pre">=</span> <span class="pre">otherContract.call(&quot;f&quot;)</span></code> ifadesini <code class="docutils literal notranslate"><span class="pre">(bool</span> <span class="pre">success,</span> <span class="pre">bytes</span> <span class="pre">memory</span> <span class="pre">data)</span> <span class="pre">=</span> <span class="pre">otherContract.call(&quot;f&quot;)</span></code> olarak değiştirin.</p></li>
+<li><p>Solidity artık fonksiyon yerel değişkenleri için C99 tarzı kapsam kurallarını uygulamaktadır, yani değişkenler yalnızca bildirildikten sonra ve yalnızca aynı veya iç içe kapsamlarda kullanılabilir. Bir <code class="docutils literal notranslate"><span class="pre">for</span></code> döngüsünün başlatma bloğunda bildirilen değişkenler, döngü içindeki herhangi bir noktada geçerlidir.</p></li>
+</ul>
+</section>
+<section id="aciklik-gereksinimleri">
+<h2>Açıklık Gereksinimleri<a class="headerlink" href="#aciklik-gereksinimleri" title="Permalink to this heading"></a></h2>
+<p>Bu bölüm, kodun artık daha açık olması gereken değişiklikleri listeler.
+Konuların çoğu için derleyici öneriler sağlayacaktır.</p>
+<ul class="simple">
+<li><p>Açık fonksiyon görünürlüğü artık zorunludur.  Her fonksiyona ve constructor’a <code class="docutils literal notranslate"><span class="pre">public</span></code> ve görünürlüğünü zaten belirtmeyen her fallback veya arayüz fonksiyonuna <code class="docutils literal notranslate"><span class="pre">external</span></code> ekleyin.</p></li>
+<li><p>struct, array veya mapping türlerindeki tüm değişkenler için açık veri konumu artık zorunludur. Bu aynı zamanda fonksiyon parametrelerine ve dönüş değişkenlerine de uygulanır.  Örneğin, <code class="docutils literal notranslate"><span class="pre">uint[]</span> <span class="pre">x</span> <span class="pre">=</span> <span class="pre">z</span></code> ifadesini <code class="docutils literal notranslate"><span class="pre">uint[]</span> <span class="pre">storage</span> <span class="pre">x</span> <span class="pre">=</span> <span class="pre">z</span></code> olarak ve <code class="docutils literal notranslate"><span class="pre">function</span> <span class="pre">f(uint[][]</span> <span class="pre">x)</span></code> ifadesini <code class="docutils literal notranslate"><span class="pre">function</span> <span class="pre">f(uint[][]</span> <span class="pre">memory</span> <span class="pre">x)</span></code> olarak değiştirin; burada <code class="docutils literal notranslate"><span class="pre">memory</span></code> veri konumudur ve uygun şekilde <code class="docutils literal notranslate"><span class="pre">storage</span></code> veya <code class="docutils literal notranslate"><span class="pre">calldata</span></code> ile değiştirilebilir.  <code class="docutils literal notranslate"><span class="pre">external</span></code> fonksiyonlarının <code class="docutils literal notranslate"><span class="pre">calldata</span></code> veri konumuna sahip parametreler gerektirdiğini unutmayın.</p></li>
+<li><p>Sözleşme türleri, isim alanlarını ayırmak için artık <code class="docutils literal notranslate"><span class="pre">address</span></code> üyelerini içermemektedir.  Bu nedenle, artık bir <code class="docutils literal notranslate"><span class="pre">address</span></code> üyesini kullanmadan önce sözleşme türünün değerlerini açıkça adreslere dönüştürmek gerekmektedir.  Örnek: <code class="docutils literal notranslate"><span class="pre">c</span></code> bir sözleşme ise, <code class="docutils literal notranslate"><span class="pre">c.transfer(...)</span></code> değerini <code class="docutils literal notranslate"><span class="pre">address(c).transfer(...)</span></code> olarak ve <code class="docutils literal notranslate"><span class="pre">c.balance</span></code> değerini <code class="docutils literal notranslate"><span class="pre">address(c).balance</span></code> olarak değiştirin.</p></li>
+<li><p>İlişkisiz sözleşme türleri arasında açık dönüşümlere artık izin verilmemektedir. Bir sözleşme türünden yalnızca temel veya ata türlerinden birine dönüştürebilirsiniz. Bir sözleşmenin, miras almamasına rağmen dönüştürmek istediğiniz sözleşme türüyle uyumlu olduğundan eminseniz, önce <code class="docutils literal notranslate"><span class="pre">address</span></code> türüne dönüştürerek bunu aşabilirsiniz. Örnek: <code class="docutils literal notranslate"><span class="pre">A</span></code> ve <code class="docutils literal notranslate"><span class="pre">B</span></code> sözleşme türleriyse, <code class="docutils literal notranslate"><span class="pre">B</span></code> <code class="docutils literal notranslate"><span class="pre">A</span></code> türünden miras almıyorsa ve <code class="docutils literal notranslate"><span class="pre">b</span></code> <code class="docutils literal notranslate"><span class="pre">B</span></code> türünde bir sözleşmeyse, <code class="docutils literal notranslate"><span class="pre">A(adres(b))</span></code> kullanarak <code class="docutils literal notranslate"><span class="pre">b</span></code> türünü <code class="docutils literal notranslate"><span class="pre">A</span></code> türüne dönüştürebilirsiniz. Aşağıda açıklandığı gibi, eşleşen payable fallback fonksiyonlarına dikkat etmeniz gerektiğini unutmayın.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">address</span></code> türü <code class="docutils literal notranslate"><span class="pre">address</span></code> ve <code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code> olarak ikiye ayrılmıştır, burada sadece <code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code> <code class="docutils literal notranslate"><span class="pre">transfer</span></code> fonksiyonunu sağlamaktadır.  Bir <code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code> doğrudan bir <code class="docutils literal notranslate"><span class="pre">address</span></code> e dönüştürülebilir, ancak bunun tersine izin verilmez. <code class="docutils literal notranslate"><span class="pre">address</span></code>’i <code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code>’a dönüştürmek <code class="docutils literal notranslate"><span class="pre">uint160</span></code> vasıtasıyla dönüşüm yoluyla mümkündür. Eğer <code class="docutils literal notranslate"><span class="pre">c</span></code> bir sözleşme ise, <code class="docutils literal notranslate"><span class="pre">address(c)</span></code> sadece <code class="docutils literal notranslate"><span class="pre">c</span></code> bir payable fallback fonksiyonuna sahipse <code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code> ile sonuçlanır. Eğer <a class="reference internal" href="common-patterns.html#withdrawal-pattern"><span class="std std-ref">withdraw pattern</span></a> kullanıyorsanız, büyük olasılıkla kodunuzu değiştirmeniz gerekmez çünkü <code class="docutils literal notranslate"><span class="pre">transfer</span></code> saklanan adresler yerine sadece <code class="docutils literal notranslate"><span class="pre">msg.sender</span></code> üzerinde kullanılır ve <code class="docutils literal notranslate"><span class="pre">msg.sender</span></code> bir <code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code> dır.</p></li>
+<li><p>Farklı boyuttaki <code class="docutils literal notranslate"><span class="pre">bytesX</span></code> ve <code class="docutils literal notranslate"><span class="pre">uintY</span></code> arasındaki dönüşümler, sağdaki <code class="docutils literal notranslate"><span class="pre">bytesX</span></code> dolgusu ve soldaki <code class="docutils literal notranslate"><span class="pre">uintY</span></code> dolgusu nedeniyle artık izin verilmiyor ve bu da beklenmedik dönüşüm sonuçlarına neden olabilir.  Boyut artık dönüştürmeden önce tür içinde ayarlanmalıdır.  Örneğin, <code class="docutils literal notranslate"><span class="pre">bytes4</span></code> (4 bayt) değişkenini önce <code class="docutils literal notranslate"><span class="pre">bytes8</span></code> değişkenine ve ardından <code class="docutils literal notranslate"><span class="pre">uint64</span></code> değişkenine dönüştürerek bir <code class="docutils literal notranslate"><span class="pre">bytes4</span></code> (4 bayt) değişkenini bir <code class="docutils literal notranslate"><span class="pre">uint64</span></code> (8 bayt) değişkenine dönüştürebilirsiniz. <code class="docutils literal notranslate"><span class="pre">uint32</span></code> üzerinden dönüştürme yaparken ters dolgu elde edersiniz. v0.5.0`dan önce <code class="docutils literal notranslate"><span class="pre">bytesX</span></code> ve <code class="docutils literal notranslate"><span class="pre">uintY</span></code> arasındaki herhangi bir dönüşüm <code class="docutils literal notranslate"><span class="pre">uint8X</span></code> üzerinden giderdi. Örneğin <code class="docutils literal notranslate"><span class="pre">uint8(bytes3(0x291807))</span></code>, <code class="docutils literal notranslate"><span class="pre">uint8(uint24(bytes3(0x291807)))</span></code>’e dönüştürülürdü (sonuç <code class="docutils literal notranslate"><span class="pre">0x07</span></code> dir).</p></li>
+<li><p>Payable olmayan fonksiyonlarda <code class="docutils literal notranslate"><span class="pre">msg.value</span></code> kullanımına (veya bir modifier aracılığıyla tanıtılmasına) güvenlik özelliği olarak izin verilmez. Fonksiyonu <code class="docutils literal notranslate"><span class="pre">payable</span></code> haline getirin veya <code class="docutils literal notranslate"><span class="pre">msg.value</span></code> kullanan program mantığı için yeni bir dahili fonksiyon oluşturun.</p></li>
+<li><p>Anlaşılabilirlik nedeniyle, standart girdi kaynak olarak kullanıldığında komut satırı arayüzü artık <code class="docutils literal notranslate"><span class="pre">-</span></code> gerektirmektedir. Translated with www.DeepL.com/Translator (free version)</p></li>
+</ul>
+</section>
+<section id="kullanimdan-kaldirilan-ogeler">
+<h2>Kullanımdan Kaldırılan Öğeler<a class="headerlink" href="#kullanimdan-kaldirilan-ogeler" title="Permalink to this heading"></a></h2>
+<p>Bu bölümde, önceki özellikleri veya sözdizimini kullanımdan kaldıran değişiklikler listelenmektedir.  Bu değişikliklerin çoğunun <code class="docutils literal notranslate"><span class="pre">v0.5.0</span></code> deneysel modunda zaten etkin olduğunu unutmayın.</p>
+<section id="komut-satiri-ve-json-arayuzleri">
+<h3>Komut Satırı ve JSON Arayüzleri<a class="headerlink" href="#komut-satiri-ve-json-arayuzleri" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Komut satırı seçeneği <code class="docutils literal notranslate"><span class="pre">--formal</span></code> (daha fazla biçimsel doğrulama için Why3 çıktısı oluşturmak için kullanılır) kullanımdan kaldırılmıştır ve artık silinmektedir.  Yeni bir biçimsel doğrulama modülü olan SMTChecker, <code class="docutils literal notranslate"><span class="pre">pragma</span> <span class="pre">experimental</span> <span class="pre">SMTChecker;</span></code> ile etkinleştirilmiştir.</p></li>
+<li><p>Komut satırı seçeneği <code class="docutils literal notranslate"><span class="pre">--julia</span></code>, ara dil <code class="docutils literal notranslate"><span class="pre">Julia``nın</span> <span class="pre">``Yul</span></code> olarak yeniden adlandırılması nedeniyle <code class="docutils literal notranslate"><span class="pre">--yul</span></code> olarak yeniden adlandırıldı.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--clone-bin</span></code> ve <code class="docutils literal notranslate"><span class="pre">--combined-json</span> <span class="pre">clone-bin</span></code> komut satırı seçenekleri kaldırıldı.</p></li>
+<li><p>Boş önek içeren yeniden eşlemelere izin verilmiyor.</p></li>
+<li><p>JSON AST alanları <code class="docutils literal notranslate"><span class="pre">constant</span></code> ve <code class="docutils literal notranslate"><span class="pre">payable</span></code> kaldırıldı. Bu bilgiler artık <code class="docutils literal notranslate"><span class="pre">stateMutability</span></code> alanında bulunmaktadır.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FunctionDefinition</span></code> node’unun JSON AST alanı <code class="docutils literal notranslate"><span class="pre">isConstructor</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;constructor&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;fallback&quot;</span></code> veya <code class="docutils literal notranslate"><span class="pre">&quot;function&quot;</span></code> değerine sahip olabilen <code class="docutils literal notranslate"><span class="pre">kind</span></code> adlı bir alanla değiştirildi.</p></li>
+<li><p>Bağlantısız ikili hex dosyalarında, kütüphane adres yer tutucuları artık <code class="docutils literal notranslate"><span class="pre">$...$</span></code> ile çevrelenmiş tam nitelikli kütüphane adının keccak256 hash’inin ilk 36 hex karakteridir. Önceden, sadece tam nitelikli kütüphane adı kullanılıyordu. Bu, özellikle uzun yollar kullanıldığında çakışma olasılığını azaltır. Binary dosyalar artık bu yer tutuculardan tam nitelikli adlara bir eşleme listesi de içeriyor.</p></li>
+</ul>
+</section>
+<section id="constructor-lar">
+<h3>Constructor’lar<a class="headerlink" href="#constructor-lar" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Constructor’lar artık <code class="docutils literal notranslate"><span class="pre">constructor</span></code> anahtar sözcüğü kullanılarak tanımlanmalıdır.</p></li>
+<li><p>Temel constructor’ların parantezler olmadan çağrılmasına artık izin verilmemektedir.</p></li>
+<li><p>Aynı kalıtım hiyerarşisinde temel constructor argümanlarının birden fazla kez belirtilmesine artık izin verilmemektedir.</p></li>
+<li><p>Argümanları olan ancak argüman sayısı yanlış olan bir constructor çağrılmasına artık izin verilmemektedir.  Argüman vermeden yalnızca bir kalıtım ilişkisi belirtmek istiyorsanız, parantezleri hiç sağlamayın.</p></li>
+</ul>
+</section>
+<section id="fonksiyonlar">
+<h3>Fonksiyonlar<a class="headerlink" href="#fonksiyonlar" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Fonksiyon <code class="docutils literal notranslate"><span class="pre">callcode</span></code> artık izin verilmiyor (<code class="docutils literal notranslate"><span class="pre">delegatecall</span></code> lehine). Inline assembly ile kullanmak hala mümkündür.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">suicide</span></code> artık izin verilmiyor (<code class="docutils literal notranslate"><span class="pre">selfdestruct</span></code> lehine).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sha3</span></code> artık izin verilmiyor (<code class="docutils literal notranslate"><span class="pre">keccak256</span></code> lehine).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">throw</span></code> artık izin verilmiyor (<code class="docutils literal notranslate"><span class="pre">revert</span></code>, <code class="docutils literal notranslate"><span class="pre">require</span></code> ve <code class="docutils literal notranslate"><span class="pre">assert</span></code> lehine).</p></li>
+</ul>
+</section>
+<section id="donusumler">
+<h3>Dönüşümler<a class="headerlink" href="#donusumler" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Ondalık değişmezlerden <code class="docutils literal notranslate"><span class="pre">bytesXX</span></code> türlerine açık ve örtük dönüşümlere artık izin verilmiyor.</p></li>
+<li><p>Onaltılık değişmezlerden farklı boyuttaki <code class="docutils literal notranslate"><span class="pre">bytesXX</span></code> türlerine açık ve örtük dönüşümlere artık izin verilmiyor.</p></li>
+</ul>
+</section>
+<section id="literaller-ve-sonekler">
+<h3>Literaller ve Sonekler<a class="headerlink" href="#literaller-ve-sonekler" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Artık yıllarla ilgili karmaşıklıklar ve karışıklıklar nedeniyle <code class="docutils literal notranslate"><span class="pre">years</span></code> birim gösterimine artık izin verilmemektedir.</p></li>
+<li><p>Bir sayı tarafından takip edilmeyen sondaki noktalara artık izin verilmemektedir.</p></li>
+<li><p>Onaltılık sayıların birim değerleriyle birleştirilmesine (örneğin <code class="docutils literal notranslate"><span class="pre">0x1e</span> <span class="pre">wei</span></code>) artık izin verilmemektedir.</p></li>
+<li><p>Onaltılık sayılar için <code class="docutils literal notranslate"><span class="pre">0X</span></code> önekine izin verilmez, sadece <code class="docutils literal notranslate"><span class="pre">0x</span></code> mümkündür.</p></li>
+</ul>
+</section>
+<section id="degiskenler">
+<h3>Değişkenler<a class="headerlink" href="#degiskenler" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Anlaşılabilirlik için boş structların tanımlanmasına artık izin verilmiyor.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">var</span></code> anahtar sözcüğüne artık netlik için izin verilmiyor.</p></li>
+<li><p>Farklı sayıda bileşene sahip tuple’lar arasındaki atamalara artık izin verilmiyor.</p></li>
+<li><p>Derleme zamanı sabitleri olmayan sabitler için değerlere izin verilmez.</p></li>
+<li><p>Uyumsuz sayıda değere sahip çok değişkenli bildirimlere artık izin verilmemektedir.</p></li>
+<li><p>Başlatılmamış depolama değişkenlerine artık izin verilmemektedir.</p></li>
+<li><p>Boş tuple bileşenlerine artık izin verilmiyor.</p></li>
+<li><p>Değişkenler ve struct’lardaki döngüsel bağımlılıkların algılanması özyinelemede 256 ile sınırlandırılmıştır.</p></li>
+<li><p>Uzunluğu sıfır olan sabit boyutlu dizilere artık izin verilmemektedir.</p></li>
+</ul>
+</section>
+<section id="sozdizimi">
+<h3>Sözdizimi<a class="headerlink" href="#sozdizimi" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Fonksiyon durumu değişebilirlik değiştiricisi olarak <code class="docutils literal notranslate"><span class="pre">constant</span></code> kullanımına artık izin verilmemektedir.</p></li>
+<li><p>Boolean ifadeler aritmetik işlemler kullanamaz.</p></li>
+<li><p>Unary <code class="docutils literal notranslate"><span class="pre">+</span></code> operatörüne artık izin verilmiyor.</p></li>
+<li><p>Harfler artık önceden açık bir türe dönüştürülmeden <code class="docutils literal notranslate"><span class="pre">abi.encodePacked</span></code> ile kullanılamaz.</p></li>
+<li><p>Bir veya daha fazla dönüş değeri olan fonksiyonlar için boş dönüş ifadelerine artık izin verilmemektedir.</p></li>
+<li><p>” loose assembly” sözdizimine artık tamamen izin verilmiyor, yani atlama etiketleri, atlamalar ve işlevsel olmayan talimatlar artık kullanılamaz. Bunun yerine yeni <code class="docutils literal notranslate"><span class="pre">while</span></code>, <code class="docutils literal notranslate"><span class="pre">switch</span></code> ve <code class="docutils literal notranslate"><span class="pre">if</span></code> yapılarını kullanın.</p></li>
+<li><p>Uygulaması olmayan fonksiyonlar artık modifier kullanamaz.</p></li>
+<li><p>Adlandırılmış dönüş değerlerine sahip fonksiyon tiplerine artık izin verilmemektedir.</p></li>
+<li><p>Blok olmayan if/while/for gövdeleri içindeki tek deyimli değişken bildirimlerine artık izin verilmiyor.</p></li>
+<li><p>Yeni anahtar kelimeler: <code class="docutils literal notranslate"><span class="pre">calldata</span></code> ve <code class="docutils literal notranslate"><span class="pre">constructor</span></code>.</p></li>
+<li><p>Yeni ayrılmış anahtar sözcükler: <code class="docutils literal notranslate"><span class="pre">alias</span></code>, <code class="docutils literal notranslate"><span class="pre">apply</span></code>, <code class="docutils literal notranslate"><span class="pre">auto</span></code>, <code class="docutils literal notranslate"><span class="pre">copyof</span></code>,
+<code class="docutils literal notranslate"><span class="pre">define</span></code>, <code class="docutils literal notranslate"><span class="pre">immutable</span></code>, <code class="docutils literal notranslate"><span class="pre">implements</span></code>, <code class="docutils literal notranslate"><span class="pre">macro</span></code>, <code class="docutils literal notranslate"><span class="pre">mutable</span></code>,
+<code class="docutils literal notranslate"><span class="pre">override</span></code>, <code class="docutils literal notranslate"><span class="pre">partial</span></code>, <code class="docutils literal notranslate"><span class="pre">promise</span></code>, <code class="docutils literal notranslate"><span class="pre">reference</span></code>, <code class="docutils literal notranslate"><span class="pre">sealed</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sizeof</span></code>, <code class="docutils literal notranslate"><span class="pre">supports</span></code>, <code class="docutils literal notranslate"><span class="pre">typedef</span></code> ve <code class="docutils literal notranslate"><span class="pre">unchecked</span></code>.</p></li>
+</ul>
+</section>
+</section>
+<section id="eski-sozlesmelerle-birlikte-calisabilirlik">
+<span id="interoperability"></span><h2>Eski Sözleşmelerle Birlikte Çalışabilirlik<a class="headerlink" href="#eski-sozlesmelerle-birlikte-calisabilirlik" title="Permalink to this heading"></a></h2>
+<p>Solidity’nin v0.5.0’dan önceki sürümleri için yazılmış sözleşmeler için arayüzler
+tanımlayarak (veya tam tersi şekilde) arayüz oluşturmak hala mümkündür. Aşağıdaki
+0.5.0 öncesi sözleşmenin zaten dağıtılmış olduğunu düşünün:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5IF4wLjQuMjU7Ci8vIEJ1LCBkZXJsZXlpY2luaW4gMC40LjI1IHPDvHLDvG3DvG5lIGthZGFyIGJpciB1eWFyxLEgYmlsZGlyZWNla3RpcgovLyBCdSAwLjUuMCdkYW4gc29ucmEgZGVybGVubWV5ZWNla3Rpcgpjb250cmFjdCBPbGRDb250cmFjdCB7CiAgICBmdW5jdGlvbiBzb21lT2xkRnVuY3Rpb24odWludDggYSkgewogICAgICAgIC8vLi4uCiAgICB9CiAgICBmdW5jdGlvbiBhbm90aGVyT2xkRnVuY3Rpb24oKSBjb25zdGFudCByZXR1cm5zIChib29sKSB7CiAgICAgICAgLy8uLi4KICAgIH0KICAgIC8vIC4uLgp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">^</span><span class="k">0.4.25</span><span class="p">;</span><span class="w"></span>
+<span class="c1">// Bu, derleyicinin 0.4.25 sürümüne kadar bir uyarı bildirecektir</span>
+<span class="c1">// Bu 0.5.0&#39;dan sonra derlenmeyecektir</span>
+<span class="k">contract</span><span class="w"> </span><span class="ni">OldContract</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">someOldFunction</span><span class="p">(</span><span class="kt">uint8</span><span class="w"> </span><span class="nv">a</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">//...</span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">anotherOldFunction</span><span class="p">()</span><span class="w"> </span><span class="kt">constant</span><span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">bool</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">//...</span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ...</span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Bu artık Solidity v0.5.0 ile derlenmeyecektir. Ancak, bunun için uyumlu bir arayüz tanımlayabilirsiniz:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC41LjAgPDAuOS4wOwppbnRlcmZhY2UgT2xkQ29udHJhY3QgewogICAgZnVuY3Rpb24gc29tZU9sZEZ1bmN0aW9uKHVpbnQ4IGEpIGV4dGVybmFsOwogICAgZnVuY3Rpb24gYW5vdGhlck9sZEZ1bmN0aW9uKCkgZXh0ZXJuYWwgcmV0dXJucyAoYm9vbCk7Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.5.0</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+interface<span class="w"> </span>OldContract<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">someOldFunction</span><span class="p">(</span><span class="kt">uint8</span><span class="w"> </span><span class="nv">a</span><span class="p">)</span><span class="w"> </span><span class="kt">external</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">anotherOldFunction</span><span class="p">()</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">bool</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Orijinal sözleşmede <code class="docutils literal notranslate"><span class="pre">constant</span></code> olarak tanımlanmasına rağmen <code class="docutils literal notranslate"><span class="pre">anotherOldFunction</span></code>
+fonksiyonunu <code class="docutils literal notranslate"><span class="pre">view</span></code> olarak tanımlamadığımıza dikkat edin. Bunun nedeni Solidity v0.5.0`dan
+itibaren <code class="docutils literal notranslate"><span class="pre">view</span></code> fonksiyonlarını çağırmak için <code class="docutils literal notranslate"><span class="pre">staticcall</span></code> kullanılmasıdır. v0.5.0 öncesinde
+<code class="docutils literal notranslate"><span class="pre">constant</span></code> anahtar sözcüğü zorunlu değildi, bu nedenle <code class="docutils literal notranslate"><span class="pre">constant</span></code> olarak bildirilen bir
+fonksiyonu <code class="docutils literal notranslate"><span class="pre">staticcall</span></code> ile çağırmak yine de geri dönebilir, çünkü <code class="docutils literal notranslate"><span class="pre">constant</span></code> fonksiyonu
+hala depolamayı değiştirmeye çalışabilir. Sonuç olarak, eski sözleşmeler için bir arayüz
+tanımlarken, <code class="docutils literal notranslate"><span class="pre">constant</span></code> yerine sadece fonksiyonun <code class="docutils literal notranslate"><span class="pre">staticcall</span></code> ile çalışacağından kesinlikle
+emin olduğunuz durumlarda <code class="docutils literal notranslate"><span class="pre">view</span></code> kullanmalısınız.</p>
+<p>Yukarıda tanımlanan arayüz göz önüne alındığında, artık halihazırda dağıtılmış olan 0.5.0 öncesi sözleşmeyi kolayca kullanabilirsiniz:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC41LjAgPDAuOS4wOwoKaW50ZXJmYWNlIE9sZENvbnRyYWN0IHsKICAgIGZ1bmN0aW9uIHNvbWVPbGRGdW5jdGlvbih1aW50OCBhKSBleHRlcm5hbDsKICAgIGZ1bmN0aW9uIGFub3RoZXJPbGRGdW5jdGlvbigpIGV4dGVybmFsIHJldHVybnMgKGJvb2wpOwp9Cgpjb250cmFjdCBOZXdDb250cmFjdCB7CiAgICBmdW5jdGlvbiBkb1NvbWV0aGluZyhPbGRDb250cmFjdCBhKSBwdWJsaWMgcmV0dXJucyAoYm9vbCkgewogICAgICAgIGEuc29tZU9sZEZ1bmN0aW9uKDB4NDIpOwogICAgICAgIHJldHVybiBhLmFub3RoZXJPbGRGdW5jdGlvbigpOwogICAgfQp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.5.0</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+interface<span class="w"> </span>OldContract<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">someOldFunction</span><span class="p">(</span><span class="kt">uint8</span><span class="w"> </span><span class="nv">a</span><span class="p">)</span><span class="w"> </span><span class="kt">external</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">anotherOldFunction</span><span class="p">()</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">bool</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">NewContract</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">doSomething</span><span class="p">(</span>OldContract<span class="w"> </span>a<span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">bool</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>a<span class="p">.</span>someOldFunction<span class="p">(</span><span class="mh">0x42</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kt">return</span><span class="w"> </span>a<span class="p">.</span>anotherOldFunction<span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Benzer şekilde, 0.5.0 öncesi kütüphaneler, kütüphanenin fonksiyonları uygulanmadan tanımlanarak ve linking sırasında 0.5.0 öncesi kütüphanenin adresi verilerek kullanılabilir (linking için komut satırı derleyicisinin nasıl kullanılacağını öğrenmek için <a class="reference internal" href="using-the-compiler.html#commandline-compiler"><span class="std std-ref">Komut Satırı Derleyicisinin Kullanımı</span></a> bölümüne bakınız):</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gVGhpcyB3aWxsIG5vdCBjb21waWxlIGFmdGVyIDAuNi4wCi8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMy4wCnByYWdtYSBzb2xpZGl0eSBeMC41LjA7CgpsaWJyYXJ5IE9sZExpYnJhcnkgewogICAgZnVuY3Rpb24gc29tZUZ1bmN0aW9uKHVpbnQ4IGEpIHB1YmxpYyByZXR1cm5zKGJvb2wpOwp9Cgpjb250cmFjdCBOZXdDb250cmFjdCB7CiAgICBmdW5jdGlvbiBmKHVpbnQ4IGEpIHB1YmxpYyByZXR1cm5zIChib29sKSB7CiAgICAgICAgcmV0dXJuIE9sZExpYnJhcnkuc29tZUZ1bmN0aW9uKGEpOwogICAgfQp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// This will not compile after 0.6.0</span>
+<span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">^</span><span class="k">0.5.0</span><span class="p">;</span><span class="w"></span>
+
+<span class="kt">library</span><span class="w"> </span>OldLibrary<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">someFunction</span><span class="p">(</span><span class="kt">uint8</span><span class="w"> </span><span class="nv">a</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="kt">returns</span><span class="p">(</span><span class="kt">bool</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">NewContract</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">f</span><span class="p">(</span><span class="kt">uint8</span><span class="w"> </span><span class="nv">a</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">bool</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">return</span><span class="w"> </span>OldLibrary<span class="p">.</span>someFunction<span class="p">(</span>a<span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="ornek">
+<h2>Örnek<a class="headerlink" href="#ornek" title="Permalink to this heading"></a></h2>
+<p>Aşağıdaki örnekte bir sözleşme ve bu bölümde listelenen bazı değişikliklerle Solidity v0.5.0 için güncellenmiş sürümü gösterilmektedir.</p>
+<p>Eski versiyon:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5IF4wLjQuMjU7Ci8vIEJ1IDAuNS4wJ2RhbiBzb25yYSBkZXJsZW5tZXllY2VrdGlyCgpjb250cmFjdCBPdGhlckNvbnRyYWN0IHsKICAgIHVpbnQgeDsKICAgIGZ1bmN0aW9uIGYodWludCB5KSBleHRlcm5hbCB7CiAgICAgICAgeCA9IHk7CiAgICB9CiAgICBmdW5jdGlvbigpIHBheWFibGUgZXh0ZXJuYWwge30KfQoKY29udHJhY3QgT2xkIHsKICAgIE90aGVyQ29udHJhY3Qgb3RoZXI7CiAgICB1aW50IG15TnVtYmVyOwoKICAgIC8vIEZvbmtzaXlvbiBkZcSfacWfZWJpbGlybGnEn2kgc2HEn2xhbm1hZMSxLCBoYXRhIGRlxJ9pbC4KICAgIGZ1bmN0aW9uIHNvbWVJbnRlZ2VyKCkgaW50ZXJuYWwgcmV0dXJucyAodWludCkgeyByZXR1cm4gMjsgfQoKICAgIC8vIEZvbmtzaXlvbiBnw7Zyw7xuw7xybMO8xJ/DvCBzYcSfbGFubWFkxLEsIGhhdGEgZGXEn2lsLgogICAgLy8gRm9ua3NpeW9uIGRlxJ9pxZ9lYmlsaXJsacSfaSBzYcSfbGFubWFkxLEsIGhhdGEgZGXEn2lsLgogICAgZnVuY3Rpb24gZih1aW50IHgpIHJldHVybnMgKGJ5dGVzKSB7CiAgICAgICAgLy8gVmFyIGJ1IHZlcnNpeW9uZGEgc29ydW5zdXogw6dhbMSxxZ/EsXlvci4KICAgICAgICB2YXIgeiA9IHNvbWVJbnRlZ2VyKCk7CiAgICAgICAgeCArPSB6OwogICAgICAgIC8vIFRocm93IGJ1IHZlcnNpeW9uZGEgc29ydW5zdXogw6dhbMSxxZ/EsXlvci4KICAgICAgICBpZiAoeCA+IDEwMCkKICAgICAgICAgICAgdGhyb3c7CiAgICAgICAgYnl0ZXMgbWVtb3J5IGIgPSBuZXcgYnl0ZXMoeCk7CiAgICAgICAgeSA9IC0zID4+IDE7CiAgICAgICAgLy8geSA9PSAtMSAoeWFubMSxxZ8sIC0yIG9sbWFsxLEpCiAgICAgICAgZG8gewogICAgICAgICAgICB4ICs9IDE7CiAgICAgICAgICAgIGlmICh4ID4gMTApIGNvbnRpbnVlOwogICAgICAgICAgICAvLyAnQ29udGludWUnIHNvbnN1eiBkw7ZuZ8O8eWUgbmVkZW4gb2x1ci4KICAgICAgICB9IHdoaWxlICh4IDwgMTEpOwogICAgICAgIC8vIMOHYcSfcsSxIHlhbG7EsXpjYSBiaXIgQm9vbCBkw7ZuZMO8csO8ci4KICAgICAgICBib29sIHN1Y2Nlc3MgPSBhZGRyZXNzKG90aGVyKS5jYWxsKCJmIik7CiAgICAgICAgaWYgKCFzdWNjZXNzKQogICAgICAgICAgICByZXZlcnQoKTsKICAgICAgICBlbHNlIHsKICAgICAgICAgICAgLy8gWWVyZWwgZGXEn2nFn2tlbmxlciBrdWxsYW7EsW1sYXLEsW5kYW4gc29ucmEgYmlsZGlyaWxlYmlsaXIuCiAgICAgICAgICAgIGludCB5OwogICAgICAgIH0KICAgICAgICByZXR1cm4gYjsKICAgIH0KCiAgICAvLyAnYXJyJyBpw6dpbiBhw6fEsWsgYmlyIHZlcmkga29udW11bmEgZ2VyZWsgeW9rCiAgICBmdW5jdGlvbiBnKHVpbnRbXSBhcnIsIGJ5dGVzOCB4LCBPdGhlckNvbnRyYWN0IG90aGVyQ29udHJhY3QpIHB1YmxpYyB7CiAgICAgICAgb3RoZXJDb250cmFjdC50cmFuc2ZlcigxIGV0aGVyKTsKCiAgICAgICAgLy8gdWludDMyICg0IGJheXQpIGJ5dGVzOCdkZW4gKDggYmF5dCkgZGFoYSBrw7zDp8O8ayBvbGR1xJ91bmRhbiwKICAgICAgICAvLyB4J2luIGlsayA0IGJheXTEsSBrYXlib2xhY2FrdMSxci4gQnUgZHVydW0sIGJ5dGVzWCBzYcSfYSBkb8SfcnUKICAgICAgICAvLyBkb2xkdXJ1bGR1xJ91bmRhbiBiZWtsZW5tZWRpayBkYXZyYW7EscWfbGFyYSB5b2wgYcOnYWJpbGlyLgogICAgICAgIHVpbnQzMiB5ID0gdWludDMyKHgpOwogICAgICAgIG15TnVtYmVyICs9IHkgKyBtc2cudmFsdWU7CiAgICB9Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">^</span><span class="k">0.4.25</span><span class="p">;</span><span class="w"></span>
+<span class="c1">// Bu 0.5.0&#39;dan sonra derlenmeyecektir</span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">OtherContract</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint</span><span class="w"> </span><span class="nv">x</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">f</span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">y</span><span class="p">)</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>x<span class="w"> </span><span class="o">=</span><span class="w"> </span>y<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="p">()</span><span class="w"> </span><span class="kt">payable</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">Old</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span>OtherContract<span class="w"> </span>other<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint</span><span class="w"> </span><span class="nv">myNumber</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Fonksiyon değişebilirliği sağlanmadı, hata değil.</span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">someInteger</span><span class="p">()</span><span class="w"> </span><span class="kt">internal</span><span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">uint</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kt">return</span><span class="w"> </span><span class="m m-Decimal">2</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Fonksiyon görünürlüğü sağlanmadı, hata değil.</span>
+<span class="w">    </span><span class="c1">// Fonksiyon değişebilirliği sağlanmadı, hata değil.</span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">f</span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">x</span><span class="p">)</span><span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">bytes</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Var bu versiyonda sorunsuz çalışıyor.</span>
+<span class="w">        </span><span class="kt">var</span><span class="w"> </span>z<span class="w"> </span><span class="o">=</span><span class="w"> </span>someInteger<span class="p">();</span><span class="w"></span>
+<span class="w">        </span>x<span class="w"> </span><span class="o">+=</span><span class="w"> </span>z<span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Throw bu versiyonda sorunsuz çalışıyor.</span>
+<span class="w">        </span><span class="kt">if</span><span class="w"> </span><span class="p">(</span>x<span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m m-Decimal">100</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="kt">throw</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kt">bytes</span><span class="w"> </span><span class="nv">memory</span><span class="w"> </span>b<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">new</span><span class="w"> </span><span class="kt">bytes</span><span class="p">(</span>x<span class="p">);</span><span class="w"></span>
+<span class="w">        </span>y<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="m m-Decimal">3</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="m m-Decimal">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// y == -1 (yanlış, -2 olmalı)</span>
+<span class="w">        </span><span class="kt">do</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span>x<span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="m m-Decimal">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kt">if</span><span class="w"> </span><span class="p">(</span>x<span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m m-Decimal">10</span><span class="p">)</span><span class="w"> </span><span class="kt">continue</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// &#39;Continue&#39; sonsuz döngüye neden olur.</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="kt">while</span><span class="w"> </span><span class="p">(</span>x<span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m m-Decimal">11</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Çağrı yalnızca bir Bool döndürür.</span>
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="nv">success</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">address</span><span class="p">(</span>other<span class="p">).</span>call<span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kt">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span>success<span class="p">)</span><span class="w"></span>
+<span class="w">            </span>revert<span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="kt">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// Yerel değişkenler kullanımlarından sonra bildirilebilir.</span>
+<span class="w">            </span><span class="kt">int</span><span class="w"> </span><span class="nv">y</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="kt">return</span><span class="w"> </span>b<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// &#39;arr&#39; için açık bir veri konumuna gerek yok</span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">g</span><span class="p">(</span><span class="kt">uint</span><span class="p">[]</span><span class="w"> </span>arr<span class="p">,</span><span class="w"> </span><span class="kt">bytes8</span><span class="w"> </span><span class="nv">x</span><span class="p">,</span><span class="w"> </span>OtherContract<span class="w"> </span>otherContract<span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>otherContract<span class="p">.</span>transfer<span class="p">(</span><span class="m m-Decimal">1</span><span class="w"> </span>ether<span class="p">);</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// uint32 (4 bayt) bytes8&#39;den (8 bayt) daha küçük olduğundan,</span>
+<span class="w">        </span><span class="c1">// x&#39;in ilk 4 baytı kaybolacaktır. Bu durum, bytesX sağa doğru</span>
+<span class="w">        </span><span class="c1">// doldurulduğundan beklenmedik davranışlara yol açabilir.</span>
+<span class="w">        </span><span class="kt">uint32</span><span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">uint32</span><span class="p">(</span>x<span class="p">);</span><span class="w"></span>
+<span class="w">        </span>myNumber<span class="w"> </span><span class="o">+=</span><span class="w"> </span>y<span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">msg.value</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Yeni versiyon:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5IF4wLjUuMDsKLy8gQnUgMC42LjAnZGFuIHNvbnJhIGRlcmxlbm1leWVjZWt0aXIKCmNvbnRyYWN0IE90aGVyQ29udHJhY3QgewogICAgdWludCB4OwogICAgZnVuY3Rpb24gZih1aW50IHkpIGV4dGVybmFsIHsKICAgICAgICB4ID0geTsKICAgIH0KICAgIGZ1bmN0aW9uKCkgcGF5YWJsZSBleHRlcm5hbCB7fQp9Cgpjb250cmFjdCBOZXcgewogICAgT3RoZXJDb250cmFjdCBvdGhlcjsKICAgIHVpbnQgbXlOdW1iZXI7CgogICAgLy8gRm9ua3NpeW9uIGRlxJ9pxZ9lYmlsaXJsacSfaSBiZWxpcnRpbG1lbGlkaXIuCiAgICBmdW5jdGlvbiBzb21lSW50ZWdlcigpIGludGVybmFsIHB1cmUgcmV0dXJucyAodWludCkgeyByZXR1cm4gMjsgfQoKICAgIC8vIEZvbmtzaXlvbiBnw7Zyw7xuw7xybMO8xJ/DvCBiZWxpcnRpbG1lbGlkaXIuCiAgICAvLyBGb25rc2l5b24gZGXEn2nFn2ViaWxpcmxpxJ9pIGJlbGlydGlsbWVsaWRpci4KICAgIGZ1bmN0aW9uIGYodWludCB4KSBwdWJsaWMgcmV0dXJucyAoYnl0ZXMgbWVtb3J5KSB7CiAgICAgICAgLy8gVMO8ciDFn2ltZGkgYcOnxLFrw6dhIHZlcmlsbWVsaWRpci4KICAgICAgICB1aW50IHogPSBzb21lSW50ZWdlcigpOwogICAgICAgIHggKz0gejsKICAgICAgICAvLyBUaHJvdydhIGFydMSxayBpemluIHZlcmlsbWl5b3IuCiAgICAgICAgcmVxdWlyZSh4IDw9IDEwMCk7CiAgICAgICAgaW50IHkgPSAtMyA+PiAxOwogICAgICAgIHJlcXVpcmUoeSA9PSAtMik7CiAgICAgICAgZG8gewogICAgICAgICAgICB4ICs9IDE7CiAgICAgICAgICAgIGlmICh4ID4gMTApIGNvbnRpbnVlOwogICAgICAgICAgICAvLyAnQ29udGludWUnIGlsZSBhxZ9hxJ/EsWRha2kga2/Fn3VsYSBhdGxhbsSxci4KICAgICAgICB9IHdoaWxlICh4IDwgMTEpOwoKICAgICAgICAvLyDDh2HEn3LEsSAoYm9vbCwgYmF5dCkgZMO2bmTDvHLDvHIuCiAgICAgICAgLy8gVmVyaSBrb251bXUgYmVsaXJ0aWxtZWxpZGlyLgogICAgICAgIChib29sIHN1Y2Nlc3MsIGJ5dGVzIG1lbW9yeSBkYXRhKSA9IGFkZHJlc3Mob3RoZXIpLmNhbGwoImYiKTsKICAgICAgICBpZiAoIXN1Y2Nlc3MpCiAgICAgICAgICAgIHJldmVydCgpOwogICAgICAgIHJldHVybiBkYXRhOwogICAgfQoKICAgIHVzaW5nIEFkZHJlc3NNYWtlUGF5YWJsZSBmb3IgYWRkcmVzczsKICAgIC8vICdhcnInIGnDp2luIHZlcmkga29udW11IGJlbGlydGlsbWVsaWRpcgogICAgZnVuY3Rpb24gZyh1aW50W10gbWVtb3J5IC8qIGFyciAqLywgYnl0ZXM4IHgsIE90aGVyQ29udHJhY3Qgb3RoZXJDb250cmFjdCwgYWRkcmVzcyB1bmtub3duQ29udHJhY3QpIHB1YmxpYyBwYXlhYmxlIHsKICAgICAgICAvLyAnb3RoZXJDb250cmFjdC50cmFuc2Zlcicgc2HEn2xhbm1hbcSxxZ90xLFyLgogICAgICAgIC8vICdPdGhlckNvbnRyYWN0JyBrb2R1IGJpbGluZGnEn2luZGVuIHZlIGZhbGxiYWNrIGZvbmtzaXlvbnVuYSBzYWhpcCBvbGR1xJ91bmRhbiwKICAgICAgICAvLyBhZGRyZXNzKG90aGVyQ29udHJhY3QpICdhZGRyZXNzIHBheWFibGUnIHRpcGluZSBzYWhpcHRpci4KICAgICAgICBhZGRyZXNzKG90aGVyQ29udHJhY3QpLnRyYW5zZmVyKDEgZXRoZXIpOwoKICAgICAgICAvLyAndW5rbm93bkNvbnRyYWN0LnRyYW5zZmVyJyBzYcSfbGFubWFkxLEuCiAgICAgICAgLy8gJ2FkZHJlc3ModW5rbm93bkNvbnRyYWN0KS50cmFuc2ZlcicsCiAgICAgICAgLy8gJ2FkZHJlc3ModW5rbm93bkNvbnRyYWN0KScgJ2FkZHJlc3MgcGF5YWJsZScgb2xtYWTEscSfxLEgacOnaW4gc2HEn2xhbm1hbcSxxZ90xLFyLgogICAgICAgIC8vIEZvbmtzaXlvbiBwYXJhIGfDtm5kZXJtZWsgaXN0ZWRpxJ9pbml6IGJpciAnYWRkcmVzcycgYWzEsXJzYSwKICAgICAgICAvLyBidW51ICd1aW50MTYwJyBhcmFjxLFsxLHEn8SxeWxhICdhZGRyZXNzIHBheWFibGUnYSBkw7Zuw7zFn3TDvHJlYmlsaXJzaW5pei4KICAgICAgICAvLyBOb3Q6IEJ1IHRhdnNpeWUgZWRpbG1leiB2ZSBtw7xta8O8biBvbGR1xJ91bmRhIGHDp8SxawogICAgICAgIC8vICdhZGRyZXNzIHBheWFibGUnIHTDvHLDvCBrdWxsYW7EsWxtYWzEsWTEsXIuCiAgICAgICAgLy8gQW5sYcWfxLFsYWJpbGlybGnEn2kgYXJ0xLFybWFrIGnDp2luLCBkw7Zuw7zFn8O8bSBpxZ9sZW1pbmRlIGJpcgogICAgICAgIC8vIGvDvHTDvHBoYW5lIGt1bGxhbsSxbG1hc8SxbsSxIMO2bmVyaXlvcnV6IChidSDDtnJuZWt0ZSBzw7Z6bGXFn21lZGVuIHNvbnJhIHZlcmlsbWnFn3RpcikuCiAgICAgICAgYWRkcmVzcyBwYXlhYmxlIGFkZHIgPSB1bmtub3duQ29udHJhY3QubWFrZVBheWFibGUoKTsKICAgICAgICByZXF1aXJlKGFkZHIuc2VuZCgxIGV0aGVyKSk7CgogICAgICAgIC8vIHVpbnQzMiAoNCBiYXl0KSwgYnl0ZXM4J2RlbiAoOCBiYXl0KSBkYWhhIGvDvMOnw7xrCiAgICAgICAgLy8gb2xkdcSfdSBpw6dpbiBkw7Zuw7zFn3TDvHJtZXllIGl6aW4gdmVyaWxtZXouCiAgICAgICAgLy8gw5ZuY2Ugb3J0YWsgYmlyIGJveXV0YSBkw7Zuw7zFn3TDvHJtZW1peiBnZXJla2l5b3I6CiAgICAgICAgYnl0ZXM0IHg0ID0gYnl0ZXM0KHgpOyAvLyBEb2xndSBzYcSfIHRhcmFmdGEgZ2Vyw6dla2xlxZ9pcgogICAgICAgIHVpbnQzMiB5ID0gdWludDMyKHg0KTsgLy8gRMO2bsO8xZ/DvG0gdHV0YXJsxLFkxLFyCiAgICAgICAgLy8gJ21zZy52YWx1ZScgYmlyICdub24tcGF5YWJsZScgZm9ua3NpeW9udW5kYSBrdWxsYW7EsWxhbWF6LgogICAgICAgIC8vIEZvbmtzaXlvbnUgw7ZkZW5lYmlsaXIgaGFsZSBnZXRpcm1lbWl6IGdlcmVraXlvcgogICAgICAgIG15TnVtYmVyICs9IHkgKyBtc2cudmFsdWU7CiAgICB9Cn0KCi8vIEdlw6dpY2kgYmlyIMOnw7Z6w7xtIG9sYXJhayBgYGFkZHJlc3NgYCBpIGHDp8Sxa8OnYQovLyBgYGFkZHJlc3MgcGF5YWJsZWBgIGEgZMO2bsO8xZ90w7xybWVrIGnDp2luIGJpciBrw7x0w7xwaGFuZSB0YW7EsW1sYXlhYmlsaXJpei4KbGlicmFyeSBBZGRyZXNzTWFrZVBheWFibGUgewogICAgZnVuY3Rpb24gbWFrZVBheWFibGUoYWRkcmVzcyB4KSBpbnRlcm5hbCBwdXJlIHJldHVybnMgKGFkZHJlc3MgcGF5YWJsZSkgewogICAgICAgIHJldHVybiBhZGRyZXNzKHVpbnQxNjAoeCkpOwogICAgfQp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">^</span><span class="k">0.5.0</span><span class="p">;</span><span class="w"></span>
+<span class="c1">// Bu 0.6.0&#39;dan sonra derlenmeyecektir</span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">OtherContract</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint</span><span class="w"> </span><span class="nv">x</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">f</span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">y</span><span class="p">)</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>x<span class="w"> </span><span class="o">=</span><span class="w"> </span>y<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="p">()</span><span class="w"> </span><span class="kt">payable</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">New</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span>OtherContract<span class="w"> </span>other<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint</span><span class="w"> </span><span class="nv">myNumber</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Fonksiyon değişebilirliği belirtilmelidir.</span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">someInteger</span><span class="p">()</span><span class="w"> </span><span class="kt">internal</span><span class="w"> </span>pure<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">uint</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kt">return</span><span class="w"> </span><span class="m m-Decimal">2</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Fonksiyon görünürlüğü belirtilmelidir.</span>
+<span class="w">    </span><span class="c1">// Fonksiyon değişebilirliği belirtilmelidir.</span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">f</span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">x</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">bytes</span><span class="w"> </span><span class="nv">memory</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Tür şimdi açıkça verilmelidir.</span>
+<span class="w">        </span><span class="kt">uint</span><span class="w"> </span><span class="nv">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>someInteger<span class="p">();</span><span class="w"></span>
+<span class="w">        </span>x<span class="w"> </span><span class="o">+=</span><span class="w"> </span>z<span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Throw&#39;a artık izin verilmiyor.</span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span>x<span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="m m-Decimal">100</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="m m-Decimal">3</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="m m-Decimal">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span>y<span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="o">-</span><span class="m m-Decimal">2</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kt">do</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span>x<span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="m m-Decimal">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kt">if</span><span class="w"> </span><span class="p">(</span>x<span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m m-Decimal">10</span><span class="p">)</span><span class="w"> </span><span class="kt">continue</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// &#39;Continue&#39; ile aşağıdaki koşula atlanır.</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="kt">while</span><span class="w"> </span><span class="p">(</span>x<span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="m m-Decimal">11</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// Çağrı (bool, bayt) döndürür.</span>
+<span class="w">        </span><span class="c1">// Veri konumu belirtilmelidir.</span>
+<span class="w">        </span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="nv">success</span><span class="p">,</span><span class="w"> </span><span class="kt">bytes</span><span class="w"> </span><span class="nv">memory</span><span class="w"> </span>data<span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">address</span><span class="p">(</span>other<span class="p">).</span>call<span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kt">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span>success<span class="p">)</span><span class="w"></span>
+<span class="w">            </span>revert<span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="kt">return</span><span class="w"> </span>data<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span>using<span class="w"> </span>AddressMakePayable<span class="w"> </span><span class="kt">for</span><span class="w"> </span><span class="kt">address</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// &#39;arr&#39; için veri konumu belirtilmelidir</span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">g</span><span class="p">(</span><span class="kt">uint</span><span class="p">[]</span><span class="w"> </span><span class="kt">memory</span><span class="w"> </span><span class="cm">/* arr */</span><span class="p">,</span><span class="w"> </span><span class="kt">bytes8</span><span class="w"> </span><span class="nv">x</span><span class="p">,</span><span class="w"> </span>OtherContract<span class="w"> </span>otherContract<span class="p">,</span><span class="w"> </span><span class="kt">address</span><span class="w"> </span><span class="nv">unknownContract</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="kt">payable</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// &#39;otherContract.transfer&#39; sağlanmamıştır.</span>
+<span class="w">        </span><span class="c1">// &#39;OtherContract&#39; kodu bilindiğinden ve fallback fonksiyonuna sahip olduğundan,</span>
+<span class="w">        </span><span class="c1">// address(otherContract) &#39;address payable&#39; tipine sahiptir.</span>
+<span class="w">        </span><span class="kt">address</span><span class="p">(</span>otherContract<span class="p">).</span>transfer<span class="p">(</span><span class="m m-Decimal">1</span><span class="w"> </span>ether<span class="p">);</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// &#39;unknownContract.transfer&#39; sağlanmadı.</span>
+<span class="w">        </span><span class="c1">// &#39;address(unknownContract).transfer&#39;,</span>
+<span class="w">        </span><span class="c1">// &#39;address(unknownContract)&#39; &#39;address payable&#39; olmadığı için sağlanmamıştır.</span>
+<span class="w">        </span><span class="c1">// Fonksiyon para göndermek istediğiniz bir &#39;address&#39; alırsa,</span>
+<span class="w">        </span><span class="c1">// bunu &#39;uint160&#39; aracılığıyla &#39;address payable&#39;a dönüştürebilirsiniz.</span>
+<span class="w">        </span><span class="c1">// Not: Bu tavsiye edilmez ve mümkün olduğunda açık</span>
+<span class="w">        </span><span class="c1">// &#39;address payable&#39; türü kullanılmalıdır.</span>
+<span class="w">        </span><span class="c1">// Anlaşılabilirliği artırmak için, dönüşüm işleminde bir</span>
+<span class="w">        </span><span class="c1">// kütüphane kullanılmasını öneriyoruz (bu örnekte sözleşmeden sonra verilmiştir).</span>
+<span class="w">        </span><span class="kt">address</span><span class="w"> </span><span class="nv">payable</span><span class="w"> </span>addr<span class="w"> </span><span class="o">=</span><span class="w"> </span>unknownContract<span class="p">.</span>makePayable<span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span>addr<span class="p">.</span>send<span class="p">(</span><span class="m m-Decimal">1</span><span class="w"> </span>ether<span class="p">));</span><span class="w"></span>
+
+<span class="w">        </span><span class="c1">// uint32 (4 bayt), bytes8&#39;den (8 bayt) daha küçük</span>
+<span class="w">        </span><span class="c1">// olduğu için dönüştürmeye izin verilmez.</span>
+<span class="w">        </span><span class="c1">// Önce ortak bir boyuta dönüştürmemiz gerekiyor:</span>
+<span class="w">        </span>bytes4<span class="w"> </span>x4<span class="w"> </span><span class="o">=</span><span class="w"> </span>bytes4<span class="p">(</span>x<span class="p">);</span><span class="w"> </span><span class="c1">// Dolgu sağ tarafta gerçekleşir</span>
+<span class="w">        </span><span class="kt">uint32</span><span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">uint32</span><span class="p">(</span>x4<span class="p">);</span><span class="w"> </span><span class="c1">// Dönüşüm tutarlıdır</span>
+<span class="w">        </span><span class="c1">// &#39;msg.value&#39; bir &#39;non-payable&#39; fonksiyonunda kullanılamaz.</span>
+<span class="w">        </span><span class="c1">// Fonksiyonu ödenebilir hale getirmemiz gerekiyor</span>
+<span class="w">        </span>myNumber<span class="w"> </span><span class="o">+=</span><span class="w"> </span>y<span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">msg.value</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// Geçici bir çözüm olarak ``address`` i açıkça</span>
+<span class="c1">// ``address payable`` a dönüştürmek için bir kütüphane tanımlayabiliriz.</span>
+<span class="kt">library</span><span class="w"> </span>AddressMakePayable<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">makePayable</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">x</span><span class="p">)</span><span class="w"> </span><span class="kt">internal</span><span class="w"> </span>pure<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">payable</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">return</span><span class="w"> </span><span class="kt">address</span><span class="p">(</span><span class="kt">uint160</span><span class="p">(</span>x<span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="abi-spec.html" class="btn btn-neutral float-left" title="Sözleşme ABI Spesifikasyonu" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="060-breaking-changes.html" class="btn btn-neutral float-right" title="Solidity v0.6.0 İşleyişi Bozan Değişiklikler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

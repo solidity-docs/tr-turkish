@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solidity IR-based Codegen Changes &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Depolama Alanındaki Durum Değişkenlerinin Düzeni" href="internals/layout_in_storage.html" />
+    <link rel="prev" title="Analysing the Compiler Output" href="analysing-compilation-output.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Solidity IR-based Codegen Changes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#semantic-only-changes">Semantic Only Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#internals">Internals</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#internal-function-pointers">Internal function pointers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cleanup">Cleanup</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Solidity IR-based Codegen Changes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/ir-breaking-changes.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="solidity-ir-based-codegen-changes">
+<span id="ir-breaking-changes"></span><h1>Solidity IR-based Codegen Changes<a class="headerlink" href="#solidity-ir-based-codegen-changes" title="Permalink to this heading"></a></h1>
+<p>Solidity can generate EVM bytecode in two different ways:
+Either directly from Solidity to EVM opcodes (“old codegen”) or through
+an intermediate representation (“IR”) in Yul (“new codegen” or “IR-based codegen”).</p>
+<p>The IR-based code generator was introduced with an aim to not only allow
+code generation to be more transparent and auditable but also
+to enable more powerful optimization passes that span across functions.</p>
+<p>You can enable it on the command line using <code class="docutils literal notranslate"><span class="pre">--via-ir</span></code>
+or with the option <code class="docutils literal notranslate"><span class="pre">{&quot;viaIR&quot;:</span> <span class="pre">true}</span></code> in standard-json and we
+encourage everyone to try it out!</p>
+<p>For several reasons, there are tiny semantic differences between the old
+and the IR-based code generator, mostly in areas where we would not
+expect people to rely on this behaviour anyway.
+This section highlights the main differences between the old and the IR-based codegen.</p>
+<section id="semantic-only-changes">
+<h2>Semantic Only Changes<a class="headerlink" href="#semantic-only-changes" title="Permalink to this heading"></a></h2>
+<p>This section lists the changes that are semantic-only, thus potentially
+hiding new and different behavior in existing code.</p>
+<ul>
+<li><p>The order of state variable initialization has changed in case of inheritance.</p>
+<p>The order used to be:</p>
+<ul class="simple">
+<li><p>All state variables are zero-initialized at the beginning.</p></li>
+<li><p>Evaluate base constructor arguments from most derived to most base contract.</p></li>
+<li><p>Initialize all state variables in the whole inheritance hierarchy from most base to most derived.</p></li>
+<li><p>Run the constructor, if present, for all contracts in the linearized hierarchy from most base to most derived.</p></li>
+</ul>
+<p>New order:</p>
+<ul>
+<li><p>All state variables are zero-initialized at the beginning.</p></li>
+<li><p>Evaluate base constructor arguments from most derived to most base contract.</p></li>
+<li><p>For every contract in order from most base to most derived in the linearized hierarchy:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Initialize state variables.</p></li>
+<li><p>Run the constructor (if present).</p></li>
+</ol>
+</div></blockquote>
+</li>
+</ul>
+<p>This causes differences in contracts where the initial value of a state
+variable relies on the result of the constructor in another contract:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC43LjE7Cgpjb250cmFjdCBBIHsKICAgIHVpbnQgeDsKICAgIGNvbnN0cnVjdG9yKCkgewogICAgICAgIHggPSA0MjsKICAgIH0KICAgIGZ1bmN0aW9uIGYoKSBwdWJsaWMgdmlldyByZXR1cm5zKHVpbnQyNTYpIHsKICAgICAgICByZXR1cm4geDsKICAgIH0KfQpjb250cmFjdCBCIGlzIEEgewogICAgdWludCBwdWJsaWMgeSA9IGYoKTsKfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.7.1</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">A</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint</span><span class="w"> </span><span class="nv">x</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">constructor</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>x<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">42</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">f</span><span class="p">()</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>view<span class="w"> </span><span class="kt">returns</span><span class="p">(</span><span class="kt">uint256</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">return</span><span class="w"> </span>x<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="k">contract</span><span class="w"> </span><span class="ni">B</span><span class="w"> </span><span class="kt">is</span><span class="w"> </span>A<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint</span><span class="w"> </span><span class="k">public </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>f<span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Previously, <code class="docutils literal notranslate"><span class="pre">y</span></code> would be set to 0. This is due to the fact that we would first initialize state variables: First, <code class="docutils literal notranslate"><span class="pre">x</span></code> is set to 0, and when initializing <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">f()</span></code> would return 0 causing <code class="docutils literal notranslate"><span class="pre">y</span></code> to be 0 as well.
+With the new rules, <code class="docutils literal notranslate"><span class="pre">y</span></code> will be set to 42. We first initialize <code class="docutils literal notranslate"><span class="pre">x</span></code> to 0, then call A’s constructor which sets <code class="docutils literal notranslate"><span class="pre">x</span></code> to 42. Finally, when initializing <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">f()</span></code> returns 42 causing <code class="docutils literal notranslate"><span class="pre">y</span></code> to be 42.</p>
+</li>
+<li><p>When storage structs are deleted, every storage slot that contains
+a member of the struct is set to zero entirely. Formerly, padding space
+was left untouched.
+Consequently, if the padding space within a struct is used to store data
+(e.g. in the context of a contract upgrade), you have to be aware that
+<code class="docutils literal notranslate"><span class="pre">delete</span></code> will now also clear the added member (while it wouldn’t
+have been cleared in the past).</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC43LjE7Cgpjb250cmFjdCBDIHsKICAgIHN0cnVjdCBTIHsKICAgICAgICB1aW50NjQgeTsKICAgICAgICB1aW50NjQgejsKICAgIH0KICAgIFMgczsKICAgIGZ1bmN0aW9uIGYoKSBwdWJsaWMgewogICAgICAgIC8vIC4uLgogICAgICAgIGRlbGV0ZSBzOwogICAgICAgIC8vIHMgb2NjdXBpZXMgb25seSBmaXJzdCAxNiBieXRlcyBvZiB0aGUgMzIgYnl0ZXMgc2xvdAogICAgICAgIC8vIGRlbGV0ZSB3aWxsIHdyaXRlIHplcm8gdG8gdGhlIGZ1bGwgc2xvdAogICAgfQp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.7.1</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">C</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">struct</span><span class="w"> </span><span class="nv">S</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">uint64</span><span class="w"> </span><span class="nv">y</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kt">uint64</span><span class="w"> </span><span class="nv">z</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span>S<span class="w"> </span>s<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">f</span><span class="p">()</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// ...</span>
+<span class="w">        </span>delete<span class="w"> </span>s<span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// s occupies only first 16 bytes of the 32 bytes slot</span>
+<span class="w">        </span><span class="c1">// delete will write zero to the full slot</span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We have the same behavior for implicit delete, for example when array of structs is shortened.</p>
+</li>
+<li><p>Function modifiers are implemented in a slightly different way regarding function parameters and return variables.
+This especially has an effect if the placeholder <code class="docutils literal notranslate"><span class="pre">_;</span></code> is evaluated multiple times in a modifier.
+In the old code generator, each function parameter and return variable has a fixed slot on the stack.
+If the function is run multiple times because <code class="docutils literal notranslate"><span class="pre">_;</span></code> is used multiple times or used in a loop, then a
+change to the function parameter’s or return variable’s value is visible in the next execution of the function.
+The new code generator implements modifiers using actual functions and passes function parameters on.
+This means that multiple evaluations of a function’s body will get the same values for the parameters,
+and the effect on return variables is that they are reset to their default (zero) value for each
+execution.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC43LjA7CmNvbnRyYWN0IEMgewogICAgZnVuY3Rpb24gZih1aW50IGEpIHB1YmxpYyBwdXJlIG1vZCgpIHJldHVybnMgKHVpbnQgcikgewogICAgICAgIHIgPSBhKys7CiAgICB9CiAgICBtb2RpZmllciBtb2QoKSB7IF87IF87IH0KfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.7.0</span><span class="p">;</span><span class="w"></span>
+<span class="k">contract</span><span class="w"> </span><span class="ni">C</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">f</span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">a</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>pure<span class="w"> </span>mod<span class="p">()</span><span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">r</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>r<span class="w"> </span><span class="o">=</span><span class="w"> </span>a<span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kt">modifier</span><span class="w"> </span>mod<span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>_<span class="p">;</span><span class="w"> </span>_<span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>If you execute <code class="docutils literal notranslate"><span class="pre">f(0)</span></code> in the old code generator, it will return <code class="docutils literal notranslate"><span class="pre">2</span></code>, while
+it will return <code class="docutils literal notranslate"><span class="pre">1</span></code> when using the new code generator.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC43LjEgPDAuOS4wOwoKY29udHJhY3QgQyB7CiAgICBib29sIGFjdGl2ZSA9IHRydWU7CiAgICBtb2RpZmllciBtb2QoKQogICAgewogICAgICAgIF87CiAgICAgICAgYWN0aXZlID0gZmFsc2U7CiAgICAgICAgXzsKICAgIH0KICAgIGZ1bmN0aW9uIGZvbygpIGV4dGVybmFsIG1vZCgpIHJldHVybnMgKHVpbnQgcmV0KQogICAgewogICAgICAgIGlmIChhY3RpdmUpCiAgICAgICAgICAgIHJldCA9IDE7IC8vIFNhbWUgYXMgYGByZXR1cm4gMWBgCiAgICB9Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.7.1</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">C</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="nv">active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">true</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">modifier</span><span class="w"> </span>mod<span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>_<span class="p">;</span><span class="w"></span>
+<span class="w">        </span>active<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span>_<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">foo</span><span class="p">()</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span>mod<span class="p">()</span><span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">ret</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">if</span><span class="w"> </span><span class="p">(</span>active<span class="p">)</span><span class="w"></span>
+<span class="w">            </span>ret<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// Same as ``return 1``</span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The function <code class="docutils literal notranslate"><span class="pre">C.foo()</span></code> returns the following values:</p>
+<ul class="simple">
+<li><p>Old code generator: <code class="docutils literal notranslate"><span class="pre">1</span></code> as the return variable is initialized to <code class="docutils literal notranslate"><span class="pre">0</span></code> only once before the first <code class="docutils literal notranslate"><span class="pre">_;</span></code>
+evaluation and then overwritten by the <code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">1;</span></code>. It is not initialized again for the second <code class="docutils literal notranslate"><span class="pre">_;</span></code>
+evaluation and <code class="docutils literal notranslate"><span class="pre">foo()</span></code> does not explicitly assign it either (due to <code class="docutils literal notranslate"><span class="pre">active</span> <span class="pre">==</span> <span class="pre">false</span></code>), thus it keeps
+its first value.</p></li>
+<li><p>New code generator: <code class="docutils literal notranslate"><span class="pre">0</span></code> as all parameters, including return parameters, will be re-initialized before
+each <code class="docutils literal notranslate"><span class="pre">_;</span></code> evaluation.</p></li>
+</ul>
+</li>
+<li id="index-0"><p>For the old code generator, the evaluation order of expressions is unspecified.
+For the new code generator, we try to evaluate in source order (left to right), but do not guarantee it.
+This can lead to semantic differences.</p>
+<p>For example:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC44LjE7CmNvbnRyYWN0IEMgewogICAgZnVuY3Rpb24gcHJlaW5jcl91OCh1aW50OCBhKSBwdWJsaWMgcHVyZSByZXR1cm5zICh1aW50OCkgewogICAgICAgIHJldHVybiArK2EgKyBhOwogICAgfQp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.8.1</span><span class="p">;</span><span class="w"></span>
+<span class="k">contract</span><span class="w"> </span><span class="ni">C</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">preincr_u8</span><span class="p">(</span><span class="kt">uint8</span><span class="w"> </span><span class="nv">a</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>pure<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">return</span><span class="w"> </span><span class="o">++</span>a<span class="w"> </span><span class="o">+</span><span class="w"> </span>a<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The function <code class="docutils literal notranslate"><span class="pre">preincr_u8(1)</span></code> returns the following values:</p>
+<ul class="simple">
+<li><p>Old code generator: 3 (<code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">+</span> <span class="pre">2</span></code>) but the return value is unspecified in general</p></li>
+<li><p>New code generator: 4 (<code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">+</span> <span class="pre">2</span></code>) but the return value is not guaranteed</p></li>
+</ul>
+<p id="index-1">On the other hand, function argument expressions are evaluated in the same order
+by both code generators with the exception of the global functions <code class="docutils literal notranslate"><span class="pre">addmod</span></code> and <code class="docutils literal notranslate"><span class="pre">mulmod</span></code>.
+For example:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC44LjE7CmNvbnRyYWN0IEMgewogICAgZnVuY3Rpb24gYWRkKHVpbnQ4IGEsIHVpbnQ4IGIpIHB1YmxpYyBwdXJlIHJldHVybnMgKHVpbnQ4KSB7CiAgICAgICAgcmV0dXJuIGEgKyBiOwogICAgfQogICAgZnVuY3Rpb24gZyh1aW50OCBhLCB1aW50OCBiKSBwdWJsaWMgcHVyZSByZXR1cm5zICh1aW50OCkgewogICAgICAgIHJldHVybiBhZGQoKythICsgKytiLCBhICsgYik7CiAgICB9Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.8.1</span><span class="p">;</span><span class="w"></span>
+<span class="k">contract</span><span class="w"> </span><span class="ni">C</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">add</span><span class="p">(</span><span class="kt">uint8</span><span class="w"> </span><span class="nv">a</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8</span><span class="w"> </span><span class="nv">b</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>pure<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">return</span><span class="w"> </span>a<span class="w"> </span><span class="o">+</span><span class="w"> </span>b<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">g</span><span class="p">(</span><span class="kt">uint8</span><span class="w"> </span><span class="nv">a</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8</span><span class="w"> </span><span class="nv">b</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>pure<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">return</span><span class="w"> </span>add<span class="p">(</span><span class="o">++</span>a<span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="o">++</span>b<span class="p">,</span><span class="w"> </span>a<span class="w"> </span><span class="o">+</span><span class="w"> </span>b<span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The function <code class="docutils literal notranslate"><span class="pre">g(1,</span> <span class="pre">2)</span></code> returns the following values:</p>
+<ul class="simple">
+<li><p>Old code generator: <code class="docutils literal notranslate"><span class="pre">10</span></code> (<code class="docutils literal notranslate"><span class="pre">add(2</span> <span class="pre">+</span> <span class="pre">3,</span> <span class="pre">2</span> <span class="pre">+</span> <span class="pre">3)</span></code>) but the return value is unspecified in general</p></li>
+<li><p>New code generator: <code class="docutils literal notranslate"><span class="pre">10</span></code> but the return value is not guaranteed</p></li>
+</ul>
+<p>The arguments to the global functions <code class="docutils literal notranslate"><span class="pre">addmod</span></code> and <code class="docutils literal notranslate"><span class="pre">mulmod</span></code> are evaluated right-to-left by the old code generator
+and left-to-right by the new code generator.
+For example:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC44LjE7CmNvbnRyYWN0IEMgewogICAgZnVuY3Rpb24gZigpIHB1YmxpYyBwdXJlIHJldHVybnMgKHVpbnQyNTYgYU1vZCwgdWludDI1NiBtTW9kKSB7CiAgICAgICAgdWludDI1NiB4ID0gMzsKICAgICAgICAvLyBPbGQgY29kZSBnZW46IGFkZC9tdWxtb2QoNSwgNCwgMykKICAgICAgICAvLyBOZXcgY29kZSBnZW46IGFkZC9tdWxtb2QoNCwgNSwgNSkKICAgICAgICBhTW9kID0gYWRkbW9kKCsreCwgKyt4LCB4KTsKICAgICAgICBtTW9kID0gbXVsbW9kKCsreCwgKyt4LCB4KTsKICAgIH0KfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.8.1</span><span class="p">;</span><span class="w"></span>
+<span class="k">contract</span><span class="w"> </span><span class="ni">C</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">f</span><span class="p">()</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>pure<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">uint256</span><span class="w"> </span><span class="nv">aMod</span><span class="p">,</span><span class="w"> </span><span class="kt">uint256</span><span class="w"> </span><span class="nv">mMod</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">uint256</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">3</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Old code gen: add/mulmod(5, 4, 3)</span>
+<span class="w">        </span><span class="c1">// New code gen: add/mulmod(4, 5, 5)</span>
+<span class="w">        </span>aMod<span class="w"> </span><span class="o">=</span><span class="w"> </span>addmod<span class="p">(</span><span class="o">++</span>x<span class="p">,</span><span class="w"> </span><span class="o">++</span>x<span class="p">,</span><span class="w"> </span>x<span class="p">);</span><span class="w"></span>
+<span class="w">        </span>mMod<span class="w"> </span><span class="o">=</span><span class="w"> </span>mulmod<span class="p">(</span><span class="o">++</span>x<span class="p">,</span><span class="w"> </span><span class="o">++</span>x<span class="p">,</span><span class="w"> </span>x<span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The function <code class="docutils literal notranslate"><span class="pre">f()</span></code> returns the following values:</p>
+<ul class="simple">
+<li><p>Old code generator: <code class="docutils literal notranslate"><span class="pre">aMod</span> <span class="pre">=</span> <span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">mMod</span> <span class="pre">=</span> <span class="pre">2</span></code></p></li>
+<li><p>New code generator: <code class="docutils literal notranslate"><span class="pre">aMod</span> <span class="pre">=</span> <span class="pre">4</span></code> and <code class="docutils literal notranslate"><span class="pre">mMod</span> <span class="pre">=</span> <span class="pre">0</span></code></p></li>
+</ul>
+</li>
+<li><p>The new code generator imposes a hard limit of <code class="docutils literal notranslate"><span class="pre">type(uint64).max</span></code>
+(<code class="docutils literal notranslate"><span class="pre">0xffffffffffffffff</span></code>) for the free memory pointer. Allocations that would
+increase its value beyond this limit revert. The old code generator does not
+have this limit.</p>
+<p>For example:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID4wLjguMDsKY29udHJhY3QgQyB7CiAgICBmdW5jdGlvbiBmKCkgcHVibGljIHsKICAgICAgICB1aW50W10gbWVtb3J5IGFycjsKICAgICAgICAvLyBhbGxvY2F0aW9uIHNpemU6IDU3NjQ2MDc1MjMwMzQyMzQ4MQogICAgICAgIC8vIGFzc3VtZXMgZnJlZU1lbVB0ciBwb2ludHMgdG8gMHg4MCBpbml0aWFsbHkKICAgICAgICB1aW50IHNvbFl1bE1heEFsbG9jYXRpb25CZWZvcmVNZW1QdHJPdmVyZmxvdyA9ICh0eXBlKHVpbnQ2NCkubWF4IC0gMHg4MCAtIDMxKSAvIDMyOwogICAgICAgIC8vIGZyZWVNZW1QdHIgb3ZlcmZsb3dzIFVJTlQ2NF9NQVgKICAgICAgICBhcnIgPSBuZXcgdWludFtdKHNvbFl1bE1heEFsbG9jYXRpb25CZWZvcmVNZW1QdHJPdmVyZmxvdyk7CiAgICB9Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="err">&gt;0.8.0</span><span class="p">;</span><span class="w"></span>
+<span class="k">contract</span><span class="w"> </span><span class="ni">C</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">f</span><span class="p">()</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">uint</span><span class="p">[]</span><span class="w"> </span><span class="kt">memory</span><span class="w"> </span>arr<span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// allocation size: 576460752303423481</span>
+<span class="w">        </span><span class="c1">// assumes freeMemPtr points to 0x80 initially</span>
+<span class="w">        </span><span class="kt">uint</span><span class="w"> </span><span class="nv">solYulMaxAllocationBeforeMemPtrOverflow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span>type<span class="p">(</span><span class="kt">uint64</span><span class="p">).</span>max<span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mh">0x80</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m m-Decimal">31</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m m-Decimal">32</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// freeMemPtr overflows UINT64_MAX</span>
+<span class="w">        </span>arr<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">new</span><span class="w"> </span><span class="kt">uint</span><span class="p">[](</span>solYulMaxAllocationBeforeMemPtrOverflow<span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The function <cite>f()</cite> behaves as follows:</p>
+<ul class="simple">
+<li><p>Old code generator: runs out of gas while zeroing the array contents after the large memory allocation</p></li>
+<li><p>New code generator: reverts due to free memory pointer overflow (does not run out of gas)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="internals">
+<h2>Internals<a class="headerlink" href="#internals" title="Permalink to this heading"></a></h2>
+<section id="internal-function-pointers">
+<h3>Internal function pointers<a class="headerlink" href="#internal-function-pointers" title="Permalink to this heading"></a></h3>
+<p id="index-2">The old code generator uses code offsets or tags for values of internal function pointers. This is especially complicated since
+these offsets are different at construction time and after deployment and the values can cross this border via storage.
+Because of that, both offsets are encoded at construction time into the same value (into different bytes).</p>
+<p>In the new code generator, function pointers use internal IDs that are allocated in sequence. Since calls via jumps are not possible,
+calls through function pointers always have to use an internal dispatch function that uses the <code class="docutils literal notranslate"><span class="pre">switch</span></code> statement to select
+the right function.</p>
+<p>The ID <code class="docutils literal notranslate"><span class="pre">0</span></code> is reserved for uninitialized function pointers which then cause a panic in the dispatch function when called.</p>
+<p>In the old code generator, internal function pointers are initialized with a special function that always causes a panic.
+This causes a storage write at construction time for internal function pointers in storage.</p>
+</section>
+<section id="cleanup">
+<h3>Cleanup<a class="headerlink" href="#cleanup" title="Permalink to this heading"></a></h3>
+<p id="index-3">The old code generator only performs cleanup before an operation whose result could be affected by the values of the dirty bits.
+The new code generator performs cleanup after any operation that can result in dirty bits.
+The hope is that the optimizer will be powerful enough to eliminate redundant cleanup operations.</p>
+<p>For example:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC44LjE7CmNvbnRyYWN0IEMgewogICAgZnVuY3Rpb24gZih1aW50OCBhKSBwdWJsaWMgcHVyZSByZXR1cm5zICh1aW50IHIxLCB1aW50IHIyKQogICAgewogICAgICAgIGEgPSB+YTsKICAgICAgICBhc3NlbWJseSB7CiAgICAgICAgICAgIHIxIDo9IGEKICAgICAgICB9CiAgICAgICAgcjIgPSBhOwogICAgfQp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.8.1</span><span class="p">;</span><span class="w"></span>
+<span class="k">contract</span><span class="w"> </span><span class="ni">C</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">f</span><span class="p">(</span><span class="kt">uint8</span><span class="w"> </span><span class="nv">a</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>pure<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">r1</span><span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">r2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>a<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">~</span>a<span class="p">;</span><span class="w"></span>
+<span class="w">        </span>assembly<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span>r1<span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span>a<span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span>r2<span class="w"> </span><span class="o">=</span><span class="w"> </span>a<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The function <code class="docutils literal notranslate"><span class="pre">f(1)</span></code> returns the following values:</p>
+<ul class="simple">
+<li><p>Old code generator: (<code class="docutils literal notranslate"><span class="pre">fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe</span></code>, <code class="docutils literal notranslate"><span class="pre">00000000000000000000000000000000000000000000000000000000000000fe</span></code>)</p></li>
+<li><p>New code generator: (<code class="docutils literal notranslate"><span class="pre">00000000000000000000000000000000000000000000000000000000000000fe</span></code>, <code class="docutils literal notranslate"><span class="pre">00000000000000000000000000000000000000000000000000000000000000fe</span></code>)</p></li>
+</ul>
+<p>Note that, unlike the new code generator, the old code generator does not perform a cleanup after the bit-not assignment (<code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">~a</span></code>).
+This results in different values being assigned (within the inline assembly block) to return value <code class="docutils literal notranslate"><span class="pre">r1</span></code> between the old and new code generators.
+However, both code generators perform a cleanup before the new value of <code class="docutils literal notranslate"><span class="pre">a</span></code> is assigned to <code class="docutils literal notranslate"><span class="pre">r2</span></code>.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="analysing-compilation-output.html" class="btn btn-neutral float-left" title="Analysing the Compiler Output" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="internals/layout_in_storage.html" class="btn btn-neutral float-right" title="Depolama Alanındaki Durum Değişkenlerinin Düzeni" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
