@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Güvenlikle İlgili Değerlendirmeler &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SMTChecker and Formal Verification" href="smtchecker.html" />
+    <link rel="prev" title="NatSpec Formatı" href="natspec-format.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Güvenlikle İlgili Değerlendirmeler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tuzaklar">Tuzaklar</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ozel-private-bilgiler-ve-rastgelelik">Özel(Private) Bilgiler ve Rastgelelik</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#yeniden-giris-re-entrancy">Yeniden Giriş (Re-Entrancy)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gas-limiti-ve-donguler">Gas Limiti ve Döngüler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ether-gonderme-ve-alma">Ether Gönderme ve Alma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cagri-yigini-derinligi">Çağrı Yığını Derinliği</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#yetkilendirilmis-proxyler-authorized-proxies">Yetkilendirilmiş Proxyler (Authorized Proxies)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tx-origin">tx.origin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#two-s-complement-underflows-overflows">Two’s Complement / Underflows / Overflows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mappingleri-temizleme">Mappingleri Temizleme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kucuk-detaylar">Küçük Detaylar</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#oneriler">Öneriler</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#uyarilari-ciddiye-alin">Uyarıları Ciddiye Alın</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ether-miktarini-kisitlayin">Ether Miktarını Kısıtlayın</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kucuk-ve-moduler-tutun">Küçük ve Modüler Tutun</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kontroller-etkiler-etkilesimler-modelini-kullanin">Kontroller-Etkiler-Etkileşimler Modelini Kullanın</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#arizaya-karsi-guvenli-mod-ekleyin">Arızaya Karşı Güvenli Mod Ekleyin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#peer-incelemesi-isteyin">Peer İncelemesi İsteyin</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Güvenlikle İlgili Değerlendirmeler</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/security-considerations.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guvenlikle-ilgili-degerlendirmeler">
+<span id="security-considerations"></span><h1>Güvenlikle İlgili Değerlendirmeler<a class="headerlink" href="#guvenlikle-ilgili-degerlendirmeler" title="Permalink to this heading"></a></h1>
+<p>Genellikle öngörüldüğü gibi çalışan bir yazılım oluşturmak oldukça kolay olsa da,
+kimsenin bu yazılımı <strong>öngörülmeyen</strong> bir şekilde kullanamayacağını kontrol etmek oldukça zordur.</p>
+<p>Solidity’de durum daha da önemlidir çünkü akıllı sözleşmeleri tokenları ya da muhtemelen
+daha değerli şeyleri yönetmek için kullanabilirsiniz. Dahası, bir akıllı sözleşme her
+yürütüldüğünde herkese görünür bir şekilde gerçekleşir ve buna ek olarak kaynak kodu
+da genellikle erişilebilirdir.</p>
+<p>Elbette her zaman ne kadar tehlikede olduğunu göz önünde bulundurmanız gerekir: Bir
+akıllı sözleşmeyi halka (ve dolayısıyla kötü niyetli kişilere) açık ve hatta belki
+de açık kaynaklı bir web hizmeti ile karşılaştırabilirsiniz. Bu web hizmetinde yalnızca
+alışveriş listenizi saklıyorsanız, çok fazla dikkat etmeniz gerekmeyebilir, ancak banka
+hesabınızı bu web hizmetini kullanarak yönetiyorsanız, daha dikkatli olmalısınız.</p>
+<p>Bu bölüm bazı tuzakları ve genel güvenlik önerilerini listeleyecektir, ancak elbette
+asla eksiksiz olamaz.  Ayrıca, akıllı sözleşme kodunuz hatasız olsa bile derleyicide
+ya da platformun kendisinde bir hata bulunabileceğini unutmayın. Derleyicinin herkes tarafından
+bilinen güvenlikle ilgili bazı hatalarının bir listesi, makine tarafından da okunabilen
+:ref: <cite>bilinen hataların listesi&lt;known_bugs&gt;</cite> bölümünde bulunabilir. Solidity derleyicisinin
+kod oluşturucusunu kapsayan bir hata ödül programı olduğunu unutmayın.</p>
+<p>Her zaman olduğu gibi, açık kaynak belgelerinde, lütfen bu bölümü genişletmemize
+yardımcı olun (özellikle, bazı örneklerin hiç kimseye zararı dokunmaz)!</p>
+<p>NOT: Aşağıdaki listeye ek olarak, <a class="reference external" href="https://github.com/guylando/KnowledgeLists/blob/master/EthereumSmartContracts.md">Guy Lando’nun bilgi listesinde</a>
+ve <a class="reference external" href="https://consensys.github.io/smart-contract-best-practices/">Consensys GitHub reposunda</a> daha fazla güvenlik önerisi ve en iyi uygulamaları bulabilirsiniz.</p>
+<section id="tuzaklar">
+<h2>Tuzaklar<a class="headerlink" href="#tuzaklar" title="Permalink to this heading"></a></h2>
+<section id="ozel-private-bilgiler-ve-rastgelelik">
+<h3>Özel(Private) Bilgiler ve Rastgelelik<a class="headerlink" href="#ozel-private-bilgiler-ve-rastgelelik" title="Permalink to this heading"></a></h3>
+<p>Bir akıllı sözleşmede kullandığınız her şey, yerel değişkenler ve <code class="docutils literal notranslate"><span class="pre">private</span></code> olarak
+işaretlenmiş durum değişkenleri de dahil olmak üzere herkes tarafından görülebilir.</p>
+<p>Madencilerin hile yapabilmesini istemiyorsanız, akıllı sözleşmelerde rastgele sayılar
+kullanmak oldukça zordur.</p>
+</section>
+<section id="yeniden-giris-re-entrancy">
+<h3>Yeniden Giriş (Re-Entrancy)<a class="headerlink" href="#yeniden-giris-re-entrancy" title="Permalink to this heading"></a></h3>
+<p>Bir sözleşmeden (A) başka bir sözleşmeye (B) herhangi bir etkileşim ve herhangi
+bir Ether transferi, kontrolü o sözleşmeye (B) devreder. Bu, B’nin bu etkileşim
+tamamlanmadan önce A’yı geri çağırmasını mümkün kılar. Bir örnek vermek gerekirse,
+aşağıdaki kod bir hata içermektedir (bu sadece bir kod parçacığıdır ve tam bir sözleşme değildir):</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC42LjAgPDAuOS4wOwoKLy8gQlUgU8OWWkxFxZ5NRSBCVUcgxLDDh0VSxLBSOiBLVUxMQU5NQVlJTgpjb250cmFjdCBGdW5kIHsKICAgIC8vLyBAZGV2IFPDtnpsZcWfbWVuaW4gZXRoZXIgcGF5bGFyxLFuxLFuIGXFn2xlxZ90aXJpbG1lc2kuCiAgICBtYXBwaW5nKGFkZHJlc3MgPT4gdWludCkgc2hhcmVzOwogICAgLy8vIFBhecSxbsSxesSxIGdlcmkgw6dla2luLgogICAgZnVuY3Rpb24gd2l0aGRyYXcoKSBwdWJsaWMgewogICAgICAgIGlmIChwYXlhYmxlKG1zZy5zZW5kZXIpLnNlbmQoc2hhcmVzW21zZy5zZW5kZXJdKSkKICAgICAgICAgICAgc2hhcmVzW21zZy5zZW5kZXJdID0gMDsKICAgIH0KfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.6.0</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// BU SÖZLEŞME BUG İÇERİR: KULLANMAYIN</span>
+<span class="k">contract</span><span class="w"> </span><span class="ni">Fund</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">/// @dev Sözleşmenin ether paylarının eşleştirilmesi.</span>
+<span class="w">    </span><span class="kt">mapping</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="kt">uint</span><span class="p">)</span><span class="w"> </span>shares<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="c1">/// Payınızı geri çekin.</span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">withdraw</span><span class="p">()</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">if</span><span class="w"> </span><span class="p">(</span><span class="kt">payable</span><span class="p">(</span><span class="k">msg.sender</span><span class="p">).</span>send<span class="p">(</span>shares<span class="p">[</span><span class="k">msg.sender</span><span class="p">]))</span><span class="w"></span>
+<span class="w">            </span>shares<span class="p">[</span><span class="k">msg.sender</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Burada sorun, <code class="docutils literal notranslate"><span class="pre">send``in</span> <span class="pre">bir</span> <span class="pre">parçası</span> <span class="pre">olarak</span> <span class="pre">sınırlı</span> <span class="pre">gas</span> <span class="pre">miktarı</span> <span class="pre">nedeniyle</span> <span class="pre">çok</span> <span class="pre">ciddi</span>
+<span class="pre">değildir,</span> <span class="pre">ancak</span> <span class="pre">yine</span> <span class="pre">de</span> <span class="pre">bir</span> <span class="pre">zafiyet</span> <span class="pre">ortaya</span> <span class="pre">çıkarmaktadır:</span> <span class="pre">Ether</span> <span class="pre">transferi</span> <span class="pre">her</span> <span class="pre">zaman</span>
+<span class="pre">kod</span> <span class="pre">yürütmeyi</span> <span class="pre">içerebilir,</span> <span class="pre">bu</span> <span class="pre">nedenle</span> <span class="pre">alıcı</span> <span class="pre">``withdraw``a</span> <span class="pre">geri</span> <span class="pre">çağıran</span> <span class="pre">bir</span> <span class="pre">sözleşme</span>
+<span class="pre">olabilir.</span> <span class="pre">Bu,</span> <span class="pre">birden</span> <span class="pre">fazla</span> <span class="pre">geri</span> <span class="pre">ödeme</span> <span class="pre">almasına</span> <span class="pre">ve</span> <span class="pre">temelde</span> <span class="pre">sözleşmedeki</span> <span class="pre">tüm</span> <span class="pre">Ether'i</span> <span class="pre">geri</span>
+<span class="pre">almasına</span> <span class="pre">izin</span> <span class="pre">verecektir.</span> <span class="pre">Özellikle,</span> <span class="pre">aşağıdaki</span> <span class="pre">sözleşme,</span> <span class="pre">varsayılan</span> <span class="pre">olarak</span> <span class="pre">kalan</span> <span class="pre">tüm</span>
+<span class="pre">gazı</span> <span class="pre">ileten</span> <span class="pre">``call</span></code> kullandığı için bir saldırganın birden fazla kez geri ödeme
+yapmasına izin verecektir:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC42LjIgPDAuOS4wOwoKLy8gQlUgU8OWWkxFxZ5NRSBCVUcgxLDDh0VSxLBSOiBLVUxMQU5NQVlJTgpjb250cmFjdCBGdW5kIHsKICAgIC8vLyBAZGV2IFPDtnpsZcWfbWVuaW4gZXRoZXIgcGF5bGFyxLFuxLFuIGXFn2xlxZ90aXJpbG1lc2kuCiAgICBtYXBwaW5nKGFkZHJlc3MgPT4gdWludCkgc2hhcmVzOwogICAgLy8vIFBhecSxbsSxesSxIGdlcmkgw6dla2luLgogICAgZnVuY3Rpb24gd2l0aGRyYXcoKSBwdWJsaWMgewogICAgICAgIChib29sIHN1Y2Nlc3MsKSA9IG1zZy5zZW5kZXIuY2FsbHt2YWx1ZTogc2hhcmVzW21zZy5zZW5kZXJdfSgiIik7CiAgICAgICAgaWYgKHN1Y2Nlc3MpCiAgICAgICAgICAgIHNoYXJlc1ttc2cuc2VuZGVyXSA9IDA7CiAgICB9Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.6.2</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+<span class="c1">// BU SÖZLEŞME BUG İÇERİR: KULLANMAYIN</span>
+<span class="k">contract</span><span class="w"> </span><span class="ni">Fund</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">/// @dev Sözleşmenin ether paylarının eşleştirilmesi.</span>
+<span class="w">    </span><span class="kt">mapping</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="kt">uint</span><span class="p">)</span><span class="w"> </span>shares<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="c1">/// Payınızı geri çekin.</span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">withdraw</span><span class="p">()</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="nv">success</span><span class="p">,)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">msg.sender</span><span class="p">.</span>call<span class="p">{</span>value<span class="p">:</span><span class="w"> </span>shares<span class="p">[</span><span class="k">msg.sender</span><span class="p">]}(</span><span class="s2">&quot;&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kt">if</span><span class="w"> </span><span class="p">(</span>success<span class="p">)</span><span class="w"></span>
+<span class="w">            </span>shares<span class="p">[</span><span class="k">msg.sender</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Yeniden Giriş’den(Re-entrancy) kaçınmak için, aşağıda daha ayrıntılı olarak açıklandığı gibi
+Checks-Effects-Interactions kalıbını kullanabilirsiniz:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC42LjAgPDAuOS4wOwoKY29udHJhY3QgRnVuZCB7CiAgICAvLy8gQGRldiBTw7Z6bGXFn21lbmluIGV0aGVyIHBheWxhcsSxbsSxbiBlxZ9sZcWfdGlyaWxtZXNpLgogICAgbWFwcGluZyhhZGRyZXNzID0+IHVpbnQpIHNoYXJlczsKICAgIC8vLyBQYXnEsW7EsXrEsSBnZXJpIMOnZWtpbi4KICAgIGZ1bmN0aW9uIHdpdGhkcmF3KCkgcHVibGljIHsKICAgICAgICB1aW50IHNoYXJlID0gc2hhcmVzW21zZy5zZW5kZXJdOwogICAgICAgIHNoYXJlc1ttc2cuc2VuZGVyXSA9IDA7CiAgICAgICAgcGF5YWJsZShtc2cuc2VuZGVyKS50cmFuc2ZlcihzaGFyZSk7CiAgICB9Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.6.0</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">Fund</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">/// @dev Sözleşmenin ether paylarının eşleştirilmesi.</span>
+<span class="w">    </span><span class="kt">mapping</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="kt">uint</span><span class="p">)</span><span class="w"> </span>shares<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="c1">/// Payınızı geri çekin.</span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">withdraw</span><span class="p">()</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">uint</span><span class="w"> </span><span class="nv">share</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>shares<span class="p">[</span><span class="k">msg.sender</span><span class="p">];</span><span class="w"></span>
+<span class="w">        </span>shares<span class="p">[</span><span class="k">msg.sender</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="kt">payable</span><span class="p">(</span><span class="k">msg.sender</span><span class="p">).</span>transfer<span class="p">(</span>share<span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Yeniden girişin yalnızca Ether aktarımının değil, başka bir sözleşmedeki herhangi
+bir fonksiyon çağrısının da bir etkisi olduğunu unutmayın. Ayrıca, çoklu sözleşme
+içeren durumları da hesaba katmanız gerekmektedir. Çağrılan bir sözleşme, bağımlı
+olduğunuz başka bir sözleşmenin yapısını değiştirebilir.</p>
+</section>
+<section id="gas-limiti-ve-donguler">
+<h3>Gas Limiti ve Döngüler<a class="headerlink" href="#gas-limiti-ve-donguler" title="Permalink to this heading"></a></h3>
+<p>Sabit sayıda iterasyona sahip olmayan döngüler, örneğin depolama değerine bağlı döngüler,
+dikkatli bir şekilde kullanılmalıdır: Blok gas limiti nedeniyle, işlemler yalnızca belirli
+bir miktarda gas tüketebilir. Ya açıkça ya da sadece normal çalışma nedeniyle, bir döngüdeki
+yineleme sayısı blok gas limitinin ötesine geçebilir ve bu da tüm sözleşmenin belirli bir
+noktada durmasına neden olabilir. Bu durum, yalnızca blok zincirinden veri okumak için
+çalıştırılan <code class="docutils literal notranslate"><span class="pre">view</span></code> fonksiyonları için geçerli olmayabilir. Yine de, bu tür fonksiyonlar
+zincir üzerindeki işlemlerin bir parçası olarak diğer sözleşmeler tarafından çağrılabilir
+ve bunları durdurabilir. Lütfen sözleşmelerinizin dokümantasyonunda bu tür durumlar hakkında
+açıkça bilgi verin.</p>
+</section>
+<section id="ether-gonderme-ve-alma">
+<h3>Ether Gönderme ve Alma<a class="headerlink" href="#ether-gonderme-ve-alma" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Ne sözleşmeler ne de “harici hesaplar” şu anda birinin onlara Ether göndermesini
+engelleyememektedir. Sözleşmeler normal bir transfere yanıt verebilir ve reddedebilir,
+ancak bir mesaj çağrısı oluşturmadan Ether’i taşımanın yolları vardır. Bir yol basitçe
+sözleşme adresine “mine to” yapmak, ikinci yol ise <code class="docutils literal notranslate"><span class="pre">selfdestruct(x)</span></code> kullanmaktır.</p></li>
+<li><p>Bir sözleşme Ether alırsa (bir fonksiyon çağrılmadan), ya <a class="reference internal" href="contracts.html#receive-ether-function"><span class="std std-ref">receive Ether</span></a>
+ya da <a class="reference internal" href="contracts.html#fallback-function"><span class="std std-ref">fallback</span></a> fonksiyonu çalıştırılır. Eğer bir receive ya da fallback fonksiyonu
+yoksa, Ether reddedilir (bir istisna gönderilerek). Bu fonksiyonlardan birinin yürütülmesi sırasında, sözleşme
+yalnızca o anda kendisine aktarılan “gas stipend “in (2300 gas) kullanılabilir olmasına güvenebilir. Ancak
+bu miktarı depolamayı değiştirmek için yeterli değildir (bunu kesin olarak kabul etmeyin, gelecekteki hard
+fork’larla miktar değişebilir). Sözleşmenizin bu şekilde Ether alabileceğinden emin olmak için, receive ve
+fallback fonksiyonlarının gas gereksinimlerini kontrol etmeyi unutmayın (örneğin Remix’teki “ayrıntılar” bölümünde).</p></li>
+<li><p>Daha fazla gas’ı <code class="docutils literal notranslate"><span class="pre">addr.call{value:</span> <span class="pre">x}(&quot;&quot;)</span></code> kullanarak alıcı sözleşmeye iletmenin
+bir yolu vardır. Bu aslında <code class="docutils literal notranslate"><span class="pre">addr.transfer(x)</span></code> ile aynıdır, sadece kalan tüm gas
+miktarını iletir ve alıcının daha pahalı eylemler gerçekleştirmesine olanak sağlar
+(ve hatayı otomatik olarak iletmek yerine bir hata kodu döndürür). Bu, gönderici
+sözleşmeyi geri çağırmayı veya aklınıza gelmemiş olabilecek diğer durum değişikliklerini
+içerebilir. Dolayısıyla güvenilir kullanıcılar için olduğu kadar kötü niyetli kullanıcılar
+için de büyük esneklik sağlar.</p></li>
+<li><p>Wei miktarını temsil etmek için mümkün olan en kesin birimleri kullanın, çünkü
+kesinlik eksikliği nedeniyle yuvarlanan her şeyi kaybedersiniz.</p></li>
+<li><p>Eğer <code class="docutils literal notranslate"><span class="pre">address.transfer</span></code> kullanarak Ether göndermek istiyorsanız, dikkat etmeniz gereken bazı detaylar var:</p>
+<ol class="arabic simple">
+<li><p>Alıcı bir sözleşme ise, alıcı veya fallback fonksiyonunun yürütülmesine neden
+olur ve bu da gönderen sözleşmeyi geri çağırabilir.</p></li>
+<li><p>Ether gönderimi, çağrı derinliğinin 1024’ün üzerine çıkması nedeniyle başarısız
+olabilir. Çağrı derinliği tamamen çağıranın kontrolünde olduğundan, aktarımı
+başarısız olmaya zorlayabilirler; bu olasılığı göz önünde bulundurun veya <code class="docutils literal notranslate"><span class="pre">send</span></code>
+kullanın ve dönüş değerini her zaman kontrol ettiğinizden emin olun. Daha da iyisi,
+sözleşmenizi alıcının Ether çekebileceği bir model kullanarak yazın.</p></li>
+<li><p>Ether göndermek, alıcı sözleşmenin yürütülmesi için tahsis edilen gas miktarından
+daha fazlası gerektiği için de başarısız olabilir (açıkça <a class="reference internal" href="control-structures.html#assert-and-require"><span class="std std-ref">require</span></a>,
+<a class="reference internal" href="control-structures.html#assert-and-require"><span class="std std-ref">assert</span></a>, <a class="reference internal" href="control-structures.html#assert-and-require"><span class="std std-ref">revert</span></a> kullanarak veya
+işlem çok pahalı olduğu için) - “gas biter” (OOG).  Dönüş değeri kontrolü ile <code class="docutils literal notranslate"><span class="pre">transfer</span></code>
+veya <code class="docutils literal notranslate"><span class="pre">send</span></code> kullanırsanız, bu, alıcının gönderim sözleşmesindeki ilerlemeyi
+engellemesi için bir yöntem sağlayabilir. Burada da en iyi uygulama “send” pattern
+yerine bir <a class="reference internal" href="common-patterns.html#withdrawal-pattern"><span class="std std-ref">“withdraw” pattern</span></a> kullanmaktır.</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<section id="cagri-yigini-derinligi">
+<h3>Çağrı Yığını Derinliği<a class="headerlink" href="#cagri-yigini-derinligi" title="Permalink to this heading"></a></h3>
+<p>External fonksiyon çağrıları, 1024 olan maksimum çağrı yığını boyutu sınırını aştıkları
+için her an başarısız olabilirler. Bu gibi durumlarda Solidity bir istisna gönderir.
+Kötü niyetli kişiler, sözleşmenizle etkileşime girmeden önce çağrı yığınını yüksek bir
+değere zorlayabilir. Tangerine Whistle &lt;<a class="reference external" href="https://eips.ethereum.org/EIPS/eip-608">https://eips.ethereum.org/EIPS/eip-608</a>&gt;`_ hardfork
+olduğundan, <a class="reference external" href="https://eips.ethereum.org/EIPS/eip-150">63/64 kuralı</a> çağrı yığını derinliği
+saldırısını kullanışsız hale getirir. Ayrıca, her ikisinin de 1024 yığın yuvası boyut
+sınırına sahip olmasına rağmen, çağrı yığını ve ifade yığınının birbiriyle alakasız olduğunu unutmayın.</p>
+<p>Eğer çağrı yığını tükenirse <code class="docutils literal notranslate"><span class="pre">.send()</span></code> fonksiyonunun <strong>bir istisna göndermediğini</strong>,
+bu durumda <code class="docutils literal notranslate"><span class="pre">false</span></code> döndürdüğünü unutmayın. Düşük seviyeli fonksiyonlar <code class="docutils literal notranslate"><span class="pre">.call()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">.delegatecall()</span></code> ve <code class="docutils literal notranslate"><span class="pre">.staticcall()</span></code> da aynı şekilde davranırlar.</p>
+</section>
+<section id="yetkilendirilmis-proxyler-authorized-proxies">
+<h3>Yetkilendirilmiş Proxyler (Authorized Proxies)<a class="headerlink" href="#yetkilendirilmis-proxyler-authorized-proxies" title="Permalink to this heading"></a></h3>
+<p>Sözleşmeniz bir proxy olarak hareket edebiliyorsa, yani kullanıcı tarafından
+sağlanan verilerle rastgele sözleşmeleri çağırabiliyorsa, kullanıcı esasen proxy
+sözleşmesinin kimliğini üstlenebilir. Başka koruyucu önlemleriniz olsa bile, sözleşme
+sisteminizi proxy’nin herhangi bir izne sahip olmayacağı şekilde (kendisi için bile)
+oluşturmak en iyisidir. Gerekirse bunu ikinci bir proxy kullanarak gerçekleştirebilirsiniz:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5IF4wLjguMDsKY29udHJhY3QgUHJveHlXaXRoTW9yZUZ1bmN0aW9uYWxpdHkgewogICAgUGVybWlzc2lvbmxlc3NQcm94eSBwcm94eTsKCiAgICBmdW5jdGlvbiBjYWxsT3RoZXIoYWRkcmVzcyBhZGRyLCBieXRlcyBtZW1vcnkgcGF5bG9hZCkgcHVibGljCiAgICAgICAgICAgIHJldHVybnMgKGJvb2wsIGJ5dGVzIG1lbW9yeSkgewogICAgICAgIHJldHVybiBwcm94eS5jYWxsT3RoZXIoYWRkciwgcGF5bG9hZCk7CiAgICB9CiAgICAvLyBEacSfZXIgZm9ua3NpeW9ubGFyIHZlIGRpxJ9lciBmb25rc2l5b25lbGxpa2xlcgp9CgovLyBCdSB0YW0gc8O2emxlxZ9tZWRpciwgYmHFn2thIGhpw6diaXIgZm9ua3NpeW9udSB5b2t0dXIgdmUgw6dhbMSxxZ9tYXPEsQovLyBpw6dpbiBoacOnYmlyIGF5csSxY2FsxLFrIGdlcmVrdGlybWV6Lgpjb250cmFjdCBQZXJtaXNzaW9ubGVzc1Byb3h5IHsKICAgIGZ1bmN0aW9uIGNhbGxPdGhlcihhZGRyZXNzIGFkZHIsIGJ5dGVzIG1lbW9yeSBwYXlsb2FkKSBwdWJsaWMKICAgICAgICAgICAgcmV0dXJucyAoYm9vbCwgYnl0ZXMgbWVtb3J5KSB7CiAgICAgICAgcmV0dXJuIGFkZHIuY2FsbChwYXlsb2FkKTsKICAgIH0KfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">^</span><span class="k">0.8.0</span><span class="p">;</span><span class="w"></span>
+<span class="k">contract</span><span class="w"> </span><span class="ni">ProxyWithMoreFunctionality</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span>PermissionlessProxy<span class="w"> </span>proxy<span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">callOther</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">addr</span><span class="p">,</span><span class="w"> </span><span class="kt">bytes</span><span class="w"> </span><span class="nv">memory</span><span class="w"> </span>payload<span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"></span>
+<span class="w">            </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">bool</span><span class="p">,</span><span class="w"> </span><span class="kt">bytes</span><span class="w"> </span><span class="nv">memory</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">return</span><span class="w"> </span>proxy<span class="p">.</span>callOther<span class="p">(</span>addr<span class="p">,</span><span class="w"> </span>payload<span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Diğer fonksiyonlar ve diğer fonksiyonellikler</span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// Bu tam sözleşmedir, başka hiçbir fonksiyonu yoktur ve çalışması</span>
+<span class="c1">// için hiçbir ayrıcalık gerektirmez.</span>
+<span class="k">contract</span><span class="w"> </span><span class="ni">PermissionlessProxy</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">callOther</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">addr</span><span class="p">,</span><span class="w"> </span><span class="kt">bytes</span><span class="w"> </span><span class="nv">memory</span><span class="w"> </span>payload<span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"></span>
+<span class="w">            </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">bool</span><span class="p">,</span><span class="w"> </span><span class="kt">bytes</span><span class="w"> </span><span class="nv">memory</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">return</span><span class="w"> </span>addr<span class="p">.</span>call<span class="p">(</span>payload<span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="tx-origin">
+<h3>tx.origin<a class="headerlink" href="#tx-origin" title="Permalink to this heading"></a></h3>
+<p>Doğrulama için asla tx.origin kullanmayın. Diyelim ki şöyle bir cüzdan sözleşmeniz var:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC43LjAgPDAuOS4wOwovLyBCVSBTw5ZaTEXFnk1FIEJVRyDEsMOHRVLEsFIgOiBLVUxMQU5NQVlJTgpjb250cmFjdCBUeFVzZXJXYWxsZXQgewogICAgYWRkcmVzcyBvd25lcjsKCiAgICBjb25zdHJ1Y3RvcigpIHsKICAgICAgICBvd25lciA9IG1zZy5zZW5kZXI7CiAgICB9CgogICAgZnVuY3Rpb24gdHJhbnNmZXJUbyhhZGRyZXNzIHBheWFibGUgZGVzdCwgdWludCBhbW91bnQpIHB1YmxpYyB7CiAgICAgICAgLy8gQlVHIGJ1cmFkYSwgdHgub3JpZ2luIHllcmluZSBtc2cuc2VuZGVyIGt1bGxhbsSxbgogICAgICAgIHJlcXVpcmUodHgub3JpZ2luID09IG93bmVyKTsKICAgICAgICBkZXN0LnRyYW5zZmVyKGFtb3VudCk7CiAgICB9Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.7.0</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+<span class="c1">// BU SÖZLEŞME BUG İÇERİR : KULLANMAYIN</span>
+<span class="k">contract</span><span class="w"> </span><span class="ni">TxUserWallet</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">address</span><span class="w"> </span><span class="nv">owner</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">constructor</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>owner<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">msg.sender</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">transferTo</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">payable</span><span class="w"> </span>dest<span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">amount</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// BUG burada, tx.origin yerine msg.sender kullanın</span>
+<span class="w">        </span><span class="kt">require</span><span class="p">(</span><span class="k">tx.origin</span><span class="w"> </span><span class="o">==</span><span class="w"> </span>owner<span class="p">);</span><span class="w"></span>
+<span class="w">        </span>dest<span class="p">.</span>transfer<span class="p">(</span>amount<span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Şimdi birisi sizi bu saldırı cüzdanının adresine Ether göndermeniz için kandırıyor:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC43LjAgPDAuOS4wOwppbnRlcmZhY2UgVHhVc2VyV2FsbGV0IHsKICAgIGZ1bmN0aW9uIHRyYW5zZmVyVG8oYWRkcmVzcyBwYXlhYmxlIGRlc3QsIHVpbnQgYW1vdW50KSBleHRlcm5hbDsKfQoKY29udHJhY3QgVHhBdHRhY2tXYWxsZXQgewogICAgYWRkcmVzcyBwYXlhYmxlIG93bmVyOwoKICAgIGNvbnN0cnVjdG9yKCkgewogICAgICAgIG93bmVyID0gcGF5YWJsZShtc2cuc2VuZGVyKTsKICAgIH0KCiAgICByZWNlaXZlKCkgZXh0ZXJuYWwgcGF5YWJsZSB7CiAgICAgICAgVHhVc2VyV2FsbGV0KG1zZy5zZW5kZXIpLnRyYW5zZmVyVG8ob3duZXIsIG1zZy5zZW5kZXIuYmFsYW5jZSk7CiAgICB9Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.7.0</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+interface<span class="w"> </span>TxUserWallet<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">transferTo</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">payable</span><span class="w"> </span>dest<span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">amount</span><span class="p">)</span><span class="w"> </span><span class="kt">external</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">TxAttackWallet</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">address</span><span class="w"> </span><span class="nv">payable</span><span class="w"> </span>owner<span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">constructor</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>owner<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">payable</span><span class="p">(</span><span class="k">msg.sender</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span>receive<span class="p">()</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span><span class="kt">payable</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>TxUserWallet<span class="p">(</span><span class="k">msg.sender</span><span class="p">).</span>transferTo<span class="p">(</span>owner<span class="p">,</span><span class="w"> </span><span class="k">msg.sender</span><span class="p">.</span>balance<span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Cüzdanınız doğrulama için <code class="docutils literal notranslate"><span class="pre">msg.sender</span></code> adresini kontrol etseydi, sahibinin adresi
+yerine saldırı cüzdanının adresini alırdı. Ancak <code class="docutils literal notranslate"><span class="pre">tx.origin</span></code> adresini kontrol ederek,
+işlemi başlatan orijinal adresi, yani hala sahibinin adresini alır. Saldırgan cüzdan
+anında tüm paranızı çeker.</p>
+</section>
+<section id="two-s-complement-underflows-overflows">
+<span id="underflow-overflow"></span><h3>Two’s Complement / Underflows / Overflows<a class="headerlink" href="#two-s-complement-underflows-overflows" title="Permalink to this heading"></a></h3>
+<p>Birçok programlama dilinde olduğu gibi, Solidity’nin integer türleri aslında tam
+sayı değildir. Değerler küçük olduğunda tamsayılara benzerler, ancak keyfi olarak
+büyük sayıları temsil edemezler.</p>
+<p>Aşağıdaki kod bir taşmaya neden olur çünkü toplama işleminin sonucu <code class="docutils literal notranslate"><span class="pre">uint8</span></code> tipinde
+saklanamayacak kadar büyüktür:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=dWludDggeCA9IDI1NTsKdWludDggeSA9IDE7CnJldHVybiB4ICsgeTs="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="kt">uint8</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">255</span><span class="p">;</span><span class="w"></span>
+<span class="kt">uint8</span><span class="w"> </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">1</span><span class="p">;</span><span class="w"></span>
+<span class="kt">return</span><span class="w"> </span>x<span class="w"> </span><span class="o">+</span><span class="w"> </span>y<span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Solidity’nin bu taşmaları ele aldığı iki modu bulunmaktadır: Kontrollü ve Kontrolsüz veya “wrapping” modu.</p>
+<p>Varsayılan kontrollü mod, taşmaları tespit eder ve başarısız bir doğrulamaya neden olur.
+Bu kontrolü <code class="docutils literal notranslate"><span class="pre">unchecked</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code>  kullanarak bu kontrolü devre dışı bırakabilir ve
+taşmanın sessizce göz ardı edilmesine neden olabilirsiniz. Yukarıdaki kod <code class="docutils literal notranslate"><span class="pre">unchecked</span> <span class="pre">{</span> <span class="pre">…</span> <span class="pre">}</span></code>
+içine sarılmış olsaydı <code class="docutils literal notranslate"><span class="pre">0</span></code> döndürürdü. .</p>
+<p>Kontrollü modda bile, taşma hatalarından korunduğunuzu sanmayın. Bu modda, taşmalar her
+zaman geri döndürülecektir. Eğer taşmadan kaçınmak mümkün değilse, bu durum akıllı sözleşmenin
+belirli bir durumda takılı kalmasına neden olabilir.</p>
+<p>Genel olarak, işaretli sayılar için bazı daha özel uç durumlara sahip olan ikiye tamamlayan sayı
+gösteriminin sınırları hakkında bilgi edinmelisiniz.</p>
+<p>Girdilerin boyutunu makul bir aralıkla sınırlamak için <code class="docutils literal notranslate"><span class="pre">require</span></code> kullanmayı deneyin ve olası
+taşmaları bulmak için <a class="reference internal" href="layout-of-source-files.html#smt-checker"><span class="std std-ref">SMT checker</span></a> kullanın.</p>
+</section>
+<section id="mappingleri-temizleme">
+<span id="clearing-mappings"></span><h3>Mappingleri Temizleme<a class="headerlink" href="#mappingleri-temizleme" title="Permalink to this heading"></a></h3>
+<p>Yalnızca depolama amaçlı bir anahtar-değer veri yapısı olan Solidity tipi <code class="docutils literal notranslate"><span class="pre">mapping</span></code>
+(bkz. <a class="reference internal" href="types.html#mapping-types"><span class="std std-ref">Eşleme Türleri</span></a>), sıfır olmayan bir değer atanmış anahtarların kaydını tutmaz.
+Bu nedenle, yazılan anahtarlar hakkında ekstra bilgi olmadan bir mapping’i temizlemek mümkün
+değildir. Bir dinamik depolama dizisinin temel türü olarak bir <code class="docutils literal notranslate"><span class="pre">mapping</span></code> kullanılıyorsa,
+dizinin silinmesi veya boşaltılmasının <code class="docutils literal notranslate"><span class="pre">mapping</span></code> elemanları üzerinde hiçbir etkisi olmayacaktır.
+Aynı durum, örneğin, bir dinamik depolama dizisinin temel türü olan bir <code class="docutils literal notranslate"><span class="pre">struct``ın</span> <span class="pre">eleman</span>
+<span class="pre">türünün</span> <span class="pre">bir</span> <span class="pre">``mapping</span></code> olması durumunda da geçerlidir.  Bir <code class="docutils literal notranslate"><span class="pre">mapping</span></code> içeren struct veya
+dizilerin atamalarında da <code class="docutils literal notranslate"><span class="pre">mapping</span></code> göz ardı edilir.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC42LjAgPDAuOS4wOwoKY29udHJhY3QgTWFwIHsKICAgIG1hcHBpbmcgKHVpbnQgPT4gdWludClbXSBhcnJheTsKCiAgICBmdW5jdGlvbiBhbGxvY2F0ZSh1aW50IG5ld01hcHMpIHB1YmxpYyB7CiAgICAgICAgZm9yICh1aW50IGkgPSAwOyBpIDwgbmV3TWFwczsgaSsrKQogICAgICAgICAgICBhcnJheS5wdXNoKCk7CiAgICB9CgogICAgZnVuY3Rpb24gd3JpdGVNYXAodWludCBtYXAsIHVpbnQga2V5LCB1aW50IHZhbHVlKSBwdWJsaWMgewogICAgICAgIGFycmF5W21hcF1ba2V5XSA9IHZhbHVlOwogICAgfQoKICAgIGZ1bmN0aW9uIHJlYWRNYXAodWludCBtYXAsIHVpbnQga2V5KSBwdWJsaWMgdmlldyByZXR1cm5zICh1aW50KSB7CiAgICAgICAgcmV0dXJuIGFycmF5W21hcF1ba2V5XTsKICAgIH0KCiAgICBmdW5jdGlvbiBlcmFzZU1hcHMoKSBwdWJsaWMgewogICAgICAgIGRlbGV0ZSBhcnJheTsKICAgIH0KfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.6.0</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">Map</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">mapping</span><span class="w"> </span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="kt">uint</span><span class="p">)[]</span><span class="w"> </span>array<span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">allocate</span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">newMaps</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">0</span><span class="p">;</span><span class="w"> </span>i<span class="w"> </span><span class="o">&lt;</span><span class="w"> </span>newMaps<span class="p">;</span><span class="w"> </span>i<span class="o">++</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span>array<span class="p">.</span>push<span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">writeMap</span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">map</span><span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">key</span><span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">value</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>array<span class="p">[</span>map<span class="p">][</span>key<span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>value<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">readMap</span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">map</span><span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">key</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>view<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">uint</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">return</span><span class="w"> </span>array<span class="p">[</span>map<span class="p">][</span>key<span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">eraseMaps</span><span class="p">()</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>delete<span class="w"> </span>array<span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Yukarıdaki örneği ve aşağıdaki çağrı dizisini göz önünde bulundurun: <code class="docutils literal notranslate"><span class="pre">allocate(10)</span></code>,
+<code class="docutils literal notranslate"><span class="pre">writeMap(4,</span> <span class="pre">128,</span> <span class="pre">256)</span></code>. Bu noktada, <code class="docutils literal notranslate"><span class="pre">readMap(4,</span> <span class="pre">128)</span></code> çağrısı 256 değerini döndürür.
+Eğer <code class="docutils literal notranslate"><span class="pre">eraseMaps</span></code> çağrısı yaparsak, <code class="docutils literal notranslate"><span class="pre">array</span></code> durum değişkeninin uzunluğu sıfırlanır,
+ancak <code class="docutils literal notranslate"><span class="pre">mapping</span></code> elemanları sıfırlanamadığından, bilgileri sözleşmenin deposunda canlı
+kalır. Diziyi sildikten sonra, <code class="docutils literal notranslate"><span class="pre">allocate(5)</span></code> çağrısı <code class="docutils literal notranslate"><span class="pre">array[4]</span></code> öğesine tekrar erişmemizi
+sağlar ve <code class="docutils literal notranslate"><span class="pre">readMap(4,</span> <span class="pre">128)</span></code> çağrısı, başka bir <code class="docutils literal notranslate"><span class="pre">writeMap</span></code> çağrısı olmadan bile 256 döndürür.</p>
+<p>Eğer <code class="docutils literal notranslate"><span class="pre">mapping</span></code> bilgilerinizin silinmesi gerekiyorsa, <code class="docutils literal notranslate"><span class="pre">iterable</span> <span class="pre">mapping</span> <span class="pre">&lt;https://github.com/ethereum/dapp-bin/blob/master/library/iterable_mapping.sol&gt;`_</span>
+<span class="pre">benzeri</span> <span class="pre">bir</span> <span class="pre">kütüphane</span> <span class="pre">kullanmayı</span> <span class="pre">düşünün,</span> <span class="pre">bu</span> <span class="pre">sayede</span> <span class="pre">anahtarlar</span> <span class="pre">arasında</span> <span class="pre">gezinebilir</span> <span class="pre">ve</span> <span class="pre">uygun</span>
+<span class="pre">``mapping</span></code> içindeki değerleri silebilirsiniz.</p>
+</section>
+<section id="kucuk-detaylar">
+<h3>Küçük Detaylar<a class="headerlink" href="#kucuk-detaylar" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Tam 32 baytı kaplamayan türler “kirli yüksek dereceli bitler” içerebilir. Bu durum
+özellikle <code class="docutils literal notranslate"><span class="pre">msg.data</span></code> türüne eriştiğinizde önemlidir - bu bir değiştirilebilirlik
+riski oluşturur: Bir <code class="docutils literal notranslate"><span class="pre">f(uint8</span> <span class="pre">x)</span></code> fonksiyonunu <code class="docutils literal notranslate"><span class="pre">0xff000001</span></code> ve <code class="docutils literal notranslate"><span class="pre">0x00000001</span></code> ham
+bayt argümanı ile çağıran işlemler oluşturabilirsiniz. Her ikisi de sözleşmeye gönderilir
+ve <code class="docutils literal notranslate"><span class="pre">x</span></code> söz konusu olduğunda her ikisi de <code class="docutils literal notranslate"><span class="pre">1</span></code> sayısı gibi görünecektir, ancak <code class="docutils literal notranslate"><span class="pre">msg.data</span></code>
+farklı olacaktır, bu nedenle herhangi bir şey için <code class="docutils literal notranslate"><span class="pre">keccak256(msg.data)</span></code> kullanırsanız,
+farklı sonuçlar elde edersiniz.</p></li>
+</ul>
+</section>
+</section>
+<section id="oneriler">
+<h2>Öneriler<a class="headerlink" href="#oneriler" title="Permalink to this heading"></a></h2>
+<section id="uyarilari-ciddiye-alin">
+<h3>Uyarıları Ciddiye Alın<a class="headerlink" href="#uyarilari-ciddiye-alin" title="Permalink to this heading"></a></h3>
+<p>Derleyici sizi bir konuda uyarıyorsa, bunu değiştirmelisiniz. Bu uyarının güvenlikle
+ilgili olduğunu düşünmeseniz bile, altında başka bir sorun yatıyor olabilir. Verdiğimiz
+herhangi bir derleyici uyarısı, kodda yapılacak küçük değişikliklerle giderilebilir.</p>
+<p>Yeni eklenen tüm uyarılardan haberdar olmak için her zaman derleyicinin en son sürümünü
+kullanın.</p>
+<p>Derleyici tarafından verilen <code class="docutils literal notranslate"><span class="pre">info</span></code> türündeki mesajlar tehlikeli değildir ve sadece
+derleyicinin kullanıcı için yararlı olabileceğini düşündüğü ekstra önerileri ve isteğe
+bağlı bilgileri temsil eder.</p>
+</section>
+<section id="ether-miktarini-kisitlayin">
+<h3>Ether Miktarını Kısıtlayın<a class="headerlink" href="#ether-miktarini-kisitlayin" title="Permalink to this heading"></a></h3>
+<p>Akıllı bir sözleşmede saklanabilecek Ether (veya diğer tokenler) miktarını kısıtlayın.
+Kaynak kodunuzda, derleyicide veya platformda bir hata varsa, bu fonlar kaybolabilir.
+Kaybınızı sınırlamak istiyorsanız, Ether miktarını sınırlayın.</p>
+</section>
+<section id="kucuk-ve-moduler-tutun">
+<h3>Küçük ve Modüler Tutun<a class="headerlink" href="#kucuk-ve-moduler-tutun" title="Permalink to this heading"></a></h3>
+<p>Sözleşmelerinizi küçük ve kolayca anlaşılabilir tutun. Diğer sözleşmelerdeki veya
+kütüphanelerdeki ilgisiz fonksiyonları ayırın. Kaynak kod kalitesiyle ilgili genel
+tavsiyeler elbette geçerlidir: Yerel değişkenlerin miktarını, fonksiyonların uzunluğunu
+ve benzerlerini sınırlayın. Başkalarının niyetinizin ne olduğunu ve kodun yapıldığından
+farklı olup olmadığını görebilmesi için fonksiyonlarınızı belgeleyin.</p>
+</section>
+<section id="kontroller-etkiler-etkilesimler-modelini-kullanin">
+<h3>Kontroller-Etkiler-Etkileşimler Modelini Kullanın<a class="headerlink" href="#kontroller-etkiler-etkilesimler-modelini-kullanin" title="Permalink to this heading"></a></h3>
+<p>Çoğu fonksiyon önce bazı kontroller yapacaktır (fonksiyonu kim çağırdı, argümanlar
+aralıkta mı, yeterince Ether gönderdiler mi, kişinin tokenleri var mı, vb.) Bu kontroller önce yapılmalıdır.</p>
+<p>İkinci adım olarak, tüm kontroller geçerse, mevcut sözleşmenin durum değişkenlerine
+etkiler yapılmalıdır. Diğer sözleşmelerle etkileşim herhangi bir fonksiyonda en son adım olmalıdır.</p>
+<p>İlk sözleşmeler bazı etkileri geciktirir ve harici fonksiyon çağrılarının hatasız
+bir durumda dönmesini beklerdi. Bu, yukarıda açıklanan yeniden giriş sorunu nedeniyle genellikle ciddi bir hatadır.</p>
+<p>Ayrıca, bilinen sözleşmelere yapılan çağrıların da bilinmeyen sözleşmelere çağrı
+yapılmasına neden olabileceğini unutmayın, bu nedenle bu kalıbı her zaman uygulamak her zaman daha iyidir.</p>
+</section>
+<section id="arizaya-karsi-guvenli-mod-ekleyin">
+<h3>Arızaya Karşı Güvenli Mod Ekleyin<a class="headerlink" href="#arizaya-karsi-guvenli-mod-ekleyin" title="Permalink to this heading"></a></h3>
+<p>Sisteminizi tamamen merkeziyetsiz hale getirmek herhangi bir aracıyı ortadan kaldıracak
+olsa da, özellikle yeni kodlar için bir tür arıza güvenliği mekanizması eklemek iyi bir fikir olabilir:</p>
+<p>Akıllı sözleşmenize “Herhangi bir Ether sızdı mı?”, “Tokenların toplamı sözleşmenin
+bakiyesine eşit mi?” gibi kendi kendine kontroller gerçekleştiren bir fonksiyon ekleyebilirsiniz.
+Bunun için çok fazla gaz kullanamayacağınızı unutmayın, bu nedenle zincir dışı hesaplamalar yoluyla yardım gerekebilir.</p>
+<p>Kendi kendine kontrol başarısız olursa, sözleşme otomatik olarak bir tür “arıza emniyetli”
+moda geçer; örneğin, özelliklerin çoğunu devre dışı bırakır, kontrolü sabit ve güvenilir
+bir üçüncü tarafa devreder veya sözleşmeyi basit bir “paramı geri ver” sözleşmesine dönüştürür.</p>
+</section>
+<section id="peer-incelemesi-isteyin">
+<h3>Peer İncelemesi İsteyin<a class="headerlink" href="#peer-incelemesi-isteyin" title="Permalink to this heading"></a></h3>
+<p>Bir kod parçası ne kadar çok kişi tarafından incelenirse, o kadar çok sorun bulunur.
+İnsanlardan kodunuzu incelemelerini istemek, kodunuzun kolay anlaşılır olup olmadığını
+anlamak için bir çapraz kontrol olarak da yardımcı olur - iyi akıllı sözleşmeler için çok önemli bir kriterdir.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="natspec-format.html" class="btn btn-neutral float-left" title="NatSpec Formatı" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="smtchecker.html" class="btn btn-neutral float-right" title="SMTChecker and Formal Verification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

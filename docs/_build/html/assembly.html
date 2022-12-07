@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inline Assembly &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Kopya Kağıdı" href="cheatsheet.html" />
+    <link rel="prev" title="Akıllı Sözleşmeler" href="contracts.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Inline Assembly</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ornek">Örnek</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dis-external-degiskenlere-fonksiyonlara-ve-kutuphanelere-erisim">Dış(External) değişkenlere, fonksiyonlara ve kütüphanelere erişim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#kacinilacak-seyler">Kaçınılacak Şeyler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#solidity-kurallari">Solidity kuralları</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#typed-degiskenlerin-degerleri">Typed Değişkenlerin Değerleri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hafiza-yonetimi">Hafıza Yönetimi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hafiza-guvenligi">Hafıza Güvenliği</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Inline Assembly</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/assembly.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="inline-assembly">
+<span id="id1"></span><h1>Inline Assembly<a class="headerlink" href="#inline-assembly" title="Permalink to this heading"></a></h1>
+<p id="index-0">Inline assembly ile Solidity ifadelerini Ethereum Sanal Makine’sinin dillerinden birine yakın dile çevirebilirsiniz.
+Bu size özellikle dili kütüphaneler yazarak geliştiriyorsanız daha detaylı bir kontrol sağlar.</p>
+<p>Inline assembly için kullanılan Solidity diline <a class="reference internal" href="yul.html#yul"><span class="std std-ref">Yul</span></a> deniyor ve dosyalarını kendi bölümünde bulabilirsiniz.
+BU bölüm sadece inline assembly kodunun etrafındaki Solidity kodları ile nasıl bağlandığını anlatacak.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Inline assembly Ethereum Sanal Makinesi’ne düşük seviyede erişişmin bir yoludur.
+Bu, Solidity’nin birçok güvenlik özelliklerini ve kontrollerini yok sayar.
+Yani inline assembly’i sadece gereken yerlerde ve nasıl kullanacağınızdan eminseniz kullanmalısınız.</p>
+</div>
+<p>Bir inline assembly bloğu <code class="docutils literal notranslate"><span class="pre">assembly</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code> ile işaretlidir.
+Süslü parantez içerisindeki kod <a class="reference internal" href="yul.html#yul"><span class="std std-ref">Yul</span></a> dili içerisinde yer alır.</p>
+<p>Bir inline assembly kodu yerel Solidity değişkenlerine aşağıda açıklandığı gibi erişebilir.</p>
+<p>Farklı inline assembly blokları aynı yer adlarını paylaşmazlar. Yani farklı bir inline assembly
+bloğunda tanımlanmış olan bir Yul fonksiyonunu çağırmak ya da bir Yul değişkenine erişmek mümkün değldir.</p>
+<section id="ornek">
+<h2>Örnek<a class="headerlink" href="#ornek" title="Permalink to this heading"></a></h2>
+<p>Aşağıdaki örnek başka bir kontrat üzerindeki koda erişimi ve bir <code class="docutils literal notranslate"><span class="pre">bytes</span></code> değişkenine atımını sağlayan kütüphane kodunu verir.
+Bu “düz Solidity” ile de <code class="docutils literal notranslate"><span class="pre">&lt;address&gt;.code</span></code> kullanarak mümkündür ama buradaki amaç tekrar kullanılabilir assembly kütüphanelerinin
+bir derleyici(compiler) değişimi olmadan Solidity dilini geliştirebildiğini göstermektir.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC40LjE2IDwwLjkuMDsKCmxpYnJhcnkgR2V0Q29kZSB7CiAgICBmdW5jdGlvbiBhdChhZGRyZXNzIGFkZHIpIHB1YmxpYyB2aWV3IHJldHVybnMgKGJ5dGVzIG1lbW9yeSBjb2RlKSB7CiAgICAgICAgYXNzZW1ibHkgewogICAgICAgICAgICAvLyBrb2R1biBib3l1dHVudSBkw7ZuZMO8csO8ciwgYnVyYXPEsSBpw6dpbiBhc3NlbWJseSBrdWxsYW7EsWxtYWzEsQogICAgICAgICAgICBsZXQgc2l6ZSA6PSBleHRjb2Rlc2l6ZShhZGRyKQogICAgICAgICAgICAvLyDDp8Sxa8SxxZ8gYml0IGFycmF5J2luaSBhbGxvY2F0ZSgpIGVkZXIKICAgICAgICAgICAgLy8gYnVyYXPEsSBhc3NlbWJseSBrdWxsYW5tYWRhbiwKICAgICAgICAgICAgLy8gY29kZSA9IG5ldyBieXRlcyhzaXplKSBrdWxsYW5hcmFrIGRhIHlhcMSxbGFiaWxpci4KICAgICAgICAgICAgY29kZSA6PSBtbG9hZCgweDQwKQogICAgICAgICAgICAvLyBwYWRkaW5nJ2kgacOnZXJlbiB5ZW5pICJtZW1vcnkgZW5kIgogICAgICAgICAgICBtc3RvcmUoMHg0MCwgYWRkKGNvZGUsIGFuZChhZGQoYWRkKHNpemUsIDB4MjApLCAweDFmKSwgbm90KDB4MWYpKSkpCiAgICAgICAgICAgIC8vIHV6dW5sdcSfdSBoYWbEsXphZGEgc2FrbGF5xLFuCiAgICAgICAgICAgIG1zdG9yZShjb2RlLCBzaXplKQogICAgICAgICAgICAvLyBrb2R1biDFn3UgYW5raSBoYWxpbmkgZMO2bmTDvHLDvHIsIGJ1cmFzxLEgacOnaW4gYXNzZW1ibHkga3VsbGFuxLFsbWFsxLEKICAgICAgICAgICAgZXh0Y29kZWNvcHkoYWRkciwgYWRkKGNvZGUsIDB4MjApLCAwLCBzaXplKQogICAgICAgIH0KICAgIH0KfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.4.16</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+<span class="kt">library</span><span class="w"> </span>GetCode<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">at</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">addr</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>view<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">bytes</span><span class="w"> </span><span class="nv">memory</span><span class="w"> </span>code<span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>assembly<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// kodun boyutunu döndürür, burası için assembly kullanılmalı</span>
+<span class="w">            </span>let<span class="w"> </span>size<span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span>extcodesize<span class="p">(</span>addr<span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// çıkış bit array&#39;ini allocate() eder</span>
+<span class="w">            </span><span class="c1">// burası assembly kullanmadan,</span>
+<span class="w">            </span><span class="c1">// code = new bytes(size) kullanarak da yapılabilir.</span>
+<span class="w">            </span>code<span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span>mload<span class="p">(</span><span class="mh">0x40</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// padding&#39;i içeren yeni &quot;memory end&quot;</span>
+<span class="w">            </span>mstore<span class="p">(</span><span class="mh">0x40</span><span class="p">,</span><span class="w"> </span>add<span class="p">(</span>code<span class="p">,</span><span class="w"> </span>and<span class="p">(</span>add<span class="p">(</span>add<span class="p">(</span>size<span class="p">,</span><span class="w"> </span><span class="mh">0x20</span><span class="p">),</span><span class="w"> </span><span class="mh">0x1f</span><span class="p">),</span><span class="w"> </span>not<span class="p">(</span><span class="mh">0x1f</span><span class="p">))))</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// uzunluğu hafızada saklayın</span>
+<span class="w">            </span>mstore<span class="p">(</span>code<span class="p">,</span><span class="w"> </span>size<span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// kodun şu anki halini döndürür, burası için assembly kullanılmalı</span>
+<span class="w">            </span>extcodecopy<span class="p">(</span>addr<span class="p">,</span><span class="w"> </span>add<span class="p">(</span>code<span class="p">,</span><span class="w"> </span><span class="mh">0x20</span><span class="p">),</span><span class="w"> </span><span class="m m-Decimal">0</span><span class="p">,</span><span class="w"> </span>size<span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inline assembly optimizer verimli kodlar üretemediği zamanlarda da yararlıdır, örneğin:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC40LjE2IDwwLjkuMDsKCgpsaWJyYXJ5IFZlY3RvclN1bSB7CiAgICAvLyBCdSBmb25rc2l5b24gxZ91IGFuZGEgdmVyaW1saSBkZcSfaWwKICAgIC8vIMOnw7xua8O8IG9wdGltaXplciBhcnJheSBzxLFuxLFyIGVyacWfaW0ga29udHJvbMO8bsO8IHlhcGFya2VuIGhhdGEgdmVyaXlvcgogICAgZnVuY3Rpb24gc3VtU29saWRpdHkodWludFtdIG1lbW9yeSBkYXRhKSBwdWJsaWMgcHVyZSByZXR1cm5zICh1aW50IHN1bSkgewogICAgICAgIGZvciAodWludCBpID0gMDsgaSA8IGRhdGEubGVuZ3RoOyArK2kpCiAgICAgICAgICAgIHN1bSArPSBkYXRhW2ldOwogICAgfQoKICAgIC8vIEFycmF5J2Ugc2FkZWNlIHPEsW7EsXJsYXLEsSBpw6dlcmlzaW5kZSBlcmnFn2ViaWxlY2XEn2ltaXppIGJpbGl5b3J1eiwgeWFuaSBidSBrb250cm9sw7wgYXRsYXlhYmlsaXJpei4KICAgIC8vIDB4MjAnbmluIGFycmF5J2UgZWtsZW5tZXNpIGdlcmVraXlvciDDp8O8bmvDvCBhcnJheSdpbiBpbGsgc2xvdHUgYXJyYXkgdXp1bmx1xJ91bnUgacOnZXJpci4KICAgIGZ1bmN0aW9uIHN1bUFzbSh1aW50W10gbWVtb3J5IGRhdGEpIHB1YmxpYyBwdXJlIHJldHVybnMgKHVpbnQgc3VtKSB7CiAgICAgICAgZm9yICh1aW50IGkgPSAwOyBpIDwgZGF0YS5sZW5ndGg7ICsraSkgewogICAgICAgICAgICBhc3NlbWJseSB7CiAgICAgICAgICAgICAgICBzdW0gOj0gYWRkKHN1bSwgbWxvYWQoYWRkKGFkZChkYXRhLCAweDIwKSwgbXVsKGksIDB4MjApKSkpCiAgICAgICAgICAgIH0KICAgICAgICB9CiAgICB9CiAgICAvLyBZdWthcsSxZGFraSBnaWJpIGFtYSB0w7xtIGtvZHUgaW5saW5lIGFzc2VtYmx5IGt1bGxhbmFyYWsgdGFtYW1sYXnEsW4uCiAgICBmdW5jdGlvbiBzdW1QdXJlQXNtKHVpbnRbXSBtZW1vcnkgZGF0YSkgcHVibGljIHB1cmUgcmV0dXJucyAodWludCBzdW0pIHsKICAgICAgICBhc3NlbWJseSB7CiAgICAgICAgICAgIC8vIHV6dW5sdcSfdSB5w7xrbGV5aW4gKMO2bmNlIDMyIGJ5dGUpCiAgICAgICAgICAgIGxldCBsZW4gOj0gbWxvYWQoZGF0YSkKCiAgICAgICAgICAgIC8vIFV6dW5sdWsgYWxhbsSxbsSxIGF0bGF5xLFuLgogICAgICAgICAgICAvLwogICAgICAgICAgICAvLyBHZcOnaWNpIGJpciBkZcSfacWfa2VuIHR1dHVuLCBiw7Z5bGVjZSB5ZXIgZGXEn2nFn3Rpa8OnZSBvbnUgZGEgYXJ0dMSxcmFiaWxpcnNpbml6LgogICAgICAgICAgICAvLwogICAgICAgICAgICAvLyBOT1Q6IEJ1IGFzc2VtYmx5IGJsb2t0YW4gc29ucmEgYXJ0dMSxcsSxbGFuIHZlcmkga3VsbGFuxLFsYW1heWFjYWsgYmlyIGRlxJ9pxZ9rZW5lIGTDtm7DvMWfZWNlawoKICAgICAgICAgICAgbGV0IGRhdGFFbGVtZW50TG9jYXRpb24gOj0gYWRkKGRhdGEsIDB4MjApCgogICAgICAgICAgICAvLyBTxLFuxLFyYSB1bGHFn2FuYSBrYWRhciB0ZWtyYXJsYXnEsW4uCiAgICAgICAgICAgIGZvcgogICAgICAgICAgICAgICAgeyBsZXQgZW5kIDo9IGFkZChkYXRhRWxlbWVudExvY2F0aW9uLCBtdWwobGVuLCAweDIwKSkgfQogICAgICAgICAgICAgICAgbHQoZGF0YUVsZW1lbnRMb2NhdGlvbiwgZW5kKQogICAgICAgICAgICAgICAgeyBkYXRhRWxlbWVudExvY2F0aW9uIDo9IGFkZChkYXRhRWxlbWVudExvY2F0aW9uLCAweDIwKSB9CiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgIHN1bSA6PSBhZGQoc3VtLCBtbG9hZChkYXRhRWxlbWVudExvY2F0aW9uKSkKICAgICAgICAgICAgfQogICAgICAgIH0KICAgIH0KfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.4.16</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+
+<span class="kt">library</span><span class="w"> </span>VectorSum<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Bu fonksiyon şu anda verimli değil</span>
+<span class="w">    </span><span class="c1">// çünkü optimizer array sınır erişim kontrolünü yaparken hata veriyor</span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">sumSolidity</span><span class="p">(</span><span class="kt">uint</span><span class="p">[]</span><span class="w"> </span><span class="kt">memory</span><span class="w"> </span>data<span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>pure<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">sum</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">0</span><span class="p">;</span><span class="w"> </span>i<span class="w"> </span><span class="o">&lt;</span><span class="w"> </span>data<span class="p">.</span>length<span class="p">;</span><span class="w"> </span><span class="o">++</span>i<span class="p">)</span><span class="w"></span>
+<span class="w">            </span>sum<span class="w"> </span><span class="o">+=</span><span class="w"> </span>data<span class="p">[</span>i<span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="c1">// Array&#39;e sadece sınırları içerisinde erişebileceğimizi biliyoruz, yani bu kontrolü atlayabiliriz.</span>
+<span class="w">    </span><span class="c1">// 0x20&#39;nin array&#39;e eklenmesi gerekiyor çünkü array&#39;in ilk slotu array uzunluğunu içerir.</span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">sumAsm</span><span class="p">(</span><span class="kt">uint</span><span class="p">[]</span><span class="w"> </span><span class="kt">memory</span><span class="w"> </span>data<span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>pure<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">sum</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">0</span><span class="p">;</span><span class="w"> </span>i<span class="w"> </span><span class="o">&lt;</span><span class="w"> </span>data<span class="p">.</span>length<span class="p">;</span><span class="w"> </span><span class="o">++</span>i<span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span>assembly<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span>sum<span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span>add<span class="p">(</span>sum<span class="p">,</span><span class="w"> </span>mload<span class="p">(</span>add<span class="p">(</span>add<span class="p">(</span>data<span class="p">,</span><span class="w"> </span><span class="mh">0x20</span><span class="p">),</span><span class="w"> </span>mul<span class="p">(</span>i<span class="p">,</span><span class="w"> </span><span class="mh">0x20</span><span class="p">))))</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Yukarıdaki gibi ama tüm kodu inline assembly kullanarak tamamlayın.</span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">sumPureAsm</span><span class="p">(</span><span class="kt">uint</span><span class="p">[]</span><span class="w"> </span><span class="kt">memory</span><span class="w"> </span>data<span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>pure<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">sum</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>assembly<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// uzunluğu yükleyin (önce 32 byte)</span>
+<span class="w">            </span>let<span class="w"> </span>len<span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span>mload<span class="p">(</span>data<span class="p">)</span><span class="w"></span>
+
+<span class="w">            </span><span class="c1">// Uzunluk alanını atlayın.</span>
+<span class="w">            </span><span class="c1">//</span>
+<span class="w">            </span><span class="c1">// Geçici bir değişken tutun, böylece yer değiştikçe onu da arttırabilirsiniz.</span>
+<span class="w">            </span><span class="c1">//</span>
+<span class="w">            </span><span class="c1">// NOT: Bu assembly bloktan sonra arttırılan veri kullanılamayacak bir değişkene dönüşecek</span>
+
+<span class="w">            </span>let<span class="w"> </span>dataElementLocation<span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span>add<span class="p">(</span>data<span class="p">,</span><span class="w"> </span><span class="mh">0x20</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">            </span><span class="c1">// Sınıra ulaşana kadar tekrarlayın.</span>
+<span class="w">            </span><span class="kt">for</span><span class="w"></span>
+<span class="w">                </span><span class="p">{</span><span class="w"> </span>let<span class="w"> </span>end<span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span>add<span class="p">(</span>dataElementLocation<span class="p">,</span><span class="w"> </span>mul<span class="p">(</span>len<span class="p">,</span><span class="w"> </span><span class="mh">0x20</span><span class="p">))</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">                </span>lt<span class="p">(</span>dataElementLocation<span class="p">,</span><span class="w"> </span>end<span class="p">)</span><span class="w"></span>
+<span class="w">                </span><span class="p">{</span><span class="w"> </span>dataElementLocation<span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span>add<span class="p">(</span>dataElementLocation<span class="p">,</span><span class="w"> </span><span class="mh">0x20</span><span class="p">)</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span>sum<span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span>add<span class="p">(</span>sum<span class="p">,</span><span class="w"> </span>mload<span class="p">(</span>dataElementLocation<span class="p">))</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="dis-external-degiskenlere-fonksiyonlara-ve-kutuphanelere-erisim">
+<span id="index-1"></span><h2>Dış(External) değişkenlere, fonksiyonlara ve kütüphanelere erişim<a class="headerlink" href="#dis-external-degiskenlere-fonksiyonlara-ve-kutuphanelere-erisim" title="Permalink to this heading"></a></h2>
+<p>Solidity değişkenlerine ve diğer tanımlayıcılara isimlerini kullanarak erişebilirsiniz.</p>
+<p>Bir değer tipinin yerel değişkenleri inline assembly içinde kullanılabilir durumdadır.
+Bu yerel değişkenler okunabilir de atanabilir de.</p>
+<p>Belleği kasteden yerel değişkenler değerin kendisini değil, değerin bellekteki adresini işaret eder.
+Bu değişkenler aynı zamanda değiştirilebilir de ancak bu sadece bir pointer değişimi olur, veri değişimi olmaz.
+Bu sebeple Solidity’nin hafıza yönetimini yapmak sizin yükümlülüğünüzdedir.
+Bkz <a class="reference internal" href="#conventions-in-solidity"><span class="std std-ref">Solidity’de Konvansiyonlar</span></a></p>
+<p>Benzer şekilde, statik boyutlandırılmış calldata array’leri ya da struct’ları gösteren
+yerel değişkenler de değerin adresini işaret eder, değerini değil.
+Bu değişken yeni bir offset’e de atanabilir fakat değişkenin <code class="docutils literal notranslate"><span class="pre">calldatasize()</span></code> çalıştırılması
+dışında bir yeri işaret edebileceğinin hiçbir garantisi yoktur.</p>
+<p>Dış(External) fonksiyon pointer’ları için adres ve fonksiyon seçiyiye <code class="docutils literal notranslate"><span class="pre">x.address</span></code> ve <code class="docutils literal notranslate"><span class="pre">x.selector</span></code> ile erişilebilir.
+Seçici dört adet right-aligned bitten oluşur.
+İki değer de atanbilir. Örneğin:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC44LjEwIDwwLjkuMDsKCmNvbnRyYWN0IEMgewogICAgLy8gQGZ1biBkZcSfZXJpbmkgZMO2bm1layBpw6dpbiB5ZW5pIGJpciBzZcOnaWNpIGRlIGFkcmVzIGF0YXnEsW4KICAgIGZ1bmN0aW9uIGNvbWJpbmVUb0Z1bmN0aW9uUG9pbnRlcihhZGRyZXNzIG5ld0FkZHJlc3MsIHVpbnQgbmV3U2VsZWN0b3IpIHB1YmxpYyBwdXJlIHJldHVybnMgKGZ1bmN0aW9uKCkgZXh0ZXJuYWwgZnVuKSB7CiAgICAgICAgYXNzZW1ibHkgewogICAgICAgICAgICBmdW4uc2VsZWN0b3IgOj0gbmV3U2VsZWN0b3IKICAgICAgICAgICAgZnVuLmFkZHJlc3MgIDo9IG5ld0FkZHJlc3MKICAgICAgICB9CiAgICB9Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.8.10</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">C</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// @fun değerini dönmek için yeni bir seçici de adres atayın</span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">combineToFunctionPointer</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="nv">newAddress</span><span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">newSelector</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>pure<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">function</span><span class="p">()</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span>fun<span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>assembly<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span>fun<span class="p">.</span>selector<span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span>newSelector<span class="w"></span>
+<span class="w">            </span>fun<span class="p">.</span><span class="kt">address</span><span class="w">  </span><span class="p">:</span><span class="o">=</span><span class="w"> </span>newAddress<span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Dinamik calldata array’leri üzerinde, <code class="docutils literal notranslate"><span class="pre">x.offset</span></code> ve <code class="docutils literal notranslate"><span class="pre">x.length</span></code>
+kullanarak -bit halinde- calldata offset’ine ve uzunluğuna erişebilirsiniz.
+Her iki ifade aynı zamanda atanabilir de ama statik bir durum için dönecekleri sonucun
+<code class="docutils literal notranslate"><span class="pre">calldatasize()</span></code> sınırları içerisinde olacağının bir garantisi yoktur.</p>
+<p>Yerel depolama değişkenleri ya da durum değişkenleri için tek bir Yul tanımlayıcısı yeterli değildir.
+Çünkü bu değişkenler her zaman tam bir depolama alanı kaplamazlar.
+Bu sebeple onların ‘adresleri’ bir slottan ve o slot içerisindeki bir byte-offset’ten oluşur.
+<code class="docutils literal notranslate"><span class="pre">x</span></code> değişkeni tarafından işaret edilen slotu çağırmak için <code class="docutils literal notranslate"><span class="pre">x.slot</span></code> ,
+byte-offset’i çağırmak için ise <code class="docutils literal notranslate"><span class="pre">x.offset</span></code> kullanılır. Sadece <code class="docutils literal notranslate"><span class="pre">x</span></code> kullanmak ise hata verecektir.</p>
+<p>Bir yerel depolama değişkeninin pointer’ının <code class="docutils literal notranslate"><span class="pre">.slot</span></code> kısmına atama yapılabilir.
+Bu değişkenler(struct, array, mapping) için <code class="docutils literal notranslate"><span class="pre">.offset</span></code> kısmı ise her zaman sıfırdır.
+Fakat bir durum değişkeninin <code class="docutils literal notranslate"><span class="pre">.slot</span></code> ve <code class="docutils literal notranslate"><span class="pre">.offset</span></code> kısmına atama yapmak ise mümkün değildir.</p>
+<p>Yerel Solidity değişkenleri görevler için hazırdır. Örneğin:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC43LjAgPDAuOS4wOwoKY29udHJhY3QgQyB7CiAgICB1aW50IGI7CiAgICBmdW5jdGlvbiBmKHVpbnQgeCkgcHVibGljIHZpZXcgcmV0dXJucyAodWludCByKSB7CiAgICAgICAgYXNzZW1ibHkgewogICAgICAgICAgICAvLyBCdSBzZW5hcnlvZGEgZGVwb2xhbWEgc2xvdHVudW4gb2Zmc2V0J2luaSBkZcSfZWxlbmRpcm1peW9ydXouCiAgICAgICAgICAgIC8vIMOHw7xua8O8IHPEsWbEsXIgb2xkdcSfdW51IGJpbGl5b3J1ei4KICAgICAgICAgICAgciA6PSBtdWwoeCwgc2xvYWQoYi5zbG90KSkKICAgICAgICB9CiAgICB9Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.7.0</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">C</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint</span><span class="w"> </span><span class="nv">b</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">f</span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">x</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>view<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">r</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>assembly<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// Bu senaryoda depolama slotunun offset&#39;ini değelendirmiyoruz.</span>
+<span class="w">            </span><span class="c1">// Çünkü sıfır olduğunu biliyoruz.</span>
+<span class="w">            </span>r<span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span>mul<span class="p">(</span>x<span class="p">,</span><span class="w"> </span>sload<span class="p">(</span>b<span class="p">.</span>slot<span class="p">))</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Eğer <code class="docutils literal notranslate"><span class="pre">uint64</span></code>, <code class="docutils literal notranslate"><span class="pre">address</span></code> veya <code class="docutils literal notranslate"><span class="pre">bytes16</span></code> gibi 256 bitten daha az
+yer kaplayan bir değişkene erişmeye çalışıyorsanız bu tipin parçası olmayan
+bitler hakkında bir varsayımda bulunmayın. Özellikle de o bitleri sıfır kabul etmeyin.
+Her ihtimale karşı, <code class="docutils literal notranslate"><span class="pre">uint32</span> <span class="pre">x</span> <span class="pre">=</span> <span class="pre">f();</span> <span class="pre">assembly</span> <span class="pre">{</span> <span class="pre">x</span> <span class="pre">:=</span> <span class="pre">and(x,</span> <span class="pre">0xffffffff)</span> <span class="pre">/*</span> <span class="pre">now</span> <span class="pre">use</span> <span class="pre">x</span> <span class="pre">*/</span> <span class="pre">}</span></code> parçasının
+önemli olduğu yerlerde düzgün bir şekilde bu verileri temizleyin.
+Signed tipleri temizlemek için <code class="docutils literal notranslate"><span class="pre">signextend</span></code> kullanabilirsiniz. opcode:
+<code class="docutils literal notranslate"><span class="pre">assembly</span> <span class="pre">{</span> <span class="pre">signextend(&lt;num_bytes_of_x_minus_one&gt;,</span> <span class="pre">x)</span> <span class="pre">}</span></code></p>
+</div>
+<p>Solidity 0.6.0’dan beri bir inline assembly değişkeninin ismi inline assembly bloğundaki
+kullanımını karşılamayabilir. (değişken, kontrat ve fonkisyon kullanımları dahil)</p>
+<p>Soldity 0.7.0’dan beri inline assembly bloğunun içinde kullanılan değişken ve fonksiyonlar <code class="docutils literal notranslate"><span class="pre">.</span></code> içermeyebilir.
+Fakat <code class="docutils literal notranslate"><span class="pre">.</span></code> kullanmak inline assembly bloğu dışındaki Solidity değişkenlerine ulaşmak için etkilidir.</p>
+</section>
+<section id="kacinilacak-seyler">
+<h2>Kaçınılacak Şeyler<a class="headerlink" href="#kacinilacak-seyler" title="Permalink to this heading"></a></h2>
+<p>Inline assembly high-level gözükebilir fakat aslında aşırı derecede low-level’dır.
+Fonksiyon çağrıları, döngüler, if’ler ve switch’ler basit tekrar yazım kuralları ile çevrilir
+ve bundan sonra assembler’ın tek yaptığı iş blok sonuna erişildiğinde functional-style opcode’ları tekar ayarlamak,
+değişken erişimi için stack boyutunu saymak ve assembly içerisindeki değişkenleri için stack slotlarını kaldırmaktır.</p>
+</section>
+<section id="solidity-kurallari">
+<span id="conventions-in-solidity"></span><h2>Solidity kuralları<a class="headerlink" href="#solidity-kurallari" title="Permalink to this heading"></a></h2>
+<section id="typed-degiskenlerin-degerleri">
+<span id="assembly-typed-variables"></span><h3>Typed Değişkenlerin Değerleri<a class="headerlink" href="#typed-degiskenlerin-degerleri" title="Permalink to this heading"></a></h3>
+<p>EVM assembly’nin aksine, Solidity 256 bitten daha küçük tiplere sahiptir (ör: <code class="docutils literal notranslate"><span class="pre">uint24</span></code>). Verimlilik için
+çoğu aritmetik işlem bazı tiplerin 256 bitten küçük olabileceğini yok sayar ve higher-order bitler
+gerekliyse (hafızaya yazılmadan hemen önce ya da herhangi bir karşılaştırma yapılmadan önce) temizlenir.
+Burası şu yüzden önemlidir: Eğer inline assembly içerisinde böyle bir değişkene erişmek istiyorsanız önce higher-order
+bitleri kendiniz temizlemeniz gerekebilir.</p>
+</section>
+<section id="hafiza-yonetimi">
+<span id="assembly-memory-management"></span><h3>Hafıza Yönetimi<a class="headerlink" href="#hafiza-yonetimi" title="Permalink to this heading"></a></h3>
+<p>Solidity Belleği şu şekilde yönetir. Hafızada <code class="docutils literal notranslate"><span class="pre">0x40</span></code> konumunda bir “boş bellek pointer”ı bulunur.
+Eğer belleğe bir şey atamak isterseniz bu pointer’ın işaret ettiği yerden başlayıp güncelleyin.
+Bu hafızanın daha önce kullanılmadığına dair herhangi bir kanıt bulunmadığı için tamamen sıfır olduğunu da varsayamazsınız.
+Belleği boşaltacak ya da rahatlatacak herhangi bir hazır kurulu mekanizma yoktur.
+Aşağıda belleği yukarıda anlatıldığı şekilde kullanabileceğiniz bir assembly kod parçası bulunuyor:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ZnVuY3Rpb24gYWxsb2NhdGUobGVuZ3RoKSAtPiBwb3MgewogIHBvcyA6PSBtbG9hZCgweDQwKQogIG1zdG9yZSgweDQwLCBhZGQocG9zLCBsZW5ndGgpKQp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">allocate</span><span class="p">(</span><span class="n">length</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pos</span> <span class="p">{</span>
+  <span class="n">pos</span> <span class="o">:=</span> <span class="nf">mload</span><span class="p">(</span><span class="mh">0x40</span><span class="p">)</span>
+  <span class="nf">mstore</span><span class="p">(</span><span class="mh">0x40</span><span class="p">,</span> <span class="nf">add</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">length</span><span class="p">))</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Hafızanın ilk 64 biti kısa dönem hafızası için “geçici alan” olarak kullanılabilir.
+Boş bellek pointer’ından sonraki 32 bit (yani <code class="docutils literal notranslate"><span class="pre">0x60</span></code> tan başlayan alan) ise kalıcı olarak sıfır olmalıdır
+ve bu alan boş dinamik bellek array’lerinin temel değeri olarak kullanılır.
+Bunlar ise demektir ki kullanılabilir hafıza <code class="docutils literal notranslate"><span class="pre">0x80</span></code> den başlar ve bu değer ise boş bellek pointer’ının ilk değeridir.
+Solidity’deki hafıza array’lerinin tamamı 32 bitin katları olacak şekilde yer kaplar.(Bu kural <code class="docutils literal notranslate"><span class="pre">bytes1[]</span></code> için de geçerlidir
+fakat <code class="docutils literal notranslate"><span class="pre">bytes</span></code> ve <code class="docutils literal notranslate"><span class="pre">string</span></code> için geçerli değildir.) Çok boyutlu hafıza array’leri ise başka hafıza array’lerine pointer’lardır.
+Dinamik array’in uzunluğu array’in ilk slotunda saklanır ve diğer slotlara array’in elemanları gelir.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Statik boyutlandırılmış hafıza array’leri herhangi bir uzunluk alanına sahip değildir fakat bu sonradan dinamik ve statik
+boyutlandırılmış array’ler arasında daha kolay çevrimi sağlamak için eklenmiş olabilir.
+Yani bu kurala dayanarak ilerlememelisiniz.</p>
+</div>
+</section>
+<section id="hafiza-guvenligi">
+<h3>Hafıza Güvenliği<a class="headerlink" href="#hafiza-guvenligi" title="Permalink to this heading"></a></h3>
+<p>Inline assembly kullanmadan; derleyici(compiler), iyi tanımlanmış bir durumda kalmak için her zaman belleğe güvenir. Bu özellikle
+<a class="reference internal" href="ir-breaking-changes.html#ir-breaking-changes"><span class="std std-ref">Yul IR üzerinden yeni kod oluşturma hattı Yul IR</span></a> ile ilgilidir. Bu kod parçası yerel değişkenleri
+stack üzerinden belleğe atarak stack-too-deep hatasından kaçınmayı sağlar ve eğer bazı kesin varsayımlara uyuyorsa ekstra
+bellek optimizasyonları uygulayabilir.</p>
+<p>Biz her ne kadar Solidity’nin kendi bellek modeline saygı gösterilmesini önersek de
+Inline assembly belleği uyumsuz bir biçimde kullanmanızı sağlar. Bu nedenle stack değişkenlerini belleğe taşımak
+ve diğer bellek optimizasyonları, bir bellek işlemi içeren ya da Solidity değişkenlerini belleğe atayan
+tüm inline assembly bloklarında varsayılan olarak devredışı haldedir.</p>
+<p>Fakat bir assembly bloğuna aşağıdaki şekilde özel olarak ek açıklamalar ekleyerek
+Solidity’nin bellek modeline uyduğunu belirtebilirsiniz:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=YXNzZW1ibHkgKCJtZW1vcnktc2FmZSIpIHsKICAgIC4uLgp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span>assembly<span class="w"> </span><span class="p">(</span><span class="s2">&quot;memory-safe&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">...</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Bellek açısından güvenli bir assembly bloğu sadece aşağıdaki bellek bölümlerine erişebilir:
+- Sizin tarafınızdan yukarıda anlatıldığı gibi <code class="docutils literal notranslate"><span class="pre">allocate</span></code> benzeri bir mekanizma kullanarak atanmış bir bellek.
+- Solidity tarafından atanmış bellek, yani sizin referans verdiğiniz bellek array’inin sınırları içerisinde kalan alan.
+- Yukarıda bahsedilen 0 ile 64 bellek offset’leri arasında kalan geçici alan.
+- Assembly bloğunun başındaki boş bellek pointer’ının değerinden <em>sonra</em> konumlanmış geçici bellek, yani boş bellek pointer’ının güncellememiş hali için ayrılan bellek alanı.</p>
+<p>Bunlara ek olarak, eğer bir assembly bloğu bellekteki bir Solidity değişkenine atanırsa bu erişimin
+yukarıda belirtilen bellek sınırları içerisinde olduğundan emin olmalısınız.</p>
+<p>Belirtilen işlemler genellikle optimizer ile ilgili olduğu için
+assembly bloğu hata verse de verilen kısıtlamalar takip edilmeli.
+Bir örnek olarak aşağıda verilen assembly kod parçası bellek açısından güvenli değil.
+Sebebi ise <code class="docutils literal notranslate"><span class="pre">returndatasize()</span></code> fonksiyonunun değeri belirtilen 64 bitlik geçici bellek alanını aşabilir.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=YXNzZW1ibHkgewogIHJldHVybmRhdGFjb3B5KDAsIDAsIHJldHVybmRhdGFzaXplKCkpCiAgcmV2ZXJ0KDAsIHJldHVybmRhdGFzaXplKCkpCn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span>assembly<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span>returndatacopy<span class="p">(</span><span class="m m-Decimal">0</span><span class="p">,</span><span class="w"> </span><span class="m m-Decimal">0</span><span class="p">,</span><span class="w"> </span>returndatasize<span class="p">())</span><span class="w"></span>
+<span class="w">  </span>revert<span class="p">(</span><span class="m m-Decimal">0</span><span class="p">,</span><span class="w"> </span>returndatasize<span class="p">())</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Fakat aşağıdaki kod ise bellek açısından <em>güvenli</em> dir.
+Çünkü boş bellek pointer’ının gösterdiği yerden sonrası güvenli bir şekilde geçici alan olarak kullanılabilir.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=YXNzZW1ibHkgKCJtZW1vcnktc2FmZSIpIHsKICBsZXQgcCA6PSBtbG9hZCgweDQwKQogIHJldHVybmRhdGFjb3B5KHAsIDAsIHJldHVybmRhdGFzaXplKCkpCiAgcmV2ZXJ0KHAsIHJldHVybmRhdGFzaXplKCkpCn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span>assembly<span class="w"> </span><span class="p">(</span><span class="s2">&quot;memory-safe&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span>let<span class="w"> </span>p<span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span>mload<span class="p">(</span><span class="mh">0x40</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span>returndatacopy<span class="p">(</span>p<span class="p">,</span><span class="w"> </span><span class="m m-Decimal">0</span><span class="p">,</span><span class="w"> </span>returndatasize<span class="p">())</span><span class="w"></span>
+<span class="w">  </span>revert<span class="p">(</span>p<span class="p">,</span><span class="w"> </span>returndatasize<span class="p">())</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Unutmayın ki eğer bir atama yoksa boş bellek pointer’ını güncellemenize gerek yoktur
+ama belleği kullanmaya boş bellek pointer’ının verdiği offset’ten başlayabilirsiniz.</p>
+<p>Eğer bellek işlemleri sıfır uzunluğunu kullanıyorsa -geçici alana düşmediği sürece-
+herhangi bir offset’i de kullanabilirsiniz.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=YXNzZW1ibHkgKCJtZW1vcnktc2FmZSIpIHsKICByZXZlcnQoMCwgMCkKfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span>assembly<span class="w"> </span><span class="p">(</span><span class="s2">&quot;memory-safe&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span>revert<span class="p">(</span><span class="m m-Decimal">0</span><span class="p">,</span><span class="w"> </span><span class="m m-Decimal">0</span><span class="p">)</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Unutmayın ki inline assembly içerisindeki bellek işlemleri bellek için güvenli olmadığı gibi
+bellekte referans tipinde olan Solidity değişkenlerine olan atamalar da bellek için güvenli olmayabilir.
+Aşağıdaki örnek bellek için güvenli değildir:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ynl0ZXMgbWVtb3J5IHg7CmFzc2VtYmx5IHsKICB4IDo9IDB4NDAKfQp4WzB4MjBdID0gMHg0Mjs="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="kt">bytes</span><span class="w"> </span><span class="nv">memory</span><span class="w"> </span>x<span class="p">;</span><span class="w"></span>
+assembly<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span>x<span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="mh">0x40</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+x<span class="p">[</span><span class="mh">0x20</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0x42</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Belleğe erişim istemeyen işlemlerden oluşan ve bellek üzerindeki Solidity değişkenlerine atama yapmayan inline assembly
+otomatik olarak bellek için güvenli sayılır ve ekstra olarak belirtilmesine gerek duyulmaz.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Assembly’nin bellek modelini sağladığından emin olmak sizin sorumluluğunuzdadır. Eğer siz bir assembly bloğunu
+bellek için güvenli olarak tanımlayıp herhangi bir bellek hatası yaparsanız bu <strong>kesinlikle</strong>, doğru olmayan ya da
+tanımlanmamış bir davranışa sebep olur. Ve bu hata test yaparak kolay bir şekilde bulunamaz.</p>
+</div>
+<p>Eğer Solidity’nin farklı versiyonları ile uyumlu olacak şekilde bir kütüphane oluşturuyorsanız
+bir assembly bloğunun bellek için güvenli olduğunu özel bir komut ile belirtebilirsiniz:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8vIEBzb2xpZGl0eSBtZW1vcnktc2FmZS1hc3NlbWJseQphc3NlbWJseSB7CiAgICAuLi4KfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">/// @solidity memory-safe-assembly</span>
+assembly<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">...</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Unutmayın ki yorum satırları ile belirtmeyi gelecek bir sürümde kaldıracağız yani eğer geçmiş derleyici(compiler) sürümleri ile uyum konusunda
+yeterli bilgiye sahip değilseniz dialect string kullanmayı tercih edin.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="contracts.html" class="btn btn-neutral float-left" title="Akıllı Sözleşmeler" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cheatsheet.html" class="btn btn-neutral float-right" title="Kopya Kağıdı" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

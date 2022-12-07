@@ -173,7 +173,7 @@ bulmak pratik olarak imkansız olduğundan, teklif veren kişi bu şekilde tekli
 Teklif süreci bittikten sonra teklif veren kişiler tekliflerini açıklamalı, girdikleri şifrelenmemiş
 değerin hashlenmiş hali ile önceden girdikleri hash ile aynı olmalıdır. 
 
-Başka bir zorluk da **gizlilik ve bağlayıcılığı* aynı anda sağlamak. Teklif veren kişinin
+Başka bir zorluk da **gizlilik ve bağlayıcılığı** aynı anda sağlamak. Teklif veren kişinin
 kazandıktan sonra teklifinden vazgeçmemesinin tek yolu teklif ile birlikte parayı
 da yollaması ancak transferler Ethereum'da gizlenemediğinden herhangi bir kişi miktarı görebilir.
 

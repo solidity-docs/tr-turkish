@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solidity Marka Kılavuzu &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Language Influences" href="language-influences.html" />
+    <link rel="prev" title="Katkıda Bulunmak" href="contributing.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Solidity Marka Kılavuzu</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#solidity-markasi">Solidity Markası</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#solidity-marka-adi">Solidity Marka Adı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#solidity-logo-lisansi">Solidity Logo Lisansı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#solidity-logo-kilavuzu">Solidity Logo Kılavuzu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Solidity Marka Kılavuzu</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/brand-guide.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="solidity-marka-kilavuzu">
+<h1>Solidity Marka Kılavuzu<a class="headerlink" href="#solidity-marka-kilavuzu" title="Permalink to this heading"></a></h1>
+<p>Bu marka rehberi, Solidity’nin marka politikası ve logo kullanım yönergeleri hakkında bilgi içerir.</p>
+<section id="solidity-markasi">
+<h2>Solidity Markası<a class="headerlink" href="#solidity-markasi" title="Permalink to this heading"></a></h2>
+<p>Solidity programlama dili, çekirdek bir ekip tarafından yönetilen açık kaynaklı bir topluluk projesidir. Çekirdek ekip <a class="reference external" href="https://ethereum.foundation/">Ethereum Foundation</a> tarafından desteklenmektedir.</p>
+<p>Bu belge, Solidity marka adı ve logosunun en iyi şekilde nasıl kullanılacağı hakkında bilgi vermeyi amaçlamaktadır.</p>
+<p>Marka adını veya logoyu kullanmadan önce bu belgeyi dikkatlice okumanızı öneririz. İşbirliğiniz çok takdir edilmektedir!</p>
+</section>
+<section id="solidity-marka-adi">
+<h2>Solidity Marka Adı<a class="headerlink" href="#solidity-marka-adi" title="Permalink to this heading"></a></h2>
+<p>“Solidity” yalnızca Solidity programlama diline atıfta bulunmak için kullanılmalıdır.</p>
+<p>Lütfen “Solidity” i aşağıdaki şekillerde kullanmayın:</p>
+<ul class="simple">
+<li><p>Başka herhangi bir programlama diline atıfta bulunmak için.</p></li>
+<li><p>Yanıltıcı olacak veya ilgisiz modüllerin, araçların, belgelerin veya diğer kaynakların Solidity programlama diliyle ilişkilendirildiğini ima edecek şekilde.</p></li>
+<li><p>Solidity programlama dilinin açık kaynaklı ve ücretsiz olup olmadığı konusunda topluluğun kafasını karıştıracak şekilde.</p></li>
+</ul>
+</section>
+<section id="solidity-logo-lisansi">
+<h2>Solidity Logo Lisansı<a class="headerlink" href="#solidity-logo-lisansi" title="Permalink to this heading"></a></h2>
+<a class="reference internal image-reference" href="https://i.creativecommons.org/l/by/4.0/88x31.png"><img alt="Creative Commons License" src="https://i.creativecommons.org/l/by/4.0/88x31.png" style="width: 88px;" /></a>
+<p>Solidity logosu <a class="reference external" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a> altında dağıtılmakta ve lisanslanmaktadır.</p>
+<p>Bu, en serbest Creative Commons lisansıdır ve herhangi bir amaç için yeniden kullanıma ve değişikliklere izin verir.</p>
+<p>Bunları yapmakta özgürsünüz:</p>
+<ul class="simple">
+<li><p><strong>Paylaş</strong> - Materyali herhangi bir ortamda veya formatta kopyalayın ve yeniden dağıtın.</p></li>
+<li><p><strong>Uyarlamak</strong> - Ticari olarak bile olsa herhangi bir amaçla materyali yeniden karıştırmak, dönüştürmek ve üzerine inşa etmek.</p></li>
+</ul>
+<p>Aşağıdaki şartlar altında:</p>
+<ul class="simple">
+<li><p><strong>Atıf</strong> - Uygun şekilde atıfta bulunmalı, lisansa bir bağlantı vermeli ve değişiklik yapılıp yapılmadığını belirtmelisiniz. Bunu makul herhangi bir şekilde yapabilirsiniz, ancak Solidity çekirdek ekibinin sizi veya kullanımınızı onayladığını gösteren herhangi bir şekilde yapamazsınız.</p></li>
+</ul>
+<p>Solidity logosunu kullanırken lütfen Solidity logo yönergelerine uyun.</p>
+</section>
+<section id="solidity-logo-kilavuzu">
+<h2>Solidity Logo Kılavuzu<a class="headerlink" href="#solidity-logo-kilavuzu" title="Permalink to this heading"></a></h2>
+<a class="reference internal image-reference" href="_images/logo.svg"><img alt="_images/logo.svg" src="_images/logo.svg" width="256" /></a>
+<p><em>(İndirmek için logoya sağ tıklayın.)</em></p>
+<p>Lütfen şunları yapmayınız:</p>
+<ul class="simple">
+<li><p>Logonun oranını değiştirmek (uzatmayın veya kesmeyin).</p></li>
+<li><p>Kesinlikle gerekli olmadığı sürece logonun renklerini değiştirmek.</p></li>
+</ul>
+</section>
+<section id="credits">
+<h2>Credits<a class="headerlink" href="#credits" title="Permalink to this heading"></a></h2>
+<p>Bu belge kısmen <a class="reference external" href="https://www.python.org/psf/trademarks/">Python Yazılım Vakfı Ticari Marka Kullanım Politikası</a> ve <a class="reference external" href="https://www.rust-lang.org/policies/media-guide">Rust Media Guide</a>’dan türetilmiştir.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="contributing.html" class="btn btn-neutral float-left" title="Katkıda Bulunmak" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="language-influences.html" class="btn btn-neutral float-right" title="Language Influences" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

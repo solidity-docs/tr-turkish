@@ -2,9 +2,9 @@
 
 .. _interfaces:
 
-**********
+**************
 Interface'ler
-**********
+**************
 
 Interface'ler abstract akıllı sözleşmelere benzerler ama onlardan farklı olarak hiçbir
 fonksiyonunun kodu yazılamaz. Daha fazla kısıtlama vardır:

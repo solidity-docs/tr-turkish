@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Katkıda Bulunmak &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Solidity Marka Kılavuzu" href="brand-guide.html" />
+    <link rel="prev" title="Bilinen Bugların Listesi" href="bugs.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Katkıda Bulunmak</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#takim-toplantilari">Takım Toplantıları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sorunlar-nasil-rapor-edilir">Sorunlar Nasıl Rapor Edilir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pull-request-ler-icin-is-akisi-workflow">Pull Request’ler için İş Akışı(Workflow)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#derleyici-testlerini-calistirma">Derleyici Testlerini Çalıştırma</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#on-kosullar">Ön Koşullar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testleri-calistirma">Testleri Çalıştırma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sozdizimi-testleri-yazma-ve-calistirma">Sözdizimi Testleri Yazma ve Çalıştırma</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#fuzzer-i-afl-ile-calistirma">Fuzzer’ı AFL ile Çalıştırma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#whiskers">Whiskers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dokumantasyon-stil-rehberi">Dokümantasyon Stil Rehberi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ingilizce-dili">İngilizce Dili</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#basliklar-icin-baslik-duzeni">Başlıklar için Başlık Düzeni</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#genisletme-kisaltmalari">Genişletme Kısaltmaları</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#aktif-ve-pasif-ses">Aktif ve Pasif Ses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#genel-terimler">Genel Terimler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kod-ornekleri">Kod Örnekleri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dokumantasyon-testlerini-calistirma">Dokümantasyon Testlerini Çalıştırma</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#solidity-dili-tasarimi">Solidity Dili Tasarımı</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Katkıda Bulunmak</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/contributing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="katkida-bulunmak">
+<h1>Katkıda Bulunmak<a class="headerlink" href="#katkida-bulunmak" title="Permalink to this heading"></a></h1>
+<p>Yardıma her zaman açığız ve Solidity’ye nasıl katkıda bulunabileceğinize dair pek çok seçenek var.</p>
+<p>Özellikle aşağıdaki alanlardaki destek için minnettar olduğumuzu belirtmek isteriz:</p>
+<ul class="simple">
+<li><p>Sorunların raporlanması.</p></li>
+<li><p><a class="reference external" href="https://github.com/ethereum/solidity/issues">Solidity’nin GitHub sorunlarını</a>
+düzeltmek ve yanıtlamak, özellikle de dışarıdan katkıda bulunanlar için giriş
+sorunları olarak tasarlanan <a href="#id1"><span class="problematic" id="id2">`</span></a>”good first issue” &lt;<a class="reference external" href="https://github.com/ethereum/solidity/labels/good%20first%20issue">https://github.com/ethereum/solidity/labels/good%20first%20issue</a>&gt; _
+olarak etiketlenenler.</p></li>
+<li><p>Dokümantasyonun iyileştirilmesi.</p></li>
+<li><p>Dokümantasyonun daha fazla dile çevrilmesi.</p></li>
+<li><p><a class="reference external" href="https://ethereum.stackexchange.com">StackExchange’de diğer kullanıcıların sorularını yanıtlama</a> ve <a class="reference external" href="https://gitter.im/ethereum/solidity">Solidity Gitter Chat</a>.</p></li>
+<li><p>Solidity forumunda &lt;<a class="reference external" href="https://forum.soliditylang.org/">https://forum.soliditylang.org/</a>&gt;`_ dil değişiklikleri veya yeni özellikler önererek ve geri bildirim sağlayarak dil tasarım sürecine dahil olmak.</p></li>
+</ul>
+<p>Başlamak için, Solidity bileşenlerine ve derleme sürecine aşina olmak için
+:ref:<a href="#id3"><span class="problematic" id="id4">`</span></a>building-from-source`u deneyebilirsiniz. Ayrıca, Solidity’de akıllı
+sözleşmeler yazma konusunda uzmanlaşmak da faydalı olabilir.</p>
+<p>Lütfen bu projenin bir <a class="reference external" href="https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md">Katılımcı Davranış Kuralları</a> ile yayınlandığını unutmayın. Bu projeye katılarak - sorunlarda, pull request’ lerde veya Gitter kanallarında - şartlarına uymayı kabul etmiş olursunuz.</p>
+<section id="takim-toplantilari">
+<h2>Takım Toplantıları<a class="headerlink" href="#takim-toplantilari" title="Permalink to this heading"></a></h2>
+<p>Tartışmak istediğiniz sorunlar veya pull request’ler varsa ya da ekibin ve katkıda
+bulunanların neler üzerinde çalıştığını duymak istiyorsanız, herkese açık takım toplantılarımıza katılabilirsiniz:</p>
+<ul class="simple">
+<li><p>Pazartesi günleri saat 15:00 CET/CEST. Türkiye saati ile 16:00,</p></li>
+<li><p>Çarşamba günleri 14:00 CET/CEST.</p></li>
+</ul>
+<p>Her iki çağrı da <a class="reference external" href="https://meet.ethereum.org/solidity">Jitsi</a> üzerinde gerçekleşir.</p>
+</section>
+<section id="sorunlar-nasil-rapor-edilir">
+<h2>Sorunlar Nasıl Rapor Edilir<a class="headerlink" href="#sorunlar-nasil-rapor-edilir" title="Permalink to this heading"></a></h2>
+<p>Bir sorunu bildirmek için lütfen <a class="reference external" href="https://github.com/ethereum/solidity/issues">GitHub sorunları izleyicisini</a>
+kullanın. Sorunları bildirirken lütfen aşağıdaki ayrıntıları belirtin:</p>
+<ul class="simple">
+<li><p>Solidity sürümü.</p></li>
+<li><p>Kaynak kodu (varsa).</p></li>
+<li><p>İşletim sistemi.</p></li>
+<li><p>Sorunu yeniden üretmek için adımlar.</p></li>
+<li><p>Mevcut ve beklenen davranış.</p></li>
+</ul>
+<p>Soruna neden olan kaynak kodunu en aza indirmek her zaman sorunların çözümüne yardımcı
+olur ve hatta bazen bir yanlış anlaşılmayı açıklığa kavuşturur.</p>
+</section>
+<section id="pull-request-ler-icin-is-akisi-workflow">
+<h2>Pull Request’ler için İş Akışı(Workflow)<a class="headerlink" href="#pull-request-ler-icin-is-akisi-workflow" title="Permalink to this heading"></a></h2>
+<p>Katkıda bulunmak için lütfen <code class="docutils literal notranslate"><span class="pre">develop</span></code> dalını forklayın ve değişikliklerinizi
+orada yapın. Commit mesajlarınızda <em>ne</em> yaptığınızın yanı sıra <em>neden</em> değişiklik
+yaptığınız da belirtilmelidir (çok küçük bir değişiklik olmadığı sürece).</p>
+<p>Fork yaptıktan sonra <code class="docutils literal notranslate"><span class="pre">develop``tan</span> <span class="pre">herhangi</span> <span class="pre">bir</span> <span class="pre">değişiklik</span> <span class="pre">çekmeniz(pull)</span> <span class="pre">gerekiyorsa</span>
+<span class="pre">(örneğin,</span> <span class="pre">olası</span> <span class="pre">merge</span> <span class="pre">conflict`leri</span> <span class="pre">çözmek</span> <span class="pre">için),</span> <span class="pre">lütfen</span> <span class="pre">``git</span> <span class="pre">merge</span></code> kullanmaktan
+kaçının ve bunun yerine branch`inizi <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">rebase</span></code> yapın. Bu, değişikliğinizi daha
+kolay gözden geçirmemize yardımcı olacaktır.</p>
+<p>Ayrıca, yeni bir özellik yazıyorsanız, lütfen <code class="docutils literal notranslate"><span class="pre">test/</span></code> altına uygun test örneklerini
+eklediğinizden emin olun (aşağıya bakınız).</p>
+<p>Bununla birlikte, daha büyük bir değişiklik yapıyorsanız, lütfen önce <a class="reference external" href="https://gitter.im/ethereum/solidity-dev">Solidity
+Development Gitter kanalına</a> (yukarıda
+bahsedilenden farklı olarak, bu kanal dil kullanımı yerine derleyici ve dil
+geliştirmeye odaklanmıştır) danışın.</p>
+<p>Yeni özellikler ve hata düzeltmeleri <code class="docutils literal notranslate"><span class="pre">Changelog.md</span></code> dosyasına eklenmelidir:
+lütfen uygun durumlarda önceki girişlerin stilini takip edin.</p>
+<p>Son olarak, lütfen bu proje için <a class="reference external" href="https://github.com/ethereum/solidity/blob/develop/CODING_STYLE.md">kodlama stiline</a>
+uyduğunuzdan emin olun. Ayrıca, CI testi yapmamıza rağmen, lütfen kodunuzu test edin
+ve bir pull request göndermeden önce yerel olarak derlendiğinden emin olun.</p>
+<p>Yardımlarınız için teşekkür ederiz!</p>
+</section>
+<section id="derleyici-testlerini-calistirma">
+<h2>Derleyici Testlerini Çalıştırma<a class="headerlink" href="#derleyici-testlerini-calistirma" title="Permalink to this heading"></a></h2>
+<section id="on-kosullar">
+<h3>Ön Koşullar<a class="headerlink" href="#on-kosullar" title="Permalink to this heading"></a></h3>
+<p>Tüm derleyici testlerini çalıştırmak için isteğe bağlı olarak birkaç bağlayıcı faktör yüklemek isteyebilirsiniz.
+yüklemek isteyebilirsiniz (<a class="reference external" href="https://github.com/ethereum/evmone/releases">evmone</a>,
+<a class="reference external" href="https://github.com/Z3Prover/z3">libz3</a> ve <a class="reference external" href="https://github.com/ewasm/hera">libhera</a>).</p>
+<p>macOS üzerinde bazı test komut dosyaları GNU coreutils’in kurulu olmasını beklemektedir.
+Bu en kolay Homebrew kullanılarak gerçekleştirilebilir: <code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">coreutils</span></code>.</p>
+<p>Windows sistemlerinde ortak bağlantı oluşturma ayrıcalığına sahip olduğunuzdan emin
+olun, aksi takdirde bazı testler başarısız olabilir. Yöneticilerin bu ayrıcalığa
+sahip olması gerekir, ancak <a class="reference external" href="https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/create-symbolic-links#policy-management">diğer kullanıcılara da verebilirsiniz</a> veya
+<a class="reference external" href="https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development">Geliştirici Modunu etkinleştirebilirsiniz</a>.</p>
+</section>
+<section id="testleri-calistirma">
+<h3>Testleri Çalıştırma<a class="headerlink" href="#testleri-calistirma" title="Permalink to this heading"></a></h3>
+<p>Solidity, çoğu <a class="reference external" href="https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html">Boost C++ Test Framework</a> uygulaması <code class="docutils literal notranslate"><span class="pre">soltest</span></code> içinde paketlenmiş farklı test türleri içerir. Çoğu değişiklik için <code class="docutils literal notranslate"><span class="pre">build/test/soltest</span></code> veya onun paketleyicisi olan <code class="docutils literal notranslate"><span class="pre">scripts/soltest.sh</span></code> dosyasını çalıştırmak yeterlidir.</p>
+<p>./scripts/tests.sh`` betiği, <a class="reference external" href="https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html">Boost C++ Test Framework</a> uygulaması <code class="docutils literal notranslate"><span class="pre">soltest</span></code> (veya paketleyicisi <code class="docutils literal notranslate"><span class="pre">scripts/soltest.sh</span></code>) ile birlikte komut satırı testleri ve derleme testleri de dahil olmak üzere çoğu Solidity testini otomatik olarak yürütür.</p>
+<p>Test sistemi, anlamsal testleri çalıştırmak için otomatik olarak <a class="reference external" href="https://github.com/ethereum/evmone/releases">evmone</a> konumunu keşfetmeye çalışır.</p>
+<p><code class="docutils literal notranslate"><span class="pre">evmone</span></code> kütüphanesi, geçerli çalışma dizinine, üst dizinine veya üst dizinin üst dizinine göre <code class="docutils literal notranslate"><span class="pre">deps</span></code> veya <code class="docutils literal notranslate"><span class="pre">deps/lib</span></code> dizininde bulunmalıdır. Alternatif olarak <code class="docutils literal notranslate"><span class="pre">evmone</span></code> paylaşımlı nesnesi için açık bir konum <code class="docutils literal notranslate"><span class="pre">ETH_EVMONE</span></code> ortam değişkeni aracılığıyla belirtilebilir.</p>
+<p><code class="docutils literal notranslate"><span class="pre">evmone</span></code> esas olarak semantik ve gaz testlerini çalıştırmak için gereklidir. Eğer yüklü değilse, <code class="docutils literal notranslate"><span class="pre">scripts/soltest.sh</span></code> dosyasına <code class="docutils literal notranslate"><span class="pre">--no-semantic-tests</span></code> parametresini girerek bu testleri atlayabilirsiniz.</p>
+<p>Ewasm testlerinin çalıştırılması varsayılan olarak devre dışıdır ve <code class="docutils literal notranslate"><span class="pre">./scripts/soltest.sh</span> <span class="pre">--ewasm</span></code> aracılığıyla açıkça etkinleştirilebilir ve <code class="docutils literal notranslate"><span class="pre">hera</span> <span class="pre">&lt;https://github.com/ewasm/hera&gt;`_</span> <span class="pre">kütüphanesinin</span> <span class="pre">``soltest</span></code> tarafından bulunmasını gerektirir. <code class="docutils literal notranslate"><span class="pre">hera</span></code> kütüphanesini bulma mekanizması <code class="docutils literal notranslate"><span class="pre">evmone</span></code> ile aynıdır, ancak açık bir konum belirtmek için kullanılan değişken <code class="docutils literal notranslate"><span class="pre">ETH_HERA</span></code> olarak adlandırılır.</p>
+<p><code class="docutils literal notranslate"><span class="pre">evmone</span></code> ve <code class="docutils literal notranslate"><span class="pre">hera</span></code> kütüphanelerinin her ikisi de Linux’ta <code class="docutils literal notranslate"><span class="pre">.so</span></code>, Windows sistemlerinde <code class="docutils literal notranslate"><span class="pre">.dll</span></code> ve macOS’ta <code class="docutils literal notranslate"><span class="pre">.dylib</span></code> dosya adı uzantısı ile bitmelidir.</p>
+<p>SMT testlerini çalıştırmak için, <code class="docutils literal notranslate"><span class="pre">libz3</span></code> kütüphanesi yüklenmeli ve derleyici yapılandırma aşamasında <code class="docutils literal notranslate"><span class="pre">cmake</span></code> tarafından bulunabilmelidir.</p>
+<p>Eğer <code class="docutils literal notranslate"><span class="pre">libz3</span></code> kütüphanesi sisteminizde yüklü değilse, <code class="docutils literal notranslate"><span class="pre">./scripts/tests.sh</span></code> dosyasını çalıştırmadan önce <code class="docutils literal notranslate"><span class="pre">SMT_FLAGS=--no-smt</span></code> komutunu vererek veya <code class="docutils literal notranslate"><span class="pre">./scripts/soltest.sh</span> <span class="pre">-no</span> <span class="pre">smt</span></code> dosyasını çalıştırarak SMT testlerini devre dışı bırakmalısınız. Bu testler <code class="docutils literal notranslate"><span class="pre">libsolidity/smtCheckerTests</span></code> ve <code class="docutils literal notranslate"><span class="pre">libsolidity/smtCheckerTestsJSON</span></code> testleridir.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Soltest tarafından çalıştırılan tüm birim testlerinin bir listesini almak için <code class="docutils literal notranslate"><span class="pre">./build/test/soltest</span> <span class="pre">--list_content=HRF</span></code> komutunu çalıştırın.</p>
+</div>
+<p>Daha hızlı sonuç almak için testlerin bir alt kümesini veya belirli testleri çalıştırabilirsiniz.</p>
+<p>To run a subset of tests, you can use filters:
+<code class="docutils literal notranslate"><span class="pre">./scripts/soltest.sh</span> <span class="pre">-t</span> <span class="pre">TestSuite/TestName</span></code>,
+where <code class="docutils literal notranslate"><span class="pre">TestName</span></code> can be a wildcard <code class="docutils literal notranslate"><span class="pre">*</span></code>.</p>
+<p>Ya da örneğin, yul disambiguator ile ilgili tüm testleri çalıştırmak için: <code class="docutils literal notranslate"><span class="pre">./scripts/soltest.sh</span> <span class="pre">-t</span> <span class="pre">&quot;yulOptimizerTests/disambiguator/*&quot;</span> <span class="pre">--no-smt</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">./build/test/soltest</span> <span class="pre">--help</span></code> mevcut tüm seçenekler hakkında ayrıntılı bir yardım sağlar.</p>
+<p>Özellikle bakınız:</p>
+<ul class="simple">
+<li><p>Testin tamamlandığını göstermek için <a class="reference external" href="https://www.boost.org/doc/libs/release/libs/test/doc/html/boost_test/utf_reference/rt_param_reference/show_progress.html">show_progress (-p)</a>,</p></li>
+<li><p>Belirli test durumlarını çalıştırmak için <a class="reference external" href="https://www.boost.org/doc/libs/release/libs/test/doc/html/boost_test/utf_reference/rt_param_reference/run_test.html">run_test (-t)</a> ve</p></li>
+<li><p><a class="reference external" href="https://www.boost.org/doc/libs/release/libs/test/doc/html/boost_test/utf_reference/rt_param_reference/report_level.html">report-level (-r)</a> daha ayrıntılı bir rapor verir.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Windows ortamında çalışanlar yukarıdaki temel setleri libz3 olmadan çalıştırmak
+isterler. Git Bash kullanarak, şunları kullanabilirsiniz: <code class="docutils literal notranslate"><span class="pre">./build/test/Release/soltest.exe</span> <span class="pre">--</span> <span class="pre">--no-smt</span></code>.
+Bunu düz Komut İstemi’nde çalıştırıyorsanız, <code class="docutils literal notranslate"><span class="pre">.\build\test\Release\soltest.exe</span> <span class="pre">--</span> <span class="pre">--no-smt</span></code> kullanın.</p>
+</div>
+<p>GDB kullanarak hata ayıklamak istiyorsanız, “normalden” farklı bir şekilde derlediğinizden
+emin olun. Örneğin, <code class="docutils literal notranslate"><span class="pre">build</span></code> klasörünüzde aşağıdaki komutu çalıştırabilirsiniz:
+.. code-block:: bash</p>
+<blockquote>
+<div><p>cmake -DCMAKE_BUILD_TYPE=Debug ..
+make</p>
+</div></blockquote>
+<p>Bu, <code class="docutils literal notranslate"><span class="pre">--debug</span></code> parametresini kullanarak bir testte hata ayıkladığınızda, bozabileceğiniz
+veya yazdırabileceğiniz fonksiyonlara ve değişkenlere erişebilmeniz için semboller oluşturur.</p>
+<p>CI, Emscripten hedefinin derlenmesini gerektiren ek testler (<code class="docutils literal notranslate"><span class="pre">solc-js</span></code> ve üçüncü
+taraf Solidity çerçevelerinin test edilmesi dahil) çalıştırır.</p>
+</section>
+<section id="sozdizimi-testleri-yazma-ve-calistirma">
+<h3>Sözdizimi Testleri Yazma ve Çalıştırma<a class="headerlink" href="#sozdizimi-testleri-yazma-ve-calistirma" title="Permalink to this heading"></a></h3>
+<p>Sözdizimi testleri, derleyicinin geçersiz kod için doğru hata mesajlarını oluşturduğunu
+ve geçerli kodu düzgün bir şekilde kabul ettiğini kontrol eder. Bunlar
+<code class="docutils literal notranslate"><span class="pre">tests/libsolidity/syntaxTests</span></code> klasörü içindeki ayrı dosyalarda saklanır. Bu dosyalar,
+ilgili testin beklenen sonuç(lar)ını belirten ek açıklamalar içermelidir. Test paketi
+bunları derler ve verilen beklentilere göre kontrol eder.</p>
+<p>Örneğin: <code class="docutils literal notranslate"><span class="pre">./test/libsolidity/syntaxTests/double_stateVariable_declaration.sol</span></code></p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Y29udHJhY3QgdGVzdCB7CiAgICB1aW50MjU2IHZhcmlhYmxlOwogICAgdWludDEyOCB2YXJpYWJsZTsKfQovLyAtLS0tCi8vIERlY2xhcmF0aW9uRXJyb3I6ICgzNi01Mik6IFRhbsSxbWxhecSxY8SxIHphdGVuIGJpbGRpcmlsbWnFny4="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="k">contract</span><span class="w"> </span><span class="ni">test</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint256</span><span class="w"> </span><span class="nv">variable</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint128</span><span class="w"> </span><span class="nv">variable</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="c1">// ----</span>
+<span class="c1">// DeclarationError: (36-52): Tanımlayıcı zaten bildirilmiş.</span>
+</pre></div>
+</div>
+<p>Bir sözdizimi testi, en azından test edilen sözleşmenin kendisini ve ardından <code class="docutils literal notranslate"><span class="pre">//</span> <span class="pre">----</span></code> ayırıcısını
+içermelidir. Ayırıcıyı takip eden yorumlar, beklenen derleyici hatalarını veya uyarılarını
+tanımlamak için kullanılır. Sayı aralığı, kaynakta hatanın meydana geldiği konumu belirtir.
+Sözleşmenin herhangi bir hata veya uyarı olmadan derlenmesini istiyorsanız, ayırıcıyı ve onu
+takip eden yorumları dışarıda bırakabilirsiniz.</p>
+<p>Yukarıdaki örnekte, <code class="docutils literal notranslate"><span class="pre">variable</span></code> durum değişkeni iki kez bildirilmiştir, buna izin verilmez. Bu, tanımlayıcının zaten bildirilmiş olduğunu belirten bir <code class="docutils literal notranslate"><span class="pre">DeclarationError</span></code> ile sonuçlanır.</p>
+<p>Bu testler için <code class="docutils literal notranslate"><span class="pre">isoltest</span></code> aracı kullanılır ve bu aracı <code class="docutils literal notranslate"><span class="pre">./build/test/tools/</span></code> altında bulabilirsiniz.
+Tercih ettiğiniz metin editörünü kullanarak başarısız sözleşmelerin düzenlenmesine izin veren etkileşimli
+bir araçtır. Şimdi <code class="docutils literal notranslate"><span class="pre">variable</span></code> ifadesinin ikinci bildirimini kaldırarak bu testi çözmeye çalışalım:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Y29udHJhY3QgdGVzdCB7CiAgICB1aW50MjU2IHZhcmlhYmxlOwp9Ci8vIC0tLS0KLy8gRGVjbGFyYXRpb25FcnJvcjogKDM2LTUyKTogVGFuxLFtbGF5xLFjxLEgemF0ZW4gYmlsZGlyaWxtacWfLg=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="k">contract</span><span class="w"> </span><span class="ni">test</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint256</span><span class="w"> </span><span class="nv">variable</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="c1">// ----</span>
+<span class="c1">// DeclarationError: (36-52): Tanımlayıcı zaten bildirilmiş.</span>
+</pre></div>
+</div>
+<p>Tekrar <code class="docutils literal notranslate"><span class="pre">./build/test/tools/isoltest</span></code> çalıştırıldığında test başarısız olur:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>syntaxTests/double_stateVariable_declaration.sol: FAIL
+    Contract:
+        contract test {
+            uint256 variable;
+        }
+
+      Beklenen sonuç:
+          DeclarationError: (36-52): Tanımlayıcı zaten bildirilmiş.
+      Elde edilen sonuç:
+          Başarılı
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">isoltest</span></code> elde edilen sonucun yanına beklenen sonucu yazdırır ve ayrıca mevcut sözleşme dosyasını düzenlemek, güncellemek veya atlamak ya da uygulamadan çıkmak için bir yol sağlar.</p>
+<p>Başarısız testler için çeşitli seçenekler sunar:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">edit</span></code>: <code class="docutils literal notranslate"><span class="pre">isoltest</span></code> sözleşmeyi bir editörde açmaya çalışır, böylece onu ayarlayabilirsiniz. Ya komut satırında (<code class="docutils literal notranslate"><span class="pre">isoltest</span> <span class="pre">--editor</span> <span class="pre">/path/to/editor</span></code> şeklinde), ya <code class="docutils literal notranslate"><span class="pre">EDITOR</span></code> ortam değişkeninde ya da sadece <code class="docutils literal notranslate"><span class="pre">/usr/bin/editor</span></code> (bu sırayla) verilen editörü kullanır.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">update</span></code>: Test edilen sözleşme için beklentileri günceller. Bu, karşılanmamış beklentileri kaldırarak ve eksik beklentileri ekleyerek ek açıklamaları günceller. Test daha sonra tekrar çalıştırılır.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">skip</span></code>: Bu belirli testin yürütülmesini atlar.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">quit</span></code>: isoltest`` testinden çıkar.</p></li>
+</ul>
+<p>Bu seçeneklerin tümü, tüm test sürecini durduran <code class="docutils literal notranslate"><span class="pre">quit</span></code> dışında mevcut sözleşme için geçerlidir.</p>
+<p>Yukarıdaki testin otomatik olarak güncellenmesi onu şu şekilde değiştirir</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Y29udHJhY3QgdGVzdCB7CiAgICB1aW50MjU2IHZhcmlhYmxlOwp9Ci8vIC0tLS0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="k">contract</span><span class="w"> </span><span class="ni">test</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint256</span><span class="w"> </span><span class="nv">variable</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="c1">// ----</span>
+</pre></div>
+</div>
+<p>ve testi yeniden çalıştırır. Şimdi tekrar geçer:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Re-running test case...
+syntaxTests/double_stateVariable_declaration.sol: OK
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Sözleşme dosyası için neyi test ettiğini açıklayan bir isim seçin, örneğin <code class="docutils literal notranslate"><span class="pre">double_variable_declaration.sol</span></code>.
+Kalıtım veya çapraz sözleşme çağrılarını test etmediğiniz sürece, tek bir dosyaya birden fazla sözleşme koymayın.
+Her dosya yeni özelliğinizin bir yönünü test etmelidir.</p>
+</div>
+</section>
+</section>
+<section id="fuzzer-i-afl-ile-calistirma">
+<h2>Fuzzer’ı AFL ile Çalıştırma<a class="headerlink" href="#fuzzer-i-afl-ile-calistirma" title="Permalink to this heading"></a></h2>
+<p>Fuzzing, istisnai yürütme durumlarını (segmentasyon hataları, istisnalar, vb.) bulmak
+için programları az çok rastgele girdiler üzerinde çalıştıran bir tekniktir. Modern
+fuzzer’lar akıllıdır ve girdi içinde yönlendirilmiş bir arama yaparlar. Kaynak kodunu
+girdi olarak alan ve dahili bir derleyici hatası, segmentasyon hatası veya benzeriyle
+karşılaştığında başarısız olan, ancak örneğin kod bir hata içeriyorsa başarısız olmayan
+<code class="docutils literal notranslate"><span class="pre">solfuzzer</span></code> adlı özel bir binary’ye sahibiz. Bu şekilde, fuzzing araçları derleyicideki
+dahili sorunları bulabilir.</p>
+<p>Biz fuzzing için çoğunlukla <a class="reference external" href="https://lcamtuf.coredump.cx/afl/">AFL</a> kullanıyoruz. AFL
+paketlerini depolarınızdan indirip kurmanız (afl, afl-clang) ya da elle derlemeniz gerekir.
+Ardından, derleyiciniz olarak AFL ile Solidity’yi (veya sadece <code class="docutils literal notranslate"><span class="pre">solfuzzer</span></code> binary’sini)
+derleyin:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> build
+<span class="c1"># if needed</span>
+make clean
+cmake .. -DCMAKE_C_COMPILER<span class="o">=</span>path/to/afl-gcc -DCMAKE_CXX_COMPILER<span class="o">=</span>path/to/afl-g++
+make solfuzzer
+</pre></div>
+</div>
+<p>Bu aşamada aşağıdakine benzer bir mesaj görebilmeniz gerekir:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Scanning dependencies of target solfuzzer
+[ 98%] Building CXX object test/tools/CMakeFiles/solfuzzer.dir/fuzzer.cpp.o
+afl-cc 2.52b by &lt;lcamtuf@google.com&gt;
+afl-as 2.52b by &lt;lcamtuf@google.com&gt;
+[+] Instrumented 1949 locations (64-bit, non-hardened mode, ratio 100%).
+[100%] Linking CXX executable solfuzzer
+</pre></div>
+</div>
+<p>Program mesajları görünmediyse, AFL’nin clang binary’lerine işaret eden cmake bayraklarını değiştirmeyi deneyin:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># if previously failed</span>
+make clean
+cmake .. -DCMAKE_C_COMPILER<span class="o">=</span>path/to/afl-clang -DCMAKE_CXX_COMPILER<span class="o">=</span>path/to/afl-clang++
+make solfuzzer
+</pre></div>
+</div>
+<p>Aksi takdirde, yürütme sırasında fuzzer binary’nin enstrümante edilmediğini belirten bir hata ile duracaktır:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>afl-fuzz 2.52b by &lt;lcamtuf@google.com&gt;
+... (truncated messages)
+[*] Validating target binary...
+
+[-] Looks like the target binary is not instrumented! The fuzzer depends on
+    compile-time instrumentation to isolate interesting test cases while
+    mutating the input data. For more information, and for tips on how to
+    instrument binaries, please see /usr/share/doc/afl-doc/docs/README.
+
+    When source code is not available, you may be able to leverage QEMU
+    mode support. Consult the README for tips on how to enable this.
+    (It is also possible to use afl-fuzz as a traditional, &quot;dumb&quot; fuzzer.
+    For that, you can use the -n option - but expect much worse results.)
+
+[-] PROGRAM ABORT : No instrumentation detected
+         Location : check_binary(), afl-fuzz.c:6920
+</pre></div>
+</div>
+<p>Ardından, bazı örnek kaynak dosyalara ihtiyacınız var. Bu, fuzzer’ın hataları bulmasını
+çok daha kolay hale getirir. Sözdizimi testlerinden bazı dosyaları kopyalayabilir ya da
+dokümantasyondan veya diğer testlerden test dosyalarını çıkarabilirsiniz:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir /tmp/test_cases
+<span class="nb">cd</span> /tmp/test_cases
+<span class="c1"># extract from tests:</span>
+path/to/solidity/scripts/isolate_tests.py path/to/solidity/test/libsolidity/SolidityEndToEndTest.cpp
+<span class="c1"># extract from documentation:</span>
+path/to/solidity/scripts/isolate_tests.py path/to/solidity/docs
+</pre></div>
+</div>
+<p>AFL dokümantasyonunda corpus’un (ilk girdi dosyaları) çok büyük olmaması gerektiği
+belirtilmektedir. Dosyaların kendileri 1 kB’den büyük olmamalıdır ve fonksiyonellik
+başına en fazla bir girdi dosyası olmalıdır, bu nedenle az sayıda dosya ile başlamak
+daha iyidir. Binary’nin benzer davranışına neden olan girdi dosyalarını kırpabilen
+<code class="docutils literal notranslate"><span class="pre">afl-cmin</span></code> adlı bir araç da bulunmaktadır.</p>
+<p>Şimdi fuzzer’ı çalıştırın (<code class="docutils literal notranslate"><span class="pre">-m</span></code> bellek boyutunu 60 MB’a genişletir):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>afl-fuzz -m <span class="m">60</span> -i /tmp/test_cases -o /tmp/fuzzer_reports -- /path/to/solfuzzer
+</pre></div>
+</div>
+<p>Fuzzer, <code class="docutils literal notranslate"><span class="pre">/tmp/fuzzer_reports</span></code> içinde hatalara yol açan kaynak dosyaları oluşturur.
+Genellikle aynı hatayı üreten birçok benzer kaynak dosya bulur. Benzersiz hataları
+filtrelemek için <code class="docutils literal notranslate"><span class="pre">scripts/uniqueErrors.sh</span></code> aracını kullanabilirsiniz.</p>
+</section>
+<section id="whiskers">
+<h2>Whiskers<a class="headerlink" href="#whiskers" title="Permalink to this heading"></a></h2>
+<p><em>Whiskers</em>, <a class="reference external" href="https://mustache.github.io">Mustache</a> benzeri bir dize şablonlama
+sistemidir. Derleyici tarafından çeşitli yerlerde kodun okunabilirliğine ve dolayısıyla
+korunabilirliğine ve doğrulanabilirliğine yardımcı olmak için kullanılır.</p>
+<p>Sözdizimi Mustache’den önemli bir farkla birlikte gelir. Ayrıştırmaya yardımcı olmak
+ve <a class="reference internal" href="yul.html#yul"><span class="std std-ref">Yul</span></a> ile çakışmaları önlemek için <code class="docutils literal notranslate"><span class="pre">{{</span></code> ve <code class="docutils literal notranslate"><span class="pre">}}`</span> <span class="pre">şablon</span> <span class="pre">işaretleyicileri</span>
+<span class="pre">``&lt;</span></code> ve <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> ile değiştirilir (<code class="docutils literal notranslate"><span class="pre">&lt;</span></code> ve <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> sembolleri inline assembly’de geçersizdir,
+<code class="docutils literal notranslate"><span class="pre">{</span></code> ve <code class="docutils literal notranslate"><span class="pre">}</span></code> ise blokları sınırlandırmak için kullanılır). Bir başka sınırlama da
+listelerin yalnızca bir derinlikte çözümlenebilmesi ve özyinelemeye tabi tutulmamasıdır.
+Bu gelecekte değişebilir.</p>
+<p>Kaba bir tanımlama aşağıdaki gibidir:</p>
+<p>Herhangi bir <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> oluşumu, herhangi bir kaçış olmadan ve yinelenen değiştirmeler
+olmadan sağlanan <code class="docutils literal notranslate"><span class="pre">name</span></code> değişkeninin dize değeri ile değiştirilir. Bir alan <code class="docutils literal notranslate"><span class="pre">&lt;#name&gt;...&lt;/name&gt;</span></code>
+ile sınırlandırılabilir. Şablon sistemine sağlanan değişken kümeleri kadar içeriğinin
+bir araya getirilmesiyle değiştirilir ve her seferinde herhangi bir <a href="#id7"><span class="problematic" id="id8">``</span></a>&lt;inner&gt;` öğesi
+ilgili değeriyle değiştirilir. Üst düzey değişkenler de bu tür alanların içinde kullanılabilir.</p>
+<p>Ayrıca <code class="docutils literal notranslate"><span class="pre">&lt;?name&gt;...&lt;!name&gt;...&lt;/name&gt;</span></code> biçiminde koşullular da vardır, burada şablon
+değiştirmeleri <code class="docutils literal notranslate"><span class="pre">name</span></code> boolean parametresinin değerine bağlı olarak birinci ya da
+ikinci segmentte özyinelemeli olarak devam eder. Eğer <code class="docutils literal notranslate"><span class="pre">&lt;?+name&gt;...&lt;!+name&gt;...&lt;/+name&gt;</span></code>
+kullanılırsa, o zaman <code class="docutils literal notranslate"><span class="pre">name</span></code> string parametresinin boş olup olmadığı kontrol edilir.</p>
+</section>
+<section id="dokumantasyon-stil-rehberi">
+<span id="documentation-style"></span><h2>Dokümantasyon Stil Rehberi<a class="headerlink" href="#dokumantasyon-stil-rehberi" title="Permalink to this heading"></a></h2>
+<p>Aşağıdaki bölümde özellikle Solidity’ye yapılan dokümantasyon katkılarına odaklanan
+stil önerileri bulacaksınız.</p>
+<section id="ingilizce-dili">
+<h3>İngilizce Dili<a class="headerlink" href="#ingilizce-dili" title="Permalink to this heading"></a></h3>
+<p>Proje veya marka isimleri kullanmadığınız sürece İngilizce kullanın ve İngiliz İngilizcesi
+imla kurallarını tercih edin. Yerel argo ve referansların kullanımını azaltmaya çalışın ve dilinizi tüm okuyucular için mümkün olduğunca anlaşılır hale getirin. Aşağıda size yardımcı olacak bazı referanslar verilmiştir:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Simplified_Technical_English">Basitleştirilmiş teknik İngilizce</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/International_English">Uluslararası İngilizce</a></p></li>
+<li><p><a class="reference external" href="https://en.oxforddictionaries.com/spelling/british-and-spelling">İngiliz İngilizcesi yazılışı</a></p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Resmi Solidity dokümantasyonu İngilizce olarak yazılmış olsa da, diğer dillerde
+topluluk katkılı :ref: <cite>translations</cite> mevcuttur. Topluluk çevirilerine nasıl katkıda
+bulunabileceğiniz hakkında bilgi için lütfen <a class="reference external" href="https://github.com/solidity-docs/translation-guide">çeviri kılavuzuna</a> bakın.</p>
+</div>
+</section>
+<section id="basliklar-icin-baslik-duzeni">
+<h3>Başlıklar için Başlık Düzeni<a class="headerlink" href="#basliklar-icin-baslik-duzeni" title="Permalink to this heading"></a></h3>
+<p>Başlıklar için <a class="reference external" href="https://titlecase.com">title case</a> kullanın. Bu, başlıklardaki
+tüm ana sözcüklerin büyük harfle yazılması, ancak başlığa başlamadıkları sürece
+artikellerin, bağlaçların ve edatların büyük harfle yazılmaması anlamına gelir.</p>
+<p>Örneğin, aşağıdakilerin hepsi doğrudur:</p>
+<ul class="simple">
+<li><p>Başlıklar için Başlık Düzeni.</p></li>
+<li><p>Başlıklar İçin Başlık Düzenini Kullanın.</p></li>
+<li><p>Yerel ve Eyalet Değişken Adları.</p></li>
+<li><p>Düzen Sırası.</p></li>
+</ul>
+</section>
+<section id="genisletme-kisaltmalari">
+<h3>Genişletme Kısaltmaları<a class="headerlink" href="#genisletme-kisaltmalari" title="Permalink to this heading"></a></h3>
+<p>Örneğin, sözcükler için genişletilmiş kısaltmalar kullanın:</p>
+<ul class="simple">
+<li><p>“Don’t” yerine “Do not”.</p></li>
+<li><p>“Can’t” yerine “Can not”.</p></li>
+</ul>
+</section>
+<section id="aktif-ve-pasif-ses">
+<h3>Aktif ve Pasif Ses<a class="headerlink" href="#aktif-ve-pasif-ses" title="Permalink to this heading"></a></h3>
+<p>Aktif ses, okuyucunun bir görevi kimin veya neyin gerçekleştirdiğini anlamasına
+yardımcı olduğu için genellikle öğretici tarzı dokümantasyon için önerilir. Ancak,
+Solidity dokümantasyonu öğretici ve referans içeriklerin bir karışımı olduğundan,
+pasif ses bazen daha uygundur.</p>
+<p>Özetlemek gerekirse:</p>
+<ul class="simple">
+<li><p>Teknik referanslar için pasif ses kullanın, örneğin dil tanımı ve Ethereum VM’nin dahili özellikleri.</p></li>
+<li><p>Solidity’nin bir yönünün nasıl uygulanacağına ilişkin önerileri açıklarken aktif ses kullanın.</p></li>
+</ul>
+<p>Örneğin, aşağıdaki metin Solidity’nin bir yönünü belirttiği için pasif seslidir:</p>
+<blockquote>
+<div><p>Fonksiyonlar <code class="docutils literal notranslate"><span class="pre">pure</span></code> olarak bildirilebilir, bu takdirde durumdan okuma yapmayacaklarına
+veya durumu değiştirmeyeceklerine söz verirler.</p>
+</div></blockquote>
+<p>Örneğin, aşağıda Solidity’nin bir uygulaması tartışılırken aktif ses kullanılmıştır:</p>
+<blockquote>
+<div><p>Derleyiciyi çağırırken, bir yolun ilk öğesinin nasıl bulunacağını ve ayrıca yol
+öneki yeniden eşlemelerini belirtebilirsiniz.</p>
+</div></blockquote>
+</section>
+<section id="genel-terimler">
+<h3>Genel Terimler<a class="headerlink" href="#genel-terimler" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>“Fonksiyon parametreleri” ve “dönüş değişkenleri”, girdi ve çıktı parametreleri değil.</p></li>
+</ul>
+</section>
+<section id="kod-ornekleri">
+<h3>Kod Örnekleri<a class="headerlink" href="#kod-ornekleri" title="Permalink to this heading"></a></h3>
+<p>Bir CI süreci, bir PR oluşturduğunuzda <code class="docutils literal notranslate"><span class="pre">./test/cmdlineTests.sh</span></code> betiğini kullanarak
+<code class="docutils literal notranslate"><span class="pre">pragma</span> <span class="pre">solidity</span></code>, <code class="docutils literal notranslate"><span class="pre">contract</span></code>, <code class="docutils literal notranslate"><span class="pre">library</span></code> veya <code class="docutils literal notranslate"><span class="pre">interface</span></code> ile başlayan tüm kod
+bloğu biçimlendirilmiş kod örneklerini test eder. Yeni kod örnekleri ekliyorsanız, PR
+oluşturmadan önce bunların çalıştığından ve testleri geçtiğinden emin olun.</p>
+<p>Tüm kod örneklerinin, sözleşme kodunun geçerli olduğu en geniş alanı kapsayan bir
+<code class="docutils literal notranslate"><span class="pre">pragma</span></code> sürümü ile başladığından emin olun. Örneğin <code class="docutils literal notranslate"><span class="pre">pragma</span> <span class="pre">solidity</span> <span class="pre">&gt;=0.4.0</span> <span class="pre">&lt;0.9.0;</span></code>.</p>
+</section>
+<section id="dokumantasyon-testlerini-calistirma">
+<h3>Dokümantasyon Testlerini Çalıştırma<a class="headerlink" href="#dokumantasyon-testlerini-calistirma" title="Permalink to this heading"></a></h3>
+<p>Dokümantasyon için gerekli bağımlılıkları yükleyen ve kırık bağlantılar veya sözdizimi
+sorunları gibi sorunları kontrol eden <code class="docutils literal notranslate"><span class="pre">./docs/docs.sh</span></code> dosyasını çalıştırarak katkılarınızın dokümantasyon testlerimizi geçtiğinizden emin olun.</p>
+</section>
+</section>
+<section id="solidity-dili-tasarimi">
+<h2>Solidity Dili Tasarımı<a class="headerlink" href="#solidity-dili-tasarimi" title="Permalink to this heading"></a></h2>
+<p>Dil tasarım sürecine aktif olarak dahil olmak ve Solidity’nin geleceği ile ilgili
+fikirlerinizi paylaşmak için lütfen <a class="reference external" href="https://forum.soliditylang.org/">Solidity forum</a>’a katılın.</p>
+<p>Solidity forumu, yeni dil özelliklerinin ve bunların uygulanmasının ilk aşamalarında
+veya mevcut özelliklerin modifikasyonlarının önerildiği ve tartışıldığı bir yer olarak
+hizmet vermektedir.</p>
+<p>Öneriler daha somut hale gelir gelmez, bunların uygulanması da <a class="reference external" href="https://github.com/ethereum/solidity">Solidity GitHub repository</a>’de sorunlar şeklinde tartışılacaktır.</p>
+<p>Forum ve sorun tartışmalarına ek olarak, seçilen konuların, sorunların veya özellik
+uygulamalarının ayrıntılı olarak tartışıldığı dil tasarımı tartışma çağrılarına
+düzenli olarak ev sahipliği yapıyoruz. Bu çağrılar için davetiye forum üzerinden
+paylaşılmaktadır.</p>
+<p>Ayrıca geri bildirim anketlerini ve dil tasarımıyla ilgili diğer içerikleri de forumda
+paylaşıyoruz.</p>
+<p>Ekibin yeni özelliklerin uygulanması konusunda ne durumda olduğunu öğrenmek istiyorsanız,
+<a class="reference external" href="https://github.com/ethereum/solidity/projects/43">Solidity Github projesi</a> adresinden
+uygulama durumunu takip edebilirsiniz. Tasarım birikimindeki konular daha fazla spesifikasyona
+ihtiyaç duyar ve ya bir dil tasarımı çağrısında ya da normal bir ekip çağrısında tartışılacaktır.
+Varsayılan branch’ten (<cite>develop</cite>) <a class="reference external" href="https://github.com/ethereum/solidity/tree/breaking">breaking branch</a>’e
+geçerek bir sonraki breaking release için gelecek değişiklikleri görebilirsiniz.</p>
+<p>Geçici durumlar ve sorularınız için, Solidity derleyicisi ve dil geliştirme ile ilgili
+konuşmalar için özel bir sohbet odası olan <a class="reference external" href="https://gitter.im/ethereum/solidity-dev">Solidity dev Gitter kanalı</a> üzerinden bize ulaşabilirsiniz.</p>
+<p>Dil tasarım sürecini daha işbirlikçi ve şeffaf hale getirmek için neler yapabileceğimiz
+konusundaki düşüncelerinizi duymaktan mutluluk duyarız.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="bugs.html" class="btn btn-neutral float-left" title="Bilinen Bugların Listesi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="brand-guide.html" class="btn btn-neutral float-right" title="Solidity Marka Kılavuzu" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

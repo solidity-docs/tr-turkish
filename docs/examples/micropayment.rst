@@ -53,7 +53,7 @@ gösterilen metot ile imzalayacağız.
   olacak ve dolayısıyla bu uzunluk ön eki her zaman aynı olacak.
 
 Ne İmzalanacak
-------------
+---------------
 
 Ödeme gerçekleştiren bir kontrat için, imzalanmış bir mesaj aşağıdakiler içermeli:
 
@@ -76,7 +76,7 @@ Böylece sadece kontrat'ın adresini içeren mesajlar onaylanır. Bu örneği bu
 sonundaki tam kontratın ``claimPayment()`` fonksiyonundaki ilk iki satırda görebilirsiniz.
 
 Argümanları Paketleme
------------------
+----------------------
 
 Şimdi imzalanmış mesajımızda nelerin olacağına karar verdiğimize göre mesajı
 mesajı oluşturup, hashleyip, imzalamaya hazırız. Basit olsun diye verileri art 
@@ -244,7 +244,7 @@ kim olduğunu girerek akıllı kontratı yayınlar. Bu işlemi bölümün sonund
 ``SimplePaymentChannel`` fonksiyonu gerçekleştirir.
 
 Ödeme Gerçekleştirme
----------------
+---------------------
 
 Alice ödemeyi Bob'a imzalanmış mesajı göndererek yapar. Bu adım tamammiyle
 Etherum ağının dışında gerçekeleşir. Mesaj gönderici tarafında kriptografik olarak imzalanır ve direkt
@@ -310,7 +310,7 @@ Fonksiyon verilen parametreler ile imzalanmış mesajı doğrular. Eğer her şe
 Ether miktarı gönderilir ve göndericiye kalan miktar ``selfdestruct`` ile gönderilir. Tam kontratta ``close`` fonksiyonunu görebilirsiniz.
 
 Kanalın Zaman Aşımına Uğraması
--------------------
+--------------------------------
 
 Bob istediği zaman ödeme kanalını kapatabilir anca kapatmazsa Alice'in bir 
 şekilde parasını geri alması gerekiyor. Bunun için kontrata bir *zaman aşımı* 
@@ -423,7 +423,7 @@ Tam Kontrat
   gibi daha iyi test edilmiş bir kütüphane kullanılmalı.
 
 Ödemeleri Doğrulama
-------------------
+---------------------
 
 Önceki bölümlerdekinin aksine, ödeme kanalındaki mesajlar anında alınmamakta.
 Alıcı mesajların takibini yapıp zamanı geldiğinde ödeme kanalını kapatır. Yani bu durumda 

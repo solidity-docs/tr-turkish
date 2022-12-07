@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Optimize Edici &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/js/toggle.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sözleşme Meta Verisi" href="../metadata.html" />
+    <link rel="prev" title="Kaynak Eşlemesi" href="source_mappings.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="../index.html">
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Optimize Edici</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#solidity-kodunu-optimize-etmenin-faydalari">Solidity Kodunu Optimize Etmenin Faydaları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optimize-edilmis-ve-optimize-edilmemis-kod-arasindaki-farklar">Optimize Edilmiş ve Optimize Edilmemiş Kod Arasındaki Farklar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optimize-edici-parametre-calistirmalari">Optimize Edici Parametre Çalıştırmaları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#opcode-tabanli-optimize-edici-modulu">Opcode Tabanlı Optimize Edici Modülü</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basit-inlining">Basit Inlining</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#yul-tabanli-optimize-edici-modulu">Yul Tabanlı Optimize Edici Modülü</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#optimize-edici-adimlari">Optimize Edici Adımları</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#optimizasyonlari-secme">Optimizasyonları Seçme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#on-isleme-preprocessing">Ön İşleme (Preprocessing)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#disambiguator">Disambiguator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#functionhoister">FunctionHoister</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#functiongrouper">FunctionGrouper</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#forloopconditionintobody">ForLoopConditionIntoBody</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#forloopinitrewriter">ForLoopInitRewriter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vardeclinitializer">VarDeclInitializer</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pseudo-ssa-donusumu">Pseudo-SSA Dönüşümü</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#expressionsplitter">ExpressionSplitter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ssatransform">SSATransform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#redundantassigneliminator">RedundantAssignEliminator</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#araclar">Araçlar</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tasinabilirlik-movability">Taşınabilirlik(Movability)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dataflowanalyzer">DataflowAnalyzer</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ifade-olcekli-basitlestirmeler-expression-scale-simplifications">İfade-Ölçekli Basitleştirmeler (Expression-Scale Simplifications)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#commonsubexpressioneliminator">CommonSubexpressionEliminator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ifade-basitlestirici-expression-simplifier">İfade Basitleştirici (Expression Simplifier)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#literalrematerialiser">LiteralRematerialiser</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#loadresolver">LoadResolver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reasoningbasedsimplifier">ReasoningBasedSimplifier</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ifade-olcegindeki-basitlestirmeler-statement-scale-simplifications">İfade Ölçeğindeki Basitleştirmeler (Statement-Scale Simplifications)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#circularreferencespruner">CircularReferencesPruner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conditionalsimplifier">ConditionalSimplifier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conditionalunsimplifier">ConditionalUnsimplifier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#controlflowsimplifier">ControlFlowSimplifier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deadcodeeliminator">DeadCodeEliminator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#equalstoreeliminator">EqualStoreEliminator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unusedpruner">UnusedPruner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#structuralsimplifier">StructuralSimplifier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#blockflattener">BlockFlattener</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#loopinvariantcodemotion">LoopInvariantCodeMotion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#fonksiyon-duzeyinde-optimizasyonlar">Fonksiyon Düzeyinde Optimizasyonlar</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#functionspecializer">FunctionSpecializer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unusedfunctionparameterpruner">UnusedFunctionParameterPruner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#equivalentfunctioncombiner">EquivalentFunctionCombiner</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#fonksiyon-inlining-function-inlining">Fonksiyon Inlining (Function Inlining)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#expressioninliner">ExpressionInliner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fullinliner">FullInliner</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#temizlik-cleanup">Temizlik (Cleanup)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#expressionjoiner">ExpressionJoiner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ssareverser">SSAReverser</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stackcompressor">StackCompressor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rematerialiser">Rematerialiser</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#forloopconditionoutofbody">ForLoopConditionOutOfBody</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#webassembly-a-ozgu">WebAssembly’a özgü</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ana-fonksiyon-mainfunction">Ana Fonksiyon(MainFunction)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="../genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Optimize Edici</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/internals/optimizer.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="optimize-edici">
+<span id="optimizer"></span><span id="index-0"></span><h1>Optimize Edici<a class="headerlink" href="#optimize-edici" title="Permalink to this heading"></a></h1>
+<p>Solidity derleyicisi iki farklı optimize edici modül kullanır: İşlem kodu düzeyinde çalışan “eski”
+iyileştirici ve Yul IR kodunda çalışan “yeni” iyileştirici.</p>
+<p>İşlem kodu tabanlı optimize edici, işlem kodlarına bir dizi <a class="reference external" href="https://github.com/ethereum/solidity/blob/develop/libevmasm/RuleList.h">basitleştirme kuralı</a> uygular. Ayrıca eşit kod kümelerini birleştirir ve kullanılmayan kodu kaldırır.</p>
+<p>Yul tabanlı optimize edici, fonksiyon çağrıları arasında çalışabildiği için çok daha güçlüdür.
+Örneğin, Yul’da arbitrary jumps yapmak mümkün değildir, bu nedenle her bir fonksiyonun yan etkilerini
+hesaplamak mümkündür. İlkinin depolamayı değiştirmediği ve ikincisinin depolamayı değiştirdiği iki fonksiyon çağrısını düşünün.
+Argümanları ve dönüş değerleri birbirine bağlı değilse, fonksiyon çağrılarını yeniden sıralayabiliriz. Benzer
+şekilde, bir fonksiyon yan etkiden arındırılmışsa ve sonucu sıfırla çarpılırsa, fonksiyon çağrısını tamamen
+kaldırabilirsiniz.</p>
+<p>Şu anda, “–optimize” parametresi, oluşturulan bayt kodu için işlem kodu tabanlı iyileştiriciyi ve dahili
+olarak Yul kodu için oluşturulan Yul iyileştiriciyi, örneğin ABI kodlayıcı v2’yi etkinleştirir.
+Bir Solidity kaynağına özel olarak optimize edilmiş bir Yul IR üretmek için <code class="docutils literal notranslate"><span class="pre">solc</span> <span class="pre">--ir-optimized</span> <span class="pre">--optimize</span></code> kullanılabilir.
+Benzer şekilde, bağımsız bir Yul modu için <code class="docutils literal notranslate"><span class="pre">solc</span> <span class="pre">--strict-assembly</span> <span class="pre">--optimize</span></code> kullanılabilir.</p>
+<p>Aşağıda hem optimize edici modüller hem de optimizasyon adımları hakkında daha fazla ayrıntı bulabilirsiniz.</p>
+<section id="solidity-kodunu-optimize-etmenin-faydalari">
+<h2>Solidity Kodunu Optimize Etmenin Faydaları<a class="headerlink" href="#solidity-kodunu-optimize-etmenin-faydalari" title="Permalink to this heading"></a></h2>
+<p>Genel olarak optimize ediciler, karmaşık ifadeleri sadeleştirmeye çalışır, bu da hem kod boyutunu hem de
+çalıştırma(execution) maliyetini azaltır, yani sözleşmenin devreye alınmasını ve sözleşmeye yapılan harici çağrılar için gereken
+gas miktarını azaltabilir.
+Ayrıca, fonksiyonları uzmanlaştırır veya sıralar. Özellikle satır içi fonksiyonları oluşturma,
+çok daha büyük kodlara neden olabilecek bir işlemdir, ancak daha fazla sadeleştirme fırsatlarına yol açtığı için sıklıkla yapılır.</p>
+</section>
+<section id="optimize-edilmis-ve-optimize-edilmemis-kod-arasindaki-farklar">
+<h2>Optimize Edilmiş ve Optimize Edilmemiş Kod Arasındaki Farklar<a class="headerlink" href="#optimize-edilmis-ve-optimize-edilmemis-kod-arasindaki-farklar" title="Permalink to this heading"></a></h2>
+<p>Genel olarak ikisi arasındaki en görünür fark, sabit ifadelerin derleme zamanındaki farklılıklardır.
+ASM çıktısı söz konusu olduğunda, eşdeğer veya yinelenen kod bloklarındaki gas miktarında azalma da fark edilebilir (<code class="docutils literal notranslate"><span class="pre">--asm</span></code> ve
+<code class="docutils literal notranslate"><span class="pre">--asm</span> <span class="pre">--optimize</span></code> işaretlerinin çıktısını karşılaştırın). Bununla birlikte, Yul/intermediate-representation söz konusu olduğunda,
+önemli farklılıklar olabilir, örneğin, fonksiyonlar satır içine alınabilir, birleştirilebilir veya fazlalıkları ortadan kaldırmak
+için yeniden yazılabilir, vb. (çıktıyı <code class="docutils literal notranslate"><span class="pre">--ir</span></code> ve <code class="docutils literal notranslate"><span class="pre">--optimize</span> <span class="pre">--ir-optimized</span></code> işaretleri ile birlikte karşılaştırabilirsiniz ).</p>
+</section>
+<section id="optimize-edici-parametre-calistirmalari">
+<span id="optimizer-parameter-runs"></span><h2>Optimize Edici Parametre Çalıştırmaları<a class="headerlink" href="#optimize-edici-parametre-calistirmalari" title="Permalink to this heading"></a></h2>
+<p>Çalıştırma sayısı (”–optimize-runs”), dağıtılan kodun her bir işlem kodunun sözleşmenin ömrü boyunca
+yaklaşık olarak ne sıklıkta yürütüleceğini belirtir. Bu, kod boyutu (dağıtım maliyeti) ve kod yürütme
+maliyeti (dağıtımdan sonraki maliyet) arasında bir değiş tokuş parametresi olduğu anlamına gelir.
+“1” “runs” parametresi kısa ama pahalı olan bir kod üretecektir. Buna karşılık, daha büyük bir “runs”
+parametresi daha uzun ancak daha fazla gaz verimli kod üretecektir. Parametrenin maksimum değeri
+<a href="#id1"><span class="problematic" id="id2">``</span></a>2**32-1``dir.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Yaygın bir yanlış anlama ise bu parametrenin optimize edicinin yineleme sayısını belirtmesidir.
+Ancak bu doğru değildir: Optimize edici her zaman kodu iyileştirebildiği kadar çalışır.</p>
+</div>
+</section>
+<section id="opcode-tabanli-optimize-edici-modulu">
+<h2>Opcode Tabanlı Optimize Edici Modülü<a class="headerlink" href="#opcode-tabanli-optimize-edici-modulu" title="Permalink to this heading"></a></h2>
+<p>Opcode tabanlı optimize edici modül, assembly kodu üzerinde çalışır.
+Komut dizisini “JUMPs” ve “JUMPDESTs”de temel bloklara böler.
+Bu blokların içinde, optimize edici talimatları analiz eder ve yığında,
+bellekte veya depolamada yapılan her değişikliği, bir talimattan ve diğer
+ifadelere işaret eden bir argüman listesinden oluşan bir ifade olarak kaydeder.</p>
+<p>Ek olarak, işlem kodu tabanlı optimize edici, diğer görevlerin yanı sıra (her girişte)
+her zaman eşit olan ifadeleri bulan ve bunları bir ifade sınıfında
+birleştiren “CommonSubexpressionEliminator” adlı bir bileşen kullanır. İlk önce her yeni ifadeyi
+önceden bilinen ifadeler listesinde bulmaya çalışır. Böyle bir eşleşme bulunamazsa, ifadeyi
+<code class="docutils literal notranslate"><span class="pre">constant</span> <span class="pre">+</span> <span class="pre">constant</span> <span class="pre">=</span> <span class="pre">sum_of_constants</span></code> veya <code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">*</span> <span class="pre">1</span> <span class="pre">=</span> <span class="pre">X</span></code> gibi kurallara göre sadeleştirir.
+Bu recursive(öz yinelemeli) bir süreç olduğundan, ikinci faktör her zaman bir olarak
+değerlendirdiğini bildiğimiz daha karmaşık bir ifadeyse, ikinci kuralı da uygulayabiliriz.</p>
+<p>Belirli optimize edici adımları, depolama ve bellek konumlarını sembolik olarak izler. Örneğin bu bilgi, derleme
+sırasında değerlendirilebilecek Keccak-256 hashlerini hesaplamak için kullanılır.
+Bu sıralamayı düşünebilirsiniz:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>PUSH 32
+PUSH 0
+CALLDATALOAD
+PUSH 100
+DUP2
+MSTORE
+KECCAK256
+</pre></div>
+</div>
+<p>veya eşdeğeri Yul</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=bGV0IHggOj0gY2FsbGRhdGFsb2FkKDApCm1zdG9yZSh4LCAxMDApCmxldCB2YWx1ZSA6PSBrZWNjYWsyNTYoeCwgMzIp"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="ow">let</span> <span class="nv">x</span> <span class="o">:=</span> <span class="nf">calldataload</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="nf">mstore</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="ow">let</span> <span class="nv">value</span> <span class="o">:=</span> <span class="nf">keccak256</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Bu durumda, optimize edici <code class="docutils literal notranslate"><span class="pre">calldataload(0)</span></code> bellek konumundaki değeri izler ve ardından Keccak-256
+hash değerinin derleme zamanında değerlendirilebileceğini anlar. Bu, yalnızca <code class="docutils literal notranslate"><span class="pre">mstore</span></code> ve <code class="docutils literal notranslate"><span class="pre">keccak256</span></code> arasındaki
+belleği değiştiren başka bir komut yoksa çalışır.  Yani belleğe (veya depolamaya) bilgi yazan bir talimat varsa, o zaman
+mevcut bilginin bellek (veya depolama) bilgisini silmemiz gerekir. Ancak, talimatın belirli bir yere yazmadığını kolayca
+görebildiğimizde, bu silme işleminin bir istisnası vardır.</p>
+<p>Örneğin,</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=bGV0IHggOj0gY2FsbGRhdGFsb2FkKDApCm1zdG9yZSh4LCAxMDApCi8vIE1ldmN1dCBiaWxnaSBoYWbEsXphIGtvbnVtdSB4IC0+IDEwMApsZXQgeSA6PSBhZGQoeCwgMzIpCi8vIHknbmluIFt4LCB4ICsgMzIpJ3llIGJpbGdpIHlhem1hbWFzxLEgbmVkZW5peWxlIHggLT4gMTAwIG9sZHXEn3UgYmlsZ2lzaSBzaWxpbm1legptc3RvcmUoeSwgMjAwKQovLyBCdSBLZWNjYWstMjU2IGFydMSxayBkZcSfZXJsZW5kaXJpbGViaWxpcgpsZXQgdmFsdWUgOj0ga2VjY2FrMjU2KHgsIDMyKQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="ow">let</span> <span class="nv">x</span> <span class="o">:=</span> <span class="nf">calldataload</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="nf">mstore</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="c1">// Mevcut bilgi hafıza konumu x -&gt; 100</span>
+<span class="ow">let</span> <span class="nv">y</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+<span class="c1">// y&#39;nin [x, x + 32)&#39;ye bilgi yazmaması nedeniyle x -&gt; 100 olduğu bilgisi silinmez</span>
+<span class="nf">mstore</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="c1">// Bu Keccak-256 artık değerlendirilebilir</span>
+<span class="ow">let</span> <span class="nv">value</span> <span class="o">:=</span> <span class="nf">keccak256</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Bu nedenle, depolama ve bellek konumlarında, örneğin <code class="docutils literal notranslate"><span class="pre">l</span></code> konumunda yapılan değişiklikler, <code class="docutils literal notranslate"><span class="pre">l``ye</span> <span class="pre">eşit</span>
+<span class="pre">olabilecek</span> <span class="pre">depolama</span> <span class="pre">veya</span> <span class="pre">bellek</span> <span class="pre">konumları</span> <span class="pre">hakkındaki</span> <span class="pre">bilgileri</span> <span class="pre">silmelidir.</span> <span class="pre">Daha</span> <span class="pre">spesifik</span> <span class="pre">olarak,</span> <span class="pre">depolama</span> <span class="pre">için,</span>
+<span class="pre">optimize</span> <span class="pre">edicinin</span> <span class="pre">``l``ye</span> <span class="pre">eşit</span> <span class="pre">olabilecek</span> <span class="pre">tüm</span> <span class="pre">sembolik</span> <span class="pre">konum</span> <span class="pre">bilgilerini</span> <span class="pre">silmesi</span> <span class="pre">gerekir</span> <span class="pre">ve</span> <span class="pre">bellek</span> <span class="pre">için</span> <span class="pre">optimize</span> <span class="pre">edicinin</span>
+<span class="pre">en</span> <span class="pre">az</span> <span class="pre">32</span> <span class="pre">bayt</span> <span class="pre">uzakta</span> <span class="pre">olmayabilecek</span> <span class="pre">tüm</span> <span class="pre">sembolik</span> <span class="pre">konum</span> <span class="pre">bilgilerini</span> <span class="pre">silmesi</span> <span class="pre">gerekir.</span> <span class="pre">.</span> <span class="pre">Eğer</span> <span class="pre">``m</span></code> arbitarry lokasyonu gösteriyorsa,
+o zaman bu silme kararı <code class="docutils literal notranslate"><span class="pre">sub(l,</span> <span class="pre">m)</span></code> değeri hesaplanarak yapılır. Depolama için, bu değer sıfırdan farklı bir hazır bilgi
+olarak değerlendirilirse, o zaman <code class="docutils literal notranslate"><span class="pre">m</span></code> ile ilgili bilgi tutulacaktır. Bellek için, değer <code class="docutils literal notranslate"><span class="pre">32</span></code> ile <code class="docutils literal notranslate"><span class="pre">2**256</span> <span class="pre">-</span> <span class="pre">32</span></code> arasında bir
+değer olarak değerlendirilirse, <code class="docutils literal notranslate"><span class="pre">m</span></code> ile ilgili bilgi korunur. Diğer tüm durumlarda, <code class="docutils literal notranslate"><span class="pre">m</span></code> hakkındaki bilgiler silinecektir.</p>
+<p>Bu işlemden sonra, sonunda yığında(stack) hangi ifadelerin olması gerektiğini biliyoruz ve bellek
+ve depolamada yapılan değişikliklerin bir listesine sahibiz. Bu bilgi, temel bloklarla birlikte saklanır
+ve bunları birbirine bağlamak için kullanılır. Ayrıca yığın, depolama ve bellek yapılandırması
+hakkındaki bilgiler sonraki bloğa/bloklara iletilir.</p>
+<p>Tüm <code class="docutils literal notranslate"><span class="pre">JUMP</span></code> ve <code class="docutils literal notranslate"><span class="pre">JUMPI</span></code> komutlarının hedeflerini biliyorsak, programın tam
+bir kontrol akış grafiğini oluşturabiliriz. Bilmediğimiz tek bir hedef varsa (bu prensipte
+olduğu gibi olabilir, jump targets girdilerden hesaplanabilir), bilinmeyen <code class="docutils literal notranslate"><span class="pre">JUMP</span></code> değerinin hedefi
+olabileceğinden bir bloğun girdi durumu hakkındaki tüm bilgileri silmemiz gerekir. İşlem kodu
+tabanlı optimize edici modül, koşulu bir sabite göre değerlendirilen bir <code class="docutils literal notranslate"><span class="pre">JUMPI</span></code> bulursa,
+bunu koşulsuz bir jump`a dönüştürür.</p>
+<p>Son adım olarak, her bloktaki kod yeniden oluşturulur. Optimize edici, bloğun sonunda bulunan
+yığındaki ifadelerden bir bağımlılık grafiği oluşturur ve bu grafiğin parçası olmayan her işlemi
+bırakır. Değişiklikleri orijinal kodda yapıldıkları sırayla belleğe(memory) ve depolamaya(storage) uygulayan kod üretir
+(gerekli olmadığı tespit edilen değişiklikleri bırakarak). Son olarak yığında olması gereken tüm
+değerleri doğru yerde üretir.</p>
+<p>Bu adımlar her temel bloğa uygulanır ve yeni oluşturulan kod daha küçükse yedek olarak
+kullanılır. Temel bir blok bir <code class="docutils literal notranslate"><span class="pre">JUMPI</span></code>’de bölünürse ve analiz sırasında koşul bir sabit olarak
+değerlendirilirse, <code class="docutils literal notranslate"><span class="pre">JUMPI</span></code> sabitin değerine göre değiştirilir. Aşağıda bulunan kodda olduğu gibi</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=dWludCB4ID0gNzsKZGF0YVs3XSA9IDk7CmlmIChkYXRhW3hdICE9IHggKyAyKSAvLyBidSBrb8WfdWwgYXNsYSBkb8SfcnUgZGXEn2lsZGlyCiAgcmV0dXJuIDI7CmVsc2UKICByZXR1cm4gMTs="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="kt">uint</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">7</span><span class="p">;</span><span class="w"></span>
+data<span class="p">[</span><span class="m m-Decimal">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">9</span><span class="p">;</span><span class="w"></span>
+<span class="kt">if</span><span class="w"> </span><span class="p">(</span>data<span class="p">[</span>x<span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span>x<span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m m-Decimal">2</span><span class="p">)</span><span class="w"> </span><span class="c1">// bu koşul asla doğru değildir</span>
+<span class="w">  </span><span class="kt">return</span><span class="w"> </span><span class="m m-Decimal">2</span><span class="p">;</span><span class="w"></span>
+<span class="kt">else</span><span class="w"></span>
+<span class="w">  </span><span class="kt">return</span><span class="w"> </span><span class="m m-Decimal">1</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>bunu sadeleştirir:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=ZGF0YVs3XSA9IDk7CnJldHVybiAxOw=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span>data<span class="p">[</span><span class="m m-Decimal">7</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m m-Decimal">9</span><span class="p">;</span><span class="w"></span>
+<span class="kt">return</span><span class="w"> </span><span class="m m-Decimal">1</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<section id="basit-inlining">
+<h3>Basit Inlining<a class="headerlink" href="#basit-inlining" title="Permalink to this heading"></a></h3>
+<p>Solidity 0.8.2 sürümünden bu yana, “jump” ile biten “simple” talimatları
+içeren bloklara yapılan belirli atlamaları bu talimatların bir kopyası
+ile değiştiren başka bir optimizer adımı bulunmaktadır. Bu, basit, küçük
+Solidity veya Yul fonksiyonlarının inlining’ine karşılık gelir. Özellikle,
+<code class="docutils literal notranslate"><span class="pre">PUSHTAG(tag)</span> <span class="pre">JUMP</span></code> dizisi, <code class="docutils literal notranslate"><span class="pre">JUMP</span></code> bir fonksiyona atlama olarak işaretlendiğinde
+ve <code class="docutils literal notranslate"><span class="pre">tag</span></code> arkasında bir fonksiyondan “dışarı” atlama olarak işaretlenen başka
+bir <code class="docutils literal notranslate"><span class="pre">JUMP</span></code> ile biten temel bir blok (“CommonSubexpressionEliminator” için yukarıda
+açıklandığı gibi) olduğunda değiştirilebilir.</p>
+<p>Özellikle, dahili bir Solidity fonksiyonuna yapılan bir çağrı için oluşturulan
+aşağıdaki prototip assembly örneğini göz önünde bulundurun:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  tag_return
+  tag_f
+  jump      // içeri
+tag_return:
+  ...opcodes after call to f...
+
+tag_f:
+  ...body of function f...
+  jump      // dışarı
+</pre></div>
+</div>
+<p>Fonksiyonun gövdesi sürekli bir temel blok olduğu sürece, “Inliner” <code class="docutils literal notranslate"><span class="pre">tag_f</span> <span class="pre">jump</span></code>
+yerine <code class="docutils literal notranslate"><span class="pre">tag_f</span></code> adresindeki blokla değiştirebilir ve sonuç olarak:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  tag_return
+  ...body of function f...
+  jump
+tag_return:
+  ...opcodes after call to f...
+
+tag_f:
+  ...body of function f...
+  jump      // out
+</pre></div>
+</div>
+<p>Şimdi ideal olarak, yukarıda açıklanan diğer optimize edici adımlar, return
+etiketi push’unun kalan jump’a doğru hareket ettirilmesiyle sonuçlanacaktır:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>  ...body of function f...
+  tag_return
+  jump
+tag_return:
+  ...opcodes after call to f...
+
+tag_f:
+  ...body of function f...
+  jump      // out
+</pre></div>
+</div>
+<p>Bu durumda “PeepholeOptimizer” return jump’ı kaldıracaktır. İdeal olarak,
+tüm bunlar <code class="docutils literal notranslate"><span class="pre">tag_f</span></code>’ye yapılan tüm referanslar için yapılabilir, kullanılmadan
+bırakılabilir, s.t. kaldırılabilir, sonuç verir:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>...body of function f...
+...opcodes after call to f...
+</pre></div>
+</div>
+<p>Böylece <code class="docutils literal notranslate"><span class="pre">f</span></code> fonksiyonuna yapılan çağrı satır içine alınır ve <code class="docutils literal notranslate"><span class="pre">f</span></code> fonksiyonunun orijinal tanımı kaldırılabilir.</p>
+<p>Bir buluşsal yöntem, bir sözleşmenin ömrü boyunca inlining yapmanın inlining yapmamaktan
+daha ucuz olduğunu gösterdiğinde, bu durumdaki inlining denenir. Bu sezgisel yöntem, fonksiyon
+gövdesinin boyutuna, etiketine yapılan diğer referansların sayısına (fonksiyona yapılan
+çağrıların sayısına yaklaşık olarak) ve sözleşmenin beklenen yürütme sayısına (global
+optimizer parametresi “runs”) bağlıdır.</p>
+</section>
+</section>
+<section id="yul-tabanli-optimize-edici-modulu">
+<h2>Yul Tabanlı Optimize Edici Modülü<a class="headerlink" href="#yul-tabanli-optimize-edici-modulu" title="Permalink to this heading"></a></h2>
+<p>Yul tabanlı optimize edici, tümü AST’yi anlamsal olarak eşdeğer bir şekilde dönüştüren birkaç aşamadan ve
+bileşenden oluşur. Amaç, ya daha kısa ya da en azından marjinal olarak daha uzun olan ancak daha fazla
+optimizasyon adımına izin verecek bir kodla sonuçlandırmaktır.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Optimize edici yoğun bir geliştirme aşamasında olduğundan, buradaki bilgiler güncel olmayabilir.
+Belirli bir fonksiyonelliğe güveniyorsanız, lütfen doğrudan ekiple iletişime geçin.</p>
+</div>
+<p>Optimize edici şu anda tamamen greedy(metinsel olarak mümkün olduğunca fazla eşleşen)
+bir strateji izliyor ve herhangi bir geri izleme yapmıyor.</p>
+<p>Yul tabanlı optimizer modülünün tüm bileşenleri aşağıda açıklanmıştır.
+Aşağıdaki dönüşüm adımları ana bileşenlerdir:</p>
+<ul class="simple">
+<li><p>SSA Transform</p></li>
+<li><p>Common Subexpression Eliminator</p></li>
+<li><p>Expression Simplifier</p></li>
+<li><p>Redundant Assign Eliminator</p></li>
+<li><p>Full Inliner</p></li>
+</ul>
+<section id="optimize-edici-adimlari">
+<h3>Optimize Edici Adımları<a class="headerlink" href="#optimize-edici-adimlari" title="Permalink to this heading"></a></h3>
+<p>Bu, Yul tabanlı optimize edicinin alfabetik olarak sıralanmış tüm adımlarının
+bir listesidir. Her bir adım ve bunların sıralaması hakkında daha fazla bilgiyi
+aşağıda bulabilirsiniz.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#block-flattener"><span class="std std-ref">BlockFlattener</span></a>.</p></li>
+<li><p><a class="reference internal" href="#circular-reference-pruner"><span class="std std-ref">CircularReferencesPruner</span></a>.</p></li>
+<li><p><a class="reference internal" href="#common-subexpression-eliminator"><span class="std std-ref">CommonSubexpressionEliminator</span></a>.</p></li>
+<li><p><a class="reference internal" href="#conditional-simplifier"><span class="std std-ref">ConditionalSimplifier</span></a>.</p></li>
+<li><p><a class="reference internal" href="#conditional-unsimplifier"><span class="std std-ref">ConditionalUnsimplifier</span></a>.</p></li>
+<li><p><a class="reference internal" href="#control-flow-simplifier"><span class="std std-ref">ControlFlowSimplifier</span></a>.</p></li>
+<li><p><a class="reference internal" href="#dead-code-eliminator"><span class="std std-ref">DeadCodeEliminator</span></a>.</p></li>
+<li><p><a class="reference internal" href="#equal-store-eliminator"><span class="std std-ref">EqualStoreEliminator</span></a>.</p></li>
+<li><p><a class="reference internal" href="#equivalent-function-combiner"><span class="std std-ref">EquivalentFunctionCombiner</span></a>.</p></li>
+<li><p><a class="reference internal" href="#expression-joiner"><span class="std std-ref">ExpressionJoiner</span></a>.</p></li>
+<li><p><a class="reference internal" href="#expression-simplifier"><span class="std std-ref">İfade Basitleştirici (Expression Simplifier)</span></a>.</p></li>
+<li><p><a class="reference internal" href="#expression-splitter"><span class="std std-ref">ExpressionSplitter</span></a>.</p></li>
+<li><p><a class="reference internal" href="#for-loop-condition-into-body"><span class="std std-ref">ForLoopConditionIntoBody</span></a>.</p></li>
+<li><p><a class="reference internal" href="#for-loop-condition-out-of-body"><span class="std std-ref">ForLoopConditionOutOfBody</span></a>.</p></li>
+<li><p><a class="reference internal" href="#for-loop-init-rewriter"><span class="std std-ref">ForLoopInitRewriter</span></a>.</p></li>
+<li><p><a class="reference internal" href="#expression-inliner"><span class="std std-ref">ExpressionInliner</span></a>.</p></li>
+<li><p><a class="reference internal" href="#full-inliner"><span class="std std-ref">FullInliner</span></a>.</p></li>
+<li><p><a class="reference internal" href="#function-grouper"><span class="std std-ref">FunctionGrouper</span></a>.</p></li>
+<li><p><a class="reference internal" href="#function-hoister"><span class="std std-ref">FunctionHoister</span></a>.</p></li>
+<li><p><a class="reference internal" href="#function-specializer"><span class="std std-ref">FunctionSpecializer</span></a>.</p></li>
+<li><p><a class="reference internal" href="#literal-rematerialiser"><span class="std std-ref">LiteralRematerialiser</span></a>.</p></li>
+<li><p><a class="reference internal" href="#load-resolver"><span class="std std-ref">LoadResolver</span></a>.</p></li>
+<li><p><a class="reference internal" href="#loop-invariant-code-motion"><span class="std std-ref">LoopInvariantCodeMotion</span></a>.</p></li>
+<li><p><a class="reference internal" href="#redundant-assign-eliminator"><span class="std std-ref">RedundantAssignEliminator</span></a>.</p></li>
+<li><p><a class="reference internal" href="#reasoning-based-simplifier"><span class="std std-ref">ReasoningBasedSimplifier</span></a>.</p></li>
+<li><p><a class="reference internal" href="#rematerialiser"><span class="std std-ref">Rematerialiser</span></a>.</p></li>
+<li><p><a class="reference internal" href="#ssa-reverser"><span class="std std-ref">SSAReverser</span></a>.</p></li>
+<li><p><a class="reference internal" href="#ssa-transform"><span class="std std-ref">SSATransform</span></a>.</p></li>
+<li><p><a class="reference internal" href="#structural-simplifier"><span class="std std-ref">StructuralSimplifier</span></a>.</p></li>
+<li><p><a class="reference internal" href="#unused-function-parameter-pruner"><span class="std std-ref">UnusedFunctionParameterPruner</span></a>.</p></li>
+<li><p><a class="reference internal" href="#unused-pruner"><span class="std std-ref">UnusedPruner</span></a>.</p></li>
+<li><p><span class="xref std std-ref">var-decl-initializer</span>.</p></li>
+</ul>
+</section>
+<section id="optimizasyonlari-secme">
+<h3>Optimizasyonları Seçme<a class="headerlink" href="#optimizasyonlari-secme" title="Permalink to this heading"></a></h3>
+<p>Varsayılan olarak optimizer, oluşturulan assembly’ye önceden tanımlanmış optimizasyon
+adımları dizisini uygular. Bu diziyi geçersiz kılabilir ve <code class="docutils literal notranslate"><span class="pre">--yul-optimizations</span></code>
+seçeneğini kullanarak kendi dizinizi sağlayabilirsiniz:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>solc --optimize --ir-optimized --yul-optimizations <span class="s1">&#39;dhfoD[xarrscLMcCTU]uljmul&#39;</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">[...]</span></code> içinde yer alan dizi, Yul kodu değişmeden kalana kadar veya maksimum tur
+sayısına (şu anda 12) ulaşılana kadar bir döngü içinde birden çok kez uygulanacaktır.</p>
+<p>Mevcut kısaltmalar <a class="reference internal" href="../yul.html#optimization-step-sequence"><span class="std std-ref">Yul optimize edici dokümanları</span></a> içinde listelenmiştir.</p>
+</section>
+<section id="on-isleme-preprocessing">
+<h3>Ön İşleme (Preprocessing)<a class="headerlink" href="#on-isleme-preprocessing" title="Permalink to this heading"></a></h3>
+<p>Ön işleme bileşenleri, programı üzerinde çalışılması daha kolay olan belirli normal
+bir forma sokmak için gerekli dönüşümleri gerçekleştirir. Bu normal formu optimizasyon
+sürecinin geri kalan bölümü boyunca muhafaza eder.</p>
+<section id="disambiguator">
+<span id="id3"></span><h4>Disambiguator<a class="headerlink" href="#disambiguator" title="Permalink to this heading"></a></h4>
+<p>Anlam ayrıştırıcı bir AST alır ve tüm tanımlayıcıların girdi AST’sinde benzersiz
+adlara sahip olduğu yeni bir kopya döndürür. Bu, diğer tüm optimize edici aşamalar
+için bir ön koşuldur. Avantajlarından biri, tanımlayıcının aranmanın kapsamları
+dikkate almasına gerek kalmamasıdır, bu da diğer adımlar için gereken analizi
+basitleştirir.</p>
+<p>Sonraki tüm aşamalar, tüm isimlerin benzersiz kalması özelliğine sahiptir. Bu,
+herhangi bir yeni tanımlayıcı eklenmesi gerektiğinde yeni bir benzersiz isim
+üretileceği anlamına gelir.</p>
+</section>
+<section id="functionhoister">
+<span id="function-hoister"></span><h4>FunctionHoister<a class="headerlink" href="#functionhoister" title="Permalink to this heading"></a></h4>
+<p>Fonksiyon hoister, tüm fonksiyon tanımlarını en üstte bulunan bloğun sonuna taşır. Belirsizliği giderme aşamasından sonra
+gerçekleştirildiği sürece bu anlamsal olarak eşdeğer bir dönüşümdür. Bunun nedeni, bir tanımın daha yüksek seviyeli
+bir bloğa taşınmasının görünürlüğünü azaltamaması ve farklı bir fonksiyonda tanımlanan değişkenlere başvurmanın
+imkansız olmasıdır.</p>
+<p>Bu aşamanın faydası, fonksiyon tanımlarının daha kolay aranabilmesi ve fonksiyonların, AST’yi tamamen
+geçmek zorunda kalmadan izole bir şekilde optimize edilebilmesidir.</p>
+</section>
+<section id="functiongrouper">
+<span id="function-grouper"></span><h4>FunctionGrouper<a class="headerlink" href="#functiongrouper" title="Permalink to this heading"></a></h4>
+<p>Fonksiyon grouper, Disambiguator ve FunctionHoister sonra uygulanmalıdır.
+Etkisi, işlev tanımları olmayan en üstteki tüm öğelerin, kök bloğun ilk
+ifadesi olan tek bir bloğa taşınmasıdır.</p>
+<p>Bu adımdan sonra, bir program aşağıdaki normal forma sahiptir:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{ I F... }
+</pre></div>
+</div>
+<p>Burada <code class="docutils literal notranslate"><span class="pre">I</span></code> herhangi bir fonksiyon tanımı içermeyen (rekürsif olarak bile)
+(potansiyel olarak boş) bir bloktur ve <code class="docutils literal notranslate"><span class="pre">F</span></code> hiçbir fonksiyonun bir fonksiyon
+tanımı içermediği bir fonksiyon tanımları listesidir.</p>
+<p>Bu aşamanın faydası, fonksiyon listesinin nerede başladığını her zaman bilmemize
+olanak sağlamasıdır.</p>
+</section>
+<section id="forloopconditionintobody">
+<span id="for-loop-condition-into-body"></span><h4>ForLoopConditionIntoBody<a class="headerlink" href="#forloopconditionintobody" title="Permalink to this heading"></a></h4>
+<p>Bu dönüşüm, bir for döngüsünün döngü yineleme koşulunu döngü gövdesine taşır.
+Bu dönüşüme ihtiyacımız var çünkü <a class="reference internal" href="#expression-splitter"><span class="std std-ref">ExpressionSplitter</span></a> yineleme koşulu
+ifadelerine (aşağıdaki örnekte <code class="docutils literal notranslate"><span class="pre">C</span></code>) uygulanmayacaktır.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>for { Init... } C { Post... } {
+    Body...
+}
+</pre></div>
+</div>
+<p>dönüştürülür</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>for { Init... } 1 { Post... } {
+    if iszero(C) { break }
+    Body...
+}
+</pre></div>
+</div>
+<p>Bu dönüşüm aynı zamanda <code class="docutils literal notranslate"><span class="pre">LoopInvariantCodeMotion</span></code> ile eşleştirildiğinde de faydalı olabilir, çünkü döngüde
+değişmez koşullardaki invariant’lar daha sonra döngünün dışına alınabilir.</p>
+</section>
+<section id="forloopinitrewriter">
+<span id="for-loop-init-rewriter"></span><h4>ForLoopInitRewriter<a class="headerlink" href="#forloopinitrewriter" title="Permalink to this heading"></a></h4>
+<p>Bu dönüşüm, bir for-döngüsünün başlatma kısmını döngüden önceki kısmına taşır:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>for { Init... } C { Post... } {
+    Body...
+}
+</pre></div>
+</div>
+<p>dönüştürülür</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Init...
+for {} C { Post... } {
+    Body...
+}
+</pre></div>
+</div>
+<p>Bu, döngü başlatma(genesis) bloğunun karmaşık kapsam belirleme kurallarını göz ardı
+edebileceğimiz için optimizasyon sürecinin geri kalanını kolaylaştırır.
+.. _var-decl-initializer:</p>
+</section>
+<section id="vardeclinitializer">
+<h4>VarDeclInitializer<a class="headerlink" href="#vardeclinitializer" title="Permalink to this heading"></a></h4>
+<p>Bu adım, değişken tanımlamalarını yeniden yazarak hepsinin başlatılmasını sağlar.
+<code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">x,</span> <span class="pre">y</span></code> gibi tanımlamalar birden fazla tanımlama (multiple declaration) ifadesine bölünür.</p>
+<p>Şimdilik yalnızca sıfır literali ile başlatmayı destekliyor.</p>
+</section>
+</section>
+<section id="pseudo-ssa-donusumu">
+<h3>Pseudo-SSA Dönüşümü<a class="headerlink" href="#pseudo-ssa-donusumu" title="Permalink to this heading"></a></h3>
+<p>Bu bileşenlerin amacı programı daha uzun bir forma sokmaktır, böylece diğer
+bileşenler onunla daha kolay çalışabilir. Final gösterimi statik-tek-atama
+(SSA) formuna benzer olacaktır, tek farkı kontrol akışının farklı kollarından(branch)
+gelen değerleri birleştiren açık “phi” fonksiyonlarını kullanmamasıdır çünkü
+böyle bir özellik Yul dilinde mevcut değildir. Bunun yerine, kontrol akışı
+birleştiğinde, kollardan(branch) birinde bir değişken yeniden atanırsa, mevcut
+değerini tutmak için yeni bir SSA değişkeni bildirilir, böylece aşağıdaki
+ifadelerin hala yalnızca SSA değişkenlerine başvurması gerekir.</p>
+<p>Örnek bir dönüşüm aşağıda verilmiştir:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ewogICAgbGV0IGEgOj0gY2FsbGRhdGFsb2FkKDApCiAgICBsZXQgYiA6PSBjYWxsZGF0YWxvYWQoMHgyMCkKICAgIGlmIGd0KGEsIDApIHsKICAgICAgICBiIDo9IG11bChiLCAweDIwKQogICAgfQogICAgYSA6PSBhZGQoYSwgMSkKICAgIHNzdG9yZShhLCBhZGQoYiwgMHgyMCkpCn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="ow">let</span> <span class="nv">a</span> <span class="o">:=</span> <span class="nf">calldataload</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="ow">let</span> <span class="nv">b</span> <span class="o">:=</span> <span class="nf">calldataload</span><span class="p">(</span><span class="mh">0x20</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nf">gt</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">b</span> <span class="o">:=</span> <span class="nf">mul</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="n">a</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="nf">sstore</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nf">add</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">))</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Aşağıdaki tüm dönüşüm adımları uygulandığında, program aşağıdaki gibi görünecektir:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ewogICAgbGV0IF8xIDo9IDAKICAgIGxldCBhXzkgOj0gY2FsbGRhdGFsb2FkKF8xKQogICAgbGV0IGEgOj0gYV85CiAgICBsZXQgXzIgOj0gMHgyMAogICAgbGV0IGJfMTAgOj0gY2FsbGRhdGFsb2FkKF8yKQogICAgbGV0IGIgOj0gYl8xMAogICAgbGV0IF8zIDo9IDAKICAgIGxldCBfNCA6PSBndChhXzksIF8zKQogICAgaWYgXzQKICAgIHsKICAgICAgICBsZXQgXzUgOj0gMHgyMAogICAgICAgIGxldCBiXzExIDo9IG11bChiXzEwLCBfNSkKICAgICAgICBiIDo9IGJfMTEKICAgIH0KICAgIGxldCBiXzEyIDo9IGIKICAgIGxldCBfNiA6PSAxCiAgICBsZXQgYV8xMyA6PSBhZGQoYV85LCBfNikKICAgIGxldCBfNyA6PSAweDIwCiAgICBsZXQgXzggOj0gYWRkKGJfMTIsIF83KQogICAgc3N0b3JlKGFfMTMsIF84KQp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="ow">let</span> <span class="nv">_1</span> <span class="o">:=</span> <span class="mi">0</span>
+    <span class="ow">let</span> <span class="nv">a_9</span> <span class="o">:=</span> <span class="nf">calldataload</span><span class="p">(</span><span class="n">_1</span><span class="p">)</span>
+    <span class="ow">let</span> <span class="nv">a</span> <span class="o">:=</span> <span class="n">a_9</span>
+    <span class="ow">let</span> <span class="nv">_2</span> <span class="o">:=</span> <span class="mh">0x20</span>
+    <span class="ow">let</span> <span class="nv">b_10</span> <span class="o">:=</span> <span class="nf">calldataload</span><span class="p">(</span><span class="n">_2</span><span class="p">)</span>
+    <span class="ow">let</span> <span class="nv">b</span> <span class="o">:=</span> <span class="n">b_10</span>
+    <span class="ow">let</span> <span class="nv">_3</span> <span class="o">:=</span> <span class="mi">0</span>
+    <span class="ow">let</span> <span class="nv">_4</span> <span class="o">:=</span> <span class="nf">gt</span><span class="p">(</span><span class="n">a_9</span><span class="p">,</span> <span class="n">_3</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">_4</span>
+    <span class="p">{</span>
+        <span class="ow">let</span> <span class="nv">_5</span> <span class="o">:=</span> <span class="mh">0x20</span>
+        <span class="ow">let</span> <span class="nv">b_11</span> <span class="o">:=</span> <span class="nf">mul</span><span class="p">(</span><span class="n">b_10</span><span class="p">,</span> <span class="n">_5</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">:=</span> <span class="n">b_11</span>
+    <span class="p">}</span>
+    <span class="ow">let</span> <span class="nv">b_12</span> <span class="o">:=</span> <span class="n">b</span>
+    <span class="ow">let</span> <span class="nv">_6</span> <span class="o">:=</span> <span class="mi">1</span>
+    <span class="ow">let</span> <span class="nv">a_13</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="n">a_9</span><span class="p">,</span> <span class="n">_6</span><span class="p">)</span>
+    <span class="ow">let</span> <span class="nv">_7</span> <span class="o">:=</span> <span class="mh">0x20</span>
+    <span class="ow">let</span> <span class="nv">_8</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="n">b_12</span><span class="p">,</span> <span class="n">_7</span><span class="p">)</span>
+    <span class="nf">sstore</span><span class="p">(</span><span class="n">a_13</span><span class="p">,</span> <span class="n">_8</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Bu kod parçasında yeniden atanan tek değişkenin <code class="docutils literal notranslate"><span class="pre">b</span></code> olduğuna dikkat edin.
+Bu yeniden atama işleminden kaçınılamaz çünkü <code class="docutils literal notranslate"><span class="pre">b</span></code> kontrol akışına bağlı
+olarak farklı değerlere sahiptir. Diğer tüm değişkenler tanımlandıktan sonra
+değerlerini asla değiştirmezler. Bu özelliğin avantajı, bu değerler yeni
+bağlamda hala geçerli olduğu sürece, değişkenlerin serbestçe hareket
+ettirilebilmesi ve bunlara yapılan referansların ilk değerleriyle (ve tersiyle)
+değiştirilebilmesidir.</p>
+<p>Elbette, buradaki kod optimize edilmekten oldukça uzaktır. Aksine, çok daha
+uzundur. Buradaki beklentimiz, bu kodla çalışmanın daha kolay olacağı ve ayrıca,
+bu değişiklikleri geri alan ve sonunda kodu tekrar daha kompakt hale getiren
+optimize edici adımların var olmasıdır.</p>
+<section id="expressionsplitter">
+<span id="expression-splitter"></span><h4>ExpressionSplitter<a class="headerlink" href="#expressionsplitter" title="Permalink to this heading"></a></h4>
+<p>Expression splitter(İfade Ayırıcı), <code class="docutils literal notranslate"><span class="pre">add(mload(0x123),</span> <span class="pre">mul(mload(0x456),</span> <span class="pre">0x20))</span></code>
+gibi ifadeleri, ilgili ifadenin alt ifadelerine atanan benzersiz değişkenleri
+bildiren bir diziye dönüştürür, böylece her fonksiyon çağrısında argüman olarak
+yalnızca değişkenler bulunur.</p>
+<p>Yukarıdakiler şu şekle dönüştürülebilir:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ewogICAgbGV0IF8xIDo9IDB4MjAKICAgIGxldCBfMiA6PSAweDQ1NgogICAgbGV0IF8zIDo9IG1sb2FkKF8yKQogICAgbGV0IF80IDo9IG11bChfMywgXzEpCiAgICBsZXQgXzUgOj0gMHgxMjMKICAgIGxldCBfNiA6PSBtbG9hZChfNSkKICAgIGxldCB6IDo9IGFkZChfNiwgXzQpCn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="ow">let</span> <span class="nv">_1</span> <span class="o">:=</span> <span class="mh">0x20</span>
+    <span class="ow">let</span> <span class="nv">_2</span> <span class="o">:=</span> <span class="mh">0x456</span>
+    <span class="ow">let</span> <span class="nv">_3</span> <span class="o">:=</span> <span class="nf">mload</span><span class="p">(</span><span class="n">_2</span><span class="p">)</span>
+    <span class="ow">let</span> <span class="nv">_4</span> <span class="o">:=</span> <span class="nf">mul</span><span class="p">(</span><span class="n">_3</span><span class="p">,</span> <span class="n">_1</span><span class="p">)</span>
+    <span class="ow">let</span> <span class="nv">_5</span> <span class="o">:=</span> <span class="mh">0x123</span>
+    <span class="ow">let</span> <span class="nv">_6</span> <span class="o">:=</span> <span class="nf">mload</span><span class="p">(</span><span class="n">_5</span><span class="p">)</span>
+    <span class="ow">let</span> <span class="nv">z</span> <span class="o">:=</span> <span class="nf">add</span><span class="p">(</span><span class="n">_6</span><span class="p">,</span> <span class="n">_4</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Bu dönüşümün işlem kodlarının veya fonksiyon çağrılarının sırasını değiştirmediğini unutmayın.</p>
+<p>Bu özellik döngü yineleme koşuluna(loop iteration-condition) uygulanmaz, çünkü döngü kontrol
+akışı her durumda iç ifadelerin(inner expressions) bu şekilde “outlining” yapılmasına izin vermez.
+Yineleme koşulunu döngü gövdesine taşımak için <a class="reference internal" href="#for-loop-condition-into-body"><span class="std std-ref">ForLoopConditionIntoBody</span></a> uygulayarak
+bu sınırlamayı ortadan kaldırabiliriz.</p>
+<p>Final programı öyle bir formda olmalıdır ki fonksiyon çağrıları (döngü koşulları hariç) ifadelerin
+içinde içiçe görünmemeli ve tüm fonksiyon çağrısı argümanları değişken olmalıdır.</p>
+<p>Bu formun faydaları, işlem kodları dizisini yeniden sıralamanın çok daha kolay olması ve ayrıca
+fonksiyon çağrısı inlining’i yapmanın daha kolay hale getirmesidir. Ayrıca, ifadelerin tek tek
+parçalarını değiştirmek veya “expression tree”’yi yeniden düzenlemek daha kolaydır. Dezavantajı
+ise bu tür kodların insanlar tarafından okunmasının çok daha zor olmasıdır.</p>
+</section>
+<section id="ssatransform">
+<span id="ssa-transform"></span><h4>SSATransform<a class="headerlink" href="#ssatransform" title="Permalink to this heading"></a></h4>
+<p>Bu aşama, mevcut değişkenlere tekrarlanan atamaları mümkün olduğunca yeni değişkenlerin
+tanımlamalarıyla değiştirmeye çalışır. Yeniden atamalar hala mevcuttur, ancak yeniden
+atanan değişkenlere yapılan tüm referanslar yeni bildirilen değişkenlerle değiştirilir.</p>
+<p>Örnek:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ewogICAgbGV0IGEgOj0gMQogICAgbXN0b3JlKGEsIDIpCiAgICBhIDo9IDMKfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="ow">let</span> <span class="nv">a</span> <span class="o">:=</span> <span class="mi">1</span>
+    <span class="nf">mstore</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">:=</span> <span class="mi">3</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>dönüştürülür</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ewogICAgbGV0IGFfMSA6PSAxCiAgICBsZXQgYSA6PSBhXzEKICAgIG1zdG9yZShhXzEsIDIpCiAgICBsZXQgYV8zIDo9IDMKICAgIGEgOj0gYV8zCn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="ow">let</span> <span class="nv">a_1</span> <span class="o">:=</span> <span class="mi">1</span>
+    <span class="ow">let</span> <span class="nv">a</span> <span class="o">:=</span> <span class="n">a_1</span>
+    <span class="nf">mstore</span><span class="p">(</span><span class="n">a_1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="ow">let</span> <span class="nv">a_3</span> <span class="o">:=</span> <span class="mi">3</span>
+    <span class="n">a</span> <span class="o">:=</span> <span class="n">a_3</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Tam Semantik:</p>
+<p>Kodda herhangi bir yere atanan bir <code class="docutils literal notranslate"><span class="pre">a</span></code> değişkeni için (değerle tanımlanan ve asla
+yeniden atanmayan değişkenler değiştirilmemektedir) aşağıdaki dönüşümleri gerçekleştirin:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">a</span> <span class="pre">:=</span> <span class="pre">v</span></code> yerine <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">a_i</span> <span class="pre">:=</span> <span class="pre">v</span> <span class="pre">let</span> <span class="pre">a</span> <span class="pre">:=</span> <span class="pre">a_i</span></code> yazın</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">:=</span> <span class="pre">v</span></code> yerine <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">a_i</span> <span class="pre">:=</span> <span class="pre">v</span> <span class="pre">a</span> <span class="pre">:=</span> <span class="pre">a_i</span></code> yazın; buradaki <code class="docutils literal notranslate"><span class="pre">i</span></code>, <code class="docutils literal notranslate"><span class="pre">a_i</span></code> henüz kullanılmamış türde bir sayıdır.</p></li>
+</ul>
+<p>Ayrıca, <code class="docutils literal notranslate"><span class="pre">a</span></code> için kullanılan <code class="docutils literal notranslate"><span class="pre">i</span></code> geçerli değerini her zaman saklamalı ve <code class="docutils literal notranslate"><span class="pre">a</span></code>
+değişkenine yapılan her referansı <code class="docutils literal notranslate"><span class="pre">a_i</span></code> ile değiştirmelisiniz. Bir <code class="docutils literal notranslate"><span class="pre">a</span></code> değişkeni
+için geçerli olan bir değer eşlemesi, atandığı her bloğun sonunda ve for döngü
+gövdesi veya post bloğu içinde atanmışsa for döngüsü init(başlangıç) bloğunun
+sonunda temizlenir. Bir değişkenin değeri yukarıdaki kurala göre temizlenirse
+ve değişken blok dışında bildirilirse, kontrol akışının birleştiği yerde yeni
+bir SSA değişkeni oluşturulur, buna döngü sonrası/gövde bloğunun başlangıcı ve
+If/Switch/ForLoop/Block ifadesinden hemen sonra gelen konum dahildir.</p>
+<p>Bu aşamadan sonra, gereksiz ara atamaları kaldırmak için Redundant Assign Eliminator
+kullanılması önerilir.</p>
+<p>Bu aşama, Expression Splitter (İfade Ayırıcı) ve Common Subexpression Eliminator
+(Ortak Alt İfade Giderici) hemen öncesinde çalıştırılırsa en iyi sonuçları verir,
+çünkü o zaman aşırı miktarda değişken üretmez. Öte yandan, Common Subexpression
+Eliminator (Ortak Alt İfade Giderici) SSA dönüşümünden sonra çalıştırılırsa daha
+verimli olabilir.</p>
+</section>
+<section id="redundantassigneliminator">
+<span id="redundant-assign-eliminator"></span><h4>RedundantAssignEliminator<a class="headerlink" href="#redundantassigneliminator" title="Permalink to this heading"></a></h4>
+<p>SSA dönüşümü her zaman <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">:=</span> <span class="pre">a_i</span></code> şeklinde bir atama üretir, ancak bunlar
+aşağıdaki örnekte olduğu gibi birçok durumda gereksiz olabilir:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ewogICAgbGV0IGEgOj0gMQogICAgYSA6PSBtbG9hZChhKQogICAgYSA6PSBzbG9hZChhKQogICAgc3N0b3JlKGEsIDEpCn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="ow">let</span> <span class="nv">a</span> <span class="o">:=</span> <span class="mi">1</span>
+    <span class="n">a</span> <span class="o">:=</span> <span class="nf">mload</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">:=</span> <span class="nf">sload</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="nf">sstore</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>SSA dönüşümü bu parçacığı aşağıdaki parçacığa dönüştürür:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ewogICAgbGV0IGFfMSA6PSAxCiAgICBsZXQgYSA6PSBhXzEKICAgIGxldCBhXzIgOj0gbWxvYWQoYV8xKQogICAgYSA6PSBhXzIKICAgIGxldCBhXzMgOj0gc2xvYWQoYV8yKQogICAgYSA6PSBhXzMKICAgIHNzdG9yZShhXzMsIDEpCn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="ow">let</span> <span class="nv">a_1</span> <span class="o">:=</span> <span class="mi">1</span>
+    <span class="ow">let</span> <span class="nv">a</span> <span class="o">:=</span> <span class="n">a_1</span>
+    <span class="ow">let</span> <span class="nv">a_2</span> <span class="o">:=</span> <span class="nf">mload</span><span class="p">(</span><span class="n">a_1</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">:=</span> <span class="n">a_2</span>
+    <span class="ow">let</span> <span class="nv">a_3</span> <span class="o">:=</span> <span class="nf">sload</span><span class="p">(</span><span class="n">a_2</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">:=</span> <span class="n">a_3</span>
+    <span class="nf">sstore</span><span class="p">(</span><span class="n">a_3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Redundant Assign Eliminator, <code class="docutils literal notranslate"><span class="pre">a</span></code> değerinin kullanılmaması nedeniyle <code class="docutils literal notranslate"><span class="pre">a</span></code> değerine
+yapılan üç atamayı da kaldırır ve böylece bu parçacığı strict SSA formuna dönüştürür:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ewogICAgbGV0IGFfMSA6PSAxCiAgICBsZXQgYV8yIDo9IG1sb2FkKGFfMSkKICAgIGxldCBhXzMgOj0gc2xvYWQoYV8yKQogICAgc3N0b3JlKGFfMywgMSkKfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="ow">let</span> <span class="nv">a_1</span> <span class="o">:=</span> <span class="mi">1</span>
+    <span class="ow">let</span> <span class="nv">a_2</span> <span class="o">:=</span> <span class="nf">mload</span><span class="p">(</span><span class="n">a_1</span><span class="p">)</span>
+    <span class="ow">let</span> <span class="nv">a_3</span> <span class="o">:=</span> <span class="nf">sload</span><span class="p">(</span><span class="n">a_2</span><span class="p">)</span>
+    <span class="nf">sstore</span><span class="p">(</span><span class="n">a_3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Elbette, bir atamanın gereksiz olup olmadığını belirlemenin karmaşık kısımları,
+kontrol akışının birleştirilmesiyle bağlantılıdır.</p>
+<p>Bileşen ayrıntılı olarak aşağıdaki gibi çalışır:</p>
+<p>AST iki kez taranır: bilgi toplama adımında ve asıl kaldırma adımında. Bilgi toplama
+sırasında, atama ifadelerinden “unused”, “undecided” ve “used” olmak üzere üç duruma
+yönelik bir eşleştirme tutarız, bu da atanan değerin daha sonra değişkene yapılan
+bir referans tarafından kullanılıp kullanılmayacağını gösterir.</p>
+<p>Bir atama işlemi gerçekleştirildiğinde, “undecided” durumdaki eşleştirmeye eklenir
+(aşağıdaki for döngüleriyle ilgili açıklamaya bakın) ardından aynı değişkene yapılan
+ve hala “kararsız” durumda olan diğer tüm atamalar “undecided” olarak değiştirilir.
+Bir değişkene referans verildiği zaman, o değişkene yapılan ve hala “unused” durumda
+olan tüm atamaların durumu “undecided” olarak değiştirilir.</p>
+<p>Kontrol akışının bölündüğü noktalarda, eşleştirmenin bir kopyası her bir kola(branch)
+aktarılır. Kontrol akışının birleştiği noktalarda, iki koldan gelen iki eşleme aşağıdaki
+şekilde birleştirilir: Ve ayrıca Yalnızca bir eşlemede bulunan veya aynı duruma sahip
+olan ifadeler değiştirilmeden kullanılır. Çakışan İfade değerleri de aşağıdaki şekilde
+çözümlenir:</p>
+<ul class="simple">
+<li><p>“unused”, “undecided” -&gt; “undecided”</p></li>
+<li><p>“unused”, “used” -&gt; “used”</p></li>
+<li><p>“undecided, “used” -&gt; “used”</p></li>
+</ul>
+<p>For-döngüleri açısından koşul, gövde ve son bölüm, koşulda birleşen kontrol akışı dikkate
+alınarak iki kez kontrol edilir. Başka bir ifadeyle, temel olarak üç kontrol akış yolu
+oluşturulur: Döngünün sıfır çalıştırılması, tek çalıştırılması ve ardından iki kez
+çalıştırılması ve sonunda birleştirilmesi.</p>
+<p>Üçüncü bir çalıştırma ya da daha fazlasını simüle etmek gereksizdir, bu da şekilde
+olduğu biçimde anlaşılabilir:</p>
+<p>Yinelemenin başlangıcındaki bir atama durumu, deterministik olarak yinelemenin sonunda
+o atamanın bir durumuyla sonuçlanacaktır. Bu durum eşleme fonksiyonu <code class="docutils literal notranslate"><span class="pre">f</span></code> olarak
+adlandırılsın. Yukarıda açıklandığı gibi <code class="docutils literal notranslate"><span class="pre">unused</span></code>, <code class="docutils literal notranslate"><span class="pre">undecided</span></code> ve <code class="docutils literal notranslate"><span class="pre">used</span></code> üç
+farklı durum kombinasyonu, <code class="docutils literal notranslate"><span class="pre">unused</span> <span class="pre">=</span> <span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">undecided</span> <span class="pre">=</span> <span class="pre">1</span></code> ve <code class="docutils literal notranslate"><span class="pre">used</span> <span class="pre">=</span> <span class="pre">2</span></code> olan
+<code class="docutils literal notranslate"><span class="pre">max</span></code> operasyondur.</p>
+<p>Doğru yol döngüden</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>max(s, f(s), f(f(s)), f(f(f(s))), ...)
+</pre></div>
+</div>
+<p>sonra hesaplamak olacaktır. <code class="docutils literal notranslate"><span class="pre">f</span></code> sadece üç farklı değer aralığına sahip olduğundan,
+iterasyon en fazla üç iterasyondan sonra bir döngüye ulaşmalıdır ve bu nedenle
+<code class="docutils literal notranslate"><span class="pre">f(f(f(s)))</span></code> <code class="docutils literal notranslate"><span class="pre">s</span></code>, <code class="docutils literal notranslate"><span class="pre">f(s)</span></code> veya <code class="docutils literal notranslate"><span class="pre">f(f(s))</span></code> değerlerinden birine eşit olmalıdır
+ve böylece</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>max(s, f(s), f(f(s))) = max(s, f(s), f(f(s)), f(f(f(s))), ...).
+</pre></div>
+</div>
+<p>Özetle, döngüyü en fazla iki kez çalıştırmak yeterlidir çünkü sadece üç farklı durum vardır.</p>
+<p>“Varsayılan” duruma sahip switch ifadeleri için switch’i atlayan bir kontrol akışı parçası yoktur.</p>
+<p>Bir değişken kapsam dışına çıktığında, değişken bir fonksiyonun geri dönüş parametresi olmadığı
+sürece, hala “undecided” durumundaki tüm ifadeler “unused” olarak değiştirilir - bu durumda durum “used” olarak değişir.</p>
+<p>İkinci çaprazlamada, “unused” durumunda olan tüm atamalar kaldırılır.</p>
+<p>Bu adım genellikle SSA dönüşümünden hemen sonra çalıştırılarak pseudo-SSA’nın oluşturulması tamamlanır.</p>
+</section>
+</section>
+<section id="araclar">
+<h3>Araçlar<a class="headerlink" href="#araclar" title="Permalink to this heading"></a></h3>
+<section id="tasinabilirlik-movability">
+<h4>Taşınabilirlik(Movability)<a class="headerlink" href="#tasinabilirlik-movability" title="Permalink to this heading"></a></h4>
+<p>Taşınabilirlik(Movability) bir ifadenin özelliğidir. Kabaca, ifadenin yan etkisiz olduğu ve
+değerlendirmesinin yalnızca değişkenlerin değerlerine ve ortamın çağrı sabit
+durumuna bağlı olduğu anlamına gelir. Çoğu ifade taşınabilirdir. Aşağıdaki parçalar
+bir ifadeyi taşınamaz yapar:</p>
+<ul class="simple">
+<li><p>fonksiyon çağrıları (eğer fonksiyondaki tüm ifadeler taşınabilirse gelecekte gevşetilebilir)</p></li>
+<li><p>yan etkileri olan (olabilen) işlem kodları (<code class="docutils literal notranslate"><span class="pre">call</span></code> veya <code class="docutils literal notranslate"><span class="pre">selfdestruct</span></code> gibi)</p></li>
+<li><p>bellek, depolama veya harici durum bilgilerini okuyan veya yazan işlem kodları</p></li>
+<li><p>geçerli PC’ye, bellek boyutuna veya geri dönen veri boyutuna bağlı olan işlem kodları</p></li>
+</ul>
+</section>
+<section id="dataflowanalyzer">
+<h4>DataflowAnalyzer<a class="headerlink" href="#dataflowanalyzer" title="Permalink to this heading"></a></h4>
+<p>Dataflow Analyzer kendi başına bir optimizer adımı değildir ancak diğer bileşenler
+tarafından bir araç olarak kullanılır. AST’de gezinirken, bu değer hareketli bir
+ifade olduğu sürece her değişkenin mevcut değerini izler. O anda her bir diğer
+değişkene atanmış olan ifadenin parçası olan değişkenleri kaydeder. Bir <code class="docutils literal notranslate"><span class="pre">a</span></code> değişkenine
+yapılan her atamada, <code class="docutils literal notranslate"><span class="pre">a</span></code> değişkeninin saklanan mevcut değeri güncellenir ve <code class="docutils literal notranslate"><span class="pre">a</span></code>
+değişkeni <code class="docutils literal notranslate"><span class="pre">b</span></code> için saklanan ifadenin bir parçası olduğunda <code class="docutils literal notranslate"><span class="pre">b</span></code> değişkeninin
+saklanan tüm değerleri silinir.</p>
+<p>Kontrol akışı birleşimlerinde, değişkenler hakkındaki bilgiler, kontrol akışı
+yollarından herhangi birinde atanmışlarsa veya atanacaklarsa temizlenir. Örneğin,
+bir for döngüsüne girildiğinde, gövde veya son blok sırasında atanacak tüm değişkenler
+temizlenir.</p>
+</section>
+</section>
+<section id="ifade-olcekli-basitlestirmeler-expression-scale-simplifications">
+<h3>İfade-Ölçekli Basitleştirmeler (Expression-Scale Simplifications)<a class="headerlink" href="#ifade-olcekli-basitlestirmeler-expression-scale-simplifications" title="Permalink to this heading"></a></h3>
+<p>Bu sadeleştirme geçişleri ifadeleri değiştirir ve onları eşdeğer ve muhtemelen
+daha basit ifadelerle değiştirir.</p>
+<section id="commonsubexpressioneliminator">
+<span id="common-subexpression-eliminator"></span><h4>CommonSubexpressionEliminator<a class="headerlink" href="#commonsubexpressioneliminator" title="Permalink to this heading"></a></h4>
+<p>Bu adım Dataflow Analyzer’ı kullanır ve bir değişkenin mevcut değeriyle sözdizimsel
+olarak eşleşen alt ifadeleri o değişkene bir referans yoluyla değiştirir. Bu bir
+eşdeğerlik dönüşümüdür çünkü bu tür alt ifadelerin taşınabilir olması gerekir.</p>
+<p>Kendileri tanımlayıcı olan tüm alt ifadeler, değer bir tanımlayıcıysa mevcut değerleriyle
+değiştirilir.</p>
+<p>Yukarıdaki iki kuralın kombinasyonu, yerel değer numaralandırmasının hesaplanmasına
+izin verir; bu da iki değişken aynı değere sahipse, bunlardan birinin her zaman
+kullanılmayacağı anlamına gelir. Unused Pruner veya Redundant Assign Eliminator
+daha sonra bu tür değişkenleri tamamen ortadan kaldırabilecektir.</p>
+<p>Bu adım özellikle ifade ayırıcı çalıştırıldığında etkilidir. Kod pseudo-SSA formundaysa,
+değişkenlerin değerleri daha uzun bir süre için mevcuttur ve bu nedenle ifadelerin
+değiştirilebilir olma şansı daha yüksektir.</p>
+<p>İfade basitleştirici daha iyi değiştirmeler gerçekleştirebilecektir eğer ortak
+alt ifade giderici kendisinden hemen önce çalıştırılmışsa.</p>
+</section>
+<section id="ifade-basitlestirici-expression-simplifier">
+<span id="expression-simplifier"></span><h4>İfade Basitleştirici (Expression Simplifier)<a class="headerlink" href="#ifade-basitlestirici-expression-simplifier" title="Permalink to this heading"></a></h4>
+<p>İfade Basitleştirici, Dataflow Analyzer’ı kullanarak kodu basitleştirmek için
+<code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">+</span> <span class="pre">0</span> <span class="pre">-&gt;</span> <span class="pre">X</span></code> gibi ifadeler üzerinde bir denklik dönüşümleri listesi kullanmaktadır.</p>
+<p>Her alt ifadede <code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">+</span> <span class="pre">0</span></code> gibi kalıpları eşleştirmeye çalışır. Eşleştirme prosedürü
+sırasında, kod pseudo-SSA formunda olsa bile daha derin iç içe geçmiş kalıpları
+eşleştirebilmek için değişkenleri o anda atanmış ifadelerine göre çözümler.</p>
+<p><code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">-</span> <span class="pre">X</span> <span class="pre">-&gt;</span> <span class="pre">0</span></code> gibi bazı kalıplar yalnızca <code class="docutils literal notranslate"><span class="pre">X</span></code> ifadesi taşınabilir olduğu sürece
+uygulanabilir, çünkü aksi takdirde potansiyel yan etkilerini ortadan kaldırır.
+Değişken referansları, mevcut değerleri olmasa bile her zaman taşınabilir olduğundan,
+İfade Basitleştirici bölünmüş veya pseudo-SSA formunda yine daha etkilidir.</p>
+</section>
+<section id="literalrematerialiser">
+<span id="literal-rematerialiser"></span><h4>LiteralRematerialiser<a class="headerlink" href="#literalrematerialiser" title="Permalink to this heading"></a></h4>
+<p>Belgelenmek üzere…</p>
+</section>
+<section id="loadresolver">
+<span id="load-resolver"></span><h4>LoadResolver<a class="headerlink" href="#loadresolver" title="Permalink to this heading"></a></h4>
+<p>Eğer biliniyorsa, <code class="docutils literal notranslate"><span class="pre">sload(x)</span></code> ve <code class="docutils literal notranslate"><span class="pre">mload(x)</span></code> tipindeki ifadeleri o anda bellekte
+depolanan değerle değiştiren optimizasyon aşamasıdır.</p>
+<p>Kod SSA formundaysa en iyi şekilde çalışır.</p>
+<p>Prerequisite: Disambiguator, ForLoopInitRewriter.</p>
+</section>
+<section id="reasoningbasedsimplifier">
+<span id="reasoning-based-simplifier"></span><h4>ReasoningBasedSimplifier<a class="headerlink" href="#reasoningbasedsimplifier" title="Permalink to this heading"></a></h4>
+<p>Bu optimizer, <code class="docutils literal notranslate"><span class="pre">if</span></code> koşullarının sabit olup olmadığını kontrol etmek için SMT çözücülerini kullanır.</p>
+<ul class="simple">
+<li><p>Eğer <code class="docutils literal notranslate"><span class="pre">constraints</span> <span class="pre">AND</span> <span class="pre">condition</span></code> UNSAT ise, koşul hiçbir zaman doğru değildir ve tüm gövde kaldırılabilir.</p></li>
+<li><p>Eğer <code class="docutils literal notranslate"><span class="pre">constraints</span> <span class="pre">AND</span> <span class="pre">NOT</span> <span class="pre">condition</span></code> UNSAT ise, koşul her zaman doğrudur ve <code class="docutils literal notranslate"><span class="pre">1</span></code> ile değiştirilebilir.</p></li>
+</ul>
+<p>Yukarıdaki basitleştirmeler yalnızca koşulun hareketli olması durumunda uygulanabilir.</p>
+<p>Yalnızca EVM diyalektinde etkilidir, ancak diğer diyalektlerde kullanımı güvenlidir.</p>
+<p>Prerequisite: Disambiguator, SSATransform.</p>
+</section>
+</section>
+<section id="ifade-olcegindeki-basitlestirmeler-statement-scale-simplifications">
+<h3>İfade Ölçeğindeki Basitleştirmeler (Statement-Scale Simplifications)<a class="headerlink" href="#ifade-olcegindeki-basitlestirmeler-statement-scale-simplifications" title="Permalink to this heading"></a></h3>
+<section id="circularreferencespruner">
+<span id="circular-reference-pruner"></span><h4>CircularReferencesPruner<a class="headerlink" href="#circularreferencespruner" title="Permalink to this heading"></a></h4>
+<p>Bu aşama, birbirini çağıran ancak dışarıdan veya en dış bağlamdan referans verilmeyen
+fonksiyonları kaldırır.</p>
+</section>
+<section id="conditionalsimplifier">
+<span id="conditional-simplifier"></span><h4>ConditionalSimplifier<a class="headerlink" href="#conditionalsimplifier" title="Permalink to this heading"></a></h4>
+<p>Koşullu Basitleştirici(ConditionalSimplifier), değer kontrol akışından itibaren belirlenebiliyorsa koşul
+değişikliklerine atamalar ekler.</p>
+<p>SSA formunu yok eder.</p>
+<p>Şu anda, bu araç çok sınırlıdır, çünkü henüz boolean değişken türleri için desteğimiz
+yoktur. Koşullar yalnızca ifadelerin sıfırdan farklı olup olmadığını kontrol ettiğinden,
+belirli bir değer atayamayız.</p>
+<p>Mevcut özellikler:</p>
+<ul class="simple">
+<li><p>switch cases: insert “&lt;condition&gt; := &lt;caseLabel&gt;”</p></li>
+<li><p>kontrol akışını sonlandıran if ifadesinden sonra “&lt;condition&gt; := 0” ekleyin</p></li>
+</ul>
+<p>Future features:</p>
+<ul class="simple">
+<li><p>allow replacements by “1”</p></li>
+<li><p>take termination of user-defined functions into account</p></li>
+</ul>
+<p>En iyi SSA formu ile ve ölü kod kaldırma işlemi daha önce çalıştırılmışsa çalışır.</p>
+<p>Ön koşul: Anlam Ayrıştırıcı.</p>
+</section>
+<section id="conditionalunsimplifier">
+<span id="conditional-unsimplifier"></span><h4>ConditionalUnsimplifier<a class="headerlink" href="#conditionalunsimplifier" title="Permalink to this heading"></a></h4>
+<p>Koşullu Basitleştirici’nin(ConditionalSimplifier) tersi.</p>
+</section>
+<section id="controlflowsimplifier">
+<span id="control-flow-simplifier"></span><h4>ControlFlowSimplifier<a class="headerlink" href="#controlflowsimplifier" title="Permalink to this heading"></a></h4>
+<p>Çeşitli kontrol akışı yapılarını basitleştirir:</p>
+<ul class="simple">
+<li><p>if’i boş gövde ile pop(koşul) ile değiştirin</p></li>
+<li><p>boş varsayılan anahtar durumunu kaldırın</p></li>
+<li><p>varsayılan durum yoksa boş anahtar durumunu kaldırın</p></li>
+<li><p>switch’i no cases ile pop(expression) ile değiştirin</p></li>
+<li><p>tek durumlu anahtarı if’e dönüştürün</p></li>
+<li><p>switch’i pop(expression) ve body ile yalnızca varsayılan durumla değiştirin</p></li>
+<li><p>switch’i eşleşen case gövdesine sahip const expr ile değiştirin</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">for</span></code> yerine kontrol akışını sonlandıran ve diğer break/continue olmadan <code class="docutils literal notranslate"><span class="pre">if</span></code> yazın</p></li>
+<li><p>bir fonksiyonun sonundaki <code class="docutils literal notranslate"><span class="pre">leave</span></code> ifadesini kaldırın.</p></li>
+</ul>
+<p>Bu işlemlerin hiçbiri veri akışına bağlı değildir. StructuralSimplifier, veri akışına
+bağlı olan benzer görevleri yerine getirir.</p>
+<p>ControlFlowSimplifier, çaprazlama sırasında <code class="docutils literal notranslate"><span class="pre">break</span></code> ve <code class="docutils literal notranslate"><span class="pre">continue</span></code> deyimlerinin
+varlığını veya yokluğunu kaydeder.</p>
+<p>Ön koşul: Disambiguator, FunctionHoister, ForLoopInitRewriter.
+Önemli: EVM işlem kodlarını tanıtır ve bu nedenle şimdilik yalnızca EVM kodu üzerinde
+kullanılabilir.</p>
+</section>
+<section id="deadcodeeliminator">
+<span id="dead-code-eliminator"></span><h4>DeadCodeEliminator<a class="headerlink" href="#deadcodeeliminator" title="Permalink to this heading"></a></h4>
+<p>Bu optimizasyon aşaması ulaşılamayan kodu kaldırır.</p>
+<p>Ulaşılamayan kod, bir blok içinde öncesinde leave, return, invalid, break, continue,
+selfdestruct veya revert bulunan kodlardır.</p>
+<p>Fonksiyon tanımları, daha önceki kodlar tarafından çağrılabilecekleri için korunur
+ve bu nedenle ulaşılabilir olarak kabul edilir.</p>
+<p>Bir for döngüsünün init(başlangıç) bloğunda bildirilen değişkenlerin kapsamı döngü
+gövdesine genişletildiğinden, ForLoopInitRewriter’ın bu adımdan önce çalışmasını gerektirir.</p>
+<p>Önkoşul: ForLoopInitRewriter, Function Hoister, Function Grouper</p>
+</section>
+<section id="equalstoreeliminator">
+<span id="equal-store-eliminator"></span><h4>EqualStoreEliminator<a class="headerlink" href="#equalstoreeliminator" title="Permalink to this heading"></a></h4>
+<p>Bu adım, <code class="docutils literal notranslate"><span class="pre">mstore(k,</span> <span class="pre">v)</span></code> ve <code class="docutils literal notranslate"><span class="pre">sstore(k,</span> <span class="pre">v)</span></code> çağrılarını, daha önce <code class="docutils literal notranslate"><span class="pre">mstore(k,</span> <span class="pre">v)</span></code>
+/ <code class="docutils literal notranslate"><span class="pre">sstore(k,</span> <span class="pre">v)</span></code> çağrısı yapılmışsa, arada başka bir depo yoksa ve <code class="docutils literal notranslate"><span class="pre">k</span></code> ve <code class="docutils literal notranslate"><span class="pre">v</span></code>
+değerleri değişmemişse kaldırır.</p>
+<p>Bu basit adım, SSA dönüşümü ve Common Subexpression Eliminator’den sonra çalıştırılırsa
+etkili olur, çünkü SSA değişkenlerin değişmeyeceğinden emin olur ve Common Subexpression
+Eliminator, değerin aynı olduğu biliniyorsa tam olarak aynı değişkeni yeniden kullanır.</p>
+<p>Önkoşullar: Disambiguator, ForLoopInitRewriter</p>
+</section>
+<section id="unusedpruner">
+<span id="unused-pruner"></span><h4>UnusedPruner<a class="headerlink" href="#unusedpruner" title="Permalink to this heading"></a></h4>
+<p>Bu adım, hiçbir zaman başvurulmayan tüm fonksiyonların tanımlarını kaldırır.</p>
+<p>Ayrıca, hiçbir zaman başvurulmayan değişkenlerin tanımlarını da kaldırır. Tanımlama
+taşınabilir olmayan bir değer atarsa, ifade korunur ancak değeri atılır.</p>
+<p>Tüm taşınabilir ifade ifadeleri (atanmamış ifadeler) kaldırılır.</p>
+</section>
+<section id="structuralsimplifier">
+<span id="structural-simplifier"></span><h4>StructuralSimplifier<a class="headerlink" href="#structuralsimplifier" title="Permalink to this heading"></a></h4>
+<p>Bu, yapısal düzeyde çeşitli basitleştirmeler gerçekleştiren genel bir adımdır:</p>
+<ul class="simple">
+<li><p>if ifadesini boş gövde ile <code class="docutils literal notranslate"><span class="pre">pop(koşul)</span></code> ile değiştirin</p></li>
+<li><p>if ifadesini gövdesine göre doğru koşulla değiştirin</p></li>
+<li><p>if deyimini yanlış koşulla kaldırın</p></li>
+<li><p>tek durumlu anahtarı if’e dönüştürün</p></li>
+<li><p>switch’i sadece varsayılan durumla <code class="docutils literal notranslate"><span class="pre">pop(expression)</span></code> ve gövde ile değiştirin</p></li>
+<li><p>case gövdesini eşleştirerek switch’i gerçek ifade ile değiştirin</p></li>
+<li><p>yanlış koşullu for döngüsünü başlatma kısmı ile değiştirin</p></li>
+</ul>
+<p>Bu bileşen Dataflow Analyzer’ı kullanır.</p>
+</section>
+<section id="blockflattener">
+<span id="block-flattener"></span><h4>BlockFlattener<a class="headerlink" href="#blockflattener" title="Permalink to this heading"></a></h4>
+<p>Bu aşama, iç bloktaki ifadeyi dış bloktaki uygun yere yerleştirerek iç içe geçmiş
+blokları ortadan kaldırır. FunctionGrouper’a bağlıdır ve FunctionGrouper tarafından
+üretilen formu korumak için en dıştaki bloğu düzleştirmez.</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ewogICAgewogICAgICAgIGxldCB4IDo9IDIKICAgICAgICB7CiAgICAgICAgICAgIGxldCB5IDo9IDMKICAgICAgICAgICAgbXN0b3JlKHgsIHkpCiAgICAgICAgfQogICAgfQp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="p">{</span>
+        <span class="ow">let</span> <span class="nv">x</span> <span class="o">:=</span> <span class="mi">2</span>
+        <span class="p">{</span>
+            <span class="ow">let</span> <span class="nv">y</span> <span class="o">:=</span> <span class="mi">3</span>
+            <span class="nf">mstore</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>dönüştürülür</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ewogICAgewogICAgICAgIGxldCB4IDo9IDIKICAgICAgICBsZXQgeSA6PSAzCiAgICAgICAgbXN0b3JlKHgsIHkpCiAgICB9Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="p">{</span>
+        <span class="ow">let</span> <span class="nv">x</span> <span class="o">:=</span> <span class="mi">2</span>
+        <span class="ow">let</span> <span class="nv">y</span> <span class="o">:=</span> <span class="mi">3</span>
+        <span class="nf">mstore</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Kodda belirsizlikler giderildiği sürece bu bir soruna yol açmaz çünkü değişkenlerin
+kapsamları yalnızca büyüyebilir.</p>
+</section>
+<section id="loopinvariantcodemotion">
+<span id="loop-invariant-code-motion"></span><h4>LoopInvariantCodeMotion<a class="headerlink" href="#loopinvariantcodemotion" title="Permalink to this heading"></a></h4>
+<p>Bu optimizasyon, taşınabilir SSA değişken tanımlamalarını döngünün dışına taşır.</p>
+<p>Yalnızca bir döngünün gövdesindeki veya son bloğundaki en üst düzeydeki ifadeler
+dikkate alınır, yani koşullu branşların(branch) içindeki değişken tanımlamaları
+döngünün dışına taşınmaz.</p>
+<p>Gereksinimler:</p>
+<ul class="simple">
+<li><p>Disambiguator, ForLoopInitRewriter ve FunctionHoister önceden çalıştırılmalıdır.</p></li>
+<li><p>İfade ayırıcı ve SSA dönüşümü daha iyi sonuç elde etmek için önceden çalıştırılmalıdır.</p></li>
+</ul>
+</section>
+</section>
+<section id="fonksiyon-duzeyinde-optimizasyonlar">
+<h3>Fonksiyon Düzeyinde Optimizasyonlar<a class="headerlink" href="#fonksiyon-duzeyinde-optimizasyonlar" title="Permalink to this heading"></a></h3>
+<section id="functionspecializer">
+<span id="function-specializer"></span><h4>FunctionSpecializer<a class="headerlink" href="#functionspecializer" title="Permalink to this heading"></a></h4>
+<p>Bu adım, fonksiyonu gerçek argümanlarıyla özelleştirir.</p>
+<p>Bir fonksiyon, örneğin <code class="docutils literal notranslate"><span class="pre">fonksiyon</span> <span class="pre">f(a,</span> <span class="pre">b)</span> <span class="pre">{</span> <span class="pre">sstore</span> <span class="pre">(a,</span> <span class="pre">b)</span> <span class="pre">}</span></code>, literal argümanlarla
+çağrılırsa, örneğin <code class="docutils literal notranslate"><span class="pre">f(x,</span> <span class="pre">5)</span></code>, burada <code class="docutils literal notranslate"><span class="pre">x</span></code> bir tanımlayıcıdır, sadece bir argüman
+alan yeni bir <code class="docutils literal notranslate"><span class="pre">f_1</span></code> fonksiyonu oluşturularak özelleştirilebilir, yani,</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ZnVuY3Rpb24gZl8xKGFfMSkgewogICAgbGV0IGJfMSA6PSA1CiAgICBzc3RvcmUoYV8xLCBiXzEpCn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">f_1</span><span class="p">(</span><span class="n">a_1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="ow">let</span> <span class="nv">b_1</span> <span class="o">:=</span> <span class="mi">5</span>
+    <span class="nf">sstore</span><span class="p">(</span><span class="n">a_1</span><span class="p">,</span> <span class="n">b_1</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Diğer optimizasyon adımları fonksiyonda daha fazla basitleştirme yapabilecektir.
+Optimizasyon adımı esas olarak inline edilmeyecek fonksiyonlar için kullanışlıdır.</p>
+<p>Önkoşullar: Disambiguator, FunctionHoister</p>
+<p>LiteralRematerialiser, doğruluk için gerekli olmasa da bir ön koşul olarak önerilir.</p>
+</section>
+<section id="unusedfunctionparameterpruner">
+<span id="unused-function-parameter-pruner"></span><h4>UnusedFunctionParameterPruner<a class="headerlink" href="#unusedfunctionparameterpruner" title="Permalink to this heading"></a></h4>
+<p>Bu adım, bir fonksiyondaki kullanılmayan parametreleri kaldırır.</p>
+<p>Eğer bir parametre kullanılmıyorsa, <code class="docutils literal notranslate"><span class="pre">fonksiyon</span> <span class="pre">f(a,b,c)</span> <span class="pre">-&gt;</span> <span class="pre">x,</span> <span class="pre">y</span> <span class="pre">{</span> <span class="pre">x</span> <span class="pre">:=</span> <span class="pre">div(a,b)</span> <span class="pre">}</span></code>
+içindeki <code class="docutils literal notranslate"><span class="pre">c</span></code> ve <code class="docutils literal notranslate"><span class="pre">y</span></code> gibi, parametreyi kaldırırız ve aşağıdaki gibi yeni bir “bağlama”
+fonksiyonu oluştururuz:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=ZnVuY3Rpb24gZihhLGIpIC0+IHggeyB4IDo9IGRpdihhLGIpIH0KZnVuY3Rpb24gZjIoYSxiLGMpIC0+IHgsIHkgeyB4IDo9IGYoYSxiKSB9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="p">{</span> <span class="n">x</span> <span class="o">:=</span> <span class="nf">div</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span> <span class="p">}</span>
+<span class="k">function</span> <span class="n">f2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="p">{</span> <span class="n">x</span> <span class="o">:=</span> <span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>ve <code class="docutils literal notranslate"><span class="pre">f</span></code> öğesine yapılan tüm referansları <code class="docutils literal notranslate"><span class="pre">f2</span></code> ile değiştirmelisiniz. Tüm <code class="docutils literal notranslate"><span class="pre">f2</span></code>
+referanslarının <code class="docutils literal notranslate"><span class="pre">f</span></code> ile değiştirildiğinden emin olmak için inliner daha sonra çalıştırılmalıdır.</p>
+<p>Önkoşullar: Disambiguator, FunctionHoister, LiteralRematerialiser.</p>
+<p>LiteralRematerialiser adımı doğruluk için gerekli değildir. Aşağıdaki gibi durumlarla
+başa çıkmaya yardımcı olur: <code class="docutils literal notranslate"><span class="pre">fonksiyon</span> <span class="pre">f(x)</span> <span class="pre">-&gt;</span> <span class="pre">y</span> <span class="pre">{</span> <span class="pre">revert(y,</span> <span class="pre">y}</span> <span class="pre">}</span></code> burada <code class="docutils literal notranslate"><span class="pre">y</span></code>
+değişmezi <code class="docutils literal notranslate"><span class="pre">0</span></code> değeri ile değiştirilecek ve fonksiyonu yeniden yazmamıza izin verecektir.</p>
+</section>
+<section id="equivalentfunctioncombiner">
+<span id="equivalent-function-combiner"></span><h4>EquivalentFunctionCombiner<a class="headerlink" href="#equivalentfunctioncombiner" title="Permalink to this heading"></a></h4>
+<p>İki fonksiyon sözdizimsel(syntactically) olarak eşdeğerse, değişkenlerin yeniden
+adlandırılmasına izin verirken herhangi bir yeniden sıralamaya izin vermiyorsa,
+fonksiyonlardan birine yapılan herhangi bir referans diğeriyle değiştirilir.</p>
+<p>Fonksiyonun asıl kaldırılma işlemi Unused Pruner tarafından gerçekleştirilir.</p>
+</section>
+</section>
+<section id="fonksiyon-inlining-function-inlining">
+<h3>Fonksiyon Inlining (Function Inlining)<a class="headerlink" href="#fonksiyon-inlining-function-inlining" title="Permalink to this heading"></a></h3>
+<section id="expressioninliner">
+<span id="expression-inliner"></span><h4>ExpressionInliner<a class="headerlink" href="#expressioninliner" title="Permalink to this heading"></a></h4>
+<p>Optimize edicinin bu bileşeni, fonksiyonel ifadeler içinde inline edilebilen fonksiyonları,
+yani tek bir değer döndüren fonksiyonları inline ederek kısıtlı fonksiyon inliningi
+gerçekleştirir:</p>
+<ul class="simple">
+<li><p>tek bir değer döndüren.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">r</span> <span class="pre">:=</span> <span class="pre">&lt;fonksiyonel</span> <span class="pre">ifade&gt;</span></code> gibi bir gövdeye sahip olan.</p></li>
+<li><p>ne kendilerine ne de sağ taraftaki <code class="docutils literal notranslate"><span class="pre">r</span></code> ye referans verirler.</p></li>
+</ul>
+<p>Ayrıca, tüm parametreler için aşağıdakilerin tümünün doğru olması gerekir:</p>
+<ul class="simple">
+<li><p>Bağımsız değişken taşınabilir.</p></li>
+<li><p>Parametreye ya fonksiyon gövdesinde iki kereden az referans verilir ya da argüman oldukça ucuzdur (“cost” en fazla 1, 0xff’ye kadar bir sabit gibi).</p></li>
+</ul>
+<p>Örnek: Inline edilecek fonksiyon <code class="docutils literal notranslate"><span class="pre">function</span> <span class="pre">f(...)</span> <span class="pre">-&gt;</span> <span class="pre">r</span> <span class="pre">{</span> <span class="pre">r</span> <span class="pre">:=</span> <span class="pre">E</span> <span class="pre">}</span></code> biçimindedir;
+burada <code class="docutils literal notranslate"><span class="pre">E</span></code>, <code class="docutils literal notranslate"><span class="pre">r</span></code> ye referans vermeyen bir ifadedir ve fonksiyon çağrısındaki tüm
+argümanlar taşınabilir ifadelerdir.</p>
+<p>Bu inlining işleminin sonucu her zaman tek bir ifadedir.</p>
+<p>Bu bileşen yalnızca benzersiz adlara sahip kaynaklarda kullanılabilir.</p>
+</section>
+<section id="fullinliner">
+<span id="full-inliner"></span><h4>FullInliner<a class="headerlink" href="#fullinliner" title="Permalink to this heading"></a></h4>
+<p>Full Inliner, belirli fonksiyonların belirli çağrılarını fonksiyonun gövdesi ile
+değiştirir. Bu çoğu durumda çok yararlı değildir, çünkü kod boyutunu artırır ayrıca
+bir faydası da yoktur. Genellikle kod çok pahalıdır ve daha verimli bir kod yerine
+daha kısa bir kodu tercih ederiz. Yine de aynı durumlarda, bir fonksiyonun inlining
+işleminin sonraki optimizer adımları üzerinde olumlu etkileri olabilir. Örneğin,
+fonksiyon argümanlarından birinin sabit olması durumunda durum böyledir.</p>
+<p>Inlining sırasında, fonksiyon çağrısının inline edilip edilmeyeceğini söylemek için
+bir heuristic kullanılır. Mevcut heuristic, çağrılan fonksiyon küçük olmadığı sürece
+“büyük” fonksiyonları inline etmez. Sadece bir kez kullanılan fonksiyonların yanı
+sıra orta büyüklükteki fonksiyonlar da inline edilirken, sabit argümanlara sahip
+fonksiyon çağrıları biraz daha büyük fonksiyonlara izin verir.</p>
+<p>Gelecekte, bir fonksiyonu hemen inline etmek yerine sadece uzmanlaştıran bir geri
+izleme bileşeni ekleyebiliriz, bu da belirli bir parametrenin her zaman bir sabitle
+değiştirildiği fonksiyonun bir kopyasının oluşturulacağı anlamına gelir. Bundan sonra,
+optimize ediciyi bu özelleştirilmiş fonksiyon üzerinde çalıştırabiliriz. Eğer büyük
+kazançlar elde edilirse, özelleştirilmiş fonksiyon korunur, aksi takdirde orijinal
+fonksiyon kullanılır.</p>
+</section>
+</section>
+<section id="temizlik-cleanup">
+<h3>Temizlik (Cleanup)<a class="headerlink" href="#temizlik-cleanup" title="Permalink to this heading"></a></h3>
+<p>Temizleme, optimizer çalışmasının sonunda gerçekleştirilir. Bölünmüş ifadeleri
+tekrar derin iç içe geçmiş ifadelerle birleştirmeye çalışır ve ayrıca değişkenleri
+mümkün olduğunca ortadan kaldırarak yığın(stack) makineleri için “derlenebilirliği” iyileştirir.</p>
+<section id="expressionjoiner">
+<span id="expression-joiner"></span><h4>ExpressionJoiner<a class="headerlink" href="#expressionjoiner" title="Permalink to this heading"></a></h4>
+<p>Bu işlem, ifade ayırıcının(expression splitter) tersidir. Tam olarak bir referansı
+olan bir dizi değişken tanımlamasını karmaşık bir ifadeye dönüştürür. Bu aşama,
+fonksiyon çağrılarının ve işlem kodu yürütmelerinin sırasını tamamen korur. İşlem
+kodlarının değişebilirliğine ilişkin herhangi bir bilgi kullanmaz; bir değişkenin
+değerini kullanım yerine taşımak herhangi bir işlev çağrısının veya işlem kodu
+yürütmesinin sırasını değiştirecekse, dönüşüm gerçekleştirilmez.</p>
+<p>Bileşenin, bir değişken atamasının atanmış değerini veya birden fazla kez başvurulan
+bir değişkeni taşımayacağını unutmayın.</p>
+<p><code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">x</span> <span class="pre">:=</span> <span class="pre">add(0,</span> <span class="pre">2)</span> <span class="pre">let</span> <span class="pre">y</span> <span class="pre">:=</span> <span class="pre">mul(x,</span> <span class="pre">mload(2))</span></code> kod parçacığı dönüştürülmez, çünkü
+<code class="docutils literal notranslate"><span class="pre">add</span></code> ve <code class="docutils literal notranslate"><span class="pre">mload</span></code> işlem kodlarına yapılan çağrıların sırasının değiştirilmesine
+neden olur - ancak <code class="docutils literal notranslate"><span class="pre">add</span></code> taşınabilir olduğu için bu bir fark yaratmaz.</p>
+<p>İşlem kodlarını bu şekilde yeniden sıralarken, değişken referansları ve literaller
+göz ardı edilir. Bu nedenle, <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">x</span> <span class="pre">:=</span> <span class="pre">add(0,</span> <span class="pre">2)</span> <span class="pre">let</span> <span class="pre">y</span> <span class="pre">:=</span> <span class="pre">mul(x,</span> <span class="pre">3)</span></code> kod parçacığı,
+<code class="docutils literal notranslate"><span class="pre">add</span></code> işlem kodu <code class="docutils literal notranslate"><span class="pre">3</span></code> literalinin değerlendirilmesinden sonra çalıştırılacak
+olsa bile, <code class="docutils literal notranslate"><span class="pre">let</span> <span class="pre">y</span> <span class="pre">:=</span> <span class="pre">mul(add(0,</span> <span class="pre">2),</span> <span class="pre">3)</span></code> olarak dönüştürülür.</p>
+</section>
+<section id="ssareverser">
+<span id="ssa-reverser"></span><h4>SSAReverser<a class="headerlink" href="#ssareverser" title="Permalink to this heading"></a></h4>
+<p>Bu, Common Subexpression Eliminator ve Unused Pruner ile birleştirildiğinde SSA
+dönüşümünün etkilerini tersine çevirmeye yardımcı olan küçük bir adımdır.</p>
+<p>Ürettiğimiz SSA formu EVM ve WebAssembly’de kod üretimi için zararlıdır çünkü çok
+sayıda yerel değişken üretir. Yeni değişken bildirimleri yerine mevcut değişkenleri
+atamalarla yeniden kullanmak daha iyi sonuç verecektir.</p>
+<p>SSA dönüşümleri şu şekilde</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=bGV0IGEgOj0gY2FsbGRhdGFsb2FkKDApCm1zdG9yZShhLCAxKQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="ow">let</span> <span class="nv">a</span> <span class="o">:=</span> <span class="nf">calldataload</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="nf">mstore</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>yeniden yazılır</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=bGV0IGFfMSA6PSBjYWxsZGF0YWxvYWQoMCkKbGV0IGEgOj0gYV8xCm1zdG9yZShhXzEsIDEpCmxldCBhXzIgOj0gY2FsbGRhdGFsb2FkKDB4MjApCmEgOj0gYV8y"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="ow">let</span> <span class="nv">a_1</span> <span class="o">:=</span> <span class="nf">calldataload</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="ow">let</span> <span class="nv">a</span> <span class="o">:=</span> <span class="n">a_1</span>
+<span class="nf">mstore</span><span class="p">(</span><span class="n">a_1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="ow">let</span> <span class="nv">a_2</span> <span class="o">:=</span> <span class="nf">calldataload</span><span class="p">(</span><span class="mh">0x20</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">:=</span> <span class="n">a_2</span>
+</pre></div>
+</div>
+<p>Sorun, <code class="docutils literal notranslate"><span class="pre">a</span></code> değişkenine her başvurulduğunda <code class="docutils literal notranslate"><span class="pre">a</span></code> yerine <code class="docutils literal notranslate"><span class="pre">a_1</span></code> değişkeninin
+kullanılmasıdır. SSA dönüşümü bu formdaki ifadeleri sadece tanımlama ve atamayı
+değiştirerek değiştirir. Yukarıdaki kod parçacığı şu şekle dönüşür</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=yul&amp;version=0.8.15&amp;code=bGV0IGEgOj0gY2FsbGRhdGFsb2FkKDApCmxldCBhXzEgOj0gYQptc3RvcmUoYV8xLCAxKQphIDo9IGNhbGxkYXRhbG9hZCgweDIwKQpsZXQgYV8yIDo9IGE="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-yul notranslate"><div class="highlight"><pre><span></span><span class="ow">let</span> <span class="nv">a</span> <span class="o">:=</span> <span class="nf">calldataload</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="ow">let</span> <span class="nv">a_1</span> <span class="o">:=</span> <span class="n">a</span>
+<span class="nf">mstore</span><span class="p">(</span><span class="n">a_1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">:=</span> <span class="nf">calldataload</span><span class="p">(</span><span class="mh">0x20</span><span class="p">)</span>
+<span class="ow">let</span> <span class="nv">a_2</span> <span class="o">:=</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p>Bu çok basit bir denklik dönüşümüdür, ancak şimdi Common Subexpression Eliminator’ü
+çalıştırdığımızda, <code class="docutils literal notranslate"><span class="pre">a_1</span></code> değişkeninin tüm kullanımlarını <code class="docutils literal notranslate"><span class="pre">a</span></code> ile değiştirecektir
+(<code class="docutils literal notranslate"><span class="pre">a</span></code> yeniden atanana kadar). Unused Pruner daha sonra <code class="docutils literal notranslate"><span class="pre">a_1</span></code> değişkenini tamamen
+ortadan kaldıracak ve böylece SSA dönüşümünü tamamen tersine çevirecektir.</p>
+</section>
+<section id="stackcompressor">
+<span id="stack-compressor"></span><h4>StackCompressor<a class="headerlink" href="#stackcompressor" title="Permalink to this heading"></a></h4>
+<p>Ethereum Sanal Makinesi için kod oluşturmayı zorlaştıran bir sorun, ifade yığınına
+ulaşmak için 16 slotluk katı bir sınır olmasıdır. Bu da aşağı yukarı 16 yerel değişken
+sınırı anlamına gelmektedir. Yığın sıkıştırıcı Yul kodunu alır ve EVM bayt koduna derler.
+Yığın farkı çok büyük olduğunda, bunun hangi fonksiyonda gerçekleştiğini kaydeder.</p>
+<p>Böyle bir soruna neden olan her bir fonksiyon için, değerlerinin maliyetine göre
+sıralanan belirli değişkenleri agresif bir şekilde ortadan kaldırmak için özel bir
+taleple Rematerialiser çağrılır.</p>
+<p>Başarısızlık durumunda, bu prosedür birden çok kez tekrarlanır.</p>
+</section>
+<section id="rematerialiser">
+<span id="id4"></span><h4>Rematerialiser<a class="headerlink" href="#rematerialiser" title="Permalink to this heading"></a></h4>
+<p>Rematerialisation aşaması, değişken referanslarını değişkene en son atanan ifade
+ile değiştirmeye çalışır. Bu elbette yalnızca bu ifadenin değerlendirilmesi nispeten
+daha ucuzsa faydalıdır. Ayrıca, yalnızca ifadenin değeri atama noktası ile kullanım
+noktası arasında değişmediyse anlamsal olarak denktir. Bu aşamanın ana faydası,
+bir değişkenin tamamen ortadan kaldırılmasına yol açarsa yığın yuvalarından tasarruf
+edebilmesidir (aşağıya bakın), ancak ifade çok ucuzsa EVM’de bir DUP işlem kodundan
+da tasarruf edebilir.</p>
+<p>Rematerialiser, her zaman hareketli olan değişkenlerin mevcut değerlerini izlemek
+için Dataflow Analyzer’ı kullanır. Değer çok ucuzsa veya değişkenin ortadan kaldırılması
+açıkça istenmişse, değişken referansı geçerli değeriyle değiştirilir.</p>
+</section>
+<section id="forloopconditionoutofbody">
+<span id="for-loop-condition-out-of-body"></span><h4>ForLoopConditionOutOfBody<a class="headerlink" href="#forloopconditionoutofbody" title="Permalink to this heading"></a></h4>
+<p>ForLoopConditionIntoBody dönüşümünü tersine çevirir.</p>
+<p>Herhangi bir taşınabilir <code class="docutils literal notranslate"><span class="pre">c</span></code> için,</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>for { ... } 1 { ... } {
+if iszero(c) { break }
+...
+}
+</pre></div>
+</div>
+<p>dönüşür</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>for { ... } c { ... } {
+...
+}
+</pre></div>
+</div>
+<p>ve döner</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>for { ... } 1 { ... } {
+if c { break }
+...
+}
+</pre></div>
+</div>
+<p>dönüşür</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>for { ... } iszero(c) { ... } {
+...
+}
+</pre></div>
+</div>
+<p>LiteralRematerialiser bu adımdan önce çalıştırılmalıdır.</p>
+</section>
+</section>
+<section id="webassembly-a-ozgu">
+<h3>WebAssembly’a özgü<a class="headerlink" href="#webassembly-a-ozgu" title="Permalink to this heading"></a></h3>
+<section id="ana-fonksiyon-mainfunction">
+<h4>Ana Fonksiyon(MainFunction)<a class="headerlink" href="#ana-fonksiyon-mainfunction" title="Permalink to this heading"></a></h4>
+<p>En üstteki bloğu, girdisi veya çıktısı olmayan belirli bir ada (“main”) sahip bir
+fonksiyon olarak değiştirir.</p>
+<p>Fonksiyon Gruplayıcısına bağlıdır.</p>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="source_mappings.html" class="btn btn-neutral float-left" title="Kaynak Eşlemesi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../metadata.html" class="btn btn-neutral float-right" title="Sözleşme Meta Verisi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="../credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

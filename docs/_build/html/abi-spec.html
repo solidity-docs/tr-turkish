@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sözleşme ABI Spesifikasyonu &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Solidity v0.5.0 İşleyişi Bozan Değişiklikler" href="050-breaking-changes.html" />
+    <link rel="prev" title="Sözleşme Meta Verisi" href="metadata.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sözleşme ABI Spesifikasyonu</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#temel-tasarim">Temel Tasarım</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#function-selector-function-selector">Function Selector (Function Selector)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#arguman-sifreleme">Argüman Şifreleme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tipler-types">Tipler (Types)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#solidity-yi-abi-tipleriyle-eslestirme">Solidity’yi ABI Tipleriyle Eşleştirme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sifreleme-icin-tasarim-kriterleri">Şifreleme için Tasarım Kriterleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sifrelemenin-formal-spesifikasyonu">Şifrelemenin Formal Spesifikasyonu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fonksiyon-secicisi-ve-arguman-sifrelemesi">Fonksiyon Seçicisi ve Argüman Şifrelemesi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ornekler">Örnekler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dinamik-tiplerin-kullanimi">Dinamik Tiplerin Kullanımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#event-ler">Event’ler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-ler">Error’ler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#json">JSON</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tuple-tiplerinin-kullanilmasi">Tuple tiplerinin kullanılması</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#kati-sifreleme-modu">Katı Şifreleme Modu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#standart-olmayan-paket-modu">Standart Olmayan Paket Modu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#indekslenmis-event-parametrelerinin-sifrelenmesi">İndekslenmiş Event Parametrelerinin Şifrelenmesi</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Sözleşme ABI Spesifikasyonu</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/abi-spec.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sozlesme-abi-spesifikasyonu">
+<span id="abi"></span><span id="index-0"></span><h1>Sözleşme ABI Spesifikasyonu<a class="headerlink" href="#sozlesme-abi-spesifikasyonu" title="Permalink to this heading"></a></h1>
+<section id="temel-tasarim">
+<h2>Temel Tasarım<a class="headerlink" href="#temel-tasarim" title="Permalink to this heading"></a></h2>
+<p>Sözleşme Uygulama Binary Arayüzü (ABI), Ethereum ekosistemindeki sözleşmelerle hem
+blok zinciri dışından hem de sözleşmeler arası etkileşimde bulunmanın standart yoludur.
+Veriler, bu spesifikasyonda açıklandığı gibi türlerine göre kodlanır. Şifreleme kendi
+kendini tanımlamaz ve bu nedenle şifreyi çözmek için bir şema gerekir.</p>
+<p>Bir sözleşmenin arayüz fonksiyonlarının güçlü bir şekilde yazıldığını, derleme zamanında
+bilindiğini ve statik olduğunu varsayıyoruz. Tüm sözleşmelerin, çağırdıkları sözleşmelerin
+arayüz tanımlamalarına derleme zamanında sahip olacağını varsayıyoruz.</p>
+<p>Bu spesifikasyon, arayüzü dinamik olan veya başka bir şekilde yalnızca çalışma zamanında
+bilinen sözleşmeleri ele almaz.</p>
+<span class="target" id="abi-function-selector"></span></section>
+<section id="function-selector-function-selector">
+<span id="index-1"></span><h2>Function Selector (Function Selector)<a class="headerlink" href="#function-selector-function-selector" title="Permalink to this heading"></a></h2>
+<p>Bir fonksiyon çağrısı için çağrı verisinin(call data) ilk dört baytı çağrılacak
+fonksiyonu belirtmektedir. Bu, fonksiyonun imzasının Keccak-256 hash’inin ilk (sol,
+büyük endian’da yüksek dereceden) dört baytıdır. İmza, veri konumu belirteci olmadan
+temel prototipin kanonik ifadesi, yani parametre türlerinin parantezli listesiyle
+birlikte fonksiyon adı olarak tanımlanır. Parametre tipleri tek bir virgülle ayrılır -
+boşluk kullanılmaz.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Bir fonksiyonun geri dönüş tipi bu imzanın bir parçası değildir. ref:<cite>Solidity’nin
+fonksiyon aşırı yüklemesinde(overloading) &lt;overload-function&gt;</cite> dönüş tipleri dikkate
+alınmaz. Bunun nedeni, fonksiyon çağrısı çözümlemesini içerikten bağımsız tutmaktır.
+Ancak <a class="reference internal" href="#abi-json"><span class="std std-ref">JSON ABI</span></a> tanımı hem girdileri hem de çıktıları içerir.</p>
+</div>
+</section>
+<section id="arguman-sifreleme">
+<h2>Argüman Şifreleme<a class="headerlink" href="#arguman-sifreleme" title="Permalink to this heading"></a></h2>
+<p>Beşinci bayttan başlayarak şifrelenmiş tüm argümanları takip eder. Bu şifreleme
+başka yerlerde de kullanılır, örneğin geri dönüş değerleri ve event argümanları,
+fonksiyonu belirten dört bayt olmadan aynı şekilde şifrelenir.</p>
+</section>
+<section id="tipler-types">
+<h2>Tipler (Types)<a class="headerlink" href="#tipler-types" title="Permalink to this heading"></a></h2>
+<p>Aşağıdaki ana tipler mevcuttur:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">uint&lt;M&gt;</span></code>: <code class="docutils literal notranslate"><span class="pre">M</span></code> bitlik işaretsiz tamsayı (unsigned) türü, <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">&lt;</span> <span class="pre">M</span> <span class="pre">&lt;=</span> <span class="pre">256</span></code>, <code class="docutils literal notranslate"><span class="pre">M</span> <span class="pre">%</span> <span class="pre">8</span> <span class="pre">==</span> <span class="pre">0</span></code>. e.g. <code class="docutils literal notranslate"><span class="pre">uint32</span></code>, <code class="docutils literal notranslate"><span class="pre">uint8</span></code>, <code class="docutils literal notranslate"><span class="pre">uint256</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">int&lt;M&gt;</span></code>: <code class="docutils literal notranslate"><span class="pre">M</span></code> bitlik ikiye tamamlayıcı işaretli tamsayı (signed integer) türü, <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">&lt;</span> <span class="pre">M</span> <span class="pre">&lt;=</span> <span class="pre">256</span></code>, <code class="docutils literal notranslate"><span class="pre">M</span> <span class="pre">%</span> <span class="pre">8</span> <span class="pre">==</span> <span class="pre">0</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">address</span></code>: varsayılan değerlendirme ve dil yazımı dışında <code class="docutils literal notranslate"><span class="pre">uint160</span></code> ile eşdeğerdir.  Fonksiyon seçicisini hesaplarken <code class="docutils literal notranslate"><span class="pre">address</span></code> kullanılır.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uint</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>: sırasıyla <code class="docutils literal notranslate"><span class="pre">uint256</span></code>, <code class="docutils literal notranslate"><span class="pre">int256</span></code> için eş anlamlı terimlerdir. Fonksiyon seçicisini hesaplamak için <code class="docutils literal notranslate"><span class="pre">uint256</span></code> ve <code class="docutils literal notranslate"><span class="pre">int256</span></code> kullanılmalıdır.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bool</span></code>: 0 ve 1 değerleriyle sınırlandırılmış <code class="docutils literal notranslate"><span class="pre">uint8</span></code> ile eşdeğerdir. Fonksiyon seçicisini hesaplamak için <code class="docutils literal notranslate"><span class="pre">bool</span></code> kullanılır.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fixed&lt;M&gt;x&lt;N&gt;</span></code>: <code class="docutils literal notranslate"><span class="pre">M</span></code> bitlerinin işaretli(signed) fixed-point ondalık sayısı, <code class="docutils literal notranslate"><span class="pre">8</span> <span class="pre">&lt;=</span> <span class="pre">M</span> <span class="pre">&lt;=</span> <span class="pre">256</span></code>,
+<code class="docutils literal notranslate"><span class="pre">M</span> <span class="pre">%</span> <span class="pre">8</span> <span class="pre">==</span> <span class="pre">0</span></code> ve <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">&lt;</span> <span class="pre">N</span> <span class="pre">&lt;=</span> <span class="pre">80</span></code>, <code class="docutils literal notranslate"><span class="pre">v</span></code> değerini <code class="docutils literal notranslate"><span class="pre">v</span> <span class="pre">/</span> <span class="pre">(10</span> <span class="pre">**</span> <span class="pre">N)</span></code> olarak gösterir.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ufixed&lt;M&gt;x&lt;N&gt;</span></code>: <code class="docutils literal notranslate"><span class="pre">fixed&lt;M&gt;x&lt;N&gt;</span></code> öğesinin işaretsiz(unsigned) varyantı.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fixed</span></code>, <code class="docutils literal notranslate"><span class="pre">ufixed</span></code>: sırasıyla <code class="docutils literal notranslate"><span class="pre">fixed128x18</span></code>, <code class="docutils literal notranslate"><span class="pre">ufixed128x18</span></code> için eş anlamlı terimlerdir. Fonksiyon seçiciyi hesaplamak için <code class="docutils literal notranslate"><span class="pre">fixed128x18</span></code> ve <code class="docutils literal notranslate"><span class="pre">ufixed128x18</span></code> kullanılmalıdır.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes&lt;M&gt;</span></code>: <code class="docutils literal notranslate"><span class="pre">M</span></code> baytlarının binary tipi, <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">&lt;</span> <span class="pre">M</span> <span class="pre">&lt;=</span> <span class="pre">32</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">function</span></code>: bir adres (20 bayt) ve ardından bir fonksiyon seçici (4 bayt). <code class="docutils literal notranslate"><span class="pre">bytes24</span></code> ile aynı biçimde şifrelenir.</p></li>
+</ul>
+<p>Aşağıdaki (sabit boyutlu) dizi türü bulunmaktadır:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;tip&gt;[M]</span></code>: verilen tipte bulunan <code class="docutils literal notranslate"><span class="pre">M</span></code> elemanlı, <code class="docutils literal notranslate"><span class="pre">M</span> <span class="pre">&gt;=</span> <span class="pre">0</span></code>, sabit uzunlukta bir dizidir.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Bu ABI spesifikasyonu sıfır elemanlı sabit uzunluklu dizileri ifade edebilse de, bunlar derleyici tarafından desteklenmez.</p>
+</div>
+</li>
+</ul>
+<p>Aşağıdaki sabit boyutlu olmayan tipler de mevcuttur:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes</span></code>: dinamik boyutlu bayt sırası.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string</span></code>: UTF-8 şifrelenmiş olduğu varsayılan dinamik boyutlu unicode bir dizedir.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;type&gt;[]</span></code>: belirtilen tipteki elemanlardan oluşan değişkenlik gösterebilen uzunlukta bir dizidir.</p></li>
+</ul>
+<p>Tipler, virgülle ayrılmış parantezler içine alınarak bir tuple olarak birleştirilebilir:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">(T1,T2,...,Tn)</span></code>: <code class="docutils literal notranslate"><span class="pre">T1</span></code>, …, <code class="docutils literal notranslate"><span class="pre">Tn</span></code> tiplerinden oluşan bir tuple, <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">&gt;=</span> <span class="pre">0</span></code></p></li>
+</ul>
+<p>Tuple’ların tuple’larını, tuple’ların dizilerini ve benzerlerini oluşturmak mümkündür. Sıfır tuple oluşturmak da mümkündür ( genellikle <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">==</span> <span class="pre">0</span></code>).</p>
+<section id="solidity-yi-abi-tipleriyle-eslestirme">
+<h3>Solidity’yi ABI Tipleriyle Eşleştirme<a class="headerlink" href="#solidity-yi-abi-tipleriyle-eslestirme" title="Permalink to this heading"></a></h3>
+<p>Solidity, tuple’lar haricinde yukarıda aynı adlandırmalarla sunulan tüm tipleri
+destekler. Öte yandan, bazı Solidity tipleri ABI tarafından desteklenmez. Aşağıdaki
+tabloda sol sütunda bulunan ve ABI’nin bir parçası olmayan Solidity tipleri ve sağ
+sütunda ise bunları temsil eden ABI tipleri verilmiştir.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 71%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Solidity</p></th>
+<th class="head"><p>ABI</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="types.html#address"><span class="std std-ref">address payable</span></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">address</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="contracts.html#contracts"><span class="std std-ref">contract</span></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">address</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="types.html#enums"><span class="std std-ref">enum</span></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">uint8</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="types.html#user-defined-value-types"><span class="std std-ref">kullanıcı tanımlı
+değişken tipleri</span></a></p></td>
+<td><p>temel değer tipi</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="types.html#structs"><span class="std std-ref">struct</span></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tuple</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">0.8.0</span></code> sürümünden önce enumlar 256`dan fazla elemana sahip olabiliyordu ve
+herhangi bir elemanın değerini tutmaya yetebilecek büyüklükteki en küçük tamsayı tipiyle ifade ediliyordu.</p>
+</div>
+</section>
+</section>
+<section id="sifreleme-icin-tasarim-kriterleri">
+<h2>Şifreleme için Tasarım Kriterleri<a class="headerlink" href="#sifreleme-icin-tasarim-kriterleri" title="Permalink to this heading"></a></h2>
+<p>Şifreleme aşağıdaki özelliklere sahip olacak şekilde tasarlanmıştır; bu özellikler özellikle bazı bağımsız değişkenlerin iç içe diziler olması halinde kullanışlıdır:</p>
+<ol class="arabic simple">
+<li><p>Bir değere erişmek için gereken okuma sayısı en büyük değerin argüman dizi yapısı
+içinde sahip olduğu derinlik kadardır, yani <code class="docutils literal notranslate"><span class="pre">a_i[k][l][r]</span></code> öğesini almak için dört
+okuma gerekir. ABI’nin önceki bir sürümünde, okuma sayısı en kötü senaryoda toplam
+dinamik parametre sayısı ile doğrusal olarak ölçeklenmekteydi.</p></li>
+<li><p>Bir değişken veya dizi elemanının verileri diğer verilerle iç içe geçmez ve yeniden
+konumlandırılabilir, yani yalnızca ilişkili “adresler” kullanabilirler.</p></li>
+</ol>
+</section>
+<section id="sifrelemenin-formal-spesifikasyonu">
+<h2>Şifrelemenin Formal Spesifikasyonu<a class="headerlink" href="#sifrelemenin-formal-spesifikasyonu" title="Permalink to this heading"></a></h2>
+<p>Statik ve dinamik türleri birbirinden ayırırız. Statik tipler yerinde şifrelenirken,
+dinamik tipler mevcut bloktan sonra ayrı olarak atanmış bir konumda şifrelenir.</p>
+<p><strong>Tanım:</strong> Aşağıdaki tipler “dinamik” olarak adlandırılır:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string</span></code></p></li>
+<li><p>Herhangi bir <code class="docutils literal notranslate"><span class="pre">T</span></code> için <code class="docutils literal notranslate"><span class="pre">T[]</span></code></p></li>
+<li><p>Herhangi bir dinamik <code class="docutils literal notranslate"><span class="pre">T</span></code> ve herhangi bir <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">&gt;=</span> <span class="pre">0</span></code> için <code class="docutils literal notranslate"><span class="pre">T[k]</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(T1,...,Tk)</span></code> eğer <code class="docutils literal notranslate"><span class="pre">Ti</span></code> bazı <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">&lt;=</span> <span class="pre">i</span> <span class="pre">&lt;=</span> <span class="pre">k</span></code> için dinamik yapıda ise</p></li>
+</ul>
+<p>Diğer tüm türler “statik” olarak adlandırılır.</p>
+<p><strong>Tanım:</strong> <code class="docutils literal notranslate"><span class="pre">len(a)</span></code>, <code class="docutils literal notranslate"><span class="pre">a</span></code> binary dizesinde bulunan bayt sayısıdır.
+Ayrıca <code class="docutils literal notranslate"><span class="pre">len(a)</span></code> türünün <code class="docutils literal notranslate"><span class="pre">uint256</span></code> olduğu varsayılır.</p>
+<p>Gerçek şifreleme olan <code class="docutils literal notranslate"><span class="pre">enc``i,</span> <span class="pre">ABI</span> <span class="pre">tiplerindeki</span> <span class="pre">değerlerin</span> <span class="pre">binary</span> <span class="pre">stringlere</span> <span class="pre">eşlenmesi</span>
+<span class="pre">olarak</span> <span class="pre">tanımlıyoruz,</span> <span class="pre">öyle</span> <span class="pre">ki</span> <span class="pre">``len(enc(X))</span></code> ancak ve ancak <code class="docutils literal notranslate"><span class="pre">X</span></code> tipi dinamik olduğu
+durumlarda <code class="docutils literal notranslate"><span class="pre">X</span></code> değerine bağlı olacaktır.</p>
+<p><strong>Tanım:</strong> For any ABI value <code class="docutils literal notranslate"><span class="pre">X</span></code>, we recursively define <code class="docutils literal notranslate"><span class="pre">enc(X)</span></code>, depending
+on the type of <code class="docutils literal notranslate"><span class="pre">X</span></code> being</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">(T1,...,Tk)</span></code> için <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">&gt;=</span> <span class="pre">0</span></code> ve herhangi bir <code class="docutils literal notranslate"><span class="pre">T1</span></code>, …, <code class="docutils literal notranslate"><span class="pre">Tk</span></code> tipi</p>
+<p><code class="docutils literal notranslate"><span class="pre">enc(X)</span> <span class="pre">=</span> <span class="pre">head(X(1))</span> <span class="pre">...</span> <span class="pre">head(X(k))</span> <span class="pre">tail(X(1))</span> <span class="pre">...</span> <span class="pre">tail(X(k))</span></code></p>
+<p>Burada <code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">=</span> <span class="pre">(X(1),</span> <span class="pre">...,</span> <span class="pre">X(k))</span></code> ve <code class="docutils literal notranslate"><span class="pre">head</span></code> ve <code class="docutils literal notranslate"><span class="pre">tail</span></code> <code class="docutils literal notranslate"><span class="pre">Ti</span></code> için aşağıdaki gibi tanımlanır:</p>
+<p>eğer <code class="docutils literal notranslate"><span class="pre">Ti</span></code> statik ise:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">head(X(i))</span> <span class="pre">=</span> <span class="pre">enc(X(i))</span></code> ve <code class="docutils literal notranslate"><span class="pre">tail(X(i))</span> <span class="pre">=</span> <span class="pre">&quot;&quot;</span></code> (boş dize)</p>
+</div></blockquote>
+<p>Aksi takdirde, yani <code class="docutils literal notranslate"><span class="pre">Ti</span></code> dinamik ise:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">head(X(i))</span> <span class="pre">=</span> <span class="pre">enc(len(</span> <span class="pre">head(X(1))</span> <span class="pre">...</span> <span class="pre">head(X(k))</span> <span class="pre">tail(X(1))</span> <span class="pre">...</span> <span class="pre">tail(X(i-1))</span> <span class="pre">))</span></code>
+<code class="docutils literal notranslate"><span class="pre">tail(X(i))</span> <span class="pre">=</span> <span class="pre">enc(X(i))</span></code></p>
+<p>Dinamik durumlarda, <code class="docutils literal notranslate"><span class="pre">head(X(i))</span></code> ifadesi iyi tanımlanmıştır çünkü başlık parçalarının
+uzunlukları değerlere değil sadece tiplere bağlıdır. <code class="docutils literal notranslate"><span class="pre">head(X(i))</span></code> değeri, <code class="docutils literal notranslate"><span class="pre">enc(X)</span></code>
+öğesinin başlangıç noktasına göre <code class="docutils literal notranslate"><span class="pre">tail(X(i))</span></code> öğesinin başlangıç noktasındaki ofset değeridir.</p>
+</div></blockquote>
+</li>
+<li><p>Herhangi bir <code class="docutils literal notranslate"><span class="pre">T</span></code> ve <code class="docutils literal notranslate"><span class="pre">k</span></code> için <code class="docutils literal notranslate"><span class="pre">T[k]</span></code>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">enc(X)</span> <span class="pre">=</span> <span class="pre">enc((X[0],</span> <span class="pre">...,</span> <span class="pre">X[k-1]))</span></code></p>
+<p>Yani, aynı tipte <code class="docutils literal notranslate"><span class="pre">k</span></code> elemanlı bir tuple gibi şifrelenir.</p>
+</li>
+<li><p>Herhangi bir <code class="docutils literal notranslate"><span class="pre">T</span></code> ve <code class="docutils literal notranslate"><span class="pre">k</span></code> için <code class="docutils literal notranslate"><span class="pre">T[k]</span></code>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">enc(X)</span> <span class="pre">=</span> <span class="pre">enc((X[0],</span> <span class="pre">...,</span> <span class="pre">X[k-1]))</span></code></p>
+<p>Yani, aynı tipte <code class="docutils literal notranslate"><span class="pre">k</span></code> elemanlı bir tuple gibi şifrelenir.</p>
+</li>
+<li><p>k`` uzunluğunda <code class="docutils literal notranslate"><span class="pre">bytes</span></code> (<code class="docutils literal notranslate"><span class="pre">uint256</span></code> tipinde olduğu varsayılır):</p>
+<p><code class="docutils literal notranslate"><span class="pre">enc(X)</span> <span class="pre">=</span> <span class="pre">enc(k)</span> <span class="pre">pad_right(X)</span></code>, yani bayt sayısı bir <code class="docutils literal notranslate"><span class="pre">uint256</span></code> olarak şifrelenir,
+ardından bayt sırası olarak <code class="docutils literal notranslate"><span class="pre">X``in</span> <span class="pre">gerçek</span> <span class="pre">değeri</span> <span class="pre">ve</span> <span class="pre">sonrasında</span> <span class="pre">``len(enc(X))</span></code>
+32’nin katı olacak uzunlukta minimum sıfır bayt sayısı gelir.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string</span></code>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">enc(X)</span> <span class="pre">=</span> <span class="pre">enc(enc_utf8(X))</span></code>, yani <code class="docutils literal notranslate"><span class="pre">X</span></code> UTF-8 biçiminde şifrelenir ve bu değer
+<code class="docutils literal notranslate"><span class="pre">bytes</span></code> türünde olarak değerlendirilir ve ardından şifreli hale getirilir. Bu
+sonraki şifreleme işleminde kullanılan uzunluğun karakter sayısı değil, UTF-8 kodlu
+stringin bayt sayısı olduğuna dikkat edin.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uint&lt;M&gt;</span></code>: <code class="docutils literal notranslate"><span class="pre">enc(X)</span></code>, <code class="docutils literal notranslate"><span class="pre">X</span></code>’in big-endian biçimindeki şifrelemesi olup, uzunluğu 32 bayt olacak şekilde yüksek dereceden (sol) tarafı sıfır bayt ile doldurulmuştur.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">address</span></code>: <code class="docutils literal notranslate"><span class="pre">uint160</span></code> örneğinde olduğu gibi</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">int&lt;M&gt;</span></code>: <code class="docutils literal notranslate"><span class="pre">enc(X)</span></code>, negatif <code class="docutils literal notranslate"><span class="pre">X</span></code> için <code class="docutils literal notranslate"><span class="pre">0xff</span></code> baytları ile ve negatif olmayan <code class="docutils literal notranslate"><span class="pre">X</span></code> değerleri için sıfır baytları ile doldurulmuş ve uzunluğu 32 bayt olacak şekilde <code class="docutils literal notranslate"><span class="pre">X</span></code>’in big-endian ikiye tamamlayıcı şifrelemesidir.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bool</span></code>: <code class="docutils literal notranslate"><span class="pre">uint8</span></code> örneğinde olduğu gibi, <code class="docutils literal notranslate"><span class="pre">true</span></code> için <code class="docutils literal notranslate"><span class="pre">1</span></code> ve <code class="docutils literal notranslate"><span class="pre">false</span></code> için <code class="docutils literal notranslate"><span class="pre">0</span></code> değerini kullanır.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fixed&lt;M&gt;x&lt;N&gt;</span></code>: <code class="docutils literal notranslate"><span class="pre">enc(X)</span></code>, <code class="docutils literal notranslate"><span class="pre">enc(X</span> <span class="pre">*</span> <span class="pre">10**N)``dir;</span> <span class="pre">burada</span> <span class="pre">``X</span> <span class="pre">*</span> <span class="pre">10**N</span></code> bir <code class="docutils literal notranslate"><span class="pre">int256</span></code> olarak yorumlanmaktadır..</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fixed</span></code>: <code class="docutils literal notranslate"><span class="pre">fixed128x18</span></code> örneğinde olduğu gibi</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ufixed&lt;M&gt;x&lt;N&gt;</span></code>: <code class="docutils literal notranslate"><span class="pre">enc(X)</span></code>, <code class="docutils literal notranslate"><span class="pre">enc(X</span> <span class="pre">*</span> <span class="pre">10**N)``dir;</span> <span class="pre">burada</span> <span class="pre">``X</span> <span class="pre">*</span> <span class="pre">10**N</span></code> bir <code class="docutils literal notranslate"><span class="pre">uint256</span></code> olarak yorumlanmaktadır.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ufixed</span></code>: <code class="docutils literal notranslate"><span class="pre">ufixed128x18</span></code> örneğinde olduğu gibi</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes&lt;M&gt;</span></code>: <code class="docutils literal notranslate"><span class="pre">enc(X)</span></code>, <code class="docutils literal notranslate"><span class="pre">X</span></code> içindeki baytların sondaki sıfır baytlarla beraber 32 bayt uzunluğa kadar doldurulmuş bir sırasıdır.</p></li>
+</ul>
+<p>Herhangi bir <code class="docutils literal notranslate"><span class="pre">X</span></code> için <code class="docutils literal notranslate"><span class="pre">len(enc(X))</span></code> değerinin 32’nin bir katı olduğuna dikkat edin.</p>
+</section>
+<section id="fonksiyon-secicisi-ve-arguman-sifrelemesi">
+<h2>Fonksiyon Seçicisi ve Argüman Şifrelemesi<a class="headerlink" href="#fonksiyon-secicisi-ve-arguman-sifrelemesi" title="Permalink to this heading"></a></h2>
+<p>Sonuç olarak, <code class="docutils literal notranslate"><span class="pre">f</span></code> fonksiyonuna <code class="docutils literal notranslate"><span class="pre">a_1,</span> <span class="pre">...,</span> <span class="pre">a_n</span></code> parametreleri ile yapılan bir çağrı şu şekilde şifrelenir</p>
+<p><code class="docutils literal notranslate"><span class="pre">function_selector(f)</span> <span class="pre">enc((a_1,</span> <span class="pre">...,</span> <span class="pre">a_n))</span></code></p>
+<p>ve <code class="docutils literal notranslate"><span class="pre">f``nin</span> <span class="pre">``v_1,</span> <span class="pre">...,</span> <span class="pre">v_k</span></code> dönüş değerleri şu şekilde şifrelenmektedir.</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">enc((v_1,</span> <span class="pre">...,</span> <span class="pre">v_k))</span></code></p>
+</div></blockquote>
+<p>yani değerler bir tuple halinde birleştirilir ve kodlanır.</p>
+</section>
+<section id="ornekler">
+<h2>Örnekler<a class="headerlink" href="#ornekler" title="Permalink to this heading"></a></h2>
+<p>Sözleşmeye göre:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC40LjE2IDwwLjkuMDsKCmNvbnRyYWN0IEZvbyB7CiAgICBmdW5jdGlvbiBiYXIoYnl0ZXMzWzJdIG1lbW9yeSkgcHVibGljIHB1cmUge30KICAgIGZ1bmN0aW9uIGJheih1aW50MzIgeCwgYm9vbCB5KSBwdWJsaWMgcHVyZSByZXR1cm5zIChib29sIHIpIHsgciA9IHggPiAzMiB8fCB5OyB9CiAgICBmdW5jdGlvbiBzYW0oYnl0ZXMgbWVtb3J5LCBib29sLCB1aW50W10gbWVtb3J5KSBwdWJsaWMgcHVyZSB7fQp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.4.16</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">Foo</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">bar</span><span class="p">(</span>bytes3<span class="p">[</span><span class="m m-Decimal">2</span><span class="p">]</span><span class="w"> </span><span class="kt">memory</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>pure<span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">baz</span><span class="p">(</span><span class="kt">uint32</span><span class="w"> </span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nv">y</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>pure<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="nv">r</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>r<span class="w"> </span><span class="o">=</span><span class="w"> </span>x<span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m m-Decimal">32</span><span class="w"> </span><span class="err">||</span><span class="w"> </span>y<span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">sam</span><span class="p">(</span><span class="kt">bytes</span><span class="w"> </span><span class="nv">memory</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="p">[]</span><span class="w"> </span><span class="kt">memory</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>pure<span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Böylece <code class="docutils literal notranslate"><span class="pre">Foo</span></code> örneğimiz için <code class="docutils literal notranslate"><span class="pre">69</span></code> ve <code class="docutils literal notranslate"><span class="pre">true</span></code> parametreleriyle <code class="docutils literal notranslate"><span class="pre">baz</span></code> ı çağırmak istersek, toplam 68 bayt iletiriz, bu da şu şekilde ayrılabilir:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0xcdcd77c0</span></code>: Method ID. Bu, <code class="docutils literal notranslate"><span class="pre">baz(uint32,bool)</span></code> imzasının ASCII formunun Keccak hash’inin ilk 4 baytı olacak şekilde türetilecektir.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x000000000000000000000000000000000000000000000045</span></code>: ilk parametre, 32 bayta doldurulmuş bir uint32 değeri <code class="docutils literal notranslate"><span class="pre">69</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x00000000000000000000000000000000000000000001</span></code>: ikinci parametre - boolean <code class="docutils literal notranslate"><span class="pre">true</span></code>, 32 bayta kadar doldurulur</p></li>
+</ul>
+<p>Toplam olarak:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>0xcdcd77c000000000000000000000000000000000000000000000000000000000000000450000000000000000000000000000000000000000000000000000000000000001
+</pre></div>
+</div>
+<p>Tek bir <code class="docutils literal notranslate"><span class="pre">bool</span></code> döndürür. Örneğin, <code class="docutils literal notranslate"><span class="pre">false</span></code> döndürürse, çıktısı tek bir bool olan
+<code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000000</span></code> tek bayt dizisi olacaktır.</p>
+<p>Eğer <code class="docutils literal notranslate"><span class="pre">bar</span></code> argümanını <code class="docutils literal notranslate"><span class="pre">[&quot;abc&quot;,</span> <span class="pre">&quot;def&quot;]</span></code> ile çağırmak isteseydik, toplam 68 bayt aktarmamız gerekirdi:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0xfce353f6</span></code>: Method ID. Bu, <code class="docutils literal notranslate"><span class="pre">bar(bytes3[2])</span></code> imzasından türetilmiştir.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x6162630000000000000000000000000000000000000000000000000000000000</span></code>: ilk parametrenin ilk kısmı, bir <code class="docutils literal notranslate"><span class="pre">bytes3</span></code> değeri olan <code class="docutils literal notranslate"><span class="pre">&quot;abc&quot;</span></code> (sola hizalı).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x6465660000000000000000000000000000000000000000000000000000000000</span></code>: ilk parametrenin ikinci kısmı, bir <code class="docutils literal notranslate"><span class="pre">bytes3</span></code> değeri olan <code class="docutils literal notranslate"><span class="pre">&quot;def&quot;</span></code> (sola hizalı).</p></li>
+</ul>
+<p>Toplam olarak:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>0xfce353f661626300000000000000000000000000000000000000000000000000000000006465660000000000000000000000000000000000000000000000000000000000
+</pre></div>
+</div>
+<p>Eğer <code class="docutils literal notranslate"><span class="pre">sam``ı</span> <span class="pre">``&quot;dave&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">true</span></code> ve <code class="docutils literal notranslate"><span class="pre">[1,2,3]</span></code> argümanlarıyla çağırmak isteseydik, toplam 292 bayt aktarmamız gerekirdi:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0xa5643bf2</span></code>: Method ID. Bu, <code class="docutils literal notranslate"><span class="pre">sam(bytes,bool,uint256[])</span></code> imzasından türetilmiştir. Burada <code class="docutils literal notranslate"><span class="pre">uint</span></code> yerine onun kanonik bir gösterimi olan <code class="docutils literal notranslate"><span class="pre">uint256</span></code>’nın kullanıldığını unutmayın.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000060</span></code>: argüman bloğunun başlangıcından itibaren bayt cinsinden ölçülen ilk parametrelerinin (dinamik tipteki) veri bölümünün konumu. Bu örnekte, <code class="docutils literal notranslate"><span class="pre">0x60</span></code> tır.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000001</span></code>: ikinci parametre: boolean true.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x00000000000000000000000000000000000000000000000000000000000000a0</span></code>: üçüncü parametrenin (dinamik tipteki) veri parçasının bayt cinsinden belirlenen konumu. Bu durumda, <code class="docutils literal notranslate"><span class="pre">0xa0</span></code> dır.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000004</span></code>: ilk argümanın veri parçası, bayt dizisinin elemanlar cinsinden uzunluğu ile başlar, bu örnekte 4’tür.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x6461766500000000000000000000000000000000000000000000000000000000</span></code>: ilk argümanın içeriği: <code class="docutils literal notranslate"><span class="pre">&quot;dave&quot;</span></code> ifadesinin UTF-8 (bu durumda ASCII’ye eşittir) şifrelenmesi, sağdan 32 bayt olacak kadar uzunlukta doldurulur.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000003</span></code>: üçüncü bağımsız değişkenin veri bölümü, dizinin eleman cinsinden uzunluğu ile başlar, bu durumda 3’tür.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000001</span></code>: üçüncü parametrenin ilk giriş değeri.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000002</span></code>: üçüncü parametrenin ikinci giriş değeri.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000003</span></code>: üçüncü parametrenin üçüncü giriş değeri.</p></li>
+</ul>
+<p>Toplam olarak:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>0xa5643bf20000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000464617665000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000003
+</pre></div>
+</div>
+</section>
+<section id="dinamik-tiplerin-kullanimi">
+<h2>Dinamik Tiplerin Kullanımı<a class="headerlink" href="#dinamik-tiplerin-kullanimi" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">f(uint256,uint32[],bytes10,bytes)</span></code> imzalı olan bir fonksiyona <code class="docutils literal notranslate"><span class="pre">(0x123,</span> <span class="pre">[0x456,</span> <span class="pre">0x789],</span> <span class="pre">&quot;1234567890&quot;,</span> <span class="pre">&quot;Hello,</span> <span class="pre">world!&quot;)</span></code> değerleriyle yapılan herhangi bir çağrı aşağıdaki şekilde şifrelenecektir:</p>
+<p><code class="docutils literal notranslate"><span class="pre">sha3(&quot;f(uint256,uint32[],bytes10,bytes)&quot;)</span></code> ifadesinin ilk dört baytını, yani
+<code class="docutils literal notranslate"><span class="pre">0x8be65246</span></code> ifadesini alıyoruz. Daha sonra bu dört argümanın baş kısımlarını
+şifreliyoruz. Statik <code class="docutils literal notranslate"><span class="pre">uint256</span></code> ve <code class="docutils literal notranslate"><span class="pre">bytes10</span></code> tipleri açısından bunlar doğrudan
+iletmek istediğimiz değerlerdir, dinamik <code class="docutils literal notranslate"><span class="pre">uint32[]</span></code> ve <code class="docutils literal notranslate"><span class="pre">bytes</span></code> tipleri açısından
+ise değerlerin şifrelemesinin başlangıcından itibaren ölçülen (yani fonksiyon imzasının
+özetini içeren ilk dört baytı saymadan önce) veri bölgelerinin başlangıcındaki bayt
+cinsindeki ofseti kullanırız. Bunlar:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000123</span></code> (<code class="docutils literal notranslate"><span class="pre">0x123</span></code> 32 bayta kadar doldurulmuş)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000080</span></code> (ikinci parametrenin veri kısmının baş kısmındaki ofset değeri, 4*32 bayt, tam olarak baş kısmının boyutu kadardır)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x3132333435363738393000000000000000000000000000000000000000000000</span></code> (<code class="docutils literal notranslate"><span class="pre">&quot;1234567890&quot;</span></code> sağda 32 bayta olacak kadar doldurulmuş)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x00000000000000000000000000000000000000000000000000000000000000e0</span></code> (dördüncü parametrenin veri bölümünde bulunan başlangıç ofseti = birinci dinamik parametrenin veri bölümünde bulunan başlangıç ofseti + birinci dinamik parametrenin veri bölümünün boyutu = 4*32 + 3*32 (aşağı bakınız))</p></li>
+</ul>
+<p>Bundan sonra, ilk dinamik argümanın veri kısmı olan <code class="docutils literal notranslate"><span class="pre">[0x456,</span> <span class="pre">0x789]</span></code> gelir:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000002</span></code> (dizinin eleman sayısı, 2)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000456</span></code> (ilk eleman)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000789</span></code> (ikinci eleman)</p></li>
+</ul>
+<p>Son olarak, ikinci dinamik argümanın veri kısmını şifreliyoruz, <code class="docutils literal notranslate"><span class="pre">&quot;Hello,</span> <span class="pre">world!</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0x000000000000000000000000000000000000000000000000000000000000000d</span></code> (eleman sayısı (bu örnekte bayt): 13)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x48656c6c6f2c20776f726c642100000000000000000000000000000000000000</span></code> (<code class="docutils literal notranslate"><span class="pre">&quot;Hello,</span> <span class="pre">world!&quot;</span></code> sağda 32 bayt olacak kadar doldurulmuş)</p></li>
+</ul>
+<p>Hepsi birlikte, şifreleme ( fonksiyon seçiciden sonra satır sonu ve anlaşılabilirlik için her biri 32 bayt) şeklindedir:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>0x8be65246
+  0000000000000000000000000000000000000000000000000000000000000123
+  0000000000000000000000000000000000000000000000000000000000000080
+  3132333435363738393000000000000000000000000000000000000000000000
+  00000000000000000000000000000000000000000000000000000000000000e0
+  0000000000000000000000000000000000000000000000000000000000000002
+  0000000000000000000000000000000000000000000000000000000000000456
+  0000000000000000000000000000000000000000000000000000000000000789
+  000000000000000000000000000000000000000000000000000000000000000d
+  48656c6c6f2c20776f726c642100000000000000000000000000000000000000
+</pre></div>
+</div>
+<p>Aynı prensibi <code class="docutils literal notranslate"><span class="pre">g(uint256[][],string[])</span></code> imzalı olan bir fonksiyonun verilerini
+<code class="docutils literal notranslate"><span class="pre">([[1,</span> <span class="pre">2],</span> <span class="pre">[3]],</span> <span class="pre">[&quot;bir&quot;,</span> <span class="pre">&quot;iki&quot;,</span> <span class="pre">&quot;üç&quot;])</span></code> değerleriyle şifrelemek için uygulayalım,
+ancak şifreleme işleminin en atomik kısımlarından başlayalım:</p>
+<p>İlk olarak, birinci kök dizisinin <code class="docutils literal notranslate"><span class="pre">[[1,</span> <span class="pre">2],</span> <span class="pre">[3]]</span></code> birinci gömülü dinamik dizisinin <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2]</span></code> uzunluğunu ve verilerini şifreleyeceğiz:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000002</span></code> (ilk dizideki eleman sayısı, 2; elemanların kendileri <code class="docutils literal notranslate"><span class="pre">1</span></code> ve <code class="docutils literal notranslate"><span class="pre">2</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000001</span></code> (ilk eleman)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000002</span></code> (ikinci eleman)</p></li>
+</ul>
+<p>Ardından, ilk kök dizisinin <code class="docutils literal notranslate"><span class="pre">[[1,</span> <span class="pre">2],</span> <span class="pre">[3]]</span></code> ikinci gömülü dinamik dizisinin <code class="docutils literal notranslate"><span class="pre">[3]</span></code> uzunluğunu ve verilerini şifreleyeceğiz:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000001</span></code> (ikinci dizideki eleman sayısı, 1; eleman <code class="docutils literal notranslate"><span class="pre">3</span></code> tür)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000003</span></code> (ilk eleman)</p></li>
+</ul>
+<p>Daha sonra <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2]</span></code> ve <code class="docutils literal notranslate"><span class="pre">[3]</span></code> dinamik dizileri için <code class="docutils literal notranslate"><span class="pre">a</span></code> ve <code class="docutils literal notranslate"><span class="pre">b</span></code> ofsetlerini
+bulmamız gerekir. Ofsetleri hesaplamak için, şifrelenmiş her satırı numaralandırarak
+ilk kök dizinin <code class="docutils literal notranslate"><span class="pre">[[1,</span> <span class="pre">2],</span> <span class="pre">[3]]</span></code> şifrelenmiş verilerine bakabiliriz:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>0 - a                                                                - [ 1, 2 ] ofseti
+1 - b                                                                - [3] ofseti
+2 - 0000000000000000000000000000000000000000000000000000000000000002 - [1, 2] için sayım
+3 - 0000000000000000000000000000000000000000000000000000000000000001 - 1 şifrelemesi
+4 - 0000000000000000000000000000000000000000000000000000000000000002 - 2 şifrelemesi
+5 - 0000000000000000000000000000000000000000000000000000000000000001 - [3] için sayım
+6 - 0000000000000000000000000000000000000000000000000000000000000003 - 3 şifrelemesi
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">a</span></code> ofseti, 2. satır (64 bayt) olan <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2]</span></code> dizisinin içeriğinin başlangıcına
+doğru işaret eder; dolayısıyla <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">0x000000000000000000000000000000000000000000000040</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">b</span></code> ofseti <code class="docutils literal notranslate"><span class="pre">[3]</span></code> dizisinin içeriğinin başlangıcına işaret eder, bu da 5. satır
+demektir (160 bayt); dolayısıyla <code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">0x00000000000000000000000000000000000000000000000000a0</span></code>.</p>
+<p>Daha sonra ikinci kök dizisinin gömülü stringlerini şifreleyeceğiz:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000003</span></code> (<code class="docutils literal notranslate"><span class="pre">&quot;one&quot;</span></code> kelimesindeki karakter sayısı)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x6f6e650000000000000000000000000000000000000000000000000000000000</span></code> (<code class="docutils literal notranslate"><span class="pre">&quot;one&quot;</span></code> kelimesinin utf8 gösterimi)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000003</span></code> (<code class="docutils literal notranslate"><span class="pre">&quot;two&quot;</span></code> kelimesindeki karakter sayısı)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x74776f0000000000000000000000000000000000000000000000000000000000</span></code> (<code class="docutils literal notranslate"><span class="pre">&quot;two&quot;</span></code> kelimesinin utf8 gösterimi)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000005</span></code> (<code class="docutils literal notranslate"><span class="pre">&quot;three&quot;</span></code> kelimesindeki karakter sayısı)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x7468726565000000000000000000000000000000000000000000000000000000</span></code> (<code class="docutils literal notranslate"><span class="pre">&quot;three&quot;</span></code> kelimesinin utf8 gösterimi)</p></li>
+</ul>
+<p>İlk kök dizisine paralel olarak, diziler dinamik elemanlar olduğundan, <code class="docutils literal notranslate"><span class="pre">c</span></code>, <code class="docutils literal notranslate"><span class="pre">d</span></code> ve <code class="docutils literal notranslate"><span class="pre">e</span></code> ofsetlerini de bulmamız gerekir:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>0 - c                                                                - &quot;one&quot; için ofset
+1 - d                                                                - &quot;two&quot; için ofset
+2 - e                                                                - &quot;three&quot; için ofset
+3 - 0000000000000000000000000000000000000000000000000000000000000003 - &quot;one&quot; için sayım
+4 - 6f6e650000000000000000000000000000000000000000000000000000000000 - &quot;one&quot; şifrelemesi
+5 - 0000000000000000000000000000000000000000000000000000000000000003 - &quot;two&quot; için sayım
+6 - 74776f0000000000000000000000000000000000000000000000000000000000 - &quot;two&quot; şifrelemesi
+7 - 0000000000000000000000000000000000000000000000000000000000000005 - &quot;three&quot; için sayım
+8 - 7468726565000000000000000000000000000000000000000000000000000000 - &quot;three&quot; şifrelemesi
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">c</span></code> ofseti, 3. Satırda (96 bayt) bulunan <code class="docutils literal notranslate"><span class="pre">&quot;one&quot;</span></code> stringinin içeriğinin başlangıcına işaret eder;
+dolayısıyla <code class="docutils literal notranslate"><span class="pre">c</span> <span class="pre">=</span> <span class="pre">0x0000000000000000000000000000000000000000000000000000000000000060</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">d</span></code> ofseti, 5. Satırda (160 bayt) bulunan <code class="docutils literal notranslate"><span class="pre">&quot;two&quot;</span></code> stringinin içeriğinin başlangıcına işaret eder;
+dolayısıyla <code class="docutils literal notranslate"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">0x00000000000000000000000000000000000000000000000000000000000000a0</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">e</span></code> ofseti, 7. Satırda (224 bayt) bulunan <code class="docutils literal notranslate"><span class="pre">&quot;three&quot;</span></code> stringinin içeriğinin başlangıcına işaret eder;
+dolayısıyla <code class="docutils literal notranslate"><span class="pre">e</span> <span class="pre">=</span> <span class="pre">0x00000000000000000000000000000000000000000000000000000000000000e0</span></code>.</p>
+<p>Kök dizilerinin ve gömülü öğelerinin şifrelemelerinin birbirine bağlı olmadığını ve
+<code class="docutils literal notranslate"><span class="pre">g(string[],uint256[][])</span></code> imzalı olan bir fonksiyon için aynı şifrelemelere sahip
+olduğunu unutmayın.</p>
+<p>Daha sonra ilk kök dizisinin uzunluğunu şifreleriz:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000002</span></code> (ilk kök dizide bulunan eleman sayısı, 2; elemanların kendileri <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2]</span></code> ve <code class="docutils literal notranslate"><span class="pre">[3]</span></code>)</p></li>
+</ul>
+<p>Daha sonra ikinci kök dizisinin uzunluğunu şifreleriz:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0x0000000000000000000000000000000000000000000000000000000000000003</span></code> (ikinci kök dizisinde bulunan string sayısı, 3; stringlerin kendileri <code class="docutils literal notranslate"><span class="pre">”one&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;two&quot;</span></code> ve <code class="docutils literal notranslate"><span class="pre">&quot;three&quot;</span></code>)</p></li>
+</ul>
+<p>Son olarak, ilgili kök dinamik dizileri <code class="docutils literal notranslate"><span class="pre">[[1,</span> <span class="pre">2],</span> <span class="pre">[3]]</span></code> ve <code class="docutils literal notranslate"><span class="pre">[&quot;</span> <span class="pre">one&quot;,</span> <span class="pre">&quot;two&quot;,</span> <span class="pre">&quot;three&quot;]</span></code>
+için <code class="docutils literal notranslate"><span class="pre">f</span></code> ve <code class="docutils literal notranslate"><span class="pre">g</span></code> ofsetlerini bulur ve parçaları doğru sırada birleştiririz:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>0x2289b18c                                                            - fonksiyon imzası
+ 0 - f                                                                - [[1, 2], [3]] için ofset
+ 1 - g                                                                - [&quot;one&quot;, &quot;two&quot;, &quot;three&quot;] için ofset
+ 2 - 0000000000000000000000000000000000000000000000000000000000000002 - [[1, 2], [3]] için sayım
+ 3 - 0000000000000000000000000000000000000000000000000000000000000040 - [1, 2] için ofset
+ 4 - 00000000000000000000000000000000000000000000000000000000000000a0 - [3] için ofset
+ 5 - 0000000000000000000000000000000000000000000000000000000000000002 - [1, 2] için sayım
+ 6 - 0000000000000000000000000000000000000000000000000000000000000001 - 1 şifrelemesi
+ 7 - 0000000000000000000000000000000000000000000000000000000000000002 - 2 şifrelemesi
+ 8 - 0000000000000000000000000000000000000000000000000000000000000001 - [3] için sayım
+ 9 - 0000000000000000000000000000000000000000000000000000000000000003 - 3 şifrelemesi
+10 - 0000000000000000000000000000000000000000000000000000000000000003 - [&quot;one&quot;, &quot;two&quot;, &quot;three&quot;] için sayım
+11 - 0000000000000000000000000000000000000000000000000000000000000060 - &quot;one&quot; için ofset
+12 - 00000000000000000000000000000000000000000000000000000000000000a0 - &quot;two&quot; için ofset
+13 - 00000000000000000000000000000000000000000000000000000000000000e0 - &quot;three&quot; için ofset
+14 - 0000000000000000000000000000000000000000000000000000000000000003 - &quot;one&quot; için sayım
+15 - 6f6e650000000000000000000000000000000000000000000000000000000000 - &quot;one&quot; şifrelemesi
+16 - 0000000000000000000000000000000000000000000000000000000000000003 - &quot;two&quot; için sayım
+17 - 74776f0000000000000000000000000000000000000000000000000000000000 - &quot;two&quot; şifrelemesi
+18 - 0000000000000000000000000000000000000000000000000000000000000005 - &quot;three&quot; için sayım
+19 - 7468726565000000000000000000000000000000000000000000000000000000 - &quot;three&quot; şifrelemesi
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">f</span></code> ofseti, 2. satırda(64 bayt) bulunan <code class="docutils literal notranslate"><span class="pre">[[1,</span> <span class="pre">2],</span> <span class="pre">[3]]</span></code> dizisinin içeriğinin başlangıcına işaret eder;
+dolayısıyla <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">0x0000000000000000000000000000000000000000000000000000000000000040</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">g</span></code> ofseti, 10. satırda (320 bayt) bulunan <code class="docutils literal notranslate"><span class="pre">[&quot;</span> <span class="pre">one&quot;,</span> <span class="pre">&quot;two&quot;,</span> <span class="pre">&quot;three&quot;]</span></code> dizisinin içeriğinin başlangıcına işaret eder;
+dolayısıyla <code class="docutils literal notranslate"><span class="pre">g</span> <span class="pre">=</span> <span class="pre">0x0000000000000000000000000000000000000000000000000000000000000140</span></code>.</p>
+</section>
+<section id="event-ler">
+<span id="abi-events"></span><h2>Event’ler<a class="headerlink" href="#event-ler" title="Permalink to this heading"></a></h2>
+<p>Event’ler Ethereum loglama/olay izleme protokolünün bir özetidir. Günlük girdileri
+sözleşmenin adresini, dört maddeye kadar bir dizi ve bazı değişken uzunluktaki binary
+verileri sağlar. Event’ler, bunu (bir arayüz spesifikasyonu ile birlikte) uygun şekilde
+yazılmış bir yapı olarak yorumlamak için mevcut fonksiyon ABI’sinden yararlanır.</p>
+<p>Bir event adı ve bir dizi event parametresi verildiğinde, bunları iki alt seriye
+ayırırız: indekslenenler ve indekslenmeyenler. İndekslenenler (anonim olmayan olaylar
+için) 3’e veya (anonim olanlar için) 4’e kadar numaralandırılabilir, kayıt girdisinin
+konu başlıklarını oluşturmak için event imzası Keccak hash’i ile birlikte kullanılır.
+İndekslenmemiş olanlar ise event’in bayt dizisini oluşturur.</p>
+<p>Gerçekte, bu ABI’yi kullanan bir log girdisi şu şekilde açıklanır:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">address</span></code> : sözleşmenin adresi (Ethereum tarafından dahili olarak sağlanır);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">topics[0]</span></code> : <code class="docutils literal notranslate"><span class="pre">keccak(EVENT_NAME+&quot;(&quot;+EVENT_ARGS.map(canonical_type_of).join(&quot;,&quot;)+&quot;)&quot;)</span></code>
+(<code class="docutils literal notranslate"><span class="pre">canonical_type_of</span></code> verilen bir argümanın kanonik tipini döndüren bir fonksiyondur,
+örneğin <code class="docutils literal notranslate"><span class="pre">uint</span> <span class="pre">indexed</span> <span class="pre">foo</span></code> için <code class="docutils literal notranslate"><span class="pre">uint256</span></code> değerini döndürür). Bu değer yalnızca event
+<code class="docutils literal notranslate"><span class="pre">anonymous</span></code> olarak tanımlanmamışsa  <code class="docutils literal notranslate"><span class="pre">topics[0]</span></code> içinde bulunur;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">topics[n]</span></code>: Event <code class="docutils literal notranslate"><span class="pre">anonymous</span></code> olarak tanımlanmamışsa <code class="docutils literal notranslate"><span class="pre">abi_encode(EVENT_INDEXED_ARGS[n</span> <span class="pre">-</span> <span class="pre">1])</span></code>
+veya tanımlanmışsa <code class="docutils literal notranslate"><span class="pre">abi_encode(EVENT_INDEXED_ARGS[n])</span></code> (<code class="docutils literal notranslate"><span class="pre">EVENT_INDEXED_ARGS</span></code> indekslenen <code class="docutils literal notranslate"><span class="pre">EVENT_ARGS</span></code>
+serisidir);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: ABI şifrelemesi <code class="docutils literal notranslate"><span class="pre">EVENT_NON_INDEXED_ARGS</span></code> (<code class="docutils literal notranslate"><span class="pre">EVENT_NON_INDEXED_ARGS</span></code> indekslenmemiş
+<code class="docutils literal notranslate"><span class="pre">EVENT_ARGS</span></code> serisidir, <code class="docutils literal notranslate"><span class="pre">abi_encode</span></code> yukarıda açıklandığı gibi bir fonksiyondan bir dizi
+typed değer döndürmek için kullanılan ABI şifreleme fonksiyonudur).</p></li>
+</ul>
+<p>En fazla 32 bayt uzunluğundaki tüm türler için, <code class="docutils literal notranslate"><span class="pre">EVENT_INDEXED_ARGS</span></code> dizisi, normal
+ABI şifrelemesinde olduğu gibi, değeri doğrudan, 32 bayta kadar doldurulmuş veya işaret
+uzatılmış (işaretli tamsayılar için) olarak içermektedir. Ancak, tüm diziler, <code class="docutils literal notranslate"><span class="pre">string</span></code>,
+<code class="docutils literal notranslate"><span class="pre">bytes</span></code> ve structlar dahil olmak üzere tüm “karmaşık” tipler veya dinamik uzunluktaki
+tipler için, <code class="docutils literal notranslate"><span class="pre">EVENT_INDEXED_ARGS</span></code> doğrudan şifrelenmiş değer yerine yerleşik olarak
+şifrelenmiş özel bir değerin (bkz <a class="reference internal" href="#indexed-event-encoding"><span class="std std-ref">İndekslenmiş Event Parametrelerinin Şifrelenmesi</span></a>) <em>Keccak hash</em>’ini tutacaktır.
+Bu, uygulamaların dinamik uzunluktaki tiplerin değerlerini verimli bir şekilde sorgulamalarına
+olanak tanır ( şifrelenmiş değerin hash’ini topic olarak ayarlayarak), ancak uygulamaların
+sorgulamadıkları indekslenmiş değerlerin şifresini çözememelerine imkan tanır. Dinamik
+uzunluklu tipler için, uygulama geliştiricileri önceden belirlenmiş değerler için hızlı
+arama (argüman indekslenmişse) ve rastgele değerlerin okunabilirliği (argümanların
+indekslenmemesini gerektirir) arasında bir trade-off ile karşı karşıyadır. Geliştiriciler,
+aynı değeri tutması amaçlanan biri indekslenmiş, diğeri indekslenmemiş iki bağımsız değişkene
+sahip event’ler tanımlayarak bu dengesizliğin üstesinden gelebilir ve hem verimli arama
+hem de değişken okunabilirlik elde edebileceklerdir.</p>
+<span class="target" id="abi-errors"></span></section>
+<section id="error-ler">
+<span id="index-2"></span><h2>Error’ler<a class="headerlink" href="#error-ler" title="Permalink to this heading"></a></h2>
+<p>Bir sözleşme içinde bir hata olması durumunda, sözleşme yürütme işlemini iptal etmek
+ve tüm durum değişikliklerini geri almak için özel bir opcode kullanabilir. Bu etkilere
+ek olarak, açıklayıcı veriler de çağırana döndürülebilir. Bu açıklayıcı veri, bir hatanın
+ve argümanlarının bir fonksiyon çağrısı için veri ile aynı şekilde şifrelenmesidir.</p>
+<p>Örnek olarak, <code class="docutils literal notranslate"><span class="pre">transfer</span></code> fonksiyonu her zaman “yetersiz bakiye”(insufficient balance)
+özel hatası ile geri döndürülen aşağıdaki sözleşmeyi ele alalım:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5IF4wLjguNDsKCmNvbnRyYWN0IFRlc3RUb2tlbiB7CiAgICBlcnJvciBJbnN1ZmZpY2llbnRCYWxhbmNlKHVpbnQyNTYgYXZhaWxhYmxlLCB1aW50MjU2IHJlcXVpcmVkKTsKICAgIGZ1bmN0aW9uIHRyYW5zZmVyKGFkZHJlc3MgLyp0byovLCB1aW50IGFtb3VudCkgcHVibGljIHB1cmUgewogICAgICAgIHJldmVydCBJbnN1ZmZpY2llbnRCYWxhbmNlKDAsIGFtb3VudCk7CiAgICB9Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">^</span><span class="k">0.8.4</span><span class="p">;</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">TestToken</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span>error<span class="w"> </span>InsufficientBalance<span class="p">(</span><span class="kt">uint256</span><span class="w"> </span><span class="nv">available</span><span class="p">,</span><span class="w"> </span><span class="kt">uint256</span><span class="w"> </span><span class="nv">required</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">transfer</span><span class="p">(</span><span class="kt">address</span><span class="w"> </span><span class="cm">/*to*/</span><span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">amount</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>pure<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span>revert<span class="w"> </span>InsufficientBalance<span class="p">(</span><span class="m m-Decimal">0</span><span class="p">,</span><span class="w"> </span>amount<span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Geri döndürülen veri, <code class="docutils literal notranslate"><span class="pre">InsufficientBalance(uint256,uint256)</span></code> fonksiyonuna
+<code class="docutils literal notranslate"><span class="pre">InsufficientBalance(0,</span> <span class="pre">amount)</span></code> fonksiyon çağrısı ile aynı şekilde şifrelenecektir,
+yani <code class="docutils literal notranslate"><span class="pre">0xcf479181</span></code>, <code class="docutils literal notranslate"><span class="pre">uint256(0)</span></code>, <code class="docutils literal notranslate"><span class="pre">uint256(amount)</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">0x00000000</span></code> ve <code class="docutils literal notranslate"><span class="pre">0xffffff</span></code> hata(error) selektörleri gelecekte kullanılmak üzere saklanmıştır.
+“0x00000000” ve “0xffffffff” hata seçicileri ileride kullanılmak üzere ayrılmıştır.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Hata verilerine asla güvenmeyin.
+Hata verileri standart olarak harici çağrılar zinciri boyunca yayılır; bu da bir
+sözleşmenin doğrudan çağırdığı sözleşmelerin hiçbirinde tanımlanmamış bir hata
+alabileceği anlamına gelir.
+Ayrıca, herhangi bir sözleşme, hata hiçbir yerde tanımlanmamış olsa bile, bir
+hata imzasıyla eşleşen verileri döndürerek herhangi bir hatayı taklit edebilir.</p>
+</div>
+</section>
+<section id="json">
+<span id="abi-json"></span><h2>JSON<a class="headerlink" href="#json" title="Permalink to this heading"></a></h2>
+<p>Bir sözleşmenin arayüzü için oluşturulan JSON formatı, fonksiyon, olay ve hata açıklamalarından oluşan bir dizi ile verilir.
+Fonksiyon açıklaması, alanları içeren bir JSON nesnesidir:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;function&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;constructor&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;receive&quot;</span></code> (<a class="reference internal" href="contracts.html#receive-ether-function"><span class="std std-ref">“receive Ether” fonksiyonu</span></a>) veya <code class="docutils literal notranslate"><span class="pre">&quot;fallback&quot;</span></code> (<a class="reference internal" href="contracts.html#fallback-function"><span class="std std-ref">“default” fonksiyonu</span></a>);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: fonksiyonun adı;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inputs</span></code>: her biri aşağıdakileri içeren bir nesne dizisi:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: parametrenin adı.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: parametrenin kanonik tipi (daha fazla bilgi aşağıdadır).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">components</span></code>: tuple türleri için kullanılır (daha fazla bilgi aşağıdadır).</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">outputs</span></code>: an array of objects similar to <code class="docutils literal notranslate"><span class="pre">inputs</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stateMutability</span></code>: a string with one of the following values: <code class="docutils literal notranslate"><span class="pre">pure</span></code> (<a class="reference internal" href="contracts.html#pure-functions"><span class="std std-ref">specified to not read
+blockchain state</span></a>), <code class="docutils literal notranslate"><span class="pre">view</span></code> (<a class="reference internal" href="contracts.html#view-functions"><span class="std std-ref">specified to not modify the blockchain
+state</span></a>), <code class="docutils literal notranslate"><span class="pre">nonpayable</span></code> (function does not accept Ether - the default) and <code class="docutils literal notranslate"><span class="pre">payable</span></code> (function accepts Ether).</p></li>
+</ul>
+<p>Constructor ve fallback fonksiyonu asla <code class="docutils literal notranslate"><span class="pre">name</span></code> veya <code class="docutils literal notranslate"><span class="pre">outputs</span></code> içermez. Fallback fonksiyonunda da <code class="docutils literal notranslate"><span class="pre">inputs</span></code> yoktur.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Non-payable fonksiyonuna sıfır olmayan Ether gönderilmesi transferi geri çevirecektir(revert).</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Durum değişkenliği <code class="docutils literal notranslate"><span class="pre">nonpayable</span></code> Solidity’de bir durum değişkenliği modifier’ı
+belirtilmeden yansıtılmaktadır(reflected).</p>
+</div>
+<p>Bir event açıklaması, oldukça benzer özelliklere sahip bir JSON nesnesidir:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: her zaman <code class="docutils literal notranslate"><span class="pre">&quot;event&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: event adı.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inputs</span></code>: her biri aşağıdakileri içeren bir nesne dizisi:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: the name of the parameter.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: parametrenin kanonik tipi (daha fazla bilgi aşağıdadır).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">components</span></code>: tuple türleri için kullanılır (daha fazla bilgi aşağıdadır).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">indexed</span></code>: Eğer alan logun konularının bir parçasıysa <code class="docutils literal notranslate"><span class="pre">true</span></code>, logun veri segmentlerinden biriyse <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">anonymous</span></code>: Olay <code class="docutils literal notranslate"><span class="pre">anonymous</span></code> olarak tanımlanmışsa <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p></li>
+</ul>
+<p>Hatalar aşağıdaki gibi görünür:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: her zaman <code class="docutils literal notranslate"><span class="pre">&quot;error&quot;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: error adı.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inputs</span></code>: her biri aşağıdakileri içeren bir nesne dizisi:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: parametrenin adı.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: parametrenin kanonik tipi (daha fazla bilgi aşağıdadır).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">components</span></code>: tuple türleri için kullanılır (daha fazla bilgi aşağıdadır).</p></li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>JSON dizisinde aynı ada ve hatta aynı imzaya sahip birden fazla hata(error) olabilir,
+örneğin hatalar akıllı sözleşmedeki farklı dosyalardan kaynaklanıyorsa veya başka bir
+akıllı sözleşmeden referans alınıyorsa. ABI için hatanın nerede tanımlandığı değil,
+yalnızca adı önemlidir.</p>
+</div>
+<p>Örneğin,</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5IF4wLjguNDsKCgpjb250cmFjdCBUZXN0IHsKICAgIGNvbnN0cnVjdG9yKCkgeyBiID0gaGV4IjEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyIjsgfQogICAgZXZlbnQgRXZlbnQodWludCBpbmRleGVkIGEsIGJ5dGVzMzIgYik7CiAgICBldmVudCBFdmVudDIodWludCBpbmRleGVkIGEsIGJ5dGVzMzIgYik7CiAgICBlcnJvciBJbnN1ZmZpY2llbnRCYWxhbmNlKHVpbnQyNTYgYXZhaWxhYmxlLCB1aW50MjU2IHJlcXVpcmVkKTsKICAgIGZ1bmN0aW9uIGZvbyh1aW50IGEpIHB1YmxpYyB7IGVtaXQgRXZlbnQoYSwgYik7IH0KICAgIGJ5dGVzMzIgYjsKfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">^</span><span class="k">0.8.4</span><span class="p">;</span><span class="w"></span>
+
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">Test</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">constructor</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>b<span class="w"> </span><span class="o">=</span><span class="w"> </span>hex<span class="s2">&quot;12345678901234567890123456789012&quot;</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kt">event</span><span class="w"> </span><span class="nv">Event</span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">indexed</span><span class="w"> </span>a<span class="p">,</span><span class="w"> </span><span class="kt">bytes32</span><span class="w"> </span><span class="nv">b</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">event</span><span class="w"> </span><span class="nv">Event2</span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">indexed</span><span class="w"> </span>a<span class="p">,</span><span class="w"> </span><span class="kt">bytes32</span><span class="w"> </span><span class="nv">b</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span>error<span class="w"> </span>InsufficientBalance<span class="p">(</span><span class="kt">uint256</span><span class="w"> </span><span class="nv">available</span><span class="p">,</span><span class="w"> </span><span class="kt">uint256</span><span class="w"> </span><span class="nv">required</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">foo</span><span class="p">(</span><span class="kt">uint</span><span class="w"> </span><span class="nv">a</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>emit<span class="w"> </span>Event<span class="p">(</span>a<span class="p">,</span><span class="w"> </span>b<span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kt">bytes32</span><span class="w"> </span><span class="nv">b</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>JSON ile sonuçlanacaktır:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[{</span><span class="w"></span>
+<span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;error&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="nt">&quot;inputs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;available&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;uint256&quot;</span><span class="p">},{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;required&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;uint256&quot;</span><span class="p">}],</span><span class="w"></span>
+<span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;InsufficientBalance&quot;</span><span class="w"></span>
+<span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;event&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="nt">&quot;inputs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;uint256&quot;</span><span class="p">,</span><span class="nt">&quot;indexed&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">},{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;bytes32&quot;</span><span class="p">,</span><span class="nt">&quot;indexed&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">}],</span><span class="w"></span>
+<span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Event&quot;</span><span class="w"></span>
+<span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;event&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="nt">&quot;inputs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;uint256&quot;</span><span class="p">,</span><span class="nt">&quot;indexed&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">},{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;bytes32&quot;</span><span class="p">,</span><span class="nt">&quot;indexed&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">}],</span><span class="w"></span>
+<span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Event2&quot;</span><span class="w"></span>
+<span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;function&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="nt">&quot;inputs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;uint256&quot;</span><span class="p">}],</span><span class="w"></span>
+<span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="nt">&quot;outputs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w"></span>
+<span class="p">}]</span><span class="w"></span>
+</pre></div>
+</div>
+<section id="tuple-tiplerinin-kullanilmasi">
+<h3>Tuple tiplerinin kullanılması<a class="headerlink" href="#tuple-tiplerinin-kullanilmasi" title="Permalink to this heading"></a></h3>
+<p>İsimler bilinçli olarak ABI şifrelemesinin bir parçası olmamasına rağmen, son kullanıcıya
+gösterilmesini sağlamak için JSON’a dahil edilmeleri çok önemlidir. Yapı aşağıdaki şekilde
+iç içe geçmiştir:</p>
+<p><code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">type</span></code> ve potansiyel olarak <code class="docutils literal notranslate"><span class="pre">components</span></code> üyelerine sahip bir nesne, tiplendirilmiş
+bir değişkeni tanımlar. Kanonik tip, bir tuple tipine ulaşılana kadar belirlenir ve o noktaya
+kadar olan dize açıklaması <code class="docutils literal notranslate"><span class="pre">tuple</span></code> kelimesiyle <code class="docutils literal notranslate"><span class="pre">type</span></code> önekinde saklanır, yani <code class="docutils literal notranslate"><span class="pre">tuple</span></code>
+ve ardından <code class="docutils literal notranslate"><span class="pre">[]</span></code> ve <code class="docutils literal notranslate"><span class="pre">[k]</span></code> tamsayıları <code class="docutils literal notranslate"><span class="pre">k</span></code> ile bir dizi olacaktır. Tuple`ın bileşenleri
+daha sonra dizi tipinde olan ve üst düzey nesne ile aynı yapıya sahip olan <code class="docutils literal notranslate"><span class="pre">components</span></code>
+üyesinde saklanır, ancak <code class="docutils literal notranslate"><span class="pre">indexed</span></code> öğesine bu durumda izin verilmez.</p>
+<p>Örnek olarak, kod</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC43LjUgPDAuOS4wOwpwcmFnbWEgYWJpY29kZXIgdjI7Cgpjb250cmFjdCBUZXN0IHsKICAgIHN0cnVjdCBTIHsgdWludCBhOyB1aW50W10gYjsgVFtdIGM7IH0KICAgIHN0cnVjdCBUIHsgdWludCB4OyB1aW50IHk7IH0KICAgIGZ1bmN0aW9uIGYoUyBtZW1vcnksIFQgbWVtb3J5LCB1aW50KSBwdWJsaWMgcHVyZSB7fQogICAgZnVuY3Rpb24gZygpIHB1YmxpYyBwdXJlIHJldHVybnMgKFMgbWVtb3J5LCBUIG1lbW9yeSwgdWludCkge30KfQ=="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// SPDX-License-Identifier: GPL-3.0</span>
+<span class="k">pragma solidity</span><span class="w"> </span><span class="o">&gt;=</span><span class="k">0.7.5</span><span class="w"> </span><span class="o">&lt;</span><span class="k">0.9.0</span><span class="p">;</span><span class="w"></span>
+pragma<span class="w"> </span>abicoder<span class="w"> </span>v2<span class="p">;</span><span class="w"></span>
+
+<span class="k">contract</span><span class="w"> </span><span class="ni">Test</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">struct</span><span class="w"> </span><span class="nv">S</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">a</span><span class="p">;</span><span class="w"> </span><span class="kt">uint</span><span class="p">[]</span><span class="w"> </span>b<span class="p">;</span><span class="w"> </span>T<span class="p">[]</span><span class="w"> </span>c<span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kt">struct</span><span class="w"> </span><span class="nv">T</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">x</span><span class="p">;</span><span class="w"> </span><span class="kt">uint</span><span class="w"> </span><span class="nv">y</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">f</span><span class="p">(</span>S<span class="w"> </span><span class="kt">memory</span><span class="p">,</span><span class="w"> </span>T<span class="w"> </span><span class="kt">memory</span><span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>pure<span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="w">    </span><span class="kt">function</span><span class="w"> </span><span class="nv">g</span><span class="p">()</span><span class="w"> </span><span class="kt">public</span><span class="w"> </span>pure<span class="w"> </span><span class="kt">returns</span><span class="w"> </span><span class="p">(</span>S<span class="w"> </span><span class="kt">memory</span><span class="p">,</span><span class="w"> </span>T<span class="w"> </span><span class="kt">memory</span><span class="p">,</span><span class="w"> </span><span class="kt">uint</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>JSON ile sonuçlanacaktır:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;f&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;function&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;inputs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tuple&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;components&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uint256&quot;</span><span class="w"></span>
+<span class="w">          </span><span class="p">},</span><span class="w"></span>
+<span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uint256[]&quot;</span><span class="w"></span>
+<span class="w">          </span><span class="p">},</span><span class="w"></span>
+<span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;c&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tuple[]&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;components&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">              </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uint256&quot;</span><span class="w"></span>
+<span class="w">              </span><span class="p">},</span><span class="w"></span>
+<span class="w">              </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;y&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uint256&quot;</span><span class="w"></span>
+<span class="w">              </span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="p">]</span><span class="w"></span>
+<span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">]</span><span class="w"></span>
+<span class="w">      </span><span class="p">},</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tuple&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;components&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uint256&quot;</span><span class="w"></span>
+<span class="w">          </span><span class="p">},</span><span class="w"></span>
+<span class="w">          </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;y&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uint256&quot;</span><span class="w"></span>
+<span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">]</span><span class="w"></span>
+<span class="w">      </span><span class="p">},</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uint256&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;outputs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="kati-sifreleme-modu">
+<span id="abi-packed-mode"></span><h2>Katı Şifreleme Modu<a class="headerlink" href="#kati-sifreleme-modu" title="Permalink to this heading"></a></h2>
+<p>Sıkı şifreleme modu, yukarıdaki resmi spesifikasyonda tanımlandığı gibi tam olarak aynı
+şifrelemeye neden olan moddur. Bu, ofsetlerin veri alanlarında çakışma yaratmadan mümkün
+olduğunca küçük olması gerektiği ve dolayısıyla hiçbir boşluğa izin verilmediği anlamına gelir.</p>
+<p>Genellikle, ABI şifre çözücüler sadece ofset işaretçilerini takip ederek basit bir şekilde
+yazılır, ancak bazı şifre çözücüler katı modu zorlayabilir. Solidity ABI şifre çözücü şu
+anda katı modu kullanmayı zorunlu kılmaz, ancak şifreleyici her zaman katı modda veri oluşturur.</p>
+</section>
+<section id="standart-olmayan-paket-modu">
+<h2>Standart Olmayan Paket Modu<a class="headerlink" href="#standart-olmayan-paket-modu" title="Permalink to this heading"></a></h2>
+<p>Solidity, <code class="docutils literal notranslate"><span class="pre">abi.encodePacked()</span></code> aracılığıyla standart olmayan bir paketlenmiş modu destekler:</p>
+<ul class="simple">
+<li><p>32 bayttan kısa tipler, doldurma(padding) veya işaret(sign) uzantısı olmadan doğrudan birleştirilir</p></li>
+<li><p>dinamik tipler in-place olarak ve uzunluk olmadan şifrelenir</p></li>
+<li><p>dizi elemanları doldurulur, ancak yine de in-place olarak şifrelenir</p></li>
+</ul>
+<p>Ayrıca, struct’ların yanı sıra iç içe diziler de desteklenmez.</p>
+<p>Örnek olarak, <code class="docutils literal notranslate"><span class="pre">int16(-1),</span> <span class="pre">bytes1(0x42),</span> <span class="pre">uint16(0x03),</span> <span class="pre">string(&quot;Hello,</span> <span class="pre">world!&quot;)</span></code> şeklinde bir şifreleme elde edilir:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>0xffff42000348656c6c6f2c20776f726c6421
+  ^^^^                                 int16(-1)
+      ^^                               bytes1(0x42)
+        ^^^^                           uint16(0x03)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^ string(&quot;Hello, world!&quot;) without a length field
+</pre></div>
+</div>
+<p>Daha spesifik olarak:</p>
+<ul class="simple">
+<li><p>Şifreleme sırasında her şey in-place olarak şifrelenir. Bu, ABI şifrelemesi gibi
+baş ve kuyruk arasında bir ayrım olmadığı ve bir dizinin uzunluğunun şifrelenmediği
+anlamına gelir.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">abi.encodePacked</span></code> komutunun doğrudan argümanları, dizi (veya <code class="docutils literal notranslate"><span class="pre">string</span></code> veya
+<code class="docutils literal notranslate"><span class="pre">bytes</span></code>) olmadıkları sürece doldurma olmadan şifrelenir.</p></li>
+<li><p>Bir dizinin şifrelemesi, elemanlarının şifrelemelerinin <strong>doldurma</strong> ile
+birleştirilmesidir.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">string</span></code>, <code class="docutils literal notranslate"><span class="pre">bytes</span></code> veya <code class="docutils literal notranslate"><span class="pre">uint[]</span></code> gibi dinamik olarak boyutlandırılan tipler
+uzunluk alanları olmadan şifrelenir.</p></li>
+<li><p>Bir dizinin veya struct’ın parçası olmadığı sürece <code class="docutils literal notranslate"><span class="pre">string</span></code> veya <code class="docutils literal notranslate"><span class="pre">bytes</span></code>
+şifrelemesinin sonuna doldurma uygulanmaz (bu durumda 32 baytın katlarına kadar doldurulur).</p></li>
+</ul>
+<p>Genel olarak, eksik uzunluk değeri nedeniyle dinamik olarak boyutlandırılmış iki
+öğe olduğu anda şifreleme belirsizleşir.</p>
+<p>Doldurma gerekiyorsa, açık tip dönüşümleri kullanılabilir: <code class="docutils literal notranslate"><span class="pre">abi.encodePacked(uint16(0x12))</span> <span class="pre">==</span> <span class="pre">hex</span> <span class="pre">&quot;0012&quot;</span></code>.</p>
+<p>Fonksiyonları çağırırken paketlenmiş şifreleme kullanılmadığından, bir fonksiyon seçicinin
+önüne ekleme yapmak için özel bir destek yoktur. Şifreleme belirsiz olduğundan, şifre çözme fonksiyonu yoktur.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Eğer <code class="docutils literal notranslate"><span class="pre">keccak256(abi.encodePacked(a,</span> <span class="pre">b))</span></code> kullanırsanız ve hem <code class="docutils literal notranslate"><span class="pre">a</span></code> hem de <code class="docutils literal notranslate"><span class="pre">b</span></code>
+dinamik tiplerse, <code class="docutils literal notranslate"><span class="pre">a``nın</span> <span class="pre">bazı</span> <span class="pre">kısımlarını</span> <span class="pre">``b``ye</span> <span class="pre">taşıyarak</span> <span class="pre">veya</span> <span class="pre">tam</span> <span class="pre">tersini</span>
+<span class="pre">yaparak</span> <span class="pre">hash</span> <span class="pre">değerinde</span> <span class="pre">çakışmalar</span> <span class="pre">oluşturmak</span> <span class="pre">kolaydır.</span> <span class="pre">Daha</span> <span class="pre">spesifik</span> <span class="pre">olarak,</span>
+<span class="pre">``abi.encodePacked(&quot;a&quot;,</span> <span class="pre">&quot;bc&quot;)</span> <span class="pre">==</span> <span class="pre">abi.encodePacked(&quot;ab&quot;,</span> <span class="pre">&quot;c&quot;)</span></code>. İmzalar, kimlik
+doğrulama veya veri bütünlüğü için <code class="docutils literal notranslate"><span class="pre">abi.encodePacked</span></code> kullanıyorsanız, her zaman
+aynı tipleri kullandığınızdan emin olun ve bunlardan en fazla birinin dinamik
+olduğunu kontrol edin. Mecburi bir neden olmadıkça, <code class="docutils literal notranslate"><span class="pre">abi.encode</span></code> tercih edilmelidir.</p>
+</div>
+</section>
+<section id="indekslenmis-event-parametrelerinin-sifrelenmesi">
+<span id="indexed-event-encoding"></span><h2>İndekslenmiş Event Parametrelerinin Şifrelenmesi<a class="headerlink" href="#indekslenmis-event-parametrelerinin-sifrelenmesi" title="Permalink to this heading"></a></h2>
+<p>Değer türü olmayan indekslenmiş event parametreleri, yani diziler ve struct’lar
+doğrudan saklanmaz, bunun yerine bir şifrelemenin keccak256-hash’i saklanır. Bu
+şifreleme aşağıdaki gibi tanımlanmaktadır:</p>
+<ul class="simple">
+<li><p>bir <code class="docutils literal notranslate"><span class="pre">bytes</span></code> ve <code class="docutils literal notranslate"><span class="pre">string</span></code> değerinin şifrelenmesi, herhangi bir doldurma veya
+uzunluk öneki olmaksızın sadece string içeriğinden ibarettir.</p></li>
+<li><p>bir structın kodlaması, her zaman 32 baytın katları olacak şekilde (<code class="docutils literal notranslate"><span class="pre">bytes</span></code> ve
+<code class="docutils literal notranslate"><span class="pre">string</span></code> bile) üyelerinin şifrelemelerinin bir araya getirilmesiyle elde edilir.</p></li>
+<li><p>bir dizinin şifrelenmesi (hem dinamik hem de statik olarak boyutlandırılmış), her
+zaman 32 baytın katları olacak şekilde (<code class="docutils literal notranslate"><span class="pre">bytes</span></code> ve <code class="docutils literal notranslate"><span class="pre">string</span></code> bile) ve herhangi
+bir uzunluk öneki olmadan elemanlarının şifrelenmesinin birleşimidir</p></li>
+</ul>
+<p>Yukarıda her zamanki gibi, negatif bir sayı işaret uzantısıyla doldurulur ve sıfırla doldurulmaz.
+<code class="docutils literal notranslate"><span class="pre">bytesNN</span></code> tipleri sağdan, <code class="docutils literal notranslate"><span class="pre">uintNN</span></code> / <code class="docutils literal notranslate"><span class="pre">intNN</span></code> tipleri ise soldan doldurulur.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Bir struct’ın şifrelenmesi, dinamik olarak boyutlandırılmış birden fazla dizi
+içeriyorsa belirsizdir. Bu nedenle, event verilerini her zaman yeniden kontrol
+edin ve yalnızca indekslenmiş parametrelere dayanan arama sonuçlarına güvenmeyin.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="metadata.html" class="btn btn-neutral float-left" title="Sözleşme Meta Verisi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="050-breaking-changes.html" class="btn btn-neutral float-right" title="Solidity v0.5.0 İşleyişi Bozan Değişiklikler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

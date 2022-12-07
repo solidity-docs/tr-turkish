@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solidity v0.6.0 İşleyişi Bozan Değişiklikler &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Solidity v0.7.0 İşleyişi Bozan Değişiklikler" href="070-breaking-changes.html" />
+    <link rel="prev" title="Solidity v0.5.0 İşleyişi Bozan Değişiklikler" href="050-breaking-changes.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#derleyicinin-uyaramayabilecegi-degisiklikler">Derleyicinin Uyaramayabileceği Değişiklikler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#aciklik-gereksinimleri">Açıklık Gereksinimleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#semantik-ve-sentaktik-degisiklikler">Semantik ve Sentaktik Değişiklikler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yeni-ozellikler">Yeni Özellikler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#arayuz-degisiklikleri">Arayüz Değişiklikleri</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#yeni-hata-raporlayicisi">Yeni Hata Raporlayıcısı</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#metadata-hash-secenekleri">Metadata Hash Seçenekleri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#yul-optimize-edici">Yul Optimize Edici</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#c-api-degisiklikleri">C API Değişiklikleri</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#kodunuzu-nasil-guncelleyebilirsiniz">Kodunuzu nasıl güncelleyebilirsiniz?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/060-breaking-changes.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="solidity-v0-6-0-isleyisi-bozan-degisiklikler">
+<h1>Solidity v0.6.0 İşleyişi Bozan Değişiklikler<a class="headerlink" href="#solidity-v0-6-0-isleyisi-bozan-degisiklikler" title="Permalink to this heading"></a></h1>
+<p>Bu bölüm, Solidity 0.6.0 sürümünde getirilen ana işleyişi bozan değişiklikleri,
+değişikliklerin arkasındaki gerekçeleri ve etkilenen kodun nasıl güncelleneceğini
+vurgular. Tam liste için <a class="reference external" href="https://github.com/ethereum/solidity/releases/tag/v0.6.0">sürüm değişiklik günlüğü</a>
+adresini kontrol edin.</p>
+<section id="derleyicinin-uyaramayabilecegi-degisiklikler">
+<h2>Derleyicinin Uyaramayabileceği Değişiklikler<a class="headerlink" href="#derleyicinin-uyaramayabilecegi-degisiklikler" title="Permalink to this heading"></a></h2>
+<p>Bu bölümde, kodunuzun davranışının derleyici size haber vermeden değişebileceği değişiklikler listelenmektedir.</p>
+<ul class="simple">
+<li><p>Bir üs alma işleminin sonuç türü tabanın türüdür. Simetrik işlemlerde olduğu gibi, hem
+tabanın türünü hem de üssün türünü tutabilen en küçük tür olarak kullanılır. Ayrıca, üs
+alma işleminin tabanı için işaretli türlere izin verilir.</p></li>
+</ul>
+</section>
+<section id="aciklik-gereksinimleri">
+<h2>Açıklık Gereksinimleri<a class="headerlink" href="#aciklik-gereksinimleri" title="Permalink to this heading"></a></h2>
+<p>Bu bölüm, kodun artık daha açık olması gereken, ancak anlamın değişmediği değişiklikleri
+listeler. Konuların çoğu için derleyici öneriler sağlayacaktır.</p>
+<ul class="simple">
+<li><p>Fonksiyonlar artık yalnızca <code class="docutils literal notranslate"><span class="pre">virtual</span></code> anahtar sözcüğü ile işaretlendiklerinde veya bir arayüzde tanımlandıklarında geçersiz kılınabilir. Bir arayüz dışında uygulaması olmayan fonksiyonlar <code class="docutils literal notranslate"><span class="pre">virtual</span></code> olarak işaretlenmelidir. Bir fonksiyon veya modifier geçersiz kılınırken, yeni <code class="docutils literal notranslate"><span class="pre">override</span></code> anahtar sözcüğü kullanılmalıdır. Birden fazla paralel tabanda tanımlanmış bir fonksiyon veya modifier geçersiz kılınırken, tüm tabanlar anahtar kelimeden sonra parantez içinde aşağıdaki gibi listelenmelidir: <code class="docutils literal notranslate"><span class="pre">override(Base1,</span> <span class="pre">Base2)</span></code>.</p></li>
+<li><p>Dizilerin <code class="docutils literal notranslate"><span class="pre">length</span></code> öğesine üye erişimi artık depolama dizileri için bile her zaman salt okunurdur. Depolama dizilerini uzunluklarına yeni bir değer atayarak yeniden boyutlandırmak artık mümkün değildir. Bunun yerine <code class="docutils literal notranslate"><span class="pre">push()</span></code>, <code class="docutils literal notranslate"><span class="pre">push(value)</span></code> veya <code class="docutils literal notranslate"><span class="pre">pop()</span></code> kullanın ya da tam bir dizi atayın, bu da elbette mevcut içeriğin üzerine yazacaktır. Bunun arkasındaki neden, devasa depolama dizilerinin depolama çakışmalarını önlemektir.</p></li>
+<li><p>Yeni anahtar kelime <code class="docutils literal notranslate"><span class="pre">abstract</span></code> sözleşmeleri soyut olarak işaretlemek için kullanılabilir. Bir sözleşme tüm fonksiyonlarını uygulamıyorsa kullanılmalıdır. Soyut sözleşmeler <code class="docutils literal notranslate"><span class="pre">new</span></code> operatörü kullanılarak oluşturulamaz ve derleme sırasında bunlar için bytecode üretmek mümkün değildir.</p></li>
+<li><p>Kütüphaneler sadece internal olanları değil, tüm fonksiyonlarını uygulamak zorundadır.</p></li>
+<li><p>Inline assembly’de bildirilen değişkenlerin adları artık <code class="docutils literal notranslate"><span class="pre">_slot</span></code> veya <code class="docutils literal notranslate"><span class="pre">_offset</span></code> ile bitemez.</p></li>
+<li><p>Inline assembly’deki değişken bildirimleri artık inline assembly bloğunun dışındaki herhangi bir bildirimi gölgeleyemez. İsim bir nokta içeriyorsa, noktaya kadar olan öneki, inline assembly bloğu dışındaki herhangi bir bildirimle çakışmayabilir.</p></li>
+<li><p>Durum değişkeni gölgelemesine artık izin verilmemektedir.  Türetilmiş bir sözleşme, yalnızca tabanlarının hiçbirinde aynı ada sahip görünür bir durum değişkeni yoksa <code class="docutils literal notranslate"><span class="pre">x</span></code> durum değişkenini bildirebilir.</p></li>
+</ul>
+</section>
+<section id="semantik-ve-sentaktik-degisiklikler">
+<h2>Semantik ve Sentaktik Değişiklikler<a class="headerlink" href="#semantik-ve-sentaktik-degisiklikler" title="Permalink to this heading"></a></h2>
+<p>Bu bölüm, kodunuzu değiştirmeniz gereken ve daha sonra başka bir şey yapan değişiklikleri listeler.</p>
+<ul class="simple">
+<li><p>External fonksiyon tiplerinden <code class="docutils literal notranslate"><span class="pre">address</span></code> e dönüşümlere artık izin verilmiyor. Bunun yerine harici fonksiyon tipleri, mevcut <code class="docutils literal notranslate"><span class="pre">selector</span></code> üyesine benzer şekilde <code class="docutils literal notranslate"><span class="pre">address</span></code> adlı bir üyeye sahiptir.</p></li>
+<li><p>Dinamik depolama dizileri için <code class="docutils literal notranslate"><span class="pre">push(value)</span></code> fonksiyonu artık yeni uzunluğu döndürmüyor (hiçbir şey döndürmüyor).</p></li>
+<li><p>Genellikle ” fallback fonksiyonu” olarak adlandırılan isimsiz fonksiyon, <code class="docutils literal notranslate"><span class="pre">fallback</span></code> anahtar kelimesi kullanılarak tanımlanan yeni bir fallback fonksiyonuna ve <code class="docutils literal notranslate"><span class="pre">receive</span></code> anahtar kelimesi kullanılarak tanımlanan bir receive ether fonksiyonuna bölünmüştür.</p>
+<ul>
+<li><p>Mevcutsa, çağrı verisi boş olduğunda ( ether alınsın ya da alınmasın) ether alma fonksiyonu çağrılır. Bu fonksiyon örtük olarak <code class="docutils literal notranslate"><span class="pre">payable</span></code> dır.</p></li>
+<li><p>Yeni fallback fonksiyonu, başka hiçbir fonksiyon uyuşmadığında çağrılır (eğer receive ether fonksiyonu mevcut değilse, bu boş çağrı verisine sahip çağrıları da içerir). Bu fonksiyonu <code class="docutils literal notranslate"><span class="pre">payable</span></code> yapabilir ya da yapmayabilirsiniz. Eğer <code class="docutils literal notranslate"><span class="pre">payable</span></code> değilse, değer gönderen başka bir fonksiyonla eşleşmeyen işlemler geri dönecektir. Yeni fallback fonksiyonunu yalnızca bir yükseltme veya proxy modelini takip ediyorsanız uygulamanız gerekir.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="yeni-ozellikler">
+<h2>Yeni Özellikler<a class="headerlink" href="#yeni-ozellikler" title="Permalink to this heading"></a></h2>
+<p>Bu bölümde Solidity 0.6.0 öncesinde mümkün olmayan veya başarılması daha zor olan şeyler listelenmektedir.</p>
+<ul class="simple">
+<li><p>ref:<cite>try/catch deyimi &lt;try-catch&gt;</cite> başarısız external çağrılara tepki vermenizi sağlar.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">struct</span></code> ve <code class="docutils literal notranslate"><span class="pre">enum</span></code> türleri dosya düzeyinde bildirilebilir.</p></li>
+<li><p>Dizi dilimleri calldata dizileri için kullanılabilir, örneğin <code class="docutils literal notranslate"><span class="pre">abi.decode(msg.data[4:],</span> <span class="pre">(uint,</span> <span class="pre">uint))</span></code> fonksiyon çağrısı yükünün kodunu çözmenin düşük seviyeli bir yoludur.</p></li>
+<li><p>Natspec, geliştirici belgelerinde <code class="docutils literal notranslate"><span class="pre">&#64;param</span></code> ile aynı adlandırma kontrolünü uygulayarak birden fazla dönüş parametresini destekler.</p></li>
+<li><p>Yul ve Inline Assembly, mevcut fonksiyondan çıkan <code class="docutils literal notranslate"><span class="pre">leave</span></code> adlı yeni bir deyime sahiptir.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">address</span></code>’den <code class="docutils literal notranslate"><span class="pre">address</span> <span class="pre">payable</span></code>’a dönüşümler artık <code class="docutils literal notranslate"><span class="pre">payable(x)</span></code> ile mümkündür, burada <code class="docutils literal notranslate"><span class="pre">x</span></code> <code class="docutils literal notranslate"><span class="pre">address</span></code> tipinde olmalıdır.</p></li>
+</ul>
+</section>
+<section id="arayuz-degisiklikleri">
+<h2>Arayüz Değişiklikleri<a class="headerlink" href="#arayuz-degisiklikleri" title="Permalink to this heading"></a></h2>
+<p>Bu bölümde, dilin kendisiyle ilgili olmayan ancak derleyicinin arayüzleri üzerinde
+etkisi olan değişiklikler listelenmektedir. Bunlar derleyiciyi komut satırında nasıl
+kullandığınızı, programlanabilir arayüzünü nasıl kullandığınızı veya derleyici tarafından
+üretilen çıktıyı nasıl analiz ettiğinizi değiştirebilir.</p>
+<section id="yeni-hata-raporlayicisi">
+<h3>Yeni Hata Raporlayıcısı<a class="headerlink" href="#yeni-hata-raporlayicisi" title="Permalink to this heading"></a></h3>
+<p>Komut satırında daha erişilebilir hata mesajları üretmeyi amaçlayan yeni bir hata raporlayıcı tanıtıldı. Öntanımlı olarak etkindir, ancak <code class="docutils literal notranslate"><span class="pre">--old-reporter</span></code> geçildiğinde kullanımdan kaldırılmış eski hata raporlayıcısına geri dönülür.</p>
+</section>
+<section id="metadata-hash-secenekleri">
+<h3>Metadata Hash Seçenekleri<a class="headerlink" href="#metadata-hash-secenekleri" title="Permalink to this heading"></a></h3>
+<p>Derleyici artık metadata dosyasının <a class="reference external" href="https://ipfs.io/">IPFS</a> hash’ini varsayılan olarak bytecode’un sonuna ekliyor (ayrıntılar için <a class="reference internal" href="metadata.html"><span class="doc">contract metadata</span></a> belgesine bakın). 0.6.0’dan önce derleyici varsayılan olarak <a class="reference external" href="https://ethersphere.github.io/swarm-home/">Swarm</a> hash’ini ekliyordu ve bu davranışı desteklemeye devam etmek için yeni komut satırı seçeneği <code class="docutils literal notranslate"><span class="pre">--metadata-hash</span></code> tanıtıldı. Bu, <code class="docutils literal notranslate"><span class="pre">--metadata-hash</span></code> komut satırı seçeneğine değer olarak <code class="docutils literal notranslate"><span class="pre">ipfs</span></code> veya <code class="docutils literal notranslate"><span class="pre">swarm</span></code> değerlerinden birini geçirerek üretilecek ve eklenecek hash’i seçmenize olanak tanır. <code class="docutils literal notranslate"><span class="pre">none</span></code> değerinin geçilmesi hash’i tamamen kaldırır.</p>
+<p>Bu değişiklikler <a class="reference internal" href="using-the-compiler.html#compiler-api"><span class="std std-ref">Standard JSON Interface</span></a> aracılığıyla da kullanılabilir ve derleyici tarafından oluşturulan metadata JSON’u etkiler.</p>
+<p>Metadata’ları okumak için önerilen yol, CBOR şifrelemesinin uzunluğunu belirlemek için son iki baytı okumak ve <a class="reference internal" href="metadata.html#encoding-of-the-metadata-hash-in-the-bytecode"><span class="std std-ref">metadata section</span></a> bölümünde açıklandığı gibi bu veri bloğu üzerinde uygun bir şifre çözme işlemi gerçekleştirmektir.</p>
+</section>
+<section id="yul-optimize-edici">
+<h3>Yul Optimize Edici<a class="headerlink" href="#yul-optimize-edici" title="Permalink to this heading"></a></h3>
+<p>Eski bytecode optimizer ile birlikte, <a class="reference internal" href="yul.html"><span class="doc">Yul</span></a> optimizer artık derleyiciyi <code class="docutils literal notranslate"><span class="pre">--optimize</span></code> ile çağırdığınızda varsayılan olarak etkinleştirilir. Derleyiciyi <code class="docutils literal notranslate"><span class="pre">--no-optimize-yul</span></code> ile çağırarak devre dışı bırakılabilir. Bu çoğunlukla ABI coder v2 kullanan kodları etkiler.</p>
+</section>
+<section id="c-api-degisiklikleri">
+<h3>C API Değişiklikleri<a class="headerlink" href="#c-api-degisiklikleri" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">libsolc</span></code> C API`sini kullanan istemci kodu artık derleyici tarafından kullanılan belleğin
+kontrolünü elinde tutmaktadır. Bu değişikliği tutarlı hale getirmek için <code class="docutils literal notranslate"><span class="pre">solidity_free</span></code>
+fonksiyonu <code class="docutils literal notranslate"><span class="pre">solidity_reset</span></code> olarak yeniden adlandırıldı, <code class="docutils literal notranslate"><span class="pre">solidity_alloc</span></code> ve <code class="docutils literal notranslate"><span class="pre">solidity_free</span></code>
+fonksiyonları eklendi ve <code class="docutils literal notranslate"><span class="pre">solidity_compile</span></code> artık <code class="docutils literal notranslate"><span class="pre">solidity_free()</span></code> ile açıkça serbest bırakılması gereken bir string döndürüyor.</p>
+</section>
+</section>
+<section id="kodunuzu-nasil-guncelleyebilirsiniz">
+<h2>Kodunuzu nasıl güncelleyebilirsiniz?<a class="headerlink" href="#kodunuzu-nasil-guncelleyebilirsiniz" title="Permalink to this heading"></a></h2>
+<p>Bu bölüm, her işleyişi bozan değişiklik için önceki kodun nasıl güncelleneceğine ilişkin ayrıntılı talimatlar vermektedir.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">f</span></code> external fonksiyon tipinde olduğu için <code class="docutils literal notranslate"><span class="pre">address(f)</span></code> ifadesini <code class="docutils literal notranslate"><span class="pre">f.address</span></code> olarak değiştirin.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fonksiyon</span> <span class="pre">()</span> <span class="pre">external</span> <span class="pre">[payable]</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code> yerine <code class="docutils literal notranslate"><span class="pre">receive()</span> <span class="pre">external</span> <span class="pre">payable</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code>, <code class="docutils literal notranslate"><span class="pre">fallback()</span> <span class="pre">external</span> <span class="pre">[payable]</span> <span class="pre">{</span> <span class="pre">...</span> <span class="pre">}</span></code> veya her ikisiyle. Mümkün olduğunda sadece <code class="docutils literal notranslate"><span class="pre">receive</span></code> fonksiyonunu kullanmayı tercih edin.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uint</span> <span class="pre">length</span> <span class="pre">=</span> <span class="pre">array.push(value)</span></code> ifadesini <code class="docutils literal notranslate"><span class="pre">array.push(value);</span></code> olarak değiştirin. Yeni uzunluğa <code class="docutils literal notranslate"><span class="pre">array.length</span></code> aracılığıyla erişilebilir.</p></li>
+<li><p>Bir depolama dizisinin uzunluğunu artırmak için <code class="docutils literal notranslate"><span class="pre">array.length++</span></code> öğesini <code class="docutils literal notranslate"><span class="pre">array.push()</span></code> olarak değiştirin ve azaltmak için <code class="docutils literal notranslate"><span class="pre">pop()</span></code> öğesini kullanın.</p></li>
+<li><p>Bir fonksiyonun <code class="docutils literal notranslate"><span class="pre">&#64;dev</span></code> dokümantasyonundaki her adlandırılmış geri dönüş parametresi için, parametrenin adını ilk kelime olarak içeren bir <code class="docutils literal notranslate"><span class="pre">&#64;return</span></code> girişi tanımlayın. Örneğin, <code class="docutils literal notranslate"><span class="pre">f()</span></code> fonksiyonu <code class="docutils literal notranslate"><span class="pre">function</span> <span class="pre">f()</span> <span class="pre">public</span> <span class="pre">returns</span> <span class="pre">(uint</span> <span class="pre">value)</span></code> şeklinde tanımlanmışsa ve <code class="docutils literal notranslate"><span class="pre">&#64;dev</span></code> şeklinde bir açıklama varsa, geri dönüş parametrelerini aşağıdaki gibi belgeleyin: <code class="docutils literal notranslate"><span class="pre">&#64;return</span> <span class="pre">value</span> <span class="pre">Dönüş</span> <span class="pre">değeri.</span></code>. Bildirimler tuple dönüş türünde göründükleri sırada olduğu sürece, adlandırılmış ve adlandırılmamış dönüş parametreleri belgelerini karıştırabilirsiniz.</p></li>
+<li><p>Inline assembly’deki değişken bildirimleri için inline assembly bloğu dışındaki bildirimlerle çakışmayan benzersiz tanımlayıcılar seçin.</p></li>
+<li><p>Geçersiz kılmayı düşündüğünüz her arayüz dışı işleve <code class="docutils literal notranslate"><span class="pre">virtual</span></code> ekleyin. Arayüzler dışında uygulaması olmayan tüm fonksiyonlara <code class="docutils literal notranslate"><span class="pre">virtual</span></code> ekleyin. Tekli kalıtım için, her geçersiz kılma fonksiyonuna <code class="docutils literal notranslate"><span class="pre">override</span></code> ekleyin. Çoklu kalıtım için, <code class="docutils literal notranslate"><span class="pre">override(A,</span> <span class="pre">B,</span> <span class="pre">..)</span></code> ekleyin, burada parantez içinde geçersiz kılınan fonksiyonu tanımlayan tüm sözleşmeleri listelersiniz. Birden fazla taban aynı fonksiyonu tanımladığında, devralan sözleşme çakışan tüm fonksiyonları geçersiz kılmalıdır.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="050-breaking-changes.html" class="btn btn-neutral float-left" title="Solidity v0.5.0 İşleyişi Bozan Değişiklikler" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="070-breaking-changes.html" class="btn btn-neutral float-right" title="Solidity v0.7.0 İşleyişi Bozan Değişiklikler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

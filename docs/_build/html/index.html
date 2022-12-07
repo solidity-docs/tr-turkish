@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solidity &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Akıllı Sözleşmelere Giriş" href="introduction-to-smart-contracts.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="#">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Solidity</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="solidity">
+<h1>Solidity<a class="headerlink" href="#solidity" title="Permalink to this heading"></a></h1>
+<p>Solidity akıllı sözleşmelerin (smart contracts) uygulanması için geliştirilen nesne yönelimli, üst düzey
+bir programlama dilidir. Akıllı sözleşmeler Ethereum ağı içindeki hesapların hareketlerini
+ve davranışlarını yöneten programlardır.</p>
+<p>Solidity Ethereum Sanal Makinası (ESM) (Ethereum Virtual Machine) hedeflenerek dizayn edilmiş bir <a class="reference external" href="https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages">curly-bracket dilidir</a>.
+C++, Python ve JavaScript gibi dillerden ilham alınarak oluşturulmuştur. Solidity’nin başka
+hangi dillerden ilham aldığı hakkındaki detaylı bilgiyi <a class="reference internal" href="language-influences.html"><span class="doc">ilham alınan diller</span></a> bölümünde bulabilirsiniz.</p>
+<p>Solidity statik olarak yazılmış olmasının yanı sıra, kütüphaneleri, kullanıcı tanımlı karmaşık
+türleri ve kalıtımsallığı destekler.</p>
+<p>Solidity’le kullanıcılar için oylama, crowdfunding, blind auctions ve çoklu-imza cüzdanları
+gibi kullanımlara yönelik akıllı sözleşmeler oluşturabilirsiniz.</p>
+<p>Sözleşmelerin gönderimini yaparken, en son yayınlanan Solidity sürümünü kullanmalısınız. İstisnai
+durumlar dışında, yalnızca son sürüm <a class="reference external" href="https://github.com/ethereum/solidity/security/policy#supported-versions">güvenlik düzeltmeleri</a> güncellemelerini alır.
+Ayrıca, önemli değişikliklerinin yanı sıra yeni özellikler düzenli olarak tanıtılmaktadır.
+Bu hızlı <a class="reference external" href="https://semver.org/#spec-item-4">değişimleri belirtmek için</a> bir 0.y.z sürüm numarası
+kullanıyoruz.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Solidity kısa bir süre önce birçok yenilik ve önemli değişiklikler getiren 0.8.x sürümünü yayınladı.
+Değişiklikleri mutlaka okuyun <a class="reference internal" href="080-breaking-changes.html"><span class="doc">tam liste</span></a>.</p>
+<p>Solidity’yi veya bu dokümantasyonu geliştirmek için fikirlere her zaman açığız,
+Daha fazla ayrıntı için <a class="reference internal" href="contributing.html"><span class="doc">katkıda bulunanlar rehberi</span></a> sayfamızı okuyun.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Bu belgeyi, sol alt köşedeki sürümler menüsüne tıklayarak ve tercih edilen indirme biçimini
+seçerek PDF, HTML veya Epub olarak indirebilirsiniz.</p>
+</div>
+<section id="hadi-baslayalim">
+<h2>Hadi Başlayalım<a class="headerlink" href="#hadi-baslayalim" title="Permalink to this heading"></a></h2>
+<p><strong>1. Akıllı Sözleşmelerin Temellerini Anlama</strong></p>
+<p>Eğer akıllı sözleşmeler kavramında yeniyseniz “Akıllı Sözleşmelere Giriş” bölümünü araştırarak
+başlamanızı öneririz. Bu bölüm aşağıdakileri kapsar:</p>
+<ul class="simple">
+<li><p>Solidity ile yazılmış <a class="reference internal" href="introduction-to-smart-contracts.html#simple-smart-contract"><span class="std std-ref">Basit bir akıllı sözleşme örneği</span></a>.</p></li>
+<li><p><a class="reference internal" href="introduction-to-smart-contracts.html#blockchain-basics"><span class="std std-ref">Blockchain Temelleri</span></a>.</p></li>
+<li><p><a class="reference internal" href="introduction-to-smart-contracts.html#the-ethereum-virtual-machine"><span class="std std-ref">Ethereum Sanal Makinası (Ethereum Virtual Machine)</span></a>.</p></li>
+</ul>
+<p><strong>2. Solidity ile Tanışın</strong></p>
+<p>Temel bilgilere alıştıktan sonra, <a class="reference internal" href="solidity-by-example.html"><span class="doc">“Örneklerle Solidity”</span></a> bölümünü
+okumanızı öneririz. Ve ayrıca “Dil Tanımları” bölümünü inceleyerek dilin temel kavramlarını
+anlayabilirsiniz..</p>
+<p><strong>3. Solidity Derleyicisini İndirme</strong></p>
+<p>Solidity derleyicisini indirmenin birçok yolu vardır,
+tercih edeceğiniz yola göre <a class="reference internal" href="installing-solidity.html#installing-solidity"><span class="std std-ref">indirme sayfası</span></a>
+‘da bulunan adımları izleyin.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p><a class="reference external" href="https://remix.ethereum.org">Remix IDE</a> ile birlikte kod örneklerini doğrudan tarayıcınızda
+deneyebilirsiniz. Remix, Solidity’yi yerel olarak yüklemenize gerek kalmadan Solidity akıllı sözleşmelerini yazmanıza,
+dağıtmanıza ve yönetmenize olanak tanıyan web tarayıcısı tabanlı bir IDE’dir.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>İnsanlar kodlama yaparken, hataları olabilir. Akıllı sözleşmelerinizi yazarken
+belirlenmiş en iyi yazılım geliştirme uygulamalarını izlemelisiniz. Buna kod incelemesi,
+kodunuzu test etme, denetimler ve correctness proofs dahildir. Akıllı sözleşme kullanıcıları bazen
+kod konusunda yazarlarından daha emin olabilirler, blockchain ve akıllı sözleşmelerin
+dikkat edilmesi gereken kendine özgü sorunları vardır, bu nedenle üretim kodu(production code)
+üzerinde çalışmadan önce <a class="reference internal" href="security-considerations.html#security-considerations"><span class="std std-ref">Güvenlikle İlgili Değerlendirmeler</span></a> bölümünü okuduğunuzdan emin olun.</p>
+</div>
+<p><strong>4. Daha Fazla Bilgi Edinin</strong></p>
+<p>Ethereum ağı üzerinde merkeziyetsiz uygulamalar oluşturma hakkında daha fazla bilgi edinmek
+istiyorsanız, <a class="reference external" href="https://ethereum.org/en/developers/">Ethereum Geliştirici Kaynakları</a> size Ethereum
+ile ilgili daha fazla genel dokümantasyon, çok çeşitli öğreticiler,
+araçlar ve framework’ler(Yazılım iskeleti) konusunda yardımcı olabilir.</p>
+<p>Eğer herhangi bir sorunuz varsa, <a class="reference external" href="https://ethereum.stackexchange.com/">Ethereum StackExchange</a>,
+veya <a class="reference external" href="https://gitter.im/ethereum/solidity/">Gitter kanalımıza</a> sorabilirsiniz.</p>
+</section>
+<section id="ceviriler">
+<span id="translations"></span><h2>Çeviriler<a class="headerlink" href="#ceviriler" title="Permalink to this heading"></a></h2>
+<p>Topluluk’tan bazı gönüllüler bu belgeyi farklı dillere çevirmemize yardımcı oluyor.
+Bu sebeple çevirilerin farklı derecelerde bütünlük ve güncelliğe sahip olduğunu unutmayın.
+İngilizce versiyonunu referans olarak alın.</p>
+<p>Sol alt köşedeki açılır menüye tıklayarak ve tercih ettiğiniz dili seçerek diller
+arasında geçiş yapabilirsiniz.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.soliditylang.org/fr/latest/">Fransızce</a></p></li>
+<li><p><a class="reference external" href="https://github.com/solidity-docs/id-indonesian">Endonezya Dili</a></p></li>
+<li><p><a class="reference external" href="https://github.com/solidity-docs/fa-persian">Farsça</a></p></li>
+<li><p><a class="reference external" href="https://github.com/solidity-docs/ja-japanese">Japonca</a></p></li>
+<li><p><a class="reference external" href="https://github.com/solidity-docs/ko-korean">Korece</a></p></li>
+<li><p><a class="reference external" href="https://github.com/solidity-docs/zh-cn-chinese/">Çince</a></p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Kısa süre önce topluluk çalışmalarını kolaylaştırmak ve düzene koymak için yeni bir
+GitHub organizasyonu ve çeviri için bir iş akışı(workflow) kurduk. Yeni bir dile nasıl
+başlayacağınız veya var olan çevirilere nasıl katkıda bulunacağınız hakkında bilgi için
+lütfen <a class="reference external" href="https://github.com/solidity-docs/translation-guide">çeviri kılavuzuna</a> bakın.</p>
+</div>
+</section>
+</section>
+<section id="icindekiler">
+<h1>İçindekiler<a class="headerlink" href="#icindekiler" title="Permalink to this heading"></a></h1>
+<p><a class="reference internal" href="genindex.html"><span class="std std-ref">Anahtar Kelime Dizini</span></a>, <a class="reference internal" href="search.html"><span class="std std-ref">Arama Sayfası</span></a></p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction-to-smart-contracts.html#basit-bir-akilli-sozlesme">Basit Bir Akıllı Sözleşme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction-to-smart-contracts.html#blok-zinciri-temelleri">Blok Zinciri Temelleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction-to-smart-contracts.html#ethereum-sanal-makinasi">Ethereum Sanal Makinası</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installing-solidity.html#surum">Sürüm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installing-solidity.html#remix">Remix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installing-solidity.html#npm-node-js">npm / Node.js</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installing-solidity.html#docker">Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installing-solidity.html#linux-paketleri">Linux Paketleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installing-solidity.html#macos-paketleri">macOS Paketleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installing-solidity.html#statik-binaryler">Statik Binaryler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installing-solidity.html#kaynagindan-kurulum">Kaynağından Kurulum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installing-solidity.html#cmake-ayarlari">CMake Ayarları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installing-solidity.html#surum-dizgisi-string-detaylari">Sürüm Dizgisi (String) Detayları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installing-solidity.html#surumleme-hakkinda-onemli-bilgi">Sürümleme Hakkında Önemli Bilgi</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="solidity-by-example.html#oylama">Oylama</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solidity-by-example.html#gizli-ihale">Gizli İhale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solidity-by-example.html#guvenli-uzaktan-alisveris">Güvenli Uzaktan Alışveriş</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solidity-by-example.html#mikro-odeme-kanali">Mikro Ödeme Kanalı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solidity-by-example.html#moduler-kontratlar">Modüler Kontratlar</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="layout-of-source-files.html#spdx-lisans-tanimlayicisi">SPDX Lisans Tanımlayıcısı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout-of-source-files.html#pragmalar">Pragmalar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout-of-source-files.html#diger-kaynak-dosyalarini-ice-aktarma">Diğer Kaynak Dosyalarını İçe Aktarma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout-of-source-files.html#yorumlar">Yorumlar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="structure-of-a-contract.html#durum-degiskenleri">Durum Değişkenleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure-of-a-contract.html#fonksiyonlar">Fonksiyonlar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure-of-a-contract.html#fonksiyon-degistiriciler-modifier-lar">Fonksiyon Değiştiriciler (Modifier’lar)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure-of-a-contract.html#olaylar-event">Olaylar (Event)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure-of-a-contract.html#hatalar">Hatalar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure-of-a-contract.html#yapi-struct-tipleri">Yapı (Struct) Tipleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure-of-a-contract.html#enum-tipleri">Enum Tipleri</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="types.html#deger-turleri">Değer Türleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="types.html#referans-turleri">Referans Türleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="types.html#esleme-turleri">Eşleme Türleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="types.html#operatorler">Operatörler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="types.html#temel-turler-arasi-donusumler">Temel Türler Arası Dönüşümler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="types.html#ifadeler-literals-ve-temel-turler-arasindaki-donusumler">İfadeler (Literals) ve Temel Türler Arasındaki Dönüşümler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="units-and-global-variables.html#ether-birimleri">Ether Birimleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="units-and-global-variables.html#zaman-birimleri">Zaman Birimleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="units-and-global-variables.html#ozel-degiskenler-ve-fonksiyonlar">Özel Değişkenler ve Fonksiyonlar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="control-structures.html#kontrol-yapilari">Kontrol Yapıları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="control-structures.html#fonksiyon-cagrilari">Fonksiyon Çağrıları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="control-structures.html#new-yoluyla-sozlesmeler-olusturma"><code class="docutils literal notranslate"><span class="pre">new</span></code> Yoluyla Sözleşmeler Oluşturma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="control-structures.html#ifadelerin-degerlendirme-sirasi">İfadelerin Değerlendirme Sırası</a></li>
+<li class="toctree-l2"><a class="reference internal" href="control-structures.html#atama">Atama</a></li>
+<li class="toctree-l2"><a class="reference internal" href="control-structures.html#kapsam-belirleme-ve-beyanlar">Kapsam Belirleme ve Beyanlar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="control-structures.html#checked-veya-unchecked-matematiksel-islemler">Checked veya Unchecked Matematiksel İşlemler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="control-structures.html#hata-isleme-assert-require-revert-ve-exceptionlar">Hata İşleme: Assert, Require, Revert ve Exceptionlar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contracts.html#akilli-sozlesme-olusturma">Akıllı Sözleşme Oluşturma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contracts.html#gorunurluk-ve-getter-fonksiyonlar">Görünürlük ve Getter Fonksiyonlar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contracts.html#fonksiyon-modifier-lari">Fonksiyon Modifier’ları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contracts.html#constant-ve-immutable-state-degiskenleri">Constant ve Immutable State Değişkenleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contracts.html#fonksiyonlar">Fonksiyonlar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contracts.html#eventler">Eventler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contracts.html#hata-ve-geri-alma-durumlari">Hata ve Geri Alma Durumları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contracts.html#kalitim">Kalıtım</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contracts.html#abstract-akilli-sozlesmeler">Abstract Akıllı Sözleşmeler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contracts.html#interface-ler">Interface’ler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contracts.html#kutuphaneler">Kütüphaneler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contracts.html#using-for">Using For</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="assembly.html#ornek">Örnek</a></li>
+<li class="toctree-l2"><a class="reference internal" href="assembly.html#dis-external-degiskenlere-fonksiyonlara-ve-kutuphanelere-erisim">Dış(External) değişkenlere, fonksiyonlara ve kütüphanelere erişim</a></li>
+<li class="toctree-l2"><a class="reference internal" href="assembly.html#kacinilacak-seyler">Kaçınılacak Şeyler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="assembly.html#solidity-kurallari">Solidity kuralları</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cheatsheet.html#operatorlerin-oncelik-sirasi">Operatörlerin Öncelik Sırası</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cheatsheet.html#global-degiskenlere">Global Değişkenlere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cheatsheet.html#fonksiyon-gorunurluk-belirtecleri">Fonksiyon Görünürlük Belirteçleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cheatsheet.html#modifiers">Modifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cheatsheet.html#ayrilmis-anahtar-kelimeler">Ayrılmış Anahtar Kelimeler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using-the-compiler.html">Derleyicinin Kullanımı</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="using-the-compiler.html#komut-satiri-derleyicisinin-kullanimi">Komut Satırı Derleyicisinin Kullanımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using-the-compiler.html#evm-surumunun-hedefe-ayarlanmasi">EVM Sürümünün Hedefe Ayarlanması</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using-the-compiler.html#derleyici-json-girdisi-ve-ciktisi-tanimi">Derleyici JSON Girdisi ve Çıktısı Tanımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using-the-compiler.html#derleyici-araclari">Derleyici Araçları</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ir-breaking-changes.html#semantic-only-changes">Semantic Only Changes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ir-breaking-changes.html#internals">Internals</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="internals/layout_in_storage.html#mapping-ler-ve-dinamik-diziler-arrays">Mapping’ler ve Dinamik Diziler(Arrays)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="internals/layout_in_storage.html#json-ciktisi">JSON Çıktısı</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="internals/layout_in_memory.html#depolama-duzeni-farkliliklari">Depolama Düzeni Farklılıkları</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="internals/optimizer.html#solidity-kodunu-optimize-etmenin-faydalari">Solidity Kodunu Optimize Etmenin Faydaları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="internals/optimizer.html#optimize-edilmis-ve-optimize-edilmemis-kod-arasindaki-farklar">Optimize Edilmiş ve Optimize Edilmemiş Kod Arasındaki Farklar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="internals/optimizer.html#optimize-edici-parametre-calistirmalari">Optimize Edici Parametre Çalıştırmaları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="internals/optimizer.html#opcode-tabanli-optimize-edici-modulu">Opcode Tabanlı Optimize Edici Modülü</a></li>
+<li class="toctree-l2"><a class="reference internal" href="internals/optimizer.html#yul-tabanli-optimize-edici-modulu">Yul Tabanlı Optimize Edici Modülü</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="metadata.html#meta-veri-hash-inin-bayt-kod-icinde-kodlanmasi">Meta Veri Hash’inin Bayt Kod İçinde Kodlanması</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metadata.html#otomatik-arayuz-olusturmanin-kullanilmasi-ve-natspec">Otomatik Arayüz Oluşturmanın Kullanılması ve NatSpec</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metadata.html#kaynak-kodu-dogrulama-icin-kullanim">Kaynak Kodu Doğrulama için Kullanım</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="abi-spec.html#temel-tasarim">Temel Tasarım</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-spec.html#function-selector-function-selector">Function Selector (Function Selector)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-spec.html#arguman-sifreleme">Argüman Şifreleme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-spec.html#tipler-types">Tipler (Types)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-spec.html#sifreleme-icin-tasarim-kriterleri">Şifreleme için Tasarım Kriterleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-spec.html#sifrelemenin-formal-spesifikasyonu">Şifrelemenin Formal Spesifikasyonu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-spec.html#fonksiyon-secicisi-ve-arguman-sifrelemesi">Fonksiyon Seçicisi ve Argüman Şifrelemesi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-spec.html#ornekler">Örnekler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-spec.html#dinamik-tiplerin-kullanimi">Dinamik Tiplerin Kullanımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-spec.html#event-ler">Event’ler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-spec.html#error-ler">Error’ler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-spec.html#json">JSON</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-spec.html#kati-sifreleme-modu">Katı Şifreleme Modu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-spec.html#standart-olmayan-paket-modu">Standart Olmayan Paket Modu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="abi-spec.html#indekslenmis-event-parametrelerinin-sifrelenmesi">İndekslenmiş Event Parametrelerinin Şifrelenmesi</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="050-breaking-changes.html#yalnizca-anlamsal-semantik-degisiklikleri">Yalnızca Anlamsal (Semantik) Değişiklikleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="050-breaking-changes.html#semantik-ve-sentaktik-degisiklikler">Semantik ve Sentaktik Değişiklikler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="050-breaking-changes.html#aciklik-gereksinimleri">Açıklık Gereksinimleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="050-breaking-changes.html#kullanimdan-kaldirilan-ogeler">Kullanımdan Kaldırılan Öğeler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="050-breaking-changes.html#eski-sozlesmelerle-birlikte-calisabilirlik">Eski Sözleşmelerle Birlikte Çalışabilirlik</a></li>
+<li class="toctree-l2"><a class="reference internal" href="050-breaking-changes.html#ornek">Örnek</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="060-breaking-changes.html#derleyicinin-uyaramayabilecegi-degisiklikler">Derleyicinin Uyaramayabileceği Değişiklikler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="060-breaking-changes.html#aciklik-gereksinimleri">Açıklık Gereksinimleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="060-breaking-changes.html#semantik-ve-sentaktik-degisiklikler">Semantik ve Sentaktik Değişiklikler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="060-breaking-changes.html#yeni-ozellikler">Yeni Özellikler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="060-breaking-changes.html#arayuz-degisiklikleri">Arayüz Değişiklikleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="060-breaking-changes.html#kodunuzu-nasil-guncelleyebilirsiniz">Kodunuzu nasıl güncelleyebilirsiniz?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="070-breaking-changes.html#semantigin-sessiz-degisiklikleri">Semantiğin Sessiz Değişiklikleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="070-breaking-changes.html#soz-dizimindeki-degisiklikler">Söz dizimindeki Değişiklikler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="070-breaking-changes.html#kullanilmayan-veya-guvenli-olmayan-ozelliklerin-kaldirilmasi">Kullanılmayan veya Güvenli Olmayan Özelliklerin Kaldırılması</a></li>
+<li class="toctree-l2"><a class="reference internal" href="070-breaking-changes.html#arayuz-degisiklikleri">Arayüz Değişiklikleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="070-breaking-changes.html#kodunuzu-nasil-guncelleyebilirsiniz">Kodunuzu nasıl güncelleyebilirsiniz?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="080-breaking-changes.html#semantikte-sessiz-degisiklikler">Semantikte Sessiz Değişiklikler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="080-breaking-changes.html#yeni-kisitlamalar">Yeni Kısıtlamalar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="080-breaking-changes.html#arayuz-degisiklikleri">Arayüz Değişiklikleri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="080-breaking-changes.html#kodunuzu-nasil-guncelleyebilirsiniz">Kodunuzu nasıl güncelleyebilirsiniz?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="natspec-format.html#dokumantasyon-ornegi">Dokümantasyon Örneği</a></li>
+<li class="toctree-l2"><a class="reference internal" href="natspec-format.html#tags">Tags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="natspec-format.html#dokumantasyon-ciktisi">Dokümantasyon Çıktısı</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="security-considerations.html#tuzaklar">Tuzaklar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security-considerations.html#oneriler">Öneriler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="smtchecker.html#tutorial">Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="smtchecker.html#smtchecker-options-and-tuning">SMTChecker Options and Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="smtchecker.html#abstraction-and-false-positives">Abstraction and False Positives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="smtchecker.html#real-world-assumptions">Real World Assumptions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="resources.html#genel-kaynaklar">Genel Kaynaklar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html#entegre-ethereum-gelistirme-ortamlari">Entegre (Ethereum) Geliştirme Ortamları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html#editor-entegrasyonlari">Editör Entegrasyonları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html#solidity-araclari">Solidity Araçları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html#ucuncu-parti-solidity-ayristiricilari-ve-gramerleri">Üçüncü Parti Solidity Ayrıştırıcıları ve Gramerleri</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="path-resolution.html#virtual-filesystem">Virtual Filesystem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="path-resolution.html#imports">Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="path-resolution.html#base-path-and-include-paths">Base Path and Include Paths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="path-resolution.html#allowed-paths">Allowed Paths</a></li>
+<li class="toctree-l2"><a class="reference internal" href="path-resolution.html#import-remapping">Import Remapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="path-resolution.html#using-urls-in-imports">Using URLs in imports</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="yul.html#motivasyon-ve-ust-duzey-tanimi">Motivasyon ve Üst-düzey Tanımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yul.html#basit-bir-ornek">Basit Bir Örnek</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yul.html#tek-basina-kullanim">Tek Başına Kullanım</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yul.html#yul-un-resmi-olmayan-tanimi">Yul’un Resmi Olmayan Tanımı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yul.html#yul-tanimlamasi">Yul Tanımlaması</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yul.html#specification-of-yul-object">Specification of Yul Object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yul.html#yul-optimizer">Yul Optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yul.html#tamamlanmis-erc20-ornegi">Tamamlanmış ERC20 Örneği</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="style-guide.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style-guide.html#code-layout">Code Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style-guide.html#order-of-layout">Order of Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style-guide.html#naming-conventions">Naming Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style-guide.html#natspec">NatSpec</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="common-patterns.html#sozlesmelerden-para-cekme">Sözleşmelerden Para Çekme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="common-patterns.html#erisimi-kisitlamak">Erişimi Kısıtlamak</a></li>
+<li class="toctree-l2"><a class="reference internal" href="common-patterns.html#durum-makinesi">Durum Makinesi</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#takim-toplantilari">Takım Toplantıları</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#sorunlar-nasil-rapor-edilir">Sorunlar Nasıl Rapor Edilir</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#pull-request-ler-icin-is-akisi-workflow">Pull Request’ler için İş Akışı(Workflow)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#derleyici-testlerini-calistirma">Derleyici Testlerini Çalıştırma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#fuzzer-i-afl-ile-calistirma">Fuzzer’ı AFL ile Çalıştırma</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#whiskers">Whiskers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#dokumantasyon-stil-rehberi">Dokümantasyon Stil Rehberi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#solidity-dili-tasarimi">Solidity Dili Tasarımı</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="brand-guide.html#solidity-markasi">Solidity Markası</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brand-guide.html#solidity-marka-adi">Solidity Marka Adı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brand-guide.html#solidity-logo-lisansi">Solidity Logo Lisansı</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brand-guide.html#solidity-logo-kilavuzu">Solidity Logo Kılavuzu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brand-guide.html#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="introduction-to-smart-contracts.html" class="btn btn-neutral float-right" title="Akıllı Sözleşmelere Giriş" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

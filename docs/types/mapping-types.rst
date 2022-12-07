@@ -2,16 +2,16 @@
 .. _mapping-types:
 
 Eşleme Türleri
-=============
+===============
 
-Eşleme türleri ``mapping(KeyType => ValueType)`` sözdizimi yapısını kullanır ve eşleme türünün değişlenleri, ``mapping(KeyType => ValueType) VariableName``sözdizimi kullanılarak bildirilir.
+Eşleme türleri ``mapping(KeyType => ValueType)`` sözdizimi yapısını kullanır ve eşleme türünün değişlenleri, ``mapping(KeyType => ValueType) VariableName`` sözdizimi kullanılarak bildirilir.
 
 ``KeyType``, herhangi bir yerleşik değer türü, ``bytes``, ``string``, herhangi bir sözleşme ya da numaralandırma türü olabilir. Eşlemeler, yapılar veya dizi türleri gibi diğer kullanıcı tanımlı veya karmaşık türlere izin verilmez. ``ValueType``, eşlemeleri, dizileri ve yapıları içeren herhangi bir tür olabilir.  
 
 
 Eşlemeleri, olası her anahtarın var olduğu ve bir türün :ref:`varsayılan değeri <default-value>` olan bayt temsilinin tamamı sıfır olan bir değere eşlendiği şekilde sanal olarak başlatılan `karma tablolar <https://en.wikipedia.org/wiki/Hash_table>`_ olarak düşünebilirsiniz. Benzerlik burada sona eriyor, anahtar veriler bir eşlemede saklanmıyor, değeri aramak için yalnızca ``keccak256`` karma değeri kullanılıyor.
 
-Bu nedenle, eşlemelerin bir uzunluğu veya ayarlanan bir anahtar veya değer kavramı yoktur ve bu nedenle atanan anahtarlarla ilgili ek bilgi olmadan silinemezler (bkz. :ref:`eşlemeleri-silme`).
+Bu nedenle, eşlemelerin bir uzunluğu veya ayarlanan bir anahtar veya değer kavramı yoktur ve bu nedenle atanan anahtarlarla ilgili ek bilgi olmadan silinemezler (bkz. :ref:`clearing-mappings`).
 
 Eşlemeler yalnızca ``storage`` veri konumuna sahip olabilir ve bu nedenle, fonksiyonlardaki depolama referans türleri olarak veya kitaplık fonksiyonları için parametreler olarak durum değişkenleri için izin verilir. Bunlar, genel olarak görülebilen sözleşme fonksiyonlarının parametreleri veya dönüş parametreleri olarak kullanılamazlar. Bu kısıtlamalar, eşlemeler içeren diziler ve yapılar için de geçerlidir.
 
@@ -94,7 +94,7 @@ Aşağıdaki örnekte, başka birinin hesabınızdan çekmesine izin verilen tut
 .. _iterable-mappings:
 
 Yinelenebilir Eşlemeler
------------------
+------------------------
 
 Eşlemeleri yineleyemezsiniz, yani anahtarlarını numaralandıramazsınız. Yine de bunların üzerine bir veri yapısı uygulamak ve bunun üzerinde yineleme yapmak mümkündür. Örneğin, aşağıdaki kod, ``User`` sözleşmesinin daha sonra veri eklediği bir ``IterableMapping`` kitaplığı uygular ve ``sum`` fonksiyonu tüm değerleri toplamak için yinelenir.
 

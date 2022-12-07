@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Derleyicinin Kullanımı &mdash; Solidity 0.8.15 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/a4_railroad_diagram.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/toggle.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/js/toggle.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Analysing the Compiler Output" href="analysing-compilation-output.html" />
+    <link rel="prev" title="Dilbilgisi (Language Grammar)" href="grammar.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #65afff" >
+            <a href="index.html">
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.8.15
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+    
+              <p class="caption" role="heading"><span class="caption-text">Temeller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction-to-smart-contracts.html">Akıllı Sözleşmelere Giriş</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing-solidity.html">Solidity Derleyicisini Yükleme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solidity-by-example.html">Solidity by Example</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dil Açıklaması</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="layout-of-source-files.html">Solidity Kaynak Dosyasının Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure-of-a-contract.html">Bir Sözleşmenin Yapısı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types.html">Türler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units-and-global-variables.html">Birimler ve Global Olarak Kullanılabilir Değişkenler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="control-structures.html">İfadeler ve Kontrol Yapıları</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contracts.html">Akıllı Sözleşmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembly.html">Inline Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cheatsheet.html">Kopya Kağıdı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grammar.html">Dilbilgisi (Language Grammar)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Derleyici</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Derleyicinin Kullanımı</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#komut-satiri-derleyicisinin-kullanimi">Komut Satırı Derleyicisinin Kullanımı</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#temel-kullanim">Temel Kullanım</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#optimize-edici-secenekleri">Optimize Edici Seçenekleri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#base-path-ve-import-remapping">Base Path ve Import Remapping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kutuphane-baglantilari-library-linking">Kütüphane Bağlantıları (Library Linking)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#evm-surumunun-hedefe-ayarlanmasi">EVM Sürümünün Hedefe Ayarlanması</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hedef-secenekleri">Hedef Seçenekleri</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#derleyici-json-girdisi-ve-ciktisi-tanimi">Derleyici JSON Girdisi ve Çıktısı Tanımı</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#girdi-aciklamasi">Girdi Açıklaması</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cikti-aciklamasi">Çıktı Açıklaması</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hata-turleri">Hata Türleri</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#derleyici-araclari">Derleyici Araçları</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#solidity-upgrade">solidity-upgrade</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#nasil-calisir">Nasıl Çalışır?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#kullanilabilir-yukseltme-modulleri">Kullanılabilir Yükseltme Modülleri</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ozet-bilgi-synopsis">Özet bilgi(Synopsis)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hata-raporlari-ozellik-talepleri">Hata Raporları / Özellik Talepleri</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ornek">Örnek</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="analysing-compilation-output.html">Analysing the Compiler Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ir-breaking-changes.html">Solidity IR-based Codegen Changes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Dahili</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_storage.html">Depolama Alanındaki Durum Değişkenlerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_memory.html">Bellekteki Düzen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/layout_in_calldata.html">Çağrı Verilerinin Düzeni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/variable_cleanup.html">Değişkenlerin Temizlenmesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/source_mappings.html">Kaynak Eşlemesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internals/optimizer.html">Optimize Edici</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Sözleşme Meta Verisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="abi-spec.html">Sözleşme ABI Spesifikasyonu</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Ek Materyaller</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="050-breaking-changes.html">Solidity v0.5.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="060-breaking-changes.html">Solidity v0.6.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="070-breaking-changes.html">Solidity v0.7.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="080-breaking-changes.html">Solidity v0.8.0 İşleyişi Bozan Değişiklikler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natspec-format.html">NatSpec Formatı</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security-considerations.html">Güvenlikle İlgili Değerlendirmeler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="smtchecker.html">SMTChecker and Formal Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Kaynaklar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path-resolution.html">Import Path Resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yul.html">Yul</a></li>
+<li class="toctree-l1"><a class="reference internal" href="style-guide.html">Style Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-patterns.html">Sık Kullanılan Modeller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bugs.html">Bilinen Bugların Listesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Katkıda Bulunmak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brand-guide.html">Solidity Marka Kılavuzu</a></li>
+<li class="toctree-l1"><a class="reference internal" href="language-influences.html">Language Influences</a></li>
+</ul>
+
+    <ul>
+        <li>
+            <a href="genindex.html">Keyword Index</a>
+        </li>
+    </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #65afff" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Solidity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Derleyicinin Kullanımı</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/using-the-compiler.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="derleyicinin-kullanimi">
+<h1>Derleyicinin Kullanımı<a class="headerlink" href="#derleyicinin-kullanimi" title="Permalink to this heading"></a></h1>
+<section id="komut-satiri-derleyicisinin-kullanimi">
+<span id="commandline-compiler"></span><span id="index-0"></span><h2>Komut Satırı Derleyicisinin Kullanımı<a class="headerlink" href="#komut-satiri-derleyicisinin-kullanimi" title="Permalink to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Bu bölüm, komut satırı modunda kullanılsa bile <a class="reference internal" href="installing-solidity.html#solcjs"><span class="std std-ref">solcjs</span></a> için geçerli değildir.</p>
+</div>
+<section id="temel-kullanim">
+<h3>Temel Kullanım<a class="headerlink" href="#temel-kullanim" title="Permalink to this heading"></a></h3>
+<p>Solidity deposunun(repository) derleme kaynaklarından biri de Solidity komut satırı derleyicisi olan <code class="docutils literal notranslate"><span class="pre">solc</span></code> dur. <code class="docutils literal notranslate"><span class="pre">solc</span> <span class="pre">--help</span></code> komutunu kullanmak size tüm seçeneklerin açıklamalarını verir. Derleyici, soyut bir sözdizimi ağacı (parse tree) üzerinde basit binary ve assembly’den gaz kullanımı tahminlerine kadar çeşitli çıktılar üretebilir. Sadece tek bir dosyayı derlemek istiyorsanız, <code class="docutils literal notranslate"><span class="pre">solc</span> <span class="pre">--bin</span> <span class="pre">sourceFile.sol</span></code> şeklinde çalıştırdığınızda binary dosyayı yazdıracaktır. Eğer <code class="docutils literal notranslate"><span class="pre">solc``un</span> <span class="pre">daha</span> <span class="pre">gelişmiş</span> <span class="pre">çıktı</span> <span class="pre">çeşitlerinden</span> <span class="pre">bazılarını</span> <span class="pre">elde</span> <span class="pre">etmek</span> <span class="pre">istiyorsanız,</span> <span class="pre">``solc</span> <span class="pre">-o</span> <span class="pre">outputDirectory</span> <span class="pre">--bin</span> <span class="pre">--ast-compact-json</span> <span class="pre">--asm</span> <span class="pre">sourceFile.sol</span></code> kullanarak her öğeyi ayrı dosyalara çıktı olarak vermesini söylemek muhtemelen daha iyi bir seçenek olacaktır.</p>
+</section>
+<section id="optimize-edici-secenekleri">
+<h3>Optimize Edici Seçenekleri<a class="headerlink" href="#optimize-edici-secenekleri" title="Permalink to this heading"></a></h3>
+<p>Sözleşmenizi deploy etmeden önce, <code class="docutils literal notranslate"><span class="pre">solc</span> <span class="pre">--optimize</span> <span class="pre">--bin</span> <span class="pre">sourceFile.sol</span></code> kullanarak
+derleme yaparken optimize ediciyi etkinleştirmelisiniz. Standart olarak optimize edici,
+sözleşmenin ömrü boyunca 200 kez çağrıldığını varsayarak sözleşmeyi optimize edecektir
+(daha spesifik olarak, her bir işlem kodunun yaklaşık 200 kez çalıştırıldığını varsayar).
+İlk sözleşme dağıtımının daha ucuz olmasını ve daha sonraki fonksiyon yürütmelerinin(executions)
+daha pahalı olmasını istiyorsanız, <code class="docutils literal notranslate"><span class="pre">--optimize-runs=1</span></code> olarak ayarlayın. Çok sayıda
+işlem bekliyorsanız ve daha yüksek dağıtım maliyeti ve çıktı boyutunu önemsemiyorsanız,
+<code class="docutils literal notranslate"><span class="pre">--optimize-runs</span></code> değerini yüksek bir sayıya ayarlayın. Bu parametrenin aşağıdaki
+değerler üzerinde etkileri vardır (bu durum gelecekte değişebilir):</p>
+<ul class="simple">
+<li><p>fonksiyon gönderim prosedüründeki binary aramasının boyutu</p></li>
+<li><p>büyük sayılar veya dizeler gibi sabitlerin saklanma şekli</p></li>
+</ul>
+</section>
+<section id="base-path-ve-import-remapping">
+<span id="index-1"></span><h3>Base Path ve Import Remapping<a class="headerlink" href="#base-path-ve-import-remapping" title="Permalink to this heading"></a></h3>
+<p>Komut satırı derleyicisi içe aktarılan dosyaları dosya sisteminden otomatik olarak
+okuyacaktır, ancak aşağıdaki şekilde <code class="docutils literal notranslate"><span class="pre">prefix=path</span></code> kullanarak <a class="reference internal" href="path-resolution.html#import-remapping"><span class="std std-ref">path redirects</span></a>
+sağlamanız da mümkündür:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>solc github.com/ethereum/dapp-bin/<span class="o">=</span>/usr/local/lib/dapp-bin/ file.sol
+</pre></div>
+</div>
+<p>This essentially instructs the compiler to search for anything starting with
+<code class="docutils literal notranslate"><span class="pre">github.com/ethereum/dapp-bin/</span></code> under <code class="docutils literal notranslate"><span class="pre">/usr/local/lib/dapp-bin</span></code>.</p>
+<p>İçe aktarmaları aramak için dosya sistemine erişirken, :ref:` ./ veya ../ &lt;direct-imports&gt;`
+ile başlamayan dizinler, <code class="docutils literal notranslate"><span class="pre">--base-path</span></code> ve <code class="docutils literal notranslate"><span class="pre">--include-path</span></code> seçenekleri kullanılarak
+belirtilen dizinlere (veya temel yol belirtilmemişse geçerli çalışma dizinine) bağlı
+olarak değerlendirilir. Ayrıca, dizinin bu seçenekler aracılığıyla eklenen kısmı
+sözleşme metadatasında görünmeyecektir.</p>
+<p>Güvenlik nedeniyle derleyicinin <a class="reference internal" href="path-resolution.html#allowed-paths"><span class="std std-ref">hangi dizinlere erişebileceği konusunda kısıtlamaları
+vardır</span></a>. Komut satırında belirtilen kaynak dosyaların dizinlerine ve
+yeniden eşlemelerin hedef yollarına dosya okuyucu tarafından erişilmesine otomatik
+olarak izin verilir, ancak diğer her şey varsayılan olarak reddedilir. İlave yollara
+(ve bunların alt dizinlerine) <code class="docutils literal notranslate"><span class="pre">--allow-paths</span> <span class="pre">/sample/path,/another/sample/path</span></code>
+anahtarıyla izin verilebilir. <code class="docutils literal notranslate"><span class="pre">--base-path</span></code> ile belirtilen yol içindeki her şeye
+her zaman izin verilir.</p>
+<p>Yukarıda anlatılanlar, derleyicinin içe aktarma yollarını nasıl ele aldığının
+basitleştirilmiş halidir. Örneklerle birlikte ayrıntılı bir açıklama ve uç noktaların
+tartışılması için lütfen <a class="reference internal" href="path-resolution.html#path-resolution"><span class="std std-ref">path resolution</span></a> bölümüne bakın.</p>
+</section>
+<section id="kutuphane-baglantilari-library-linking">
+<span id="library-linking"></span><span id="index-2"></span><h3>Kütüphane Bağlantıları (Library Linking)<a class="headerlink" href="#kutuphane-baglantilari-library-linking" title="Permalink to this heading"></a></h3>
+<p>Sözleşmeleriniz <a class="reference internal" href="contracts.html#libraries"><span class="std std-ref">libraries</span></a> kullanıyorsa, bytecode’un <code class="docutils literal notranslate"><span class="pre">__$53aea86b7d70b31448b230b20ae141a537$__</span></code>
+şeklinde alt dizeler içerdiğini fark edeceksiniz. Bunlar gerçek kütüphane adresleri
+için yer tutuculardır. Yer tutucu, tam nitelikli kütüphane adının keccak256 hash’inin
+hex encoding’inin 34 karakterlik bir önekidir. Bayt kodu dosyası, yer tutucuların
+hangi kütüphaneleri temsil ettiğini belirlemeye yardımcı olmak için sonunda <code class="docutils literal notranslate"><span class="pre">//</span> <span class="pre">&lt;placeholder&gt;</span> <span class="pre">-&gt;</span> <span class="pre">&lt;fq</span> <span class="pre">library</span> <span class="pre">name&gt;</span></code>
+şeklinde satırlar da içerecektir. Tam nitelikli kütüphane adının, kaynak dosyasının
+yolu ve <code class="docutils literal notranslate"><span class="pre">:</span></code> ile ayrılmış kütüphane adı olduğunu unutmayın. Bir bağlayıcı olarak
+<code class="docutils literal notranslate"><span class="pre">solc</span></code> kullanabilirsiniz, yani bu noktalarda sizin için kütüphane adreslerini ekleyecektir:</p>
+<p>Her kütüphane için bir adres sağlamak üzere komutunuza <code class="docutils literal notranslate"><span class="pre">--libraries</span> <span class="pre">&quot;file.sol:Math=0x123456789012345678901234567890</span> <span class="pre">file.sol:Heap=0xabCD567890123456789012345678901234567890&quot;</span></code> ekleyin (ayırıcı olarak virgül veya boşluk kullanın) veya dizeyi bir dosyada saklayın (satır başına bir kütüphane) ve <code class="docutils literal notranslate"><span class="pre">--libraries</span> <span class="pre">fileName</span></code> kullanarak <code class="docutils literal notranslate"><span class="pre">solc</span></code> çalıştırın.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Solidity 0.8.1’den itibaren <code class="docutils literal notranslate"><span class="pre">=</span></code> kütüphane ve adres arasında ayırıcı olarak kabul etmektedir ve <code class="docutils literal notranslate"><span class="pre">:</span></code> ayırıcı olarak kullanımdan kaldırılmıştır. Gelecekte kaldırılacaktır. Şu anda <code class="docutils literal notranslate"><span class="pre">-libraries</span> <span class="pre">&quot;file.sol:Math:0x1234567890123456789012345678901234567890</span> <span class="pre">file.sol:Heap:0xabCD567890123456789012345678901234567890&quot;</span></code> da çalışacaktır.</p>
+</div>
+<p id="index-3">Eğer <code class="docutils literal notranslate"><span class="pre">solc</span></code> <code class="docutils literal notranslate"><span class="pre">--standard-json</span></code> seçeneği ile çağrılırsa, standart girişte bir JSON girdisi (aşağıda açıklandığı gibi) bekleyecek ve standart çıkışta bir JSON çıktısı döndürecektir. Bu, daha karmaşık ve özellikle otomatikleştirilmiş kullanımlar için önerilen arayüzdür. İşlem her zaman “başarılı” durumda sonlanacak ve hataları JSON çıktısı aracılığıyla bildirecektir. <code class="docutils literal notranslate"><span class="pre">--base-path</span></code> seçeneği de standart-json modunda işlenir.</p>
+<p>Eğer <code class="docutils literal notranslate"><span class="pre">solc</span></code> <code class="docutils literal notranslate"><span class="pre">--link</span></code> seçeneği ile çağrılırsa, tüm girdi dosyaları yukarıda verilen <code class="docutils literal notranslate"><span class="pre">__$53aea86b7d70b31448b230b20ae141a537$__</span></code>-formatında bağlanmamış binaryler (hex-encoded) olarak yorumlanır ve yerinde bağlanır (eğer girdi stdin`den okunuyorsa, stdout`a yazılır). Bu durumda <code class="docutils literal notranslate"><span class="pre">--libraries</span></code> dışındaki tüm seçenekler göz ardı edilir (<code class="docutils literal notranslate"><span class="pre">-o</span></code> dahil).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Sözleşme meta verilerini güncellemediğinden, oluşturulan bayt kodu üzerinde
+kütüphaneleri manuel olarak bağlamak önerilmez. Metadata derleme sırasında
+belirtilen kütüphanelerin bir listesini içerdiğinden ve bayt kodu bir metadata
+hash’i içerdiğinden, bağlama işleminin ne zaman yapıldığına bağlı olarak farklı
+binary dosyaları elde edersiniz.</p>
+<p>Derleyiciye standart-JSON arayüzünü kullanıyorsanız <code class="docutils literal notranslate"><span class="pre">solc</span></code> seçeneğinin <code class="docutils literal notranslate"><span class="pre">--libraries</span></code>
+seçeneğini veya <code class="docutils literal notranslate"><span class="pre">libraries</span></code> anahtarını kullanarak bir sözleşme derlendiğinde
+derleyiciden kütüphaneleri bağlamasını istemelisiniz.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Kütüphane yer tutucusu eskiden kütüphanenin hash’i yerine kütüphanenin kendisinin
+tam nitelikli adı olurdu. Bu biçim hala <code class="docutils literal notranslate"><span class="pre">solc</span> <span class="pre">--link</span></code> tarafından desteklenmektedir
+ancak derleyici artık bu biçimin çıktısını vermeyecektir. Bu değişiklik, tam nitelikli
+kütüphane adının yalnızca ilk 36 karakteri kullanılabildiğinden, kütüphaneler arasında
+bir çakışma olasılığını azaltmak için yapılmıştır.</p>
+</div>
+<span class="target" id="evm-version"></span></section>
+</section>
+<section id="evm-surumunun-hedefe-ayarlanmasi">
+<span id="index-4"></span><h2>EVM Sürümünün Hedefe Ayarlanması<a class="headerlink" href="#evm-surumunun-hedefe-ayarlanmasi" title="Permalink to this heading"></a></h2>
+<p>Sözleşme kodunuzu derlerken, belirli özelliklerden veya davranışlardan kaçınmak için
+derlenecek Ethereum sanal makine sürümünü belirtebilirsiniz.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Hatalı EVM sürümü için derleme yapmak yanlış, garip ve başarısız davranışlara
+neden olabilir. Lütfen, özellikle özel bir zincir çalıştırıyorsanız, uyumlu EVM
+sürümlerini kullandığınızdan emin olun.</p>
+</div>
+<p>Komut satırında, EVM sürümünü aşağıdaki gibi seçebilirsiniz:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>solc --evm-version &lt;VERSION&gt; contract.sol
+</pre></div>
+</div>
+<p>ref:<cite>standart JSON arayüzü &lt;compiler-api&gt;`de, `</cite>”settings”`` alanında <code class="docutils literal notranslate"><span class="pre">&quot;evmVersion&quot;</span></code>
+anahtarını kullanın:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="s2">&quot;sources&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="cm">/* ... */</span><span class="p">},</span><span class="w"></span>
+<span class="w">  </span><span class="s2">&quot;settings&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;optimizer&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="cm">/* ... */</span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;evmVersion&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&lt;VERSION&gt;&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<section id="hedef-secenekleri">
+<h3>Hedef Seçenekleri<a class="headerlink" href="#hedef-secenekleri" title="Permalink to this heading"></a></h3>
+<p>Aşağıda hedef EVM sürümlerinin bir listesi ve her sürümde derleyiciyle ilgili yapılan
+değişiklikler yer almaktadır. Her sürüm arasında geriye dönük uyumluluk garanti edilmez.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">homestead</span></code></dt><dd><ul>
+<li><p>(en eski sürüm)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">tangerineWhistle</span></code></dt><dd><ul>
+<li><p>Gaz tahmini ve optimize edici ile ilgili diğer hesaplara erişim için gaz maliyeti arttı.</p></li>
+<li><p>Harici aramalar için varsayılan olarak gönderilen tüm gaz. Daha önce belirli bir miktarın tutulması gerekiyordu.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">spuriousDragon</span></code></dt><dd><ul>
+<li><p>Gaz tahmini ve optimize edici ile ilgili <code class="docutils literal notranslate"><span class="pre">exp</span></code> işlem kodu için gaz maliyeti arttı.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">byzantium</span></code></dt><dd><ul>
+<li><p>Assembly’de <code class="docutils literal notranslate"><span class="pre">returndatacopy</span></code>, <code class="docutils literal notranslate"><span class="pre">returndatasize</span></code> ve <code class="docutils literal notranslate"><span class="pre">staticcall</span></code> işlem kodları mevcuttur.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">staticcall</span></code> işlem kodu, kütüphane dışı görünüm veya pure fonksiyonları çağırırken kullanılır, bu da fonksiyonların EVM seviyesinde durumu değiştirmesini engeller, yani geçersiz tip dönüşümleri kullandığınızda bile geçerlidir.</p></li>
+<li><p>Fonksiyon çağrılarından dönen dinamik verilere erişmek mümkündür.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">revert</span></code> işlem kodu tanıtıldı, bu da <code class="docutils literal notranslate"><span class="pre">revert()</span></code> işleminin gaz israfına yol açmayacağı anlamına geliyor.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">constantinople</span></code></dt><dd><ul>
+<li><p>Assembly’de <code class="docutils literal notranslate"><span class="pre">create2</span></code>, <code class="docutils literal notranslate"><span class="pre">extcodehash</span></code>, <code class="docutils literal notranslate"><span class="pre">shl</span></code>, <code class="docutils literal notranslate"><span class="pre">shr</span></code> ve <code class="docutils literal notranslate"><span class="pre">sar</span></code> işlem kodları mevcuttur.</p></li>
+<li><p>Shifting operatörleri shifting opcodes kullanır ve bu nedenle daha az gaza ihtiyaç duyar.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">petersburg</span></code></dt><dd><ul>
+<li><p>Derleyici istanbul’da olduğu gibi aynı şekilde davranır.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">istanbul</span></code></dt><dd><ul>
+<li><p>Assembly’de <code class="docutils literal notranslate"><span class="pre">chainid</span></code> ve <code class="docutils literal notranslate"><span class="pre">selfbalance</span></code> opcode’ları mevcuttur.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">berlin</span></code></dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">SLOAD</span></code>, <code class="docutils literal notranslate"><span class="pre">*CALL</span></code>, <code class="docutils literal notranslate"><span class="pre">BALANCE</span></code>, <code class="docutils literal notranslate"><span class="pre">EXT*</span></code> ve <code class="docutils literal notranslate"><span class="pre">SELFDESTRUCT</span></code> için gaz maliyetleri arttı. Bu maliyetler derleyici bu tür operasyonlarda soğuk gaz maliyetlerini varsayar. Bu, gaz tahmini için geçerlidir ve optimize edicidir.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">london</span></code> (<strong>default</strong>)</dt><dd><ul>
+<li><p>Bloğun taban ücretine (<a class="reference external" href="https://eips.ethereum.org/EIPS/eip-3198">EIP-3198</a> ve <a class="reference external" href="https://eips.ethereum.org/EIPS/eip-1559">EIP-1559</a>) global <code class="docutils literal notranslate"><span class="pre">block.basefee</span></code> veya inline assembly`de <code class="docutils literal notranslate"><span class="pre">basefee()</span></code> aracılığıyla erişilebilir.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</section>
+<section id="derleyici-json-girdisi-ve-ciktisi-tanimi">
+<span id="compiler-api"></span><span id="index-5"></span><h2>Derleyici JSON Girdisi ve Çıktısı Tanımı<a class="headerlink" href="#derleyici-json-girdisi-ve-ciktisi-tanimi" title="Permalink to this heading"></a></h2>
+<p>Özellikle daha karmaşık ve otomatik kurulumlar için Solidity derleyicisi ile arayüz
+oluşturmanın önerilen yolu JSON-girdi-çıktı arayüzüdür. Aynı arayüz derleyicinin
+tüm dağıtımları tarafından sağlanır.</p>
+<p>Alanlar genellikle değişikliğe tabidir, bazıları isteğe bağlıdır (belirtildiği gibi),
+ancak yalnızca geriye dönük uyumlu değişiklikler yapmaya çalışıyoruz.</p>
+<p>Derleyici API’si JSON formatında bir girdi bekler ve derleme sonucunu JSON formatında
+bir çıktı olarak verir. Standart hata çıktısı kullanılmaz ve hatalar olsa bile işlem
+her zaman “başarılı” durumda sonlandırılır. Hatalar her zaman JSON çıktısının bir
+parçası olarak rapor edilir.</p>
+<p>Aşağıdaki alt bölümlerde format bir örnek üzerinden açıklanmaktadır.
+Yorumlara elbette izin verilmez ve burada yalnızca açıklama amacıyla kullanılır.</p>
+<section id="girdi-aciklamasi">
+<h3>Girdi Açıklaması<a class="headerlink" href="#girdi-aciklamasi" title="Permalink to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Gerekli: Kaynak kod dili. Şu anda &quot;Solidity&quot; ve &quot;Yul&quot; desteklenmektedir.</span><span class="w"></span>
+<span class="w">  </span><span class="s2">&quot;language&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Solidity&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Gerekli</span><span class="w"></span>
+<span class="w">  </span><span class="s2">&quot;sources&quot;</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Buradaki anahtarlar kaynak dosyaların &quot;global&quot; isimleridir,</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// içe aktarmalar yeniden eşlemeler yoluyla diğer dosyaları kullanabilir (aşağıya bakın).</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;myFile.sol&quot;</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Opsiyonel: kaynak dosyanın keccak256 hash&#39;i</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// URL&#39;ler aracılığıyla içe aktarılmışsa alınan içeriği doğrulamak için kullanılır.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;keccak256&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;0x123...&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Gerekli (&quot;content&quot; kullanılmadığı sürece, aşağıya bakın): Kaynak dosyaya giden URL(ler).</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// URL(ler) bu sırayla içe aktarılmalı ve sonuç keccak256 hash&#39;iyle</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// (varsa) kontrol edilmelidir. Hash eşleşmezse veya URL(ler)den hiçbiri başarıyla</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// sonuçlanmazsa, bir hata oluşmalıdır.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Komut satırı arayüzü kullanılarak yalnızca dosya sistemi yolları desteklenir.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// JavaScript arayüzü ile URL, kullanıcı tarafından sağlanan okuma geri çağrısına aktarılır,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// böylece geri çağrı tarafından desteklenen herhangi bir URL kullanılabilir.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;urls&quot;</span><span class="o">:</span><span class="w"></span>
+<span class="w">      </span><span class="p">[</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;bzzr://56ab...&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;ipfs://Qma...&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;/tmp/path/to/file.sol&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Dosyalar kullanılıyorsa, dizinleri komut satırına şu yolla eklenmelidir</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// `--allow-paths &lt;path&gt;`.</span><span class="w"></span>
+<span class="w">      </span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;destructible&quot;</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Opsiyonel: kaynak dosyanın keccak256 hash&#39;i</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;keccak256&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;0x234...&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Gerekli (&quot;urls&quot; kullanılmadığı sürece): kaynak dosyanın gerçek içeriği</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;content&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;contract destructible is owned { function shutdown() { if (msg.sender == owner) selfdestruct(owner); } }&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Opsiyonel</span><span class="w"></span>
+<span class="w">  </span><span class="s2">&quot;settings&quot;</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Opsiyonel: Belirtilen aşamadan sonra derlemeyi durdurun. Şu anda burada sadece &quot;parsing&quot; geçerlidir</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;stopAfter&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;parsing&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Opsiyonel: Yeniden eşlemelerin sıralanmış listesi</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;remappings&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;:g=/dir&quot;</span><span class="w"> </span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Opsiyonel: Optimize edici ayarları</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;optimizer&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Varsayılan olarak devre dışıdır.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// NOT: enabled=false hala bazı optimizasyonları açık bırakır. Aşağıdaki yorumlara bakın.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// UYARI: 0.8.6 sürümünden önce &#39;enabled&#39; anahtarını atlamak, false olarak ayarlamakla eşdeğer</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// değildi ve aslında tüm optimizasyonları devre dışı bırakıyordu.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;enabled&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Kodu kaç kez çalıştırmayı planladığınıza göre optimize edin.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Düşük değerler ilk dağıtım maliyeti için daha fazla optimizasyon sağlarken, yüksek</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// değerler yüksek frekanslı kullanım için daha fazla optimizasyon sağlayacaktır.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;runs&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">200</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Optimize edici bileşenleri ayrıntılı olarak açın veya kapatın.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Yukarıdaki &quot;enabled&quot; anahtarı, burada değiştirilebilecek iki</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// varsayılan değer sağlar. Eğer &quot;details&quot; verilmişse, &quot;enabled&quot; atlanabilir.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;details&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Ayrıntı verilmediğinde peephole optimizer her zaman açıktır,</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// kapatmak için ayrıntıları kullanın.</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;peephole&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Ayrıntı verilmediğinde inliner her zaman açıktır,,</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// kapatmak için ayrıntıları kullanın.</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;inliner&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Kullanılmayan jumpdest kaldırıcı, ayrıntı verilmediğinde her zaman açıktır,</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// kapatmak için ayrıntıları kullanın.</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;jumpdestRemover&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Bazen değişmeli işlemlerde değişmezleri yeniden sıralar.</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;orderLiterals&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Yinelenen kod bloklarını kaldırır</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;deduplicate&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Ortak alt ifade eliminasyonu, bu en karmaşık adımdır ancak</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// aynı zamanda en büyük kazancı sağlayabilir.</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;cse&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Koddaki değişmez sayıların ve dizelerin gösterimini optimize edin.</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;constantOptimizer&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Yeni Yul optimize edici. Çoğunlukla ABI coder v2 ve inline assembly kodu</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// üzerinde çalışır.</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Global optimizer ayarı ile birlikte etkinleştirilir ve</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// buradan devre dışı bırakılabilir.</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Solidity 0.6.0&#39;dan önce bu anahtar aracılığıyla etkinleştirilmesi gerekiyordu.</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;yul&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Yul optimize edici için ayarlama seçenekleri.</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;yulDetails&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="c1">// Değişkenler için yığın yuvalarının tahsisini iyileştirin, yığın yuvalarını erken boşaltabilir.</span><span class="w"></span>
+<span class="w">          </span><span class="c1">// Yul optimize edici etkinleştirilirse varsayılan olarak etkinleştirilir.</span><span class="w"></span>
+<span class="w">          </span><span class="s2">&quot;stackAllocation&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="c1">// Uygulanacak optimizasyon adımlarını seçin.</span><span class="w"></span>
+<span class="w">          </span><span class="c1">// İsteğe bağlıdır, atlanırsa optimize edici varsayılan sırayı kullanır.</span><span class="w"></span>
+<span class="w">          </span><span class="s2">&quot;optimizerSteps&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;dhfoDgvulfnTUtnIf...&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Derlenecek EVM sürümü.</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Tip denetimini ve kod üretimini etkiler. Yerleşim yeri olabilir,</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// tangerineWhistle, spuriousDragon, byzantium, constantinople, petersburg, istanbul or berlin</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;evmVersion&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;byzantium&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Opsiyonel: Derleme işlem hattını Yul ara temsilinden geçecek şekilde değiştirin.</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Bu varsayılan olarak yanlıştır.</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;viaIR&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Opsiyonel: Hata ayıklama ayarları</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;debug&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Revert (ve require) sebep string&#39; lerine nasıl işlem yapılır. Ayarlar</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// &quot;default&quot;, &quot;strip&quot;, &quot;debug&quot; ve &quot;verboseDebug&quot; şeklindedir.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// &quot;default&quot; derleyici tarafından oluşturulan revert stringlerini enjekte etmez ve kullanıcı tarafından sağlananları tutar.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// &quot;strip&quot; tüm revert stringlerini (mümkünse, yani değişmezler kullanılıyorsa) yan etkilerini koruyarak kaldırır</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// &quot;debug&quot; derleyici tarafından oluşturulan dahili geri dönüşler için stringler enjekte eder, şimdilik ABI kodlayıcıları V1 ve V2 için uygulanmaktadır.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// &quot;verboseDebug&quot; kullanıcı tarafından sağlanan revert stringlerine daha fazla bilgi ekler (henüz uygulanmadı)</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;revertStrings&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;default&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Opsiyonel: Üretilen EVM assembly ve Yul kodundaki yorumlara ne kadar ekstra</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// hata ayıklama bilgisi ekleneceği. Mevcut bileşenler şunlardır:</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// - `location`: Orijinal Solidity dosyasındaki ilgili öğenin konumunu belirten</span><span class="w"></span>
+<span class="w">      </span><span class="c1">//    `@src &lt;index&gt;:&lt;start&gt;:&lt;end&gt;` biçimindeki ek açıklamalar, burada:</span><span class="w"></span>
+<span class="w">      </span><span class="c1">//     - `&lt;index&gt;`, `@use-src` ek açıklamasıyla eşleşen dosya dizinidir,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">//     - `&lt;start&gt;` o konumdaki ilk baytın indeksidir,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">//     - `&lt;end&gt;` bu konumdan sonraki ilk baytın indeksidir.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// - `snippet`: `@src` ile belirtilen konumdan tek satırlık bir kod parçacığı.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">//     Parçacık alıntılanır ve ilgili `@src` ek açıklamasını takip eder.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// - `*`: Her şeyi talep etmek için kullanılabilecek joker karakter değeri.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;debugInfo&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;snippet&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Metadata ayarları (isteğe bağlı)</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;metadata&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// URL&#39;leri değil, yalnızca gerçek içeriği kullan (varsayılan olarak false)</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;useLiteralContent&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Bayt koduna eklenen metadata hash&#39;i için verilen hash yöntemini kullanın.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Metadata hash&#39;i &quot;none&quot; seçeneği ile bayt kodundan kaldırılabilir.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Diğer seçenekler &quot;ipfs&quot; ve &quot;bzzr1 &quot;dir.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Seçenek atlanırsa, varsayılan olarak &quot;ipfs&quot; kullanılır.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;bytecodeHash&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;ipfs&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Kütüphanelerin adresleri. Tüm kütüphaneler burada verilmezse,</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// çıktı verileri farklı olan bağlantısız nesnelerle sonuçlanabilir.</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;libraries&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// En üst düzey anahtar, kütüphanenin kullanıldığı kaynak dosyanın adıdır.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Yeniden eşlemeler kullanılıyorsa, bu kaynak dosya yeniden eşlemeler</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// uygulandıktan sonraki genel yolla eşleşmelidir.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Bu anahtar boş bir string ise, bu global bir seviyeyi ifade eder.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;myFile.sol&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;MyLib&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;0x123123...&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Dosya ve sözleşme adlarına göre istenen çıktıları</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// seçmek için aşağıdakiler kullanılabilir.</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Bu alan atlanırsa, derleyici yükler ve tür denetimi yapar,</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ancak hatalar dışında herhangi bir çıktı üretmez.</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Birinci seviye anahtar dosya adı, ikinci seviye anahtar ise sözleşme adıdır.</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Boş bir sözleşme adı, bir sözleşmeye bağlı olmayan ancak AST gibi</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// tüm kaynak dosyaya bağlı olan çıktılar için kullanılır.</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Sözleşme adı olarak bir yıldız, dosyadaki tüm sözleşmeleri ifade eder.</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Benzer şekilde, dosya adı olarak bir yıldız tüm dosyalarla eşleşir.</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Derleyicinin üretebileceği tüm çıktıları seçmek için</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// &quot;outputSelection: { &quot;*&quot;: { &quot;*&quot;: [ &quot;*&quot; ], &quot;&quot;: [ &quot;*&quot; ] } }&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ancak bunun derleme sürecini gereksiz yere yavaşlatabileceğini unutmayın.</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Mevcut çıktı türleri aşağıdaki gibidir:</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Dosya seviyesi (sözleşme adı olarak boş dize gerekir):</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   ast - Tüm kaynak dosyaların AST&#39;si</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Sözleşme seviyesi (sözleşme adına veya &quot;*&quot; işaretine ihtiyaç duyar):</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   abi - ABI</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   devdoc - Geliştirici dokümantasyonu (natspec)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   userdoc - Kullanıcı dokümantasyonu (natspec)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   metadata - Metadata</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   ir - Optimizasyondan önce kodun Yul ara temsili</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   irOptimized - Optimizasyon sonrası ara temsil</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   storageLayout - Sözleşmenin durum değişkenlerinin yuvaları, ofsetleri ve türleri.</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   evm.assembly - Yeni assembly formatı</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   evm.legacyAssembly - JSON&#39;daki eski tarz assembly formatı</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   evm.bytecode.functionDebugData - Fonksiyon düzeyinde hata ayıklama bilgileri</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   evm.bytecode.object - Bytecode objesi</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   evm.bytecode.opcodes - Opcodes listesi</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   evm.bytecode.sourceMap - Kaynak eşlemesi (hata ayıklama için yararlı)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   evm.bytecode.linkReferences - Bağlantı referansları (bağlantısı olmayan nesne ise)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   evm.bytecode.generatedSources - Derleyici tarafından oluşturulan kaynaklar</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   evm.deployedBytecode* - Deployed bytecode (evm.bytecode&#39;un sahip olduğu tüm seçeneklere sahiptir)</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   evm.deployedBytecode.immutableReferences - AST kimliklerinden değişmezlere referans veren bayt kodu aralıklarına eşleme</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   evm.methodIdentifiers - Fonksiyon hash&#39;lerinin listesi</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   evm.gasEstimates - Fonksiyon gazı tahminleri</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   ewasm.wast - WebAssembly S-expressions biçiminde Ewasm</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//   ewasm.wasm - WebAssembly binary formatında Ewasm</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Bir `evm`, `evm.bytecode`, `ewasm`, vb. kullanmanın bu çıktının her</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// hedef parçasını seçeceğini unutmayın. Ayrıca, `*` her şeyi istemek için joker karakter olarak kullanılabilir.</span><span class="w"></span>
+<span class="w">    </span><span class="c1">//</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;outputSelection&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;*&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;*&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">          </span><span class="s2">&quot;metadata&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;evm.bytecode&quot;</span><span class="w"> </span><span class="c1">// Her bir sözleşmenin metadata ve bytecode çıktılarını etkinleştirin.</span><span class="w"></span>
+<span class="w">          </span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;evm.bytecode.sourceMap&quot;</span><span class="w"> </span><span class="c1">// Her bir sözleşmenin kaynak eşleme çıktısını etkinleştirin.</span><span class="w"></span>
+<span class="w">        </span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">          </span><span class="s2">&quot;ast&quot;</span><span class="w"> </span><span class="c1">// Her bir dosyanın AST çıktısını etkinleştirin.</span><span class="w"></span>
+<span class="w">        </span><span class="p">]</span><span class="w"></span>
+<span class="w">      </span><span class="p">},</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Def dosyasında tanımlanan MyContract&#39;ın abi ve opcodes çıktısını etkinleştirin.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;def&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;MyContract&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;abi&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;evm.bytecode.opcodes&quot;</span><span class="w"> </span><span class="p">]</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// ModelChecker nesnesi deneyseldir ve değişikliklere tabidir.</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;modelChecker&quot;</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Hangi sözleşmelerin konuşlandırılmış sözleşme olarak analiz edilmesi gerektiğini seçin.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;contracts&quot;</span><span class="o">:</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;source1.sol&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;contract1&quot;</span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;source2.sol&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;contract2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;contract3&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="w">      </span><span class="p">},</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Bölme ve modulo işlemlerinin nasıl şifreleneceğini seçin.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// `false` kullanıldığında, bunlar slack değişkenlerle çarpılarak</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// değiştirilir. Bu varsayılandır.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// CHC motorunu kullanıyorsanız ve Horn çözücü olarak Spacer kullanmıyorsanız</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// (örneğin Eldarica kullanıyorsanız) burada `true` kullanılması önerilir.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Bu seçeneğin daha ayrıntılı bir açıklaması için Biçimsel Doğrulama bölümüne bakın.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;divModNoSlacks&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Hangi model denetleyici motorunun kullanılacağını seçin: all (varsayılan), bmc, chc, none.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;engine&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;chc&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Kullanıcıya hangi tür değişmezlerin rapor edileceğini seçin: contract, reentrancy.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;invariants&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;contract&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;reentrancy&quot;</span><span class="p">],</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Kanıtlanmamış tüm hedeflerin çıktısının alınıp alınmayacağını seçin. Varsayılan değer `false`dir.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;showUnproved&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Varsa, hangi çözücülerin kullanılması gerektiğini seçin.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Çözücülerin açıklaması için Biçimsel Doğrulama bölümüne bakın.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;solvers&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;cvc4&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;smtlib2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;z3&quot;</span><span class="p">],</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Hangi hedeflerin kontrol edilmesi gerektiğini seçin: constantCondition,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// underflow, overflow, divByZero, balance, assert, popEmptyArray, outOfBounds.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Seçenek belirtilmezse, Solidity &gt;=0.8.7 için underflow/overflow</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// hariç tüm hedefler varsayılan olarak kontrol edilir.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Hedeflerin açıklaması için Biçimsel Doğrulama bölümüne bakın.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;targets&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;underflow&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;overflow&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;assert&quot;</span><span class="p">],</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Her SMT sorgusu için milisaniye cinsinden zaman aşımı.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Bu seçenek verilmezse, SMTChecker varsayılan olarak</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// deterministik bir kaynak sınırı kullanacaktır.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Verilen zaman aşımının 0 olması, herhangi bir sorgu için kaynak/zaman kısıtlaması olmadığı anlamına gelir.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;timeout&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">20000</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="cikti-aciklamasi">
+<h3>Çıktı Açıklaması<a class="headerlink" href="#cikti-aciklamasi" title="Permalink to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Opsiyonel: herhangi bir hata/uyarı/bilgi ile karşılaşılmadıysa mevcut değildir</span><span class="w"></span>
+<span class="w">  </span><span class="s2">&quot;errors&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Opsiyonel: Kaynak dosya içindeki konum.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;sourceLocation&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;file&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;sourceFile.sol&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;start&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;end&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">100</span><span class="w"></span>
+<span class="w">      </span><span class="p">},</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Opsiyonel: Diğer yerler (örn. çelişkili beyanların olduğu yerler)</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;secondarySourceLocations&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="s2">&quot;file&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;sourceFile.sol&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="s2">&quot;start&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">64</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="s2">&quot;end&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">92</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="s2">&quot;message&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Other declaration is here:&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">],</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Zorunlu: Hata türü, örneğin &quot;TypeError&quot;, &quot;InternalCompilerError&quot;, &quot;Exception&quot;, vb.</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Türlerin tam listesi için aşağıya bakınız.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;TypeError&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Zorunlu: Hatanın kaynaklandığı bileşen, örneğin &quot;general&quot;, &quot;ewasm&quot;, vb.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;component&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;general&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Zorunlu (&quot; error&quot;, &quot;warning&quot; veya &quot;info&quot;, ancak bunun gelecekte genişletilebileceğini lütfen unutmayın)</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;severity&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;error&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// İsteğe bağlı: hatanın nedeni için benzersiz kod</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;errorCode&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;3141&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Zorunlu</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;message&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Invalid keyword&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Opsiyonel: kaynak konumu ile biçimlendirilmiş mesaj</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;formattedMessage&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;sourceFile.sol:100: Invalid keyword&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">],</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Bu, dosya düzeyinde çıktıları içerir.</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// OutputSelection ayarları ile sınırlandırılabilir/filtrelenebilir.</span><span class="w"></span>
+<span class="w">  </span><span class="s2">&quot;sources&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;sourceFile.sol&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Kaynak tanımlayıcısı (kaynak eşlemelerinde kullanılır)</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;id&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// AST objesi</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;ast&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Bu, sözleşme düzeyindeki çıktıları içerir.</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// OutputSelection ayarları ile sınırlandırılabilir/filtrelenebilir.</span><span class="w"></span>
+<span class="w">  </span><span class="s2">&quot;contracts&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;sourceFile.sol&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="c1">// Kullanılan dilde sözleşme adı yoksa, bu alan boş bir dizeye eşit olmalıdır.</span><span class="w"></span>
+<span class="w">      </span><span class="s2">&quot;ContractName&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Ethereum Sözleşmesi ABI&#39;si. Boşsa, boş bir dizi olarak gösterilir.</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// bkz. https://docs.soliditylang.org/en/develop/abi-spec.html</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;abi&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[],</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Metadata Çıktısı belgelerine bakın (serileştirilmiş JSON stringi)</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;metadata&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;{/* ... */}&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Kullanıcı dokümantasyonu (natspec)</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;userdoc&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{},</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Geliştirici dokümantasyonu (natspec)</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;devdoc&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{},</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Ara temsil (string)</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;ir&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Depolama Düzeni belgelerine bakın.</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;storageLayout&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;storage&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="cm">/* ... */</span><span class="p">],</span><span class="w"> </span><span class="s2">&quot;types&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="cm">/* ... */</span><span class="p">}</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// EVM&#39;ye ilişkin çıktılar</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;evm&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="c1">// Assembly (string)</span><span class="w"></span>
+<span class="w">          </span><span class="s2">&quot;assembly&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="c1">// Eski tarz assembly (object)</span><span class="w"></span>
+<span class="w">          </span><span class="s2">&quot;legacyAssembly&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{},</span><span class="w"></span>
+<span class="w">          </span><span class="c1">// Bytecode ve ilgili ayrıntılar.</span><span class="w"></span>
+<span class="w">          </span><span class="s2">&quot;bytecode&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// Fonksiyonlar düzeyinde veri hata ayıklama.</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;functionDebugData&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="c1">// Şimdi derleyicinin dahili ve kullanıcı tanımlı fonksiyonlarını içeren bir fonksiyon kümesini takip edin.</span><span class="w"></span>
+<span class="w">              </span><span class="c1">// Kümenin eksiksiz olması gerekmez.</span><span class="w"></span>
+<span class="w">              </span><span class="s2">&quot;@mint_13&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Fonksiyonun dahili adı</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;entryPoint&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">128</span><span class="p">,</span><span class="w"> </span><span class="c1">// Fonksiyonun başladığı byte offset bytecode (isteğe bağlı)</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;id&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">13</span><span class="p">,</span><span class="w"> </span><span class="c1">// Fonksiyon tanımının AST ID&#39;si veya derleyiciye dahili fonksiyonlar için null (isteğe bağlı)</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;parameterSlots&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="c1">// Fonksiyon parametreleri için EVM yığın yuvası sayısı (isteğe bağlı)</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;returnSlots&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="w"> </span><span class="c1">// Dönüş değerleri için EVM yığın yuvası sayısı (isteğe bağlı)</span><span class="w"></span>
+<span class="w">              </span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// Hex string olarak bytecode.</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;object&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;00fe&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// Opcodes listesi (string)</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;opcodes&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// Bir string olarak kaynak eşlemesi. Kaynak eşleme tanımına bakın.</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;sourceMap&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// Derleyici tarafından oluşturulan kaynakların dizisi. Şu anda yalnızca</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// tek bir Yul dosyası içerir.</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;generatedSources&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="w"></span>
+<span class="w">              </span><span class="c1">// Yul AST</span><span class="w"></span>
+<span class="w">              </span><span class="s2">&quot;ast&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="cm">/* ... */</span><span class="p">},</span><span class="w"></span>
+<span class="w">              </span><span class="c1">// Metin halindeki kaynak dosya (yorum içerebilir)</span><span class="w"></span>
+<span class="w">              </span><span class="s2">&quot;contents&quot;</span><span class="o">:</span><span class="s2">&quot;{ function abi_decode(start, end) -&gt; data { data := calldataload(start) } }&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">              </span><span class="c1">// Kaynak dosya ID&#39;si, kaynak referansları için kullanılır, Solidity kaynak dosyalarıyla aynı &quot;ad alanı&quot;</span><span class="w"></span>
+<span class="w">              </span><span class="s2">&quot;id&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"></span>
+<span class="w">              </span><span class="s2">&quot;language&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Yul&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">              </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;#utility.yul&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">}],</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// Verilirse, bu bağlantısız bir nesnedir.</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;linkReferences&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="s2">&quot;libraryFile.sol&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="c1">// Baytların bayt kodu içindeki ofsetleri.</span><span class="w"></span>
+<span class="w">                </span><span class="c1">// Bağlantı, burada bulunan 20 baytın yerini alır.</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;Library1&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                  </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;start&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;length&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">20</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="w">                  </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;start&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">200</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;length&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">20</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">                </span><span class="p">]</span><span class="w"></span>
+<span class="w">              </span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">          </span><span class="p">},</span><span class="w"></span>
+<span class="w">          </span><span class="s2">&quot;deployedBytecode&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="cm">/* ..., */</span><span class="w"> </span><span class="c1">// Yukarıdaki ile aynı düzen.</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;immutableReferences&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="c1">// AST ID 3 ile değişmeze iki referans vardır, her ikisi de 32 bayt uzunluğundadır. Bir tanesi</span><span class="w"></span>
+<span class="w">              </span><span class="c1">// bytecode offset 42&#39;de, diğeri bytecode offset 80&#39;de.</span><span class="w"></span>
+<span class="w">              </span><span class="s2">&quot;3&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="s2">&quot;start&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">42</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;length&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">32</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;start&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">80</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;length&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">32</span><span class="w"> </span><span class="p">}]</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">          </span><span class="p">},</span><span class="w"></span>
+<span class="w">          </span><span class="c1">// Fonksiyon hash&#39;lerinin listesi</span><span class="w"></span>
+<span class="w">          </span><span class="s2">&quot;methodIdentifiers&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;delegate(address)&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;5c19a95c&quot;</span><span class="w"></span>
+<span class="w">          </span><span class="p">},</span><span class="w"></span>
+<span class="w">          </span><span class="c1">// Fonksiyon gaz tahminleri</span><span class="w"></span>
+<span class="w">          </span><span class="s2">&quot;gasEstimates&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;creation&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="s2">&quot;codeDepositCost&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;420000&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">              </span><span class="s2">&quot;executionCost&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;infinite&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">              </span><span class="s2">&quot;totalCost&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;infinite&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;external&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="s2">&quot;delegate(address)&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;25000&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;internal&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">              </span><span class="s2">&quot;heavyLifting()&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;infinite&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Ewasm ile ilgili çıktılar</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;ewasm&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">          </span><span class="c1">// S-expressions biçimi</span><span class="w"></span>
+<span class="w">          </span><span class="s2">&quot;wast&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">          </span><span class="c1">// Binary formatı (hex string)</span><span class="w"></span>
+<span class="w">          </span><span class="s2">&quot;wasm&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<section id="hata-turleri">
+<h4>Hata Türleri<a class="headerlink" href="#hata-turleri" title="Permalink to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">JSONError</span></code>: JSON girdisi gerekli biçime uymuyor, örneğin girdi bir JSON nesnesi değil, dil desteklenmiyor vb.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IOError</span></code>: Çözümlenemeyen URL veya sağlanan kaynaklardaki hash uyuşmazlığı gibi IO ve içe aktarma işleme hataları.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ParserError</span></code>: Kaynak kodu dil kurallarına uygun değil.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DocstringParsingError</span></code>: Yorum bloğundaki NatSpec etiketleri ayrıştırılamıyor.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SyntaxError</span></code>: Sözdizimsel hata, örneğin <code class="docutils literal notranslate"><span class="pre">continue</span></code> bir <code class="docutils literal notranslate"><span class="pre">for</span></code> döngüsünün dışında kullanılmıştır.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DeclarationError</span></code>: Geçersiz, çözümlenemeyen veya çakışan tanımlayıcı adları. ör. <code class="docutils literal notranslate"><span class="pre">Identifier</span> <span class="pre">not</span> <span class="pre">found</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TypeError</span></code>: Geçersiz tür dönüşümleri, geçersiz atamalar vb. gibi tür sistemi içindeki hatalar.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">UnimplementedFeatureError</span></code>: Özellik derleyici tarafından desteklenmiyor, ancak gelecek sürümlerde desteklenmesi bekleniyor.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">InternalCompilerError</span></code>: Derleyicide tetiklenen dahili hata - bu bir sorun olarak raporlanmalıdır.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Exception</span></code>: Derleme sırasında bilinmeyen hata - bu bir sorun olarak raporlanmalıdır.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CompilerError</span></code>: Derleyici yığınının geçersiz kullanımı - bu bir sorun olarak raporlanmalıdır.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FatalError</span></code>: Ölümcül hata doğru şekilde işlenmedi - bu bir sorun olarak raporlanmalıdır.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Warning</span></code>: Derlemeyi durdurmayan, ancak mümkünse ele alınması gereken bir uyarı.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Info</span></code>: Derleyicinin kullanıcının yararlı bulabileceğini düşündüğü, ancak tehlikeli olmayan ve mutlaka ele alınması gerekmeyen bilgiler.</p></li>
+</ol>
+</section>
+</section>
+</section>
+<section id="derleyici-araclari">
+<span id="compiler-tools"></span><h2>Derleyici Araçları<a class="headerlink" href="#derleyici-araclari" title="Permalink to this heading"></a></h2>
+<section id="solidity-upgrade">
+<h3>solidity-upgrade<a class="headerlink" href="#solidity-upgrade" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">solidity-upgrade</span></code> sözleşmelerinizi dil değişikliklerine yarı otomatik olarak
+yükseltmenize yardımcı olabilir. Her son sürüm için gerekli tüm değişiklikleri
+uygulamasa ve uygulayamasa da, aksi takdirde çok sayıda tekrarlayan manuel ayarlama
+gerektirecek olanları hala desteklemektedir.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>‘’solidity-upgrade’’ işin büyük bir kısmını gerçekleştirir, ancak sözleşmelerinizin
+büyük olasılıkla daha fazla manuel ayarlamaya ihtiyacı olacaktır. Dosyalarınız için
+bir sürüm kontrol sistemi kullanmanızı öneririz. Bu, yapılan değişikliklerin gözden
+geçirilmesine ve sonunda geri alınmasına yardımcı olur.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">solidity-upgrade</span></code> tam veya hatasız olarak kabul edilmez, bu nedenle lütfen
+dikkatli kullanın.</p>
+</div>
+<section id="nasil-calisir">
+<h4>Nasıl Çalışır?<a class="headerlink" href="#nasil-calisir" title="Permalink to this heading"></a></h4>
+<p>Solidity kaynak dosya(lar)ını <code class="docutils literal notranslate"><span class="pre">solidity-upgrade</span> <span class="pre">[files]</span></code>’a aktarabilirsiniz. Bunlar,
+geçerli kaynak dosyanın dizini dışındaki dosyalara referans veren <code class="docutils literal notranslate"><span class="pre">import</span></code> ifadesini
+kullanıyorsa, <code class="docutils literal notranslate"><span class="pre">--allow-paths</span> <span class="pre">[directory]</span></code> seçeneğini geçerek dosyaların okunmasına
+ve içe aktarılmasına izin verilen dizinleri belirtmeniz gerekir. Eksik dosyaları
+<code class="docutils literal notranslate"><span class="pre">--ignore-missing</span></code> seçeneğini geçerek yok sayabilirsiniz.</p>
+<p><code class="docutils literal notranslate"><span class="pre">solidity-upgrade</span></code>, <code class="docutils literal notranslate"><span class="pre">libsolidity</span></code> tabanlıdır ve kaynak dosyalarınızı ayrıştırabilir,
+derleyebilir ve analiz edebilir ve içlerinde uygulanabilir kaynak yükseltmeleri bulabilir.</p>
+<p>Kaynak yükseltmeleri, kaynak kodunuzda yapılan küçük metinsel değişiklikler olarak
+kabul edilir. Bunlar, verilen kaynak dosyaların bellek içi gösterimine uygulanır.
+İlgili kaynak dosyası varsayılan olarak güncellenir, ancak herhangi bir dosyaya
+yazmadan tüm yükseltme işlemini simüle etmek için <code class="docutils literal notranslate"><span class="pre">--dry-run</span></code> geçebilirsiniz.</p>
+<p>Yükseltme işleminin iki aşaması vardır. İlk aşamada kaynak dosyalar ayrıştırılır
+ve kaynak kodu bu seviyede yükseltmek mümkün olmadığından, hatalar toplanır ve
+<code class="docutils literal notranslate"><span class="pre">--verbose</span></code> geçilerek günlüğe kaydedilebilir. Bu noktada kaynak yükseltmesi mevcut
+değildir.</p>
+<p>İkinci aşamada, tüm kaynaklar derlenir ve tüm etkinleştirilmiş yükseltme analizi
+modülleri derleme ile birlikte çalıştırılır. Varsayılan olarak, mevcut tüm modüller
+etkinleştirilir. Daha fazla ayrıntı için lütfen <a class="reference internal" href="#upgrade-modules"><span class="std std-ref">available modules</span></a>
+belgesini okuyun.</p>
+<p>Bu, kaynak yükseltmeleri ile düzeltilebilecek derleme hatalarına neden olabilir. Hiçbir
+hata oluşmazsa, hiçbir kaynak yükseltmesi bildirilmez ve işiniz biter. Hatalar oluşursa
+ve bazı yükseltme modülleri bir kaynak yükseltmesi bildirirse, ilk bildirilen uygulanır
+ve verilen tüm kaynak dosyaları için derleme yeniden tetiklenir. Kaynak yükseltmeleri
+rapor edildiği sürece önceki adım tekrarlanır. Eğer hala hatalar oluşuyorsa, <code class="docutils literal notranslate"><span class="pre">--verbose</span></code>
+komutunu geçerek bunları günlüğe kaydedebilirsiniz. Herhangi bir hata oluşmazsa, sözleşmeleriniz
+günceldir ve derleyicinin en son sürümüyle derlenebilir.</p>
+</section>
+<section id="kullanilabilir-yukseltme-modulleri">
+<span id="upgrade-modules"></span><h4>Kullanılabilir Yükseltme Modülleri<a class="headerlink" href="#kullanilabilir-yukseltme-modulleri" title="Permalink to this heading"></a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 10%" />
+<col style="width: 57%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Modül</p></th>
+<th class="head"><p>Versiyon</p></th>
+<th class="head"><p>Açıklama</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">constructor</span></code></p></td>
+<td><p>0.5.0</p></td>
+<td><p>Constructor’’lar artık <code class="docutils literal notranslate"><span class="pre">constructor</span></code> anahtar
+sözcüğü kullanılarak tanımlanmalıdır.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">visibility</span></code></p></td>
+<td><p>0.5.0</p></td>
+<td><p>Public fonksiyon görünürlüğü artık zorunlu,
+varsayılan değer <code class="docutils literal notranslate"><span class="pre">public</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">abstract</span></code></p></td>
+<td><p>0.6.0</p></td>
+<td><p>Bir sözleşme tüm fonksiyonlarını uygulamıyorsa
+<code class="docutils literal notranslate"><span class="pre">abstract</span></code> anahtar sözcüğü kullanılmalıdır.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">virtual</span></code></p></td>
+<td><p>0.6.0</p></td>
+<td><p>Bir arayüz dışında uygulaması olmayan
+fonksiyonlar <code class="docutils literal notranslate"><span class="pre">virtual</span></code> olarak işaretlenmelidir.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">override</span></code></p></td>
+<td><p>0.6.0</p></td>
+<td><p>Bir fonksiyon veya modifier geçersiz kılınırken,
+yeni <code class="docutils literal notranslate"><span class="pre">override</span></code> anahtar sözcüğü kullanılmalıdır</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dotsyntax</span></code></p></td>
+<td><p>0.7.0</p></td>
+<td><p>Aşağıdaki sözdizimi kullanımdan kaldırılmıştır:
+<code class="docutils literal notranslate"><span class="pre">f.gas(...)()</span></code>, <code class="docutils literal notranslate"><span class="pre">f.value(...)()</span></code> ve
+<code class="docutils literal notranslate"><span class="pre">(new</span> <span class="pre">C).value(...)()</span></code>. Bu çağrıların yerine
+<code class="docutils literal notranslate"><span class="pre">f{gas:</span> <span class="pre">...,</span> <span class="pre">value:</span> <span class="pre">...}()</span></code> ve
+<code class="docutils literal notranslate"><span class="pre">(new</span> <span class="pre">C){value:</span> <span class="pre">...}()</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">now</span></code></p></td>
+<td><p>0.7.0</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">now</span></code> anahtar sözcüğü kullanımdan  kalktı.
+Bunun yerine <cite>block.timestamp`</cite> kullanın.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">constructor-visibility</span></code></p></td>
+<td><p>0.7.0</p></td>
+<td><p>Constructor’ların görünürlüğünü kaldırır.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Daha fazla ayrıntı için lütfen <a class="reference internal" href="050-breaking-changes.html"><span class="doc">0.5.0 release notes</span></a>,
+<a class="reference internal" href="060-breaking-changes.html"><span class="doc">0.6.0 release notes</span></a>, <a class="reference internal" href="070-breaking-changes.html"><span class="doc">0.7.0 release notes</span></a>
+ve <a class="reference internal" href="080-breaking-changes.html"><span class="doc">0.8.0 release notes</span></a> bölümlerini okuyun.</p>
+</section>
+<section id="ozet-bilgi-synopsis">
+<h4>Özet bilgi(Synopsis)<a class="headerlink" href="#ozet-bilgi-synopsis" title="Permalink to this heading"></a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Usage: solidity-upgrade [options] contract.sol
+
+Allowed options:
+    --help               Show help message and exit.
+    --version            Show version and exit.
+    --allow-paths path(s)
+                         Allow a given path for imports. A list of paths can be
+                         supplied by separating them with a comma.
+    --ignore-missing     Ignore missing files.
+    --modules module(s)  Only activate a specific upgrade module. A list of
+                         modules can be supplied by separating them with a comma.
+    --dry-run            Apply changes in-memory only and don&#39;t write to input
+                         file.
+    --verbose            Print logs, errors and changes. Shortens output of
+                         upgrade patches.
+    --unsafe             Accept *unsafe* changes.
+</pre></div>
+</div>
+</section>
+<section id="hata-raporlari-ozellik-talepleri">
+<h4>Hata Raporları / Özellik Talepleri<a class="headerlink" href="#hata-raporlari-ozellik-talepleri" title="Permalink to this heading"></a></h4>
+<p>Bir hata bulduysanız veya bir özellik isteğiniz varsa, lütfen Github’da <a href="#id1"><span class="problematic" id="id2">`&lt;https://github.com/ethereum/solidity/issues/new/choose&gt; bir sorun gönderin.`_</span></a></p>
+</section>
+<section id="ornek">
+<h4>Örnek<a class="headerlink" href="#ornek" title="Permalink to this heading"></a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">Source.sol</span></code> içinde aşağıdaki sözleşmeye sahip olduğunuzu varsayın:</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=cHJhZ21hIHNvbGlkaXR5ID49MC42LjAgPDAuNi40OwovLyBUaGlzIHdpbGwgbm90IGNvbXBpbGUgYWZ0ZXIgMC43LjAKLy8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKY29udHJhY3QgQyB7CiAgICAvLyBCRU7EsETDnFpFTFQ6IGNvbnN0cnVjdG9yIGfDtnLDvG7DvHJsw7zEn8O8bsO8IGthbGTEsXLEsW4gdmUgc8O2emxlxZ9tZXlpIGFic3RyYWN0IGhhbGUgZ2V0aXJpbgogICAgY29uc3RydWN0b3IoKSBpbnRlcm5hbCB7fQp9Cgpjb250cmFjdCBEIHsKICAgIHVpbnQgdGltZTsKCiAgICBmdW5jdGlvbiBmKCkgcHVibGljIHBheWFibGUgewogICAgICAgIC8vIEJFTsSwRMOcWkVMVDogbm93J3UgYmxvY2sudGltZXN0YW1wIG9sYXJhayBkZcSfacWfdGlyaW4KICAgICAgICB0aW1lID0gbm93OwogICAgfQp9Cgpjb250cmFjdCBFIHsKICAgIEQgZDsKCiAgICAvLyBCRU7EsETDnFpFTFQ6IGNvbnN0cnVjdG9yIGfDtnLDvG7DvHJsw7zEn8O8bsO8IGthbGTEsXIKICAgIGNvbnN0cnVjdG9yKCkgcHVibGljIHt9CgogICAgZnVuY3Rpb24gZygpIHB1YmxpYyB7CiAgICAgICAgLy8gQkVOxLBEw5xaRUxUOiAudmFsdWUoNSkgPT4ge3ZhbHVlOiA1fSBvbGFyYWsgZGXEn2nFn3RpcmluCiAgICAgICAgZC5mLnZhbHVlKDUpKCk7CiAgICB9Cn0="><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-Solidity notranslate"><div class="highlight"><pre><span></span><span class="k">pragma solidity</span> <span class="o">&gt;=</span><span class="mf">0.6</span><span class="p">.</span><span class="mi">0</span> <span class="o">&lt;</span><span class="mf">0.6</span><span class="p">.</span><span class="mi">4</span><span class="p">;</span>
+<span class="c1">// This will not compile after 0.7.0</span>
+<span class="c1">// </span><span class="cs">SPDX-License-Identifier:</span><span class="c1"> GPL-3.0</span>
+<span class="kd">contract</span> <span class="n">C</span> <span class="p">{</span>
+    <span class="c1">// BENİDÜZELT: constructor görünürlüğünü kaldırın ve sözleşmeyi abstract hale getirin</span>
+    <span class="kd">constructor</span><span class="p">()</span> <span class="k">internal</span> <span class="p">{}</span>
+<span class="p">}</span>
+
+<span class="kd">contract</span> <span class="n">D</span> <span class="p">{</span>
+    <span class="kt">uint</span> <span class="n">time</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">f</span><span class="p">()</span> <span class="k">public</span> <span class="k">payable</span> <span class="p">{</span>
+        <span class="c1">// BENİDÜZELT: now&#39;u block.timestamp olarak değiştirin</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="nb">now</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">contract</span> <span class="n">E</span> <span class="p">{</span>
+    <span class="n">D</span> <span class="n">d</span><span class="p">;</span>
+
+    <span class="c1">// BENİDÜZELT: constructor görünürlüğünü kaldır</span>
+    <span class="kd">constructor</span><span class="p">()</span> <span class="k">public</span> <span class="p">{}</span>
+
+    <span class="kd">function</span> <span class="n">g</span><span class="p">()</span> <span class="k">public</span> <span class="p">{</span>
+        <span class="c1">// BENİDÜZELT: .value(5) =&gt; {value: 5} olarak değiştirin</span>
+        <span class="n">d</span><span class="p">.</span><span class="n">f</span><span class="p">.</span><span class="n">value</span><span class="p">(</span><span class="mi">5</span><span class="p">)();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="gerekli-degisiklikler">
+<h5>Gerekli Değişiklikler<a class="headerlink" href="#gerekli-degisiklikler" title="Permalink to this heading"></a></h5>
+<p>Yukarıdaki sözleşme 0.7.0’dan itibaren derlenmeyecektir. Sözleşmeyi mevcut Solidity
+sürümüyle güncel hale getirmek için aşağıdaki yükseltme modüllerinin çalıştırılması
+gerekir: <code class="docutils literal notranslate"><span class="pre">constructor-visibility</span></code>, <code class="docutils literal notranslate"><span class="pre">now</span></code> ve <code class="docutils literal notranslate"><span class="pre">dotsyntax</span></code>. Daha fazla ayrıntı için
+lütfen <a class="reference internal" href="#upgrade-modules"><span class="std std-ref">available modules</span></a> belgelendirmesini okuyun.</p>
+</section>
+<section id="yukseltmenin-calistirilmasi">
+<h5>Yükseltmenin Çalıştırılması<a class="headerlink" href="#yukseltmenin-calistirilmasi" title="Permalink to this heading"></a></h5>
+<p>Yükseltme modüllerinin <code class="docutils literal notranslate"><span class="pre">--modules</span></code> argümanı kullanılarak açıkça belirtilmesi önerilir.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>solidity-upgrade --modules constructor-visibility,now,dotsyntax Source.sol
+</pre></div>
+</div>
+<p>Yukarıdaki komut aşağıda gösterildiği gibi tüm değişiklikleri uygular. Lütfen bunları
+dikkatlice inceleyin (pragmaların manuel olarak güncellenmesi gerekecektir).</p>
+<p class="remix-link-container"><a class="remix-link reference external" href="https://remix.ethereum.org/?language=solidity&amp;version=0.8.15&amp;code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC43LjAgPDAuOS4wOwphYnN0cmFjdCBjb250cmFjdCBDIHsKICAgIC8vIEJFTsSwRMOcWkVMVDogY29uc3RydWN0b3IgZ8O2csO8bsO8cmzDvMSfw7xuw7wga2FsZMSxcsSxbiB2ZSBzw7Z6bGXFn21leWkgYWJzdHJhY3QgaGFsZSBnZXRpcmluCiAgICBjb25zdHJ1Y3RvcigpIHt9Cn0KCmNvbnRyYWN0IEQgewogICAgdWludCB0aW1lOwoKICAgIGZ1bmN0aW9uIGYoKSBwdWJsaWMgcGF5YWJsZSB7CiAgICAgICAgLy8gQkVOxLBEw5xaRUxUOiBub3cndSBibG9jay50aW1lc3RhbXAgb2xhcmFrIGRlxJ9pxZ90aXJpbgogICAgICAgIHRpbWUgPSBibG9jay50aW1lc3RhbXA7CiAgICB9Cn0KCmNvbnRyYWN0IEUgewogICAgRCBkOwoKICAgIC8vIEJFTsSwRMOcWkVMVDogY29uc3RydWN0b3IgZ8O2csO8bsO8cmzDvMSfw7xuw7wga2FsZMSxcgogICAgY29uc3RydWN0b3IoKSB7fQoKICAgIGZ1bmN0aW9uIGcoKSBwdWJsaWMgewogICAgICAgIC8vIEZJWE1FOiBjaGFuZ2UgLnZhbHVlKDUpID0+ICB7dmFsdWU6IDV9CiAgICAgICAgZC5me3ZhbHVlOiA1fSgpOwogICAgfQp9"><span class="link-icon"></span><span class="link-text">open in Remix</span></a></p>
+<div class="highlight-Solidity notranslate"><div class="highlight"><pre><span></span><span class="c1">// </span><span class="cs">SPDX-License-Identifier:</span><span class="c1"> GPL-3.0</span>
+<span class="k">pragma solidity</span> <span class="o">&gt;=</span><span class="mf">0.7</span><span class="p">.</span><span class="mi">0</span> <span class="o">&lt;</span><span class="mf">0.9</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span>
+<span class="k">abstract</span> <span class="kd">contract</span> <span class="n">C</span> <span class="p">{</span>
+    <span class="c1">// BENİDÜZELT: constructor görünürlüğünü kaldırın ve sözleşmeyi abstract hale getirin</span>
+    <span class="kd">constructor</span><span class="p">()</span> <span class="p">{}</span>
+<span class="p">}</span>
+
+<span class="kd">contract</span> <span class="n">D</span> <span class="p">{</span>
+    <span class="kt">uint</span> <span class="n">time</span><span class="p">;</span>
+
+    <span class="kd">function</span> <span class="n">f</span><span class="p">()</span> <span class="k">public</span> <span class="k">payable</span> <span class="p">{</span>
+        <span class="c1">// BENİDÜZELT: now&#39;u block.timestamp olarak değiştirin</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="nb">block.timestamp</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">contract</span> <span class="n">E</span> <span class="p">{</span>
+    <span class="n">D</span> <span class="n">d</span><span class="p">;</span>
+
+    <span class="c1">// BENİDÜZELT: constructor görünürlüğünü kaldır</span>
+    <span class="kd">constructor</span><span class="p">()</span> <span class="p">{}</span>
+
+    <span class="kd">function</span> <span class="n">g</span><span class="p">()</span> <span class="k">public</span> <span class="p">{</span>
+        <span class="c1">// FIXME: change .value(5) =&gt;  {value: 5}</span>
+        <span class="n">d</span><span class="p">.</span><span class="n">f</span><span class="p">{</span><span class="n">value</span><span class="o">:</span> <span class="mi">5</span><span class="p">}();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="grammar.html" class="btn btn-neutral float-left" title="Dilbilgisi (Language Grammar)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="analysing-compilation-output.html" class="btn btn-neutral float-right" title="Analysing the Compiler Output" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016-2021, Ethereum.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+    <p>
+        <a href="credits-and-attribution.html">Credits and attribution</a>.
+    </p>
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book fa-element"> RTD </span>
+
+    <span class="fa fa-element">
+    <input class="container_toggle" type="checkbox" id="switch" name="mode">
+    <label for="switch"></label>
+    </span>
+
+    <span class="fa fa-v fa-element"> v:  <span class="fa fa-caret-down"></span></span>
+
+    </span>
+    <div class="rst-other-versions">
+        <dl>
+            <dt>Downloads</dt> 
+        </dl>
+        <dl>
+            <dt>Versions</dt> 
+        </dl>
+        <dl>
+            
+            <dt>On Read the Docs</dt>
+            <dd>
+                <a href="///projects//?fromdocs=">Project Home</a>
+            </dd>
+            <dd>
+                <a href="///builds//?fromdocs=">Builds</a>
+            </dd>
+        </dl>
+    </div>
+</div><script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
