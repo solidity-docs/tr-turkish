@@ -1,59 +1,51 @@
 .. index:: style, coding style
 
 #############
-Style Guide
+Stil Klavuzu
 #############
 
 ************
-Introduction
+Giriş
 ************
 
-This guide is intended to provide coding conventions for writing Solidity code.
-This guide should be thought of as an evolving document that will change over
-time as useful conventions are found and old conventions are rendered obsolete.
+Bu kılavuz, Solidity kodu yazmak için kodlama kuralları sağlamayı amaçlamaktadır.
+Bu kılavuz, yararlı kurallar bulundukça ve eski kurallar kullanılmaz hale geldikçe zaman içinde değişen bir belge olarak düşünülmelidir.
 
-Many projects will implement their own style guides.  In the event of
-conflicts, project specific style guides take precedence.
+Birçok proje kendi stil kılavuzlarını uygulayabilir.  Uyuşmazlık durumunda, projeye özgü stil kılavuzları önceliklidir.
 
-The structure and many of the recommendations within this style guide were
-taken from python's
-`pep8 style guide <https://www.python.org/dev/peps/pep-0008/>`_.
+Bu stil kılavuzunun yapısı ve içindeki önerilerin çoğu python'un `pep8 stil kılavuzundan <https://www.python.org/dev/peps/pep-0008/>`_ alınmıştır.
 
-The goal of this guide is *not* to be the right way or the best way to write
-Solidity code.  The goal of this guide is *consistency*.  A quote from python's
-`pep8 <https://www.python.org/dev/peps/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_
-captures this concept well.
+Bu kılavuzun amacı *Solidity kodu yazmanın doğru yolu ya da en iyi yolunu göstermek değildir*.  Bu kılavuzun amacı *tutarlılıktır*.  Python'un `pep8 <https://www.python.org/dev/peps/pep-0008/#a-foolish consistency-is-the-hobgoblin-of-little-minds>`_ adlı kitabından bir alıntı bu kavramı iyi özetlemektedir.
 
 .. note::
 
-    A style guide is about consistency. Consistency with this style guide is important. Consistency within a project is more important. Consistency within one module or function is most important.
+    Stil rehberi tutarlılıkla ilgilidir. Bu stil rehberi ile tutarlılık önemlidir. Bir proje içindeki tutarlılık daha önemlidir. Bir modül veya fonksiyon içindeki tutarlılık ise en mühim olanıdır.
 
-    But most importantly: **know when to be inconsistent** -- sometimes the style guide just doesn't apply. When in doubt, use your best judgment. Look at other examples and decide what looks best. And don't hesitate to ask!
-
+    Ama en önemlisi: **Ne zaman tutarsız olmanız gerektiğini bilmenizdir** — bazen bu stil kılavuzu geçerli olmayabilir. Şüpheye düştüğünüzde, en iyi kararınızı verip yolunuza devam edin. Diğer örneklere bakın ve neyin en iyi göründüğüne karar verin. Ayrıca soru sormaktan çekinmeyin!
 
 ***********
-Code Layout
+Kod Düzeni
 ***********
 
 
-Indentation
+Girintiler
 ===========
 
-Use 4 spaces per indentation level.
+Her girinti seviyesi için 4 boşluk kullanın.
 
-Tabs or Spaces
-==============
+Sekmeler(Tab) veya Boşluklar
+============================
 
-Spaces are the preferred indentation method.
+Boşluklar en çok tercih edilen girinti oluşturma yöntemidir.
 
-Mixing tabs and spaces should be avoided.
+Tablar ve boşlukları karıştırmaktan kaçınmalısınız.
 
-Blank Lines
+Boş Satırlar
 ===========
 
-Surround top level declarations in Solidity source with two blank lines.
+Solidity kaynağındaki üst düzey bildirimleri iki boş satırla çevreleyin.
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -74,7 +66,7 @@ Yes:
         // ...
     }
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -92,11 +84,11 @@ No:
         // ...
     }
 
-Within a contract surround function declarations with a single blank line.
+Bir sözleşme içinde fonksiyon tanımlarının etrafını tek bir boş satırla çevreleyin.
 
-Blank lines may be omitted between groups of related one-liners (such as stub functions for an abstract contract)
+Birbiriyle ilişkili tek satırlık gruplar arasında boş satırlar atlanabilir ( abstract sözleşme için stub fonksiyonları gibi)
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -119,7 +111,7 @@ Yes:
         }
     }
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -143,22 +135,21 @@ No:
 
 .. _maximum_line_length:
 
-Maximum Line Length
-===================
+Maksimum Satır Uzunluğu
+=========================
 
-Keeping lines under the `PEP 8 recommendation <https://www.python.org/dev/peps/pep-0008/#maximum-line-length>`_ to a maximum of 79 (or 99)
-characters helps readers easily parse the code.
+`PEP 8 önerisi <https://www.python.org/dev/peps/pep-0008/#maximum-line-length>`_ altındaki satırları en fazla 79 (veya 99) karakterde tutmak, okuyucuların kodu kolayca çözümlemelerine yardımcı olur.
 
-Wrapped lines should conform to the following guidelines.
+Sarılmış(Wrapped) satırlar aşağıdaki yönergelere uygun olmalıdır.
 
-1. The first argument should not be attached to the opening parenthesis.
-2. One, and only one, indent should be used.
-3. Each argument should fall on its own line.
-4. The terminating element, :code:`);`, should be placed on the final line by itself.
+1. İlk argüman açılış parantezine eklenmemelidir.
+2. Bir ve yalnızca bir girinti kullanılmalıdır.
+3. Her argüman kendi satırında yer almalıdır.
+4. Sonlandırıcı öğe, :code:`);`, tek başına son satıra yerleştirilmelidir.
 
-Function Calls
+Fonksiyon Çağrıları
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -168,7 +159,7 @@ Yes:
         longArgument3
     );
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -198,9 +189,9 @@ No:
         longArgument2,
         longArgument3);
 
-Assignment Statements
+Atama İfadeleri
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -211,7 +202,7 @@ Yes:
         argument4
     );
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -220,9 +211,9 @@ No:
                                                                        argument3,
                                                                        argument4);
 
-Event Definitions and Event Emitters
+Event Tanımları ve Event Emitterları
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -242,7 +233,7 @@ Yes:
         options
     );
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -258,17 +249,17 @@ No:
                       amount,
                       options);
 
-Source File Encoding
-====================
+Kaynak Dosya Encoding
+=====================
 
-UTF-8 or ASCII encoding is preferred.
+UTF-8 yada ASCII encoding tercih edilir.
 
-Imports
-=======
+Imports (İçe Aktarmalar)
+============================
 
-Import statements should always be placed at the top of the file.
+İçe aktarma ifadeleri her zaman dosyanın en üstüne yerleştirilmelidir.
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -286,7 +277,7 @@ Yes:
         // ...
     }
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -305,24 +296,24 @@ No:
         // ...
     }
 
-Order of Functions
-==================
+Fonksiyonların Sıralaması
+=========================
 
-Ordering helps readers identify which functions they can call and to find the constructor and fallback definitions easier.
+Sıralandırma, okuyucuların hangi fonksiyonları çağırabileceklerini belirlemelerine ve constructor ve fallback tanımlamalarını daha kolay bulmalarına yardımcı olur.
 
-Functions should be grouped according to their visibility and ordered:
+Fonksiyonlar görünürlük durumlarına göre gruplandırılmalı ve sıralanmalıdır:
 
 - constructor
-- receive function (if exists)
-- fallback function (if exists)
+- receive fonksiyon (eğer mevcutsa)
+- fallback fonksiyon (eğer mevcutsa)
 - external
 - public
 - internal
 - private
 
-Within a grouping, place the ``view`` and ``pure`` functions last.
+Bir gruplandırma yaparken, ``view`` ve ``pure`` fonksiyonlarını en sona yerleştirin.
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -360,7 +351,7 @@ Yes:
         // ...
     }
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -392,48 +383,48 @@ No:
         // ...
     }
 
-Whitespace in Expressions
+İfadelerde Boşluk Bırakma
 =========================
 
-Avoid extraneous whitespace in the following  situations:
+Aşağıdaki durumlarda gereksiz boşluk bırakmaktan kaçının:
 
-Immediately inside parenthesis, brackets or braces, with the exception of single line function declarations.
+Tek satırlık fonksiyon tanımlamaları hariç olmak üzere, parantez, köşeli parantez veya ayraçların hemen içinde.
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
     spam(ham[1], Coin({name: "ham"}));
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
     spam( ham[ 1 ], Coin( { name: "ham" } ) );
 
-Exception:
+İstisna:
 
 .. code-block:: solidity
 
     function singleLine() public { spam(); }
 
-Immediately before a comma, semicolon:
+Virgülden, noktalı virgülden hemen önce:
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
     function spam(uint i, Coin coin) public;
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
     function spam(uint i , Coin coin) public ;
 
-More than one space around an assignment or other operator to align with another:
+Bir atama veya başka bir operatörün etrafında, diğeriyle hizalamak için birden fazla boşluk:
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -441,7 +432,7 @@ Yes:
     y = 2;
     longVariable = 3;
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -449,9 +440,9 @@ No:
     y            = 2;
     longVariable = 3;
 
-Don't include a whitespace in the receive and fallback functions:
+receive ve fallback fonksiyonlarına boşluk eklemeyin:
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -463,7 +454,7 @@ Yes:
         ...
     }
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -476,18 +467,16 @@ No:
     }
 
 
-Control Structures
-==================
+Kontrol Yapıları (Control Structures)
+=====================================
 
-The braces denoting the body of a contract, library, functions and structs
-should:
+Bir sözleşmenin, kütüphanenin, fonksiyonların ve struct'ların gövdelerini belirten parantezler:
 
-* open on the same line as the declaration
-* close on their own line at the same indentation level as the beginning of the
-  declaration.
-* The opening brace should be preceded by a single space.
+* Bildirim (Declaration) ile aynı satırda açılmalıdır
+* Bildirimin başlangıcıyla aynı girinti seviyesinde kendi satırlarında kapanmalıdır.
+* Açılış parantezinden önce tek bir boşluk bırakılmalıdır.
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -501,7 +490,7 @@ Yes:
         }
     }
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -516,15 +505,11 @@ No:
         }
     }
 
-The same recommendations apply to the control structures ``if``, ``else``, ``while``,
-and ``for``.
+Aynı öneriler ``if``, ``else``, ``while`` ve ``for`` kontrol yapıları için de geçerlidir.
 
-Additionally there should be a single space between the control structures
-``if``, ``while``, and ``for`` and the parenthetic block representing the
-conditional, as well as a single space between the conditional parenthetic
-block and the opening brace.
+Ayrıca, ``if``, ``while`` ve ``for`` kontrol yapıları ile koşulu temsil eden parantez bloğu arasında tek bir boşluk ve koşullu parantez bloğu ile açılış parantezi arasında tek bir boşluk olmalıdır.
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -536,7 +521,7 @@ Yes:
         ...
     }
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -551,17 +536,16 @@ No:
     for (...) {
         ...;}
 
-For control structures whose body contains a single statement, omitting the
-braces is ok *if* the statement is contained on a single line.
+Gövdesi tek bir ifade içeren kontrol yapıları için, parantezleri atlamak *eğer* ifade tek bir satırda yer alıyorsa uygundur.
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
     if (x < 10)
         x += 1;
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -571,11 +555,9 @@ No:
             value: 42
         }));
 
-For ``if`` blocks which have an ``else`` or ``else if`` clause, the ``else`` should be
-placed on the same line as the ``if``'s closing brace. This is an exception compared
-to the rules of other block-like structures.
+Bir ``else`` veya ``else if`` ibaresi içeren ``if`` blokları için, ``else`` ibaresi ``if`` ibaresinin kapanış paranteziyle aynı satıra yerleştirilmelidir. Bu, diğer blok benzeri yapıların kurallarına kıyasla bir istisnadır.
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -593,7 +575,7 @@ Yes:
     else
         x -= 1;
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -604,18 +586,16 @@ No:
         x -= 1;
     }
 
-Function Declaration
-====================
+Fonksiyon Tanımlamaları
+=============================
 
-For short function declarations, it is recommended for the opening brace of the
-function body to be kept on the same line as the function declaration.
+Kısa fonksiyon bildirimleri için, fonksiyon gövdesinin açılış ayracının fonksiyon bildirimiyle aynı satırda tutulması önerilir.
 
-The closing brace should be at the same indentation level as the function
-declaration.
+Kapanış parantezi fonksiyon bildirimi ile aynı girinti seviyesinde olmalıdır.
 
-The opening brace should be preceded by a single space.
+Açılış ayracından önce tek bir boşluk bırakılmalıdır.
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -627,7 +607,7 @@ Yes:
         return x + 1;
     }
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -647,7 +627,7 @@ No:
     function increment(uint x) public pure returns (uint) {
         return x + 1;}
 
-The modifier order for a function should be:
+Bir fonksiyon için modifier sırası şöyle olmalıdır:
 
 1. Visibility
 2. Mutability
@@ -655,7 +635,7 @@ The modifier order for a function should be:
 4. Override
 5. Custom modifiers
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -667,7 +647,7 @@ Yes:
         selfdestruct(owner);
     }
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -679,12 +659,9 @@ No:
         selfdestruct(owner);
     }
 
-For long function declarations, it is recommended to drop each argument onto
-its own line at the same indentation level as the function body.  The closing
-parenthesis and opening bracket should be placed on their own line as well at
-the same indentation level as the function declaration.
+Uzun fonksiyon bildirimleri için, her argümanın fonksiyon gövdesiyle aynı girinti seviyesinde kendi satırına bırakılması önerilir.  Kapanış parantezi ve açılış parantezi de fonksiyon bildirimi ile aynı girinti seviyesinde kendi satırlarına yerleştirilmelidir.
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -701,7 +678,7 @@ Yes:
         doSomething();
     }
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -729,10 +706,9 @@ No:
         doSomething();
     }
 
-If a long function declaration has modifiers, then each modifier should be
-dropped to its own line.
+Uzun bir fonksiyon bildiriminde modifier'lar varsa, her modifier kendi satırına bırakılmalıdır.
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -758,7 +734,7 @@ Yes:
         doSomething();
     }
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -784,9 +760,9 @@ No:
         doSomething();
     }
 
-Multiline output parameters and return statements should follow the same style recommended for wrapping long lines found in the :ref:`Maximum Line Length <maximum_line_length>` section.
+Çok satırlı çıktı parametreleri ve return ifadeleri, :ref:`Maximum Line Length <maximum_line_length>` bölümünde bulunan uzun satırları çevrelemek için önerilen aynı stili izlemelidir.
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -811,7 +787,7 @@ Yes:
         );
     }
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -832,11 +808,9 @@ No:
                 veryLongReturnArg1);
     }
 
-For constructor functions on inherited contracts whose bases require arguments,
-it is recommended to drop the base constructors onto new lines in the same
-manner as modifiers if the function declaration is long or hard to read.
+Tabanları argüman gerektiren inherited sözleşmelerdeki constructor fonksiyonları için, fonksiyon bildirimi uzunsa veya okunması zorsa, temel constructor'ların modifier'larla aynı şekilde yeni satırlara bırakılması önerilir.
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -874,7 +848,7 @@ Yes:
         }
     }
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -924,26 +898,22 @@ No:
     }
 
 
-When declaring short functions with a single statement, it is permissible to do it on a single line.
+Kısa fonksiyonları tek bir ifadeyle bildirirken, bunu tek bir satırda yapmaya izin verilir.
 
-Permissible:
+İzin verilebilir:
 
 .. code-block:: solidity
 
     function shortFunction() public { doSomething(); }
 
-These guidelines for function declarations are intended to improve readability.
-Authors should use their best judgment as this guide does not try to cover all
-possible permutations for function declarations.
+Fonksiyon bildirimleri için bu kılavuzun amacı okunabilirliği artırmaktır. Bu kılavuz, fonksiyon bildirimleri için olası tüm olasılıkları kapsamaya çalışmadığından, yazarlar en iyi kararlarını vermelidir.
 
-Mappings
-========
+Mappingler
+==========
 
-In variable declarations, do not separate the keyword ``mapping`` from its
-type by a space. Do not separate any nested ``mapping`` keyword from its type by
-whitespace.
+Değişken bildirimlerinde, ``mapping`` anahtar sözcüğünü türünden bir boşlukla ayırmayın. İç içe geçmiş ``mapping`` anahtar sözcüğünü türünden boşluk ile ayırmayın.
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -952,7 +922,7 @@ Yes:
     mapping(uint => mapping(bool => Data[])) public data;
     mapping(uint => mapping(uint => s)) data;
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -961,47 +931,46 @@ No:
     mapping (uint => mapping (bool => Data[])) public data;
     mapping(uint => mapping (uint => s)) data;
 
-Variable Declarations
+Değişken Bildirimleri
 =====================
 
-Declarations of array variables should not have a space between the type and
-the brackets.
+Dizi değişkenlerinin bildirimlerinde tür ile parantezler arasında boşluk olmamalıdır.
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
     uint[] x;
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
     uint [] x;
 
 
-Other Recommendations
+Diğer Öneriler 
 =====================
 
-* Strings should be quoted with double-quotes instead of single-quotes.
+* Stringler tek tırnak yerine çift tırnak ile alıntılanmalıdır.
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
     str = "foo";
     str = "Hamlet says, 'To be or not to be...'";
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
     str = 'bar';
     str = '"Be yourself; everyone else is already taken." -Oscar Wilde';
 
-* Surround operators with a single space on either side.
+* Operatörleri her iki tarafta tek bir boşlukla çevrelendirmelisiniz.
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
     :force:
@@ -1011,7 +980,7 @@ Yes:
     x += 3 + 4;
     x |= y && z;
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
     :force:
@@ -1021,12 +990,9 @@ No:
     x += 3+4;
     x |= y&&z;
 
-* Operators with a higher priority than others can exclude surrounding
-  whitespace in order to denote precedence.  This is meant to allow for
-  improved readability for complex statements. You should always use the same
-  amount of whitespace on either side of an operator:
+* Diğerlerinden daha yüksek önceliğe sahip operatörler, önceliği belirtmek için çevreleyen beyaz boşluğu kaldırabilir.  Bunun amacı, karmaşık ifadeler için daha iyi okunabilirlik sağlamaktır. Bir operatörün her iki tarafında da her zaman aynı miktarda boşluk kullanmalısınız:
 
-Yes:
+Yapın:
 
 .. code-block:: solidity
 
@@ -1034,7 +1000,7 @@ Yes:
     x = 2*y + 3*z;
     x = (a+b) * (a-b);
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -1043,84 +1009,78 @@ No:
     x +=1;
 
 ***************
-Order of Layout
+Yerleşim Sırası
 ***************
 
-Layout contract elements in the following order:
+Sözleşme unsurlarını aşağıdaki sıraya göre düzenleyin:
 
-1. Pragma statements
-2. Import statements
-3. Interfaces
-4. Libraries
-5. Contracts
+1. Pragma ifadeleri
+2. Import ifadeleri
+3. Interface'ler
+4. Library'ler
+5. Sözleşmeler
 
-Inside each contract, library or interface, use the following order:
+Her bir sözleşme, kütüphane veya arayüzün içinde aşağıdaki sıralamayı kullanın:
 
-1. Type declarations
-2. State variables
-3. Events
-4. Modifiers
-5. Functions
+1. Type bildirimleri
+2. Durum değişkenleri
+3. Event'ler
+4. Modifier'lar
+5. Fonksiyonlar
 
 .. note::
 
-    It might be clearer to declare types close to their use in events or state
-    variables.
+    Türleri, event'lerde veya durum değişkenlerinde kullanımlarına yakın bir yerde bildirmek daha anlaşılır 
+    olabilir.
 
-******************
-Naming Conventions
-******************
+********************
+Adlandırma Kuralları
+********************
 
-Naming conventions are powerful when adopted and used broadly.  The use of
-different conventions can convey significant *meta* information that would
-otherwise not be immediately available.
+Adlandırma kuralları benimsendiğinde ve geniş çapta kullanıldığında güçlüdür.  Farklı konvansiyonların kullanımı, aksi takdirde hemen elde edilemeyecek önemli *meta* bilgileri aktarabilir.
 
-The naming recommendations given here are intended to improve the readability,
-and thus they are not rules, but rather guidelines to try and help convey the
-most information through the names of things.
+Burada verilen adlandırma önerileri okunabilirliği artırmayı amaçlamaktadır ve bu nedenle kural değil, daha ziyade nesnelerin adları aracılığıyla en fazla bilgiyi iletmeye yardımcı olacak kılavuzlardır.
 
-Lastly, consistency within a codebase should always supersede any conventions
-outlined in this document.
+Son olarak, bir kod tabanı içindeki tutarlılık her zaman bu belgede özetlenen kuralların yerine geçmelidir.
 
 
-Naming Styles
-=============
+Adlandırma Stili
+====================
 
-To avoid confusion, the following names will be used to refer to different
-naming styles.
+Karışıklığı önlemek için, farklı adlandırma stillerine atıfta bulunmak üzere aşağıdaki adlar kullanılacaktır.
 
-* ``b`` (single lowercase letter)
-* ``B`` (single uppercase letter)
+* ``b`` (tek küçük harf)
+* ``B`` (tek büyük harf)
 * ``lowercase``
 * ``UPPERCASE``
 * ``UPPER_CASE_WITH_UNDERSCORES``
-* ``CapitalizedWords`` (or CapWords)
-* ``mixedCase`` (differs from CapitalizedWords by initial lowercase character!)
+* ``CapitalizedWords`` (veya CapWords)
+* ``mixedCase`` (ilk küçük harf karakteri ile CapitalizedWords`den farklıdır!)
 
-.. note:: When using initialisms in CapWords, capitalize all the letters of the initialisms. Thus HTTPServerError is better than HttpServerError. When using initialisms in mixedCase, capitalize all the letters of the initialisms, except keep the first one lower case if it is the beginning of the name. Thus xmlHTTPRequest is better than XMLHTTPRequest.
-
-
-Names to Avoid
-==============
-
-* ``l`` - Lowercase letter el
-* ``O`` - Uppercase letter oh
-* ``I`` - Uppercase letter eye
-
-Never use any of these for single letter variable names.  They are often
-indistinguishable from the numerals one and zero.
+.. note:: CapWords'te baş harfleri kullanırken, baş harflerin tüm harflerini büyük yazın. Bu nedenle HTTPServerError, HttpServerError adlandırmasından daha iyidir. MixedCase'de baş harfleri kullanırken, baş harflerin tüm harflerini büyük yazın, ancak ismin başındaysa ilk harfi küçük tutun. Bu nedenle xmlHTTPRequest, XMLHTTPRequest adlandırmasından daha iyidir.
 
 
-Contract and Library Names
-==========================
+Uzak Durulması Gereken İsimler
+===============================
 
-* Contracts and libraries should be named using the CapWords style. Examples: ``SimpleToken``, ``SmartBank``, ``CertificateHashRepository``, ``Player``, ``Congress``, ``Owned``.
-* Contract and library names should also match their filenames.
-* If a contract file includes multiple contracts and/or libraries, then the filename should match the *core contract*. This is not recommended however if it can be avoided.
+* ``l`` - Küçük harf le
+* ``O`` - Büyük harf o
+* ``I`` - Büyük harf I
 
-As shown in the example below, if the contract name is ``Congress`` and the library name is ``Owned``, then their associated filenames should be ``Congress.sol`` and ``Owned.sol``.
+Bunlardan hiçbirini tek harfli değişken adları için kullanmayın.  Bunlar genellikle
+bir ve sıfır rakamlarından ayırt edilemez.
 
-Yes:
+
+Sözleşme ve Kütüphane Adları
+================================
+
+* Sözleşmeler ve kütüphaneler CapWords stili kullanılarak adlandırılmalıdır. Örnekler: ``SimpleToken``, ``SmartBank``, ``CertificateHashRepository``, ``Player``, ``Congress``, ``Owned``.
+* Sözleşme ve kütüphane adları da dosya adlarıyla eşleşmelidir.
+* Bir sözleşme dosyası birden fazla sözleşme ve/veya kütüphane içeriyorsa, dosya adı *çekirdek sözleşme* ile eşleşmelidir. Ancak kaçınılması mümkünse bu önerilmez.
+
+Aşağıdaki örnekte gösterildiği gibi, sözleşme adı ``Congress`` ve kütüphane adı ``Owned`` ise, ilişkili dosya adları ``Congress.sol`` ve ``Owned.sol`` olmalıdır.
+
+Yapın:
 
 .. code-block:: solidity
 
@@ -1145,7 +1105,7 @@ Yes:
         }
     }
 
-and in ``Congress.sol``:
+ve ``Congress.sol`` içinde:
 
 .. code-block:: solidity
 
@@ -1159,7 +1119,7 @@ and in ``Congress.sol``:
         //...
     }
 
-No:
+Yapmayın:
 
 .. code-block:: solidity
 
@@ -1184,7 +1144,7 @@ No:
         }
     }
 
-and in ``Congress.sol``:
+ve ``Congress.sol`` içinde:
 
 .. code-block:: solidity
 
@@ -1199,65 +1159,62 @@ and in ``Congress.sol``:
         //...
     }
 
-Struct Names
+Struct Adları
 ==========================
 
-Structs should be named using the CapWords style. Examples: ``MyCoin``, ``Position``, ``PositionXY``.
+Struct'lar CapWords stili kullanılarak adlandırılmalıdır. Örnekler: ``MyCoin``, ``Position``, ``PositionXY``.
 
 
-Event Names
-===========
-
-Events should be named using the CapWords style. Examples: ``Deposit``, ``Transfer``, ``Approval``, ``BeforeTransfer``, ``AfterTransfer``.
-
-
-Function Names
+Event Adları
 ==============
 
-Functions should use mixedCase. Examples: ``getBalance``, ``transfer``, ``verifyOwner``, ``addMember``, ``changeOwner``.
+Event'ler CapWords stili kullanılarak adlandırılmalıdır. Örnekler: ``Deposit``, ``Transfer``, ``Approval``, ``BeforeTransfer``, ``AfterTransfer``.
 
 
-Function Argument Names
-=======================
+Fonksiyon Adları
+=================
 
-Function arguments should use mixedCase. Examples: ``initialSupply``, ``account``, ``recipientAddress``, ``senderAddress``, ``newOwner``.
-
-When writing library functions that operate on a custom struct, the struct
-should be the first argument and should always be named ``self``.
+Fonksiyonlar mixedCase kullanmalıdır. Örnekler: ``getBalance``, ``transfer``, ``verifyOwner``, ``addMember``, ``changeOwner``.
 
 
-Local and State Variable Names
-==============================
-
-Use mixedCase. Examples: ``totalSupply``, ``remainingSupply``, ``balancesOf``, ``creatorAddress``, ``isPreSale``, ``tokenExchangeRate``.
-
-
-Constants
-=========
-
-Constants should be named with all capital letters with underscores separating
-words. Examples: ``MAX_BLOCKS``, ``TOKEN_NAME``, ``TOKEN_TICKER``, ``CONTRACT_VERSION``.
-
-
-Modifier Names
-==============
-
-Use mixedCase. Examples: ``onlyBy``, ``onlyAfter``, ``onlyDuringThePreSale``.
-
-
-Enums
-=====
-
-Enums, in the style of simple type declarations, should be named using the CapWords style. Examples: ``TokenGroup``, ``Frame``, ``HashStyle``, ``CharacterLocation``.
-
-
-Avoiding Naming Collisions
+Fonksiyon Argüman Adları
 ==========================
+
+Fonksiyon argümanları mixedCase kullanmalıdır. Örnekler: ``initialSupply``, ``account``, ``recipientAddress``, ``senderAddress``, ``newOwner``.
+
+Özel bir struct üzerinde çalışan kütüphane fonksiyonları yazarken, struct ilk argüman olmalı ve her zaman ``self`` olarak adlandırılmalıdır.
+
+
+Yerel ve Durum Değişkeni Adları
+================================
+
+MixedCase kullanın. Örnekler: ``totalSupply``, ``remainingSupply``, ``balancesOf``, ``creatorAddress``, ``isPreSale``, ``tokenExchangeRate``.
+
+
+Constant'lar (Sabitler)
+===========================
+
+Constantlar, sözcükleri ayıran alt çizgiler ile tüm büyük harflerle adlandırılmalıdır. Örnekler: ``MAX_BLOCKS``, ``TOKEN_NAME``, ``TOKEN_TICKER``, ``CONTRACT_VERSION``.
+
+
+Modifier Adları
+================
+
+MixedCase kullanın. Örnekler: ``onlyBy``, ``onlyAfter``, ``onlyDuringThePreSale``.
+
+
+Enumlar
+=======
+
+Enumlar, basit tip bildirimleri tarzında, CapWords stili kullanılarak adlandırılmalıdır. Örnekler: ``TokenGroup``, ``Frame``, ``HashStyle``, ``CharacterLocation``.
+
+
+Adlandırma Çakışmalarını Önleme
+================================
 
 * ``singleTrailingUnderscore_``
 
-This convention is suggested when the desired name collides with that of a
-built-in or otherwise reserved name.
+Bu kural, istenen adın yerleşik veya başka şekilde ayrılmış bir adla çakışması durumunda önerilir.
 
 .. _style_guide_natspec:
 
@@ -1265,12 +1222,9 @@ built-in or otherwise reserved name.
 NatSpec
 *******
 
-Solidity contracts can also contain NatSpec comments. They are written with a
-triple slash (``///``) or a double asterisk block (``/** ... */``) and
-they should be used directly above function declarations or statements.
+Solidity sözleşmeleri NatSpec yorumları da içerebilir. Bunlar üçlü eğik çizgi (``///``) veya çift yıldız bloğu (``/** ... */``) ile yazılır ve doğrudan fonksiyon bildirimlerinin veya ifadelerin üzerinde kullanılmalıdır.
 
-For example, the contract from :ref:`a simple smart contract <simple-smart-contract>` with the comments
-added looks like the one below:
+Örneğin, :ref:`a simple smart contract <simple-smart-contract>` sözleşmesi yorumlar eklendiğinde aşağıdaki gibi görünür:
 
 .. code-block:: solidity
 
@@ -1297,6 +1251,6 @@ added looks like the one below:
         }
     }
 
-It is recommended that Solidity contracts are fully annotated using :ref:`NatSpec <natspec>` for all public interfaces (everything in the ABI).
+Solidity sözleşmelerinin tüm genel arayüzler (ABI'deki her şey) için :ref:`NatSpec <natspec>` kullanılarak tam olarak açıklanması önerilir.
 
-Please see the section about :ref:`NatSpec <natspec>` for a detailed explanation.
+Ayrıntılı açıklama için lütfen :ref:`NatSpec <natspec>` ile ilgili bölüme bakın.
