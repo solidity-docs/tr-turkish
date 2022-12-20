@@ -37,6 +37,10 @@ Resmi Solidity dokümanları, .rst(reStructuredText) uzantılı dosyalardan olu�
 - [reStructuredText - LeXtudio Inc.](https://marketplace.visualstudio.com/items?itemName=lextudio.restructuredtext)
 - [reStructuredText Syntax highlighting - Trond Snekvik](https://marketplace.visualstudio.com/items?itemName=trond-snekvik.simple-rst)
 
+## Çevirideki Dilbilgisi ve Anlam Hatalarını Bildirmek İçin
+
+Eğer aktif olan çeviride bu tarz hatalar gördüyseniz lütfen <b>Dilbilgisi ve Anlam Hatası</b> etiketiyle [issue](https://github.com/solidity-docs/tr-turkish/issues/new) açarak çeviri kalitesini artırmamıza yardımcı olun. 
+
 ## Resmi Sosyal Medya Hesapları ve Gruplar
 
 - [Discord](https://discord.gg/b94AvkPuuP)
