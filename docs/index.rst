@@ -1,6 +1,14 @@
 Solidity
 ========
 
+.. warning::
+
+  You are reading a community translation of the Solidity documentation. The Solidity team
+  can give no guarantees on the quality and accuracy of the translations provided.
+  The English reference version is and will remain the only officially supported version
+  by the Solidity team and will always be the most accurate and most up-to-date one.
+  When in doubt, please always refer to the `English (original) documentation <https://docs.soliditylang.org/en/latest/>`_.
+
 Solidity akıllı sözleşmelerin (smart contracts) uygulanması için geliştirilen nesne yönelimli, üst düzey
 bir programlama dilidir. Akıllı sözleşmeler Ethereum ağı içindeki hesapların hareketlerini
 ve davranışlarını yöneten programlardır.
