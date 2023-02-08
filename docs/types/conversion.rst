@@ -157,6 +157,16 @@ Adresler
 
  :ref:`address_literals` bölümünde açıklandığı gibi, sağlama toplamı (checksum) testini geçen doğru boyuttaki onaltılık ifadeler ``address`` türündedir. Başka hiçbir ifade ``address`` türüne örtük olarak dönüştürülemez.
 
+<<<<<<< HEAD
 ``bytes20`` değişkeninden ya da herhangi bir tam sayı türünden ``adress`` değişkenine yapılacak açık dönüştürmeler, ``address payable`` ile sonuçlanır.
 
 ``address a``'dan  ``address payable``'a yapılacak bir dönüşüm, ``payable(a)`` kullanılarak gerçekleştirilebilir.
+=======
+Explicit conversions to ``address`` are allowed only from ``bytes20`` and ``uint160``.
+
+An ``address a`` can be converted explicitly to ``address payable`` via ``payable(a)``.
+
+.. note::
+    Prior to version 0.8.0, it was possible to explicitly convert from any integer type (of any size, signed or unsigned) to  ``address`` or ``address payable``.
+    Starting with in 0.8.0 only conversion from ``uint160`` is allowed.
+>>>>>>> v0.8.16

@@ -96,6 +96,7 @@ Modifiers
 - ``virtual`` fonksiyonlar ve modifier'lar için: Türetilmiş sözleşmelerde modifier'ların fonksiyonlarının değiştirilmesine izin verir.
 - ``override``: Bu fonksiyon, modifier veya genel durum değişkeninin, bir temel sözleşmedeki bir fonksiyonun veya modifier'ın davranışını değiştirdiğini ifade etmektedir.
 
+<<<<<<< HEAD
 Ayrılmış Anahtar Kelimeler
 ===========================
 
@@ -106,3 +107,5 @@ Bu anahtar kelimeler Solidity'de ayrılmıştır. Gelecekte sözdiziminin(syntax
 ``mutable``, ``null``, ``of``, ``partial``, ``promise``, ``reference``, ``relocatable``,
 ``sealed``, ``sizeof``, ``static``, ``supports``, ``switch``, ``typedef``, ``typeof``,
 ``var``.
+=======
+>>>>>>> v0.8.16

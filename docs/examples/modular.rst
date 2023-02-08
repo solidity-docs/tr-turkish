@@ -4,6 +4,7 @@
 Modüler Kontratlar
 ********************
 
+<<<<<<< HEAD
 Kontratları oluştururken modüler bir yaklaşım izlemek kodların karışıklığını
 azaltıp, okunabilirliğini arttırır. Bu durumda hataların ve açıkların daha
 kolay bir şekilde bulunmasını sağlar. 
@@ -13,6 +14,20 @@ Aşağıdaki örnekte kontrat adresler arasında gönderilenin beklenen şekilde
 görmek için ``Balances`` :ref:`library <libraries>` kütüphanesinin ``move`` metodunu kullanır. 
 ``Balances`` kütüphanesinin asla nefatif bir bakiye çıkarmadığı ya da bütün bakiyelerin toplamından
 overflow yaratmayacağı kolaylıkla doğrulanabilir ve bu durum kontratın yaşam süresi boyunca değişmez.
+=======
+A modular approach to building your contracts helps you reduce the complexity
+and improve the readability which will help to identify bugs and vulnerabilities
+during development and code review.
+If you specify and control the behaviour of each module in isolation, the
+interactions you have to consider are only those between the module specifications
+and not every other moving part of the contract.
+In the example below, the contract uses the ``move`` method
+of the ``Balances`` :ref:`library <libraries>` to check that balances sent between
+addresses match what you expect. In this way, the ``Balances`` library
+provides an isolated component that properly tracks balances of accounts.
+It is easy to verify that the ``Balances`` library never produces negative balances or overflows
+and the sum of all balances is an invariant across the lifetime of the contract.
+>>>>>>> v0.8.16
 
 .. code-block:: solidity
 

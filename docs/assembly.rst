@@ -9,8 +9,19 @@ Inline Assembly
 Inline assembly ile Solidity ifadelerini Ethereum Sanal Makine'sinin dillerinden birine yakın dile çevirebilirsiniz.
 Bu size özellikle dili kütüphaneler yazarak geliştiriyorsanız daha detaylı bir kontrol sağlar.
 
+<<<<<<< HEAD
 Inline assembly için kullanılan Solidity diline :ref:`Yul <yul>` deniyor ve dosyalarını kendi bölümünde bulabilirsiniz.
 BU bölüm sadece inline assembly kodunun etrafındaki Solidity kodları ile nasıl bağlandığını anlatacak.
+=======
+You can interleave Solidity statements with inline assembly in a language close
+to the one of the Ethereum Virtual Machine. This gives you more fine-grained control,
+which is especially useful when you are enhancing the language by writing libraries.
+
+The language used for inline assembly in Solidity is called :ref:`Yul <yul>`
+and it is documented in its own section. This section will only cover
+how the inline assembly code can interface with the surrounding Solidity code.
+
+>>>>>>> v0.8.16
 
 .. warning::
     Inline assembly Ethereum Sanal Makinesi'ne düşük seviyede erişişmin bir yoludur.
@@ -118,6 +129,7 @@ Solidity değişkenlerine ve diğer tanımlayıcılara isimlerini kullanarak eri
 Bir değer tipinin yerel değişkenleri inline assembly içinde kullanılabilir durumdadır.
 Bu yerel değişkenler okunabilir de atanabilir de.
 
+<<<<<<< HEAD
 Belleği kasteden yerel değişkenler değerin kendisini değil, değerin bellekteki adresini işaret eder.
 Bu değişkenler aynı zamanda değiştirilebilir de ancak bu sadece bir pointer değişimi olur, veri değişimi olmaz.
 Bu sebeple Solidity'nin hafıza yönetimini yapmak sizin yükümlülüğünüzdedir.
@@ -127,6 +139,17 @@ Benzer şekilde, statik boyutlandırılmış calldata array'leri ya da struct'la
 yerel değişkenler de değerin adresini işaret eder, değerini değil.
 Bu değişken yeni bir offset'e de atanabilir fakat değişkenin ``calldatasize()`` çalıştırılması 
 dışında bir yeri işaret edebileceğinin hiçbir garantisi yoktur.
+=======
+Local variables that refer to memory evaluate to the address of the variable in memory, not the value itself.
+Such variables can also be assigned to, but note that an assignment will only change the pointer and not the data
+and that it is your responsibility to respect Solidity's memory management.
+See :ref:`Conventions in Solidity <conventions-in-solidity>`.
+
+Similarly, local variables that refer to statically-sized calldata arrays or calldata structs
+evaluate to the address of the variable in calldata, not the value itself.
+The variable can also be assigned a new offset, but note that no validation is performed to ensure that
+the variable will not point beyond ``calldatasize()``.
+>>>>>>> v0.8.16
 
 Dış(External) fonksiyon pointer'ları için adres ve fonksiyon seçiyiye ``x.address`` ve ``x.selector`` ile erişilebilir.
 Seçici dört adet right-aligned bitten oluşur.
@@ -195,8 +218,14 @@ Yerel Solidity değişkenleri görevler için hazırdır. Örneğin:
 Solidity 0.6.0'dan beri bir inline assembly değişkeninin ismi inline assembly bloğundaki
 kullanımını karşılamayabilir. (değişken, kontrat ve fonkisyon kullanımları dahil)
 
+<<<<<<< HEAD
 Soldity 0.7.0'dan beri inline assembly bloğunun içinde kullanılan değişken ve fonksiyonlar ``.`` içermeyebilir.
 Fakat ``.`` kullanmak inline assembly bloğu dışındaki Solidity değişkenlerine ulaşmak için etkilidir.
+=======
+Since Solidity 0.6.0, the name of a inline assembly variable may not
+shadow any declaration visible in the scope of the inline assembly block
+(including variable, contract and function declarations).
+>>>>>>> v0.8.16
 
 Kaçınılacak Şeyler 
 -------------------
@@ -225,11 +254,21 @@ bitleri kendiniz temizlemeniz gerekebilir.
 Hafıza Yönetimi
 ==================
 
+<<<<<<< HEAD
 Solidity Belleği şu şekilde yönetir. Hafızada ``0x40`` konumunda bir "boş bellek pointer"ı bulunur.
 Eğer belleğe bir şey atamak isterseniz bu pointer'ın işaret ettiği yerden başlayıp güncelleyin.
 Bu hafızanın daha önce kullanılmadığına dair herhangi bir kanıt bulunmadığı için tamamen sıfır olduğunu da varsayamazsınız.
 Belleği boşaltacak ya da rahatlatacak herhangi bir hazır kurulu mekanizma yoktur.
 Aşağıda belleği yukarıda anlatıldığı şekilde kullanabileceğiniz bir assembly kod parçası bulunuyor:
+=======
+Solidity manages memory in the following way. There is a "free memory pointer"
+at position ``0x40`` in memory. If you want to allocate memory, use the memory
+starting from where this pointer points at and update it.
+There is no guarantee that the memory has not been used before and thus
+you cannot assume that its contents are zero bytes.
+There is no built-in mechanism to release or free allocated memory.
+Here is an assembly snippet you can use for allocating memory that follows the process outlined above:
+>>>>>>> v0.8.16
 
 .. code-block:: yul
 
@@ -248,18 +287,31 @@ fakat ``bytes`` ve ``string`` için geçerli değildir.) Çok boyutlu hafıza ar
 Dinamik array'in uzunluğu array'in ilk slotunda saklanır ve diğer slotlara array'in elemanları gelir.
 
 .. warning::
+<<<<<<< HEAD
     Statik boyutlandırılmış hafıza array'leri herhangi bir uzunluk alanına sahip değildir fakat bu sonradan dinamik ve statik
     boyutlandırılmış array'ler arasında daha kolay çevrimi sağlamak için eklenmiş olabilir. 
     Yani bu kurala dayanarak ilerlememelisiniz.
+=======
+    Statically-sized memory arrays do not have a length field, but it might be added later
+    to allow better convertibility between statically and dynamically-sized arrays; so,
+    do not rely on this.
+>>>>>>> v0.8.16
 
 
 Hafıza Güvenliği
 ================
 
+<<<<<<< HEAD
 Inline assembly kullanmadan; derleyici(compiler), iyi tanımlanmış bir durumda kalmak için her zaman belleğe güvenir. Bu özellikle 
 :ref:`Yul IR üzerinden yeni kod oluşturma hattı Yul IR <ir-breaking-changes>` ile ilgilidir. Bu kod parçası yerel değişkenleri 
 stack üzerinden belleğe atarak stack-too-deep hatasından kaçınmayı sağlar ve eğer bazı kesin varsayımlara uyuyorsa ekstra 
 bellek optimizasyonları uygulayabilir.
+=======
+While we recommend to always respect Solidity's memory model, inline assembly allows you to use memory
+in an incompatible way. Therefore, moving stack variables to memory and additional memory optimizations are,
+by default, disabled in the presence of any inline assembly block that contains a memory operation or assigns
+to Solidity variables in memory.
+>>>>>>> v0.8.16
 
 
 Biz her ne kadar Solidity'nin kendi bellek modeline saygı gösterilmesini önersek de 
@@ -320,9 +372,14 @@ herhangi bir offset'i de kullanabilirsiniz.
       revert(0, 0)
     }
 
+<<<<<<< HEAD
 Unutmayın ki inline assembly içerisindeki bellek işlemleri bellek için güvenli olmadığı gibi 
 bellekte referans tipinde olan Solidity değişkenlerine olan atamalar da bellek için güvenli olmayabilir.
 Aşağıdaki örnek bellek için güvenli değildir:
+=======
+Note that not only memory operations in inline assembly itself can be memory-unsafe, but also assignments to
+Solidity variables of reference type in memory. For example the following is not memory-safe:
+>>>>>>> v0.8.16
 
 .. code-block:: solidity
 
@@ -332,16 +389,26 @@ Aşağıdaki örnek bellek için güvenli değildir:
     }
     x[0x20] = 0x42;
 
+<<<<<<< HEAD
 Belleğe erişim istemeyen işlemlerden oluşan ve bellek üzerindeki Solidity değişkenlerine atama yapmayan inline assembly 
 otomatik olarak bellek için güvenli sayılır ve ekstra olarak belirtilmesine gerek duyulmaz.
+=======
+Inline assembly that neither involves any operations that access memory nor assigns to any Solidity variables
+in memory is automatically considered memory-safe and does not need to be annotated.
+>>>>>>> v0.8.16
 
 .. warning::
     Assembly'nin bellek modelini sağladığından emin olmak sizin sorumluluğunuzdadır. Eğer siz bir assembly bloğunu 
     bellek için güvenli olarak tanımlayıp herhangi bir bellek hatası yaparsanız bu **kesinlikle**, doğru olmayan ya da 
     tanımlanmamış bir davranışa sebep olur. Ve bu hata test yaparak kolay bir şekilde bulunamaz.
 
+<<<<<<< HEAD
 Eğer Solidity'nin farklı versiyonları ile uyumlu olacak şekilde bir kütüphane oluşturuyorsanız 
 bir assembly bloğunun bellek için güvenli olduğunu özel bir komut ile belirtebilirsiniz:
+=======
+In case you are developing a library that is meant to be compatible across multiple versions
+of Solidity, you can use a special comment to annotate an assembly block as memory-safe:
+>>>>>>> v0.8.16
 
 .. code-block:: solidity
 
@@ -350,5 +417,10 @@ bir assembly bloğunun bellek için güvenli olduğunu özel bir komut ile belir
         ...
     }
 
+<<<<<<< HEAD
 Unutmayın ki yorum satırları ile belirtmeyi gelecek bir sürümde kaldıracağız yani eğer geçmiş derleyici(compiler) sürümleri ile uyum konusunda 
 yeterli bilgiye sahip değilseniz dialect string kullanmayı tercih edin.
+=======
+Note that we will disallow the annotation via comment in a future breaking release; so, if you are not concerned with
+backwards-compatibility with older compiler versions, prefer using the dialect string.
+>>>>>>> v0.8.16
