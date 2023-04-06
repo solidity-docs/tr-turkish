@@ -34,11 +34,24 @@ SPDX lisans tanımlayıcılarının nasıl kullanılacağı hakkında daha fazla
 
 .. _pragma:
 
+<<<<<<< HEAD
 Pragmalar
 ==========
 ``Pragma`` anahtar sözcüğü, belirli derleyici özelliklerini veya kontrollerini etkinleştirmek için
 kullanılır. Bir pragma yönergesi, her zaman bir kaynak dosya için yereldir, bu nedenle pragmayı tüm projenizde etkinleştirmek istiyorsanız tüm dosyalarınıza eklemeniz gerekir. Başka bir dosyayı :ref:`içe aktarırsanız<import>` o dosyadaki pragma, içe aktarılan dosyaya otomatik olarak _*uygulanmaz*._
 .. index:: ! pragma, version
+=======
+Pragmas
+=======
+
+The ``pragma`` keyword is used to enable certain compiler features
+or checks. A pragma directive is always local to a source file, so
+you have to add the pragma to all your files if you want to enable it
+in your whole project. If you :ref:`import<import>` another file, the pragma
+from that file does *not* automatically apply to the importing file.
+
+.. index:: ! pragma;version
+>>>>>>> v0.8.17
 
 .. _version_pragma:
 
@@ -60,14 +73,31 @@ bunlar `npm <https://docs.npmjs.com/cli/v6/using-npm/semver>`_ tarafından kulla
   Yalnızca, derleyiciye kendi sürümünün, pragmanın gerektirdiği sürüm ile uyumlu olup olmadığını kontrol
   etmesi için yönerge verir. Sürümler uyumlu değilse derleyici hata verir.
 
+<<<<<<< HEAD
 ABI Kodlayıcı Pragması
 -----------------------
+=======
+.. index:: ! ABI coder, ! pragma; abicoder, pragma; ABIEncoderV2
+.. _abi_coder:
+
+ABI Coder Pragma
+----------------
+>>>>>>> v0.8.17
 
 ``pragma abicoder v1`` veya ``pragma abicoder v2`` kullanarak ABI kodlayıcı ile
 kod çözücü iki uygulama arasında seçim yapabilirsiniz.
 
+<<<<<<< HEAD
 Yeni ABI kodlayıcı (v2) keyfi olarak iç içe geçmiş dizileri ve yapıları kodlama(encode) ve kod çözme(decode) yapabilir
 . Daha az optimal kod üretebilir ve eski kodlayıcı kadar test edilmemiştir, ancak Solidity 0.6.0'dan itibaren deneysel olmayan olarak kabul edilir. Yine de ``pragma abicoder v2;`` kullanarak açıkça etkinleştirmeniz gerekir. Solidity 0.8.0'dan itibaren varsayılan olarak etkinleştirileceğinden, ``pragma abicoder v1;`` kullanarak eski kodlayıcıyı seçme seçeneği vardır.
+=======
+The new ABI coder (v2) is able to encode and decode arbitrarily nested
+arrays and structs. Apart from supporting more types, it involves more extensive
+validation and safety checks, which may result in higher gas costs, but also heightened
+security. It is considered
+non-experimental as of Solidity 0.6.0 and it is enabled by default starting
+with Solidity 0.8.0. The old ABI coder can still be selected using ``pragma abicoder v1;``.
+>>>>>>> v0.8.17
 
 Yeni kodlayıcı tarafından desteklenen türler, eskisi tarafından desteklenenlerin katı bir üst kümesidir. Bunu kullanan sözleşmeler, kullanmayanlarla sınırlama olmadan etkileşime girebilir. Bunun tersi ancak, ``abicoder v2`` dışı sözleşme, yalnızca yeni kodlayıcı tarafından desteklenen kod çözme türlerini gerektirecek çağrılarda bulunmaya çalışmadığı sürece mümkündür. Aksi halde, derleyici bu çağrıları tespit ederek hata verebilir. Sözleşmeniz için ``abicoder v2`` yi etkinleştirmeniz hatanın ortadan kalkması için yeterlidir.
 
@@ -78,8 +108,12 @@ Yeni kodlayıcı tarafından desteklenen türler, eskisi tarafından desteklenen
 .. note::
   Solidity 0.7.4'e kadar, ``pragma experimental ABIEncoderV2`` kullanarak ABI kodlayıcı v2'yi seçmek mümkündü, ancak varsayılan olduğu için kodlayıcı v1'i açık bir şekilde seçmek mümkün değildi.
 
+<<<<<<< HEAD
 .. index:: ! pragma, deneysel
 
+=======
+.. index:: ! pragma; experimental
+>>>>>>> v0.8.17
 .. _experimental_pragma:
 
 Deneysel Pragma
@@ -87,6 +121,7 @@ Deneysel Pragma
 
 İkinci pragma deneysel pragmadır. Derleyicinin veya dilin henüz varsayılan olarak etkinleştirilmemiş özelliklerini etkinleştirmek için kullanılabilir. Şu anda, aşağıdaki deneysel pragmalar desteklenmektedir:
 
+.. index:: ! pragma; ABIEncoderV2
 
 ABIEncoderV2
 ~~~~~~~~~~~~
@@ -94,6 +129,7 @@ ABIEncoderV2
 ABI kodlayıcı v2 artık deneysel kabul edilmediğinden
 Solidity 0.7.4 sonrasında ``pragma abicoder v2`` aracılığıyla seçilebilir (lütfen yukarıya bakın).
 
+.. index:: ! pragma; SMTChecker
 .. _smt_checker:
 
 SMTChecker

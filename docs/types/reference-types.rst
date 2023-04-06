@@ -59,7 +59,14 @@ Data locations are not only relevant for persistency of data, but also for the s
             delete x; // diziyi temizler, ayrıca y'yi değiştirir
             // Aşağıdakiler çalışmıyor; depolamada yeni bir geçici adsız dizi oluşturması gerekir, ancak depolama "statik olarak" tahsis edilir: /
             // y = memoryArray;
+<<<<<<< HEAD
             // İşaretçiyi "sıfırlayacağı" için bu da işe yaramaz, ancak işaret edebileceği mantıklı bir konum yoktur.
+=======
+            // Similarly, "delete y" is not valid, as assignments to local variables
+            // referencing storage objects can only be made from existing storage objects.
+            // It would "reset" the pointer, but there is no sensible location it could point to.
+            // For more details see the documentation of the "delete" operator.
+>>>>>>> v0.8.17
             // delete y;
             g(x); // g'yi çağırır, x'e bir referans verir
             h(x); // h'yi çağırır ve bellekte bağımsız, geçici bir kopya oluşturur
@@ -283,9 +290,19 @@ Dizi Üyeleri
 
     contract ArrayContract {
         uint[2**20] aLotOfIntegers;
+<<<<<<< HEAD
         // Aşağıdakilerin bir çift dinamik dizi değil, dinamik bir çift dizisi (yani, iki uzunluktaki sabit boyutlu diziler) olduğuna dikkat edin.
         // Bu nedenle, T[], T'nin kendisi bir dizi olsa bile, her zaman dinamik bir T dizisidir.
         // Tüm durum değişkenleri için veri konumu depolamadır.
+=======
+        // Note that the following is not a pair of dynamic arrays but a
+        // dynamic array of pairs (i.e. of fixed size arrays of length two).
+        // In Solidity, T[k] and T[] are always arrays with elements of type T,
+        // even if T itself is an array.
+        // Because of that, bool[2][] is a dynamic array of elements
+        // that are bool[2]. This is different from other languages, like C.
+        // Data location for all state variables is storage.
+>>>>>>> v0.8.17
         bool[2][] pairsOfFlags;
 
         // newPairs bellekte saklanır - tek olasılık

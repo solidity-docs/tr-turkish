@@ -11,7 +11,16 @@ Aritmetik operatörler ve bit operatörleri, iki işlenen aynı türe sahip olma
     sağ işlenenin türünü kullanın,
 3. İki seçenek de uygulanamıyorsa işleme izin verilmez.
 
+<<<<<<< HEAD
 İşlenenlerden birinin :ref:`gerçek sayı <rational_literals>` olması durumunda, ilk önce değeri tutabilen en küçük tür olan "mobil türe" dönüştürülür (aynı bit genişliğindeki işaretsiz türler, işaretli türlerden "daha küçük" olarak kabul edilir) .
+=======
+In case one of the operands is a :ref:`literal number <rational_literals>` it is first converted to its
+"mobile type", which is the smallest type that can hold the value
+(unsigned types of the same bit-width are considered "smaller" than the signed types).
+If both are literal numbers, the operation is computed with effectively unlimited precision in
+that the expression is evaluated to whatever precision is necessary so that none is lost
+when the result is used with a non-literal type.
+>>>>>>> v0.8.17
 
 Her ikisi de gerçek sayıysa, işlem keyfi bir kesinlikle hesaplanır.
 

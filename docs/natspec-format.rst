@@ -182,7 +182,7 @@ tasarlanmıştır.
 Yukarıdaki sözleşme ``ex1.sol`` olarak kaydedilirse,
 belgeleri kullanarak oluşturabilirsiniz:
 
-.. code::
+.. code-block:: shell
 
    solc --userdoc --devdoc ex1.sol
 
@@ -201,7 +201,7 @@ Kullanıcı Dokümantasyonu
 
 Yukarıdaki dokümantasyon çıktı olarak aşağıdaki kullanıcı dokümantasyonu JSON dosyasını üretecektir:
 
-.. code::
+.. code-block:: json
 
     {
       "version" : 1,
@@ -227,7 +227,7 @@ Geliştirici Dokümantasyonu
 Kullanıcı dokümantasyon dosyasının yanı sıra, bir geliştirici dokümantasyon JSON
 dosyası da üretilmeli ve aşağıdaki gibi görünmelidir:
 
-.. code::
+.. code-block:: json
 
     {
       "version" : 1,
