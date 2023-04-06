@@ -64,12 +64,12 @@ Ne İmzalanacak
 Tekrarlama saldırısı, imzalanmış bir mesajın tekrar
 yetkilendirme için kullanılmasıdır. Tekrarlama saldırılarını önlemek için
 Ethereum işlemlerinden kullanan bir cüzdandan yapılan işlem sayısını, nonce,
-kullanan tekniği kullanacğız. Akıllı kontrat bir `nonce`un bir kaç kez kullanılıp
+kullanan tekniği kullanacğız. Akıllı kontrat bir `nonce` un bir kaç kez kullanılıp
 kullanılmadığını kontrol edecek.
 
 Başka bir tekrarlamma saldırısı açığı ödemeyi gönderen kişi ``ReceiverPays`` akıllı kontratını yayınlayıp
 sonrasında yok edip sonra tekrar yayınladığında oluşur. Bunun sebebi tekrar yayınlanan kontrat önceki kontratta
-kullanılan `nonce`ları bilemediğinden saldırgan eski mesajları tekrar kullanabilir.
+kullanılan `nonce` ları bilemediğinden saldırgan eski mesajları tekrar kullanabilir.
 
 Alice buna karşı korunmak için kontratın adresini de mesajın içerisine ekleyebilir.
 Böylece sadece kontrat'ın adresini içeren mesajlar onaylanır. Bu örneği bu bölümün

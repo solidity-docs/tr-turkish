@@ -52,7 +52,7 @@ Sürüm pragması aşağıdaki gibi kullanılır: ``pragma solidity ^0.5.2;``
 Yukarıdaki satırı içeren bir kaynak dosyası, 0.5.2'den eski sürümlü bir derleyiciyle derleme yapmadığı gibi, 0.6.0'dan yeni sürümlü bir derleyicide de çalışmaz (bu ikinci koşul ``^`` kullanılarak eklenir). ``0.6.0`` sürümüne kadar işleyişi bozan bir değişiklik olmayacağından, kodunuzun amaçladığınız şekilde derleme yaptığından emin olabilirsiniz. Derleyicinin tam sürümü sabit olmadığından hata düzeltme sürümlerinin kullanılması da mümkün olacaktır.
 
 Derleyici sürümü için daha karmaşık kurallar belirlemek mümkündür,
-bunlar `npm<https://docs.npmjs.com/cli/v6/using-npm/semver>`_ tarafından kullanılan sözdizimin aynısına uyar.
+bunlar `npm <https://docs.npmjs.com/cli/v6/using-npm/semver>`_ tarafından kullanılan sözdizimin aynısına uyar.
 
 .. note::
   Sürüm pragmasının kullanılması, derleyicinin sürümünü _*değiştirmez*._
@@ -163,7 +163,7 @@ ve veritabanında ilgili kaynak birimini bulmak için kullanılır.
 
 :ref:`Standart JSON <compiler-api>` API'sini kullanarak, derleyici girdisinin bir parçası olarak tüm kaynak dosyaların adlarını ve içeriğini doğrudan sağlamak mümkündür. Bu durumda kaynak birim adları gerçekten keyfi olabilir. Ancak, derleyicinin kaynak kodu otomatik olarak bulmasını ve VFS'ye yüklemesini istiyorsanız, kaynak birim adlarınızın bir :ref:`import callback <import-callback>` i mümkün kılacak şekilde yapılandırılması gerekir.
 Komut satırı derleyicisini kullanırken varsayılan import callback yalnızca kaynak kodun bir ana bilgisayar dosya sisteminden yüklenmesini destekler; yani kaynak birim adları, yollar olmalıdır.```
-Bazı ortamlar daha çok yönlü olan özel callback'ler sağlar. Örneğin `Remix IDE <https://remix.ethereum.org/>`_, `HTTP, IPFS ve Swarm URL'lerinden dosya içe aktarmanıza veya doğrudan NPM kayıt defterindeki paketlere başvurmanıza<https://remix-ide.readthedocs.io/en/latest/import.html>`_ olanak tanıyan bir tane sağlar.
+Bazı ortamlar daha çok yönlü olan özel callback'ler sağlar. Örneğin `Remix IDE <https://remix.ethereum.org/>`_, HTTP, IPFS ve Swarm URL'lerinden dosya içe aktarmanıza veya doğrudan `NPM kayıt defterindeki paketlere <https://remix-ide.readthedocs.io/en/latest/import.html>`_ başvurmanıza olanak tanıyan bir tane sağlar.
 Derleyici tarafından kullanılan sanal dosya sistemi ve yol çözümleme mantığının tam bir açıklaması için
 bkz :ref:`Path Resolution <path-resolution>`.
 

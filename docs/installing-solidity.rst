@@ -220,7 +220,7 @@ olmasının yanı sıra üçüncü taraf araçlarla da dost olmayı (kolay bir �
   IPFS aracılığıyla veya yerel olarak önbelleğe aldığınız) ve indirdikten sonra ikili sayı sistemi dosyalarının hash'lerini
   doğruladığınız sürece, ikili dosyalar için HTTPS protokolünü kullanmanız gerekmez.
 
-Aynı ikili sayı sistemi dosyaları genellikle `Github üzerindeki Solidity sürüm sayfasında`_ bulunmaktadır.
+Aynı ikili sayı sistemi dosyaları genellikle `Github üzerindeki Solidity sürüm sayfası`_ nda bulunmaktadır.
 Aradaki fark, Github sürüm sayfasındaki eski sürümleri genellikle güncellemiyor olmamızdır. Bu, adlandırma
 kuralı değişirse onları yeniden adlandırmadığımız ve yayınlandığı sırada desteklenmeyen platformlar için
 derlemeler eklemediğimiz anlamına gelir. Bu sadece ``solc-bin`` içinde gerçekleşir.
@@ -269,7 +269,7 @@ Bu şu anlama gelmektedir:
 
    - En iyi performansı istiyorsanız ``bin/`` yerine ``emscripten-wasm32/`` son çare (fallback) (``emscripten-asmjs/`` geri
      dönüşü ile) kullanın. Biz 0.6.1 sürümüne kadar sadece asm.js ikili sayı sistemi dosyalarını sağlamıştık.
-     0.6.2`den itibaren çok daha iyi performans sağlayan `WebAssembly derlemelerine`_ geçtik. Eski sürümleri
+     0.6.2`den itibaren çok daha iyi performans sağlayan `WebAssembly derlemeleri`_ne geçtik. Eski sürümleri
      wasm için yeniden oluşturduk ancak orijinal asm.js dosyaları ``bin/`` içinde kaldı. Çünkü isim çakışmalarını
      önlemek amacıyla yenilerinin ayrı bir dizine yerleştirilmesi gerekiyordu.
    - Bir wasm veya asm.js ikili sayı sistemi dosyasını indirdiğinizden emin olmak istiyorsanız ``bin/``
@@ -297,10 +297,10 @@ Bu şu anlama gelmektedir:
 .. _IPFS: https://ipfs.io
 .. _Swarm: https://swarm-gateways.net/bzz:/swarm.eth
 .. _solc-bin: https://github.com/ethereum/solc-bin/
-.. _Solidity release page on github: https://github.com/ethereum/solidity/releases
+.. _Github üzerindeki Solidity sürüm sayfası: https://github.com/ethereum/solidity/releases
 .. _sha3sum: https://github.com/maandree/sha3sum
-.. _keccak256() function from ethereumjs-util: https://github.com/ethereumjs/ethereumjs-util/blob/master/docs/modules/_hash_.md#const-keccak256
-.. _WebAssembly builds: https://emscripten.org/docs/compiling/WebAssembly.html
+.. _ethereumjs-util'de bulunan keccak256(): https://github.com/ethereumjs/ethereumjs-util/blob/master/docs/modules/_hash_.md#const-keccak256
+.. _WebAssembly derlemeleri: https://emscripten.org/docs/compiling/WebAssembly.html
 .. _QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS: https://gateway.ipfs.io/ipfs/QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS
 .. _16c5f09109c793db99fe35f037c6092b061bd39260ee7a677c8a97f18c955ab1: https://swarm-gateways.net/bzz:/16c5f09109c793db99fe35f037c6092b061bd39260ee7a677c8a97f18c955ab1/
 

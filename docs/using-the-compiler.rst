@@ -749,7 +749,7 @@ ve :doc:`0.8.0 release notes <080-breaking-changes>` bölümlerini okuyun.
 Hata Raporları / Özellik Talepleri
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Bir hata bulduysanız veya bir özellik isteğiniz varsa, lütfen Github'da `<https://github.com/ethereum/solidity/issues/new/choose> bir sorun gönderin.`_
+Bir hata bulduysanız veya bir özellik isteğiniz varsa, lütfen `Github'da <https://github.com/ethereum/solidity/issues/new/choose>`_ bir sorun gönderin.
 
 
 Örnek

@@ -15,7 +15,7 @@ modelini kullanmaktır. Bir etki sonucunda, anlaşılması en kolay Ether
 gönderme yöntemi doğrudan ``transfer`` çağrısı olsa da,
 potansiyel güvenlik riski oluşturduğundan bu önerilmez. Bu
 konuda daha fazla bilgiye :ref:`Güvenlikle İlgili
-Değerlendirmeler` sayfasından ulaşabilirsiniz.
+Değerlendirmeler<security_considerations>` sayfasından ulaşabilirsiniz.
 
 `King of the Ether <https://www.kingoftheether.com/>`'de
 olduğu gibi, amacın "en zengin" olmak için sözleşmeye en fazla

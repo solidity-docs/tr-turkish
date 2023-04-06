@@ -1,8 +1,8 @@
 .. index: variable cleanup
 
-*********************
+**************************
 Değişkenlerin Temizlenmesi
-*********************
+**************************
 
 Bir değer 256 bitten daha kısa olduğunda, bazı durumlarda kalan bitlerin temizlenmesi
 gerekir. Solidity derleyicisi, kalan bitlerdeki potansiyel çöplerden olumsuz etkilenebilecek

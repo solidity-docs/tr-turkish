@@ -18,7 +18,7 @@ Bir değişmez sayı, Ether'in bir alt para birimini belirtmek için ``wei``, ``
 
 Alt isim ekinin("e") tek etkisi, onluk bir kuvvetle çarpmadır.
 .. note::
-    0.7.0 sürümünde "finney" ve "szabo" adları kaldırılmıştır.
+0.7.0 sürümünde "finney" ve "szabo" adları kaldırılmıştır.
 
 .. index:: time, seconds, minutes, hours, days, weeks, years
 
@@ -133,6 +133,7 @@ ABI Şifreleme ve Şifreyi Çözme Fonksiyonları
 - ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: ABI, verilen bağımsız değişkenleri ikinciden başlayarak şifreler ve verilen dört baytlık seçicinin önüne ekler.
 - ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``: Şuna eşdeğerdir ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)``
 - ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``: ABI, ``functionPointer`` çağrısını veri grupları içinde bulunan argümanlarla şifreler. Tam bir tür denetimi gerçekleştirerek türlerin fonksiyon imzasıyla eşleşmesini sağlar. Sonuç ``abi.encodeWithSelector(functionPointer.selector, (...))`` değerine eşittir
+
 .. note::
     Bu şifreleme fonksiyonları, harici bir fonksiyonu çağırmadan harici fonksiyon çağrıları
     için veri oluşturmak amacıyla kullanılabilir. Ayrıca, ``keccak256(abi.encodePacked(a, b))``
@@ -317,7 +318,7 @@ Sözleşme İle İlgili
     mevcut sözleşme, açıkça :ref:`address`’ine dönüştürülebilir
 
 ``selfdestruct(ödenebilir alıcı adresi)``
-    Mevcut sözleşmeyi yok eder, fonlarını verilen :ref:`address`e gönderir ve yürütür.
+    Mevcut sözleşmeyi yok eder, fonlarını verilen :ref:`address` e gönderir ve yürütür.
     ``selfdestruct``'ın ESM'den miras kalan bazı özelliklere sahip olduğunu unutmayın:
 
     - alıcı sözleşmenin alma(receive) fonksiyonu yürütülmez.

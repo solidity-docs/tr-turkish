@@ -54,7 +54,7 @@ yaklaşık olarak ne sıklıkta yürütüleceğini belirtir. Bu, kod boyutu (da�
 maliyeti (dağıtımdan sonraki maliyet) arasında bir değiş tokuş parametresi olduğu anlamına gelir.
 "1" "runs" parametresi kısa ama pahalı olan bir kod üretecektir. Buna karşılık, daha büyük bir "runs"
 parametresi daha uzun ancak daha fazla gaz verimli kod üretecektir. Parametrenin maksimum değeri
-``2**32-1``dir.
+``2**32-1`` dir.
 
 .. note::
 
@@ -428,6 +428,7 @@ dönüştürülür
 
 Bu, döngü başlatma(genesis) bloğunun karmaşık kapsam belirleme kurallarını göz ardı
 edebileceğimiz için optimizasyon sürecinin geri kalanını kolaylaştırır.
+
 .. _var-decl-initializer:
 
 VarDeclInitializer

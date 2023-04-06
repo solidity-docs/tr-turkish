@@ -9,17 +9,17 @@ Yardıma her zaman açığız ve Solidity'ye nasıl katkıda bulunabileceğinize
 * Sorunların raporlanması.
 * `Solidity'nin GitHub sorunlarını <https://github.com/ethereum/solidity/issues>`_
   düzeltmek ve yanıtlamak, özellikle de dışarıdan katkıda bulunanlar için giriş
-  sorunları olarak tasarlanan `"good first issue" <https://github.com/ethereum/solidity/labels/good%20first%20issue> _
-  olarak etiketlenenler.`
+  sorunları olarak tasarlanan `"good first issue" <https://github.com/ethereum/solidity/labels/good%20first%20issue>`_
+  olarak etiketlenenler.
 * Dokümantasyonun iyileştirilmesi.
 * Dokümantasyonun daha fazla dile çevrilmesi.
 * `StackExchange'de diğer kullanıcıların sorularını yanıtlama
   <https://ethereum.stackexchange.com>`_ ve `Solidity Gitter Chat
   <https://gitter.im/ethereum/solidity>`_.
-* Solidity forumunda <https://forum.soliditylang.org/>`_ dil değişiklikleri veya yeni özellikler önererek ve geri bildirim sağlayarak dil tasarım sürecine dahil olmak.
+* `Solidity forumunda <https://forum.soliditylang.org/>`_ dil değişiklikleri veya yeni özellikler önererek ve geri bildirim sağlayarak dil tasarım sürecine dahil olmak.
 
 Başlamak için, Solidity bileşenlerine ve derleme sürecine aşina olmak için
-:ref:`building-from-source`u deneyebilirsiniz. Ayrıca, Solidity'de akıllı
+:ref:`building-from-source` u deneyebilirsiniz. Ayrıca, Solidity'de akıllı
 sözleşmeler yazma konusunda uzmanlaşmak da faydalı olabilir.
 
 Lütfen bu projenin bir `Katılımcı Davranış Kuralları <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_ ile yayınlandığını unutmayın. Bu projeye katılarak - sorunlarda, pull request' lerde veya Gitter kanallarında - şartlarına uymayı kabul etmiş olursunuz.
@@ -362,7 +362,7 @@ Kaba bir tanımlama aşağıdaki gibidir:
 Herhangi bir ``<name>`` oluşumu, herhangi bir kaçış olmadan ve yinelenen değiştirmeler
 olmadan sağlanan ``name`` değişkeninin dize değeri ile değiştirilir. Bir alan ``<#name>...</name>``
 ile sınırlandırılabilir. Şablon sistemine sağlanan değişken kümeleri kadar içeriğinin
-bir araya getirilmesiyle değiştirilir ve her seferinde herhangi bir ``<inner>` öğesi
+bir araya getirilmesiyle değiştirilir ve her seferinde herhangi bir ``<inner>`` öğesi
 ilgili değeriyle değiştirilir. Üst düzey değişkenler de bu tür alanların içinde kullanılabilir.
 
 Ayrıca ``<?name>...<!name>...</name>`` biçiminde koşullular da vardır, burada şablon

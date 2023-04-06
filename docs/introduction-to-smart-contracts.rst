@@ -195,7 +195,7 @@ otomatik olarak oluşturulan ``balances`` fonksiyonunu yukarıdan sizin için ç
 
 :ref:`constructor<constructor>` fonksiyonu, sözleşmenin oluşturulması sırasında çalıştırılan
 ve daha sonra çağırılamayan özel bir fonksiyondur. Bu örnekte ise constructor fonksiyonu sözleşmeyi oluşturan kişinin adresini kalıcı olarak depoluyor.
-``msg`` değişkeni (``tx`` ve ``block`` ile birlikte), blok zincirine erişim izini veren özellikleri olan :ref:`özel bir global değişken <special-variables-functions>`dir.
+``msg`` değişkeni (``tx`` ve ``block`` ile birlikte), blok zincirine erişim izini veren özellikleri olan :ref:`özel bir global değişken<special-variables-functions>` dir.
 ``msg.sender`` her zaman varsayılan fonksiyonu (external) çağıran kişinin adresini döndürür.
 
 Sözleşmeyi oluşturan ve hem kullanıcıların hemde sözleşmelerin çağırabileceği fonksiyonlar ``mint`` ve ``send`` dir.
@@ -209,7 +209,7 @@ taşarsa, yani  ``balances[receiver] + amount`` ifadesi ``uint`` maksimum değer
 büyükse işlemin geri döndürüleceğini unutmayın. Bu, ``send`` fonksiyonundaki
 ``balances[receiver] += amount;`` ifadesi için de geçerlidir.
 
-:ref:`Hatalar <hatalar>`, bir koşulun veya işlemin neden başarısız olduğu hakkında
+:ref:`Hatalar <errors>`, bir koşulun veya işlemin neden başarısız olduğu hakkında
 fonksiyonu çağıran kişiye daha fazla bilgi sağlamanıza olanak tanır. Hatalar
 :ref:`revert ifadesi <revert-statement>` ile birlikte kullanılır. ``revert`` ifadesi,
 ``require`` fonksiyonuna benzer bir şekilde tüm değişiklikleri koşulsuz olarak iptal eder
@@ -220,7 +220,7 @@ blok gezginine) sağlanacak ek verileri sağlamanıza olanak tanır.
 ``send`` fonksiyonu, herhangi biri tarafından (hali hazırda bir miktar paraya sahip olan)
 başka birine para göndermek için kullanılabilir. Gönderen kişinin göndermek için yeterli
 bakiyesi yoksa, ``if`` koşulu doğru (true) olarak değerlendirilir. Sonuç olarak ``revert``
-fonksiyonu, ``InsufficientBalance``(Yetersiz bakiye) hatasını kullanarak göndericiye hata
+fonksiyonu, ``InsufficientBalance`` (Yetersiz bakiye) hatasını kullanarak göndericiye hata
 ayrıntılarını sağlarken işlemin başarısız olmasına neden olacaktır.
 
 .. note::

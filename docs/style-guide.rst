@@ -41,7 +41,7 @@ Boşluklar en çok tercih edilen girinti oluşturma yöntemidir.
 Tablar ve boşlukları karıştırmaktan kaçınmalısınız.
 
 Boş Satırlar
-===========
+=============
 
 Solidity kaynağındaki üst düzey bildirimleri iki boş satırla çevreleyin.
 

@@ -814,7 +814,7 @@ yanı sıra ``jump`` talimatlarını, etiketleri ve ``push`` talimatlarını iç
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | shr(x, y)               |     | C | y ile x bit sağa mantıksal kaydırma                             |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| sar(x, y)               |     | C |  işaretli aritmetik kaydırma sağa y ile x bit                   |
+| sar(x, y)               |     | C | işaretli aritmetik kaydırma sağa y ile x bit                    |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | addmod(x, y, m)         |     | F | (x + y) % m keyfi kesinlikli aritmetik ile, m == 0 ise 0        |
 +-------------------------+-----+---+-----------------------------------------------------------------+
@@ -847,7 +847,7 @@ yanı sıra ``jump`` talimatlarını, etiketleri ve ``push`` talimatlarını iç
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | balance(a)              |     | F | a adresindeki wei bakiyesi                                      |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| selfbalance()           |     | I |  balance(address()) ile eşdeğer, ancak daha ucuz                |
+| selfbalance()           |     | I | balance(address()) ile eşdeğer, ancak daha ucuz                 |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | caller()                |     | F | sender'ı çağırır (``delegatecall``'u' hariç tutarak)            |
 +-------------------------+-----+---+-----------------------------------------------------------------+
@@ -891,11 +891,11 @@ yanı sıra ``jump`` talimatlarını, etiketleri ve ``push`` talimatlarını iç
 |                         |     |   | hata durumunda 0 döndürür (örn. gazın bitmesi) başarı durumunda |
 |                         |     |   | ise 1 döndürür :ref:`Daha fazla bilgi <yul-call-return-area>`   |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| callcode(g, a, v, in,   |     | F |  ``call`` ile aynıdır, ancak yalnızca a kodunu kullanın         |
+| callcode(g, a, v, in,   |     | F | ``call`` ile aynıdır, ancak yalnızca a kodunu kullanın          |
 | insize, out, outsize)   |     |   | ve aksi takdirde mevcut sözleşme bağlamında kalın               |
 |                         |     |   | :ref:`Daha fazla bilgi <yul-call-return-area>`                  |
 +-------------------------+-----+---+-----------------------------------------------------------------+
-| delegatecall(g, a, in,  |     | H |  ``callcode`` ile eşdeğerdir ama aynı zamanda ``caller``        |
+| delegatecall(g, a, in,  |     | H | ``callcode`` ile eşdeğerdir ama aynı zamanda ``caller``         |
 | insize, out, outsize)   |     |   | ve ``callvalue`` değerini de tutar                              |
 |                         |     |   | :ref:`Daha fazla bilgi <yul-call-return-area>`                  |
 +-------------------------+-----+---+-----------------------------------------------------------------+
@@ -990,7 +990,7 @@ adres değişmezi (literal) için bir yer tutucudur (placeholder).
 Tanımlayıcılar (identifier) isteğe bağlı olabilir, ancak derleyici Solidity kaynaklarından Yul kodu ürettiğinde, 
 o kitaplığı tanımlayan kaynak birimin adıyla nitelenmiş bir kitaplık adı kullanır. 
 Kodu belirli bir kitaplık adresiyle ilişkilendirmek için, komut satırındaki
- ``--libraries`` seçeneğine aynı tanımlayıcı verilmelidir.
+``--libraries`` seçeneğine aynı tanımlayıcı verilmelidir.
 
 Örneğin aşağıdaki kod
 
