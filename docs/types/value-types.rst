@@ -382,7 +382,7 @@ Rasyonel ve Tamsayı Değişmezleri
 
 Tamsayı değişmezleri, 0-9 aralığında bir basamak dizisinden oluşturulur. Ondalık sayılar olarak yorumlanırlar. Örneğin, ``69`` altmış dokuz anlamına gelir. Solidity'de sekizlik değişmez değerler yoktur ve baştaki sıfırlar geçersizdir.
 
-Ondalık kesirli değişmezler, bir tarafında en az bir sayı olan bir ``.`` ile oluşturulur. Örnekler arasında ``1.``, ``.1`` ve ``1.3`` bulunur.
+Ondalık kesirli değişmezler, ``.``'nın ardından en az bir sayı yerleştirilmesi ile oluşturulur. Örnekler arasında ``.1`` ve ``1.3`` bulunur (``1.`` geçersizdir).
 
 Mantisin kesirli olabileceği ancak üssün bir tamsayı olması gereken ``2e10`` şeklindeki bilimsel gösterim de desteklenmektedir. ``MeE`` değişmez değeri, ``M * 10**E`` ile eşdeğerdir. Örnekler arasında ``2e10``, ``-2e10``, ``2e-10``, ``2.5e1`` yer alır.
 

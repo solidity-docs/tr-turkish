@@ -35,11 +35,8 @@ kullanan her bir akıllı sözleşmeye eklenir, tıpkı internal kütüphane fon
 
 .. note::
     Akıllı sözleşme dışında tanımlanan bir fonksiyon her zaman o akıllı sözleşmenin içeriği ile birlikte
-    çalıştırılırlar. Hâlâ ``this`` değişkenini kullanabilir,
-    diğer akıllı sözleşmeleri çağırabilir, onlara Ether gönderebilir ve kendilerini çağıran akıllı sözleşmeleri
-    yok edebilirler. Akıllı sözleşme içerisinde tanımlanan bir fonksiyon ile özgür bir fonksiyonun arasındaki
-    en temel fark; özgür fonksiyonlar kendi alanlarında (scope) bulunmayan storage değişkenlerine ve
-    fonksiyonlara direkt erişime sahip değillerdir.
+    çalıştırılırlar. Hâlâ diğer akıllı sözleşmeleri çağırabilir, onlara Ether gönderebilir ve kendilerini
+    çağıran akıllı sözleşmeleri yok edebilirler. Akıllı sözleşme içerisinde tanımlanan bir fonksiyon ile özgür bir fonksiyonun arasındaki en temel farklar özgür fonksiyonların ``this`` değişkenine erişimi olmaması, ve de kendi alanlarında (scope) bulunmayan storage değişkenlerine ve fonksiyonlara direkt erişime sahip olmamalarıdır.
 
 .. _function-parameters-return-variables:
 

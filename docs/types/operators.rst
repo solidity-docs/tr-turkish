@@ -3,7 +3,7 @@
 Operatörler
 ============
 
-Aritmetik operatörler ve bit operatörleri, iki işlenen aynı türe sahip olmasa bile uygulanabilir. Örneğin, ``y = x + z`` yi hesaplayabilirsiniz, burada ``x`` bir ``uint8`` dir ve ``z`` nin türü ``int32`` dir. Bu durumlarda, işlemin hesaplandığı türü (taşma durumunda bu önemlidir) ve operatörün sonucunun türünü belirlemek için aşağıdaki mekanizma kullanılacaktır:
+Aritmetik operatörler ve bit operatörleri, iki işlenen aynı türe sahip olmasa bile uygulanabilir. Örneğin, ``y = x + z`` yi hesaplayabilirsiniz, burada ``x`` bir ``uint8`` dir ve ``z`` nin türü ``uint32`` dir. Bu durumlarda, işlemin hesaplandığı türü (taşma durumunda bu önemlidir) ve operatörün sonucunun türünü belirlemek için aşağıdaki mekanizma kullanılacaktır:
 
 1. Sağ işlenenin türü dolaylı olarak sol işlenenin türüne dönüştürülebiliyorsa, 
     sol işlenenin türünü kullanın.
