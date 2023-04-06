@@ -2,11 +2,7 @@
 Katkıda Bulunmak
 ##################
 
-<<<<<<< HEAD
 Yardıma her zaman açığız ve Solidity'ye nasıl katkıda bulunabileceğinize dair pek çok seçenek var.
-=======
-Help is always welcome and there are plenty of options to contribute to Solidity.
->>>>>>> v0.8.16
 
 Özellikle aşağıdaki alanlardaki destek için minnettar olduğumuzu belirtmek isteriz:
 
@@ -26,11 +22,7 @@ Başlamak için, Solidity bileşenlerine ve derleme sürecine aşina olmak için
 :ref:`building-from-source`u deneyebilirsiniz. Ayrıca, Solidity'de akıllı
 sözleşmeler yazma konusunda uzmanlaşmak da faydalı olabilir.
 
-<<<<<<< HEAD
 Lütfen bu projenin bir `Katılımcı Davranış Kuralları <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_ ile yayınlandığını unutmayın. Bu projeye katılarak - sorunlarda, pull request' lerde veya Gitter kanallarında - şartlarına uymayı kabul etmiş olursunuz.
-=======
-Please note that this project is released with a `Contributor Code of Conduct <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_. By participating in this project — in the issues, pull requests, or Gitter channels — you agree to abide by its terms.
->>>>>>> v0.8.16
 
 Takım Toplantıları
 ===================
@@ -55,13 +47,8 @@ kullanın. Sorunları bildirirken lütfen aşağıdaki ayrıntıları belirtin:
 * Sorunu yeniden üretmek için adımlar.
 * Mevcut ve beklenen davranış.
 
-<<<<<<< HEAD
 Soruna neden olan kaynak kodunu en aza indirmek her zaman sorunların çözümüne yardımcı
 olur ve hatta bazen bir yanlış anlaşılmayı açıklığa kavuşturur.
-=======
-Reducing the source code that caused the issue to a bare minimum is always
-very helpful, and sometimes even clarifies a misunderstanding.
->>>>>>> v0.8.16
 
 Pull Request'ler için İş Akışı(Workflow)
 =========================================
@@ -78,16 +65,10 @@ kolay gözden geçirmemize yardımcı olacaktır.
 Ayrıca, yeni bir özellik yazıyorsanız, lütfen ``test/`` altına uygun test örneklerini
 eklediğinizden emin olun (aşağıya bakınız).
 
-<<<<<<< HEAD
 Bununla birlikte, daha büyük bir değişiklik yapıyorsanız, lütfen önce `Solidity
 Development Gitter kanalına <https://gitter.im/ethereum/solidity-dev>`_ (yukarıda
 bahsedilenden farklı olarak, bu kanal dil kullanımı yerine derleyici ve dil
 geliştirmeye odaklanmıştır) danışın.
-=======
-However, if you are making a larger change, please consult with the `Solidity Development Gitter channel
-<https://gitter.im/ethereum/solidity-dev>`_ (different from the one mentioned above — this one is
-focused on compiler and language development instead of language usage) first.
->>>>>>> v0.8.16
 
 Yeni özellikler ve hata düzeltmeleri ``Changelog.md`` dosyasına eklenmelidir:
 lütfen uygun durumlarda önceki girişlerin stilini takip edin.
@@ -108,7 +89,6 @@ Tüm derleyici testlerini çalıştırmak için isteğe bağlı olarak birkaç b
 yüklemek isteyebilirsiniz (`evmone <https://github.com/ethereum/evmone/releases>`_,
 `libz3 <https://github.com/Z3Prover/z3>`_ ve `libhera <https://github.com/ewasm/hera>`_).
 
-<<<<<<< HEAD
 macOS üzerinde bazı test komut dosyaları GNU coreutils'in kurulu olmasını beklemektedir.
 Bu en kolay Homebrew kullanılarak gerçekleştirilebilir: ``brew install coreutils``.
 
@@ -116,17 +96,6 @@ Windows sistemlerinde ortak bağlantı oluşturma ayrıcalığına sahip olduğu
 olun, aksi takdirde bazı testler başarısız olabilir. Yöneticilerin bu ayrıcalığa
 sahip olması gerekir, ancak `diğer kullanıcılara da verebilirsiniz <https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/create-symbolic-links#policy-management>`_ veya
 `Geliştirici Modunu etkinleştirebilirsiniz <https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development>`_.
-=======
-On macOS systems, some of the testing scripts expect GNU coreutils to be installed.
-This can be easiest accomplished using Homebrew: ``brew install coreutils``.
-
-On Windows systems, make sure that you have a privilege to create symlinks,
-otherwise several tests may fail.
-Administrators should have that privilege, but you may also
-`grant it to other users <https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/create-symbolic-links#policy-management>`_
-or
-`enable Developer Mode <https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development>`_.
->>>>>>> v0.8.16
 
 Testleri Çalıştırma
 --------------------
@@ -137,13 +106,7 @@ Solidity, çoğu `Boost C++ Test Framework <https://www.boost.org/doc/libs/relea
 
 Test sistemi, anlamsal testleri çalıştırmak için otomatik olarak `evmone <https://github.com/ethereum/evmone/releases>`_ konumunu keşfetmeye çalışır.
 
-<<<<<<< HEAD
 ``evmone`` kütüphanesi, geçerli çalışma dizinine, üst dizinine veya üst dizinin üst dizinine göre ``deps`` veya ``deps/lib`` dizininde bulunmalıdır. Alternatif olarak ``evmone`` paylaşımlı nesnesi için açık bir konum ``ETH_EVMONE`` ortam değişkeni aracılığıyla belirtilebilir.
-=======
-The ``evmone`` library must be located in the ``deps`` or ``deps/lib`` directory relative to the
-current working directory, to its parent or its parent's parent. Alternatively, an explicit location
-for the ``evmone`` shared object can be specified via the ``ETH_EVMONE`` environment variable.
->>>>>>> v0.8.16
 
 ``evmone`` esas olarak semantik ve gaz testlerini çalıştırmak için gereklidir. Eğer yüklü değilse, ``scripts/soltest.sh`` dosyasına ``--no-semantic-tests`` parametresini girerek bu testleri atlayabilirsiniz.
 
@@ -309,11 +272,7 @@ derleyin:
     cmake .. -DCMAKE_C_COMPILER=path/to/afl-gcc -DCMAKE_CXX_COMPILER=path/to/afl-g++
     make solfuzzer
 
-<<<<<<< HEAD
 Bu aşamada aşağıdakine benzer bir mesaj görebilmeniz gerekir:
-=======
-At this stage, you should be able to see a message similar to the following:
->>>>>>> v0.8.16
 
 .. code-block:: text
 
@@ -506,13 +465,8 @@ sorunları gibi sorunları kontrol eden ``./docs/docs.sh`` dosyasını çalışt
 Solidity Dili Tasarımı
 ========================
 
-<<<<<<< HEAD
 Dil tasarım sürecine aktif olarak dahil olmak ve Solidity'nin geleceği ile ilgili
 fikirlerinizi paylaşmak için lütfen `Solidity forum <https://forum.soliditylang.org/>`_'a katılın.
-=======
-To actively get involved in the language design process and to share your ideas concerning the future of Solidity,
-please join the `Solidity forum <https://forum.soliditylang.org/>`_.
->>>>>>> v0.8.16
 
 Solidity forumu, yeni dil özelliklerinin ve bunların uygulanmasının ilk aşamalarında
 veya mevcut özelliklerin modifikasyonlarının önerildiği ve tartışıldığı bir yer olarak
@@ -536,13 +490,8 @@ ihtiyaç duyar ve ya bir dil tasarımı çağrısında ya da normal bir ekip ça
 Varsayılan branch'ten (`develop`) `breaking branch <https://github.com/ethereum/solidity/tree/breaking>`_'e
 geçerek bir sonraki breaking release için gelecek değişiklikleri görebilirsiniz.
 
-<<<<<<< HEAD
 Geçici durumlar ve sorularınız için, Solidity derleyicisi ve dil geliştirme ile ilgili
 konuşmalar için özel bir sohbet odası olan `Solidity dev Gitter kanalı <https://gitter.im/ethereum/solidity-dev>`_ üzerinden bize ulaşabilirsiniz.
-=======
-For ad-hoc cases and questions, you can reach out to us via the `Solidity-dev Gitter channel <https://gitter.im/ethereum/solidity-dev>`_ — a
-dedicated chatroom for conversations around the Solidity compiler and language development.
->>>>>>> v0.8.16
 
 Dil tasarım sürecini daha işbirlikçi ve şeffaf hale getirmek için neler yapabileceğimiz
 konusundaki düşüncelerinizi duymaktan mutluluk duyarız.

@@ -34,21 +34,9 @@ kullanan her bir akıllı sözleşmeye eklenir, tıpkı internal kütüphane fon
     }
 
 .. note::
-<<<<<<< HEAD
     Akıllı sözleşme dışında tanımlanan bir fonksiyon her zaman o akıllı sözleşmenin içeriği ile birlikte
-    çalıştırılırlar. Hâlâ ``this`` değişkenini kullanabilir,
-    diğer akıllı sözleşmeleri çağırabilir, onlara Ether gönderebilir ve kendilerini çağıran akıllı sözleşmeleri
-    yok edebilirler. Akıllı sözleşme içerisinde tanımlanan bir fonksiyon ile özgür bir fonksiyonun arasındaki
-    en temel fark; özgür fonksiyonlar kendi alanlarında (scope) bulunmayan storage değişkenlerine ve
-    fonksiyonlara direkt erişime sahip değillerdir.
-=======
-    Functions defined outside a contract are still always executed
-    in the context of a contract.
-    They still can call other contracts, send them Ether and destroy the contract that called them,
-    among other things. The main difference to functions defined inside a contract
-    is that free functions do not have direct access to the variable ``this``, storage variables and functions
-    not in their scope.
->>>>>>> v0.8.16
+    çalıştırılırlar. Hâlâ diğer akıllı sözleşmeleri çağırabilir, onlara Ether gönderebilir ve kendilerini
+    çağıran akıllı sözleşmeleri yok edebilirler. Akıllı sözleşme içerisinde tanımlanan bir fonksiyon ile özgür bir fonksiyonun arasındaki en temel farklar özgür fonksiyonların ``this`` değişkenine erişimi olmaması, ve de kendi alanlarında (scope) bulunmayan storage değişkenlerine ve fonksiyonlara direkt erişime sahip olmamalarıdır.
 
 .. _function-parameters-return-variables:
 

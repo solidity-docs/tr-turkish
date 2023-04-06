@@ -138,11 +138,7 @@ Yapmayın:
 Maksimum Satır Uzunluğu
 =========================
 
-<<<<<<< HEAD
-`PEP 8 önerisi <https://www.python.org/dev/peps/pep-0008/#maximum-line-length>`_ altındaki satırları en fazla 79 (veya 99) karakterde tutmak, okuyucuların kodu kolayca çözümlemelerine yardımcı olur.
-=======
-Maximum suggested line length is 120 characters.
->>>>>>> v0.8.16
+Tavsiye edilen maksimum satır uzunluğu 120 karakterdir.
 
 Sarılmış(Wrapped) satırlar aşağıdaki yönergelere uygun olmalıdır.
 
@@ -1218,12 +1214,7 @@ Adlandırma Çakışmalarını Önleme
 
 * ``singleTrailingUnderscore_``
 
-<<<<<<< HEAD
-Bu kural, istenen adın yerleşik veya başka şekilde ayrılmış bir adla çakışması durumunda önerilir.
-=======
-This convention is suggested when the desired name collides with that of
-an existing state variable, function, built-in or otherwise reserved name.
->>>>>>> v0.8.16
+Bu kural, istenen adın halihazırda varolan bir durum değişkeni, fonkisyon, ayrılmış veya yerleşik bir adla çakışması durumunda önerilir.
 
 .. _style_guide_natspec:
 

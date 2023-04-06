@@ -3,15 +3,7 @@
 Operatörler
 ============
 
-<<<<<<< HEAD
-Aritmetik operatörler ve bit operatörleri, iki işlenen aynı türe sahip olmasa bile uygulanabilir. Örneğin, ``y = x + z`` yi hesaplayabilirsiniz, burada ``x`` bir ``uint8`` dir ve ``z`` nin türü ``int32`` dir. Bu durumlarda, işlemin hesaplandığı türü (taşma durumunda bu önemlidir) ve operatörün sonucunun türünü belirlemek için aşağıdaki mekanizma kullanılacaktır:
-=======
-Arithmetic and bit operators can be applied even if the two operands do not have the same type.
-For example, you can compute ``y = x + z``, where ``x`` is a ``uint8`` and ``z`` has
-the type ``uint32``. In these cases, the following mechanism will be used to determine
-the type in which the operation is computed (this is important in case of overflow)
-and the type of the operator's result:
->>>>>>> v0.8.16
+Aritmetik operatörler ve bit operatörleri, iki işlenen aynı türe sahip olmasa bile uygulanabilir. Örneğin, ``y = x + z`` yi hesaplayabilirsiniz, burada ``x`` bir ``uint8`` dir ve ``z`` nin türü ``uint32`` dir. Bu durumlarda, işlemin hesaplandığı türü (taşma durumunda bu önemlidir) ve operatörün sonucunun türünü belirlemek için aşağıdaki mekanizma kullanılacaktır:
 
 1. Sağ işlenenin türü dolaylı olarak sol işlenenin türüne dönüştürülebiliyorsa, 
     sol işlenenin türünü kullanın.

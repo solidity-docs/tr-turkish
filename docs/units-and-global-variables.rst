@@ -378,10 +378,7 @@ Aşağıdaki özellikler ``T`` tamsayı(integer) türü için kullanılabilir:
     ``T`` tipi tarafından temsil edilebilen en küçük değer.
 
 ``type(T).max``
-<<<<<<< HEAD
     ``T`` tipi tarafından temsil edilebilen en büyük değer.
-=======
-    The largest value representable by type ``T``.
 
 Reserved Keywords
 =================
@@ -393,4 +390,3 @@ These keywords are reserved in Solidity. They might become part of the syntax in
 ``mutable``, ``null``, ``of``, ``partial``, ``promise``, ``reference``, ``relocatable``,
 ``sealed``, ``sizeof``, ``static``, ``supports``, ``switch``, ``typedef``, ``typeof``,
 ``var``.
->>>>>>> v0.8.16

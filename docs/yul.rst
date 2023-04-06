@@ -658,27 +658,15 @@ AST düğümleri (node) için bir destructuring notasyonu kullanacağız.
         G, L1, regular
     E(G, L, <var_1, ..., var_n := rhs>: Assignment) =
         let G1, L1, v1, ..., vn = E(G, L, rhs)
-<<<<<<< HEAD
         L2 nin L1 in kopyası olduğu durumda L2[$var_i] = vi for i = 1, ..., n
-        G, L2, regular
-    E(G, L, <for { i1, ..., in } condition post body>: ForLoop) =
-        if n >= 1:
-            let G1, L, mode = E(G, L, i1, ..., in)
-            // mode regular olmalı veya sözdizimsel kısıtlamalar nedeniyle terk edilmelidir
-            eğer mode leave ise o zaman
-                G1, L1 değişkenleri L, leave değişkenlerine kısıtlıdır
-            değilse
-=======
-        let L2 be a copy of L1 where L2[$var_i] = vi for i = 1, ..., n
         G1, L2, regular
     E(G, L, <for { i1, ..., in } condition post body>: ForLoop) =
         if n >= 1:
             let G1, L1, mode = E(G, L, i1, ..., in)
-            // mode has to be regular or leave due to the syntactic restrictions
-            if mode is leave then
-                G1, L1 restricted to variables of L, leave
-            otherwise
->>>>>>> v0.8.16
+            // mode regular olmalı veya sözdizimsel kısıtlamalar nedeniyle terk edilmelidir
+            eğer mode leave ise o zaman
+                G1, L1 değişkenleri L, leave değişkenlerine kısıtlıdır
+            değilse
                 let G2, L2, mode = E(G1, L1, for {} condition post body)
                 G2, L2 değişkenleri L, mode değişkenlerine kısıtlıdır
         else:
