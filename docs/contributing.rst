@@ -10,7 +10,7 @@ Yardıma her zaman açığız ve Solidity'ye nasıl katkıda bulunabileceğinize
 * `Solidity'nin GitHub sorunlarını <https://github.com/ethereum/solidity/issues>`_
   düzeltmek ve yanıtlamak, özellikle de dışarıdan katkıda bulunanlar için giriş
   sorunları olarak tasarlanan `"good first issue" <https://github.com/ethereum/solidity/labels/good%20first%20issue> _
-  olarak etiketlenenler.
+  olarak etiketlenenler.`
 * Dokümantasyonun iyileştirilmesi.
 * Dokümantasyonun daha fazla dile çevrilmesi.
 * `StackExchange'de diğer kullanıcıların sorularını yanıtlama
