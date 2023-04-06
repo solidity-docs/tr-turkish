@@ -70,6 +70,7 @@ parametre olarak almasını isterseniz, aşağıdaki gibi bir yapı kullanabilir
 Fonksiyon parametreleri herhangi bir lokal değişken olarak kullanılaiblir ve ayrıca lokal
 değişkenlere atanabilirler.
 
+<<<<<<< HEAD
 .. note::
 
   Bir :ref:`external fonksiyon<external-function-calls>` çok boyutlu bir
@@ -80,6 +81,8 @@ değişkenlere atanabilirler.
   Bir :ref:`internal fonksiyon<external-function-calls>` o özelliği aktifleştirmeden
   de çok boyutlu bir diziyi parametre olarak alabilir.
 
+=======
+>>>>>>> v0.8.17
 .. index:: return array, return string, array, string, array of strings, dynamic array, variably sized array, return struct, struct
 
 Return Değişkenleri
@@ -134,11 +137,24 @@ Eğer fonksiyondan çıkmak için erkenden ``return`` kullanmanak istiyorsanız,
 bütün return değişkenlerini vermeniz gerekir.
 
 .. note::
+<<<<<<< HEAD
     Bazı tipleri internal olmayan fonksiyonlardan return edemezsiniz,
     örneğin, çok boyutlu dinamik boyutlu diziler ve structlar. Eğer
     ABI coder v2'yi ``pragma abicoder v2;`` şeklinde kodunuza eklerseniz
     daha fazla tip kullanılabilir olacaktır, ancak ``mapping`` tipi
     hâlâ bir akıllı sözleşme içerisinde sınırlıdır ve onları transfer edemezsiniz.
+=======
+    You cannot return some types from non-internal functions.
+    This includes the types listed below and any composite types that recursively contain them:
+
+    - mappings,
+    - internal function types,
+    - reference types with location set to ``storage``,
+    - multi-dimensional arrays (applies only to :ref:`ABI coder v1 <abi_coder>`),
+    - structs (applies only to :ref:`ABI coder v1 <abi_coder>`).
+
+    This restriction does not apply to library functions because of their different :ref:`internal ABI <library-selectors>`.
+>>>>>>> v0.8.17
 
 .. _multi-return:
 

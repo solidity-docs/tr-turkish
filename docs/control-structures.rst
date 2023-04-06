@@ -141,8 +141,13 @@ hatalara da neden olur.
     ``f.value(x).gas(g)()`` kullanmaktı. Bu, Solidity 0.6.2'de kullanımdan 
     kaldırıldı ve Solidity 0.7.0'dan beri kullanımı artık mümkün değil.
 
+<<<<<<< HEAD
 Adlandırılmış Çağrılar ve Anonim Fonksiyon Parametreleri
 --------------------------------------------------------
+=======
+Function Calls with Named Parameters
+------------------------------------
+>>>>>>> v0.8.17
 
 Aşağıdaki örnekte görüldüğü gibi, ``{ }`` içine alınmışlarsa, fonksiyon 
 çağrısı argümanları herhangi bir sırayla ve tercihe bağlı isimle adlandırılabilir. 
@@ -167,11 +172,21 @@ Argüman listesi, fonksiyon bildirimindeki parametre listesiyle ve adıyla
 
     }
 
+<<<<<<< HEAD
 Dikkate Alınmayan Fonksiyon Parametre Adları
 ---------------------------------------------
 
 Kullanılmayan parametrelerin adları (özellikle dönüş parametreleri) atlanabilir.
 Bu parametreler yığında bulunmaya devam eder, fakat erişilemezler.
+=======
+Omitted Names in Function Definitions
+-------------------------------------
+
+The names of parameters and return values in the function declaration can be omitted.
+Those items with omitted names will still be present on the stack, but they are
+inaccessible by name. An omitted return value name
+can still return a value to the caller by use of the ``return`` statement.
+>>>>>>> v0.8.17
 
 .. code-block:: solidity
 
