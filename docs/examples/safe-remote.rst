@@ -9,7 +9,7 @@ En basit durumda bir satıcı bir de alıcı olur. Alıcı ürünü satıcıdan 
 karılığında parayı (ya da eş değeri bir şeyi) almak. Burada problemli kısım kargolama: Kesin olarak
 malın alıcıya ulaştığından emin olmanın yolu yok. 
 
-Bu problemmi çözmenin birden fazla yolu var ama hepsinin bir şekilde bir eksiği oluyor.
+Bu problemi çözmenin birden fazla yolu var ama hepsinin bir şekilde bir eksiği oluyor.
 Aşağıdaki örnekte, iki taraf da kontrata malın değerinin iki katını yatırırlar. Yatırma 
 gerçekleştiği anda alıcı onaylayana kadar iki tafaında parası içeride kitli kalır. Alıcı
 satın almayı onayladığında malın değeri (yatırdığının yarısı) karşı tarafa geçer ve satıcı
