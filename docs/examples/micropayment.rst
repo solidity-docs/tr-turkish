@@ -19,7 +19,7 @@ kriptografik olarak imzalanmış off-chain (zincir dışı)
 bir mesaj göndermesi yeterli. 
 
 Alice ve Bob bu imzaları ödemeleri yetkilendirmek için kullanabilirler ve bu Ethereum üzerindeki akıllı kontratlar
-ile mümkün olan bir şey. Alice Ethere göndermek için basit bir akıllı kontrat yazacak ancak bu fonksiyonu kendi
+ile mümkün olan bir şey. Alice Ether göndermek için basit bir akıllı kontrat yazacak ancak bu fonksiyonu kendi
 çağırmak yerine Bob'un çağırmasını isteyecek böylece Bob işlem masraflarını da ödemiş olacak.
 
 Kontrat aşağıdaki şekilde ilerleyecek.
@@ -247,7 +247,7 @@ kim olduğunu girerek akıllı kontratı yayınlar. Bu işlemi bölümün sonund
 ---------------------
 
 Alice ödemeyi Bob'a imzalanmış mesajı göndererek yapar. Bu adım tamammiyle
-Etherum ağının dışında gerçekeleşir. Mesaj gönderici tarafında kriptografik olarak imzalanır ve direkt
+Ethereum ağının dışında gerçekeleşir. Mesaj gönderici tarafında kriptografik olarak imzalanır ve direkt
 olarak alıcıya gönderilir.
 
 Her mesaj aşağıdaki bilgileri içerir:

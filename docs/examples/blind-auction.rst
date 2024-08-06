@@ -177,7 +177,7 @@ Başka bir zorluk da **gizlilik ve bağlayıcılığı** aynı anda sağlamak. T
 kazandıktan sonra teklifinden vazgeçmemesinin tek yolu teklif ile birlikte parayı
 da yollaması ancak transferler Ethereum'da gizlenemediğinden herhangi bir kişi miktarı görebilir.
 
-Aşağıdaki kotnrat bu sorunu teklif ile birlikte herhangi bir miktar paranın
+Aşağıdaki kontrat bu sorunu teklif ile birlikte herhangi bir miktar paranın
 birlikte gönderilmesiyle çözüyor. Miktar ile teklifin eşitliği sadece açıklama
 fazında ortaya anlaşılabildiği için bazı teklifleri **geçersiz** olabilir, ve teklif
 veren kişiler bunu kasıtlı olarak kullanabilir (hatta bu durum daha fazla gizlilik sağlıyor)
