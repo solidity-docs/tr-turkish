@@ -278,7 +278,7 @@ saldırısı" olarak adlandırılan bir olaydır: Ağda bir cüzdanı boşaltmak
 işlem varsa ne olur? İşlemlerden sadece biri geçerli olabilir, tipik olarak önce kabul edilmiş
 olanı. Sorun, “ilk” in eşler arası ağda (peer-to-peer network) nesnel bir terim olmamasıdır.
 
-Özetle tüm bunları düşünmenize gerk yoktur. İşlemlerin global olarak kabul edilen bir sırası
+Özetle tüm bunları düşünmenize gerek yoktur. İşlemlerin global olarak kabul edilen bir sırası
 sizin için seçilecek ve çatışma çözülecektir. İşlemler "blok" adı verilen bir yapıda bir araya
 getirilecek ve daha sonra yürütülerek tüm katılımcı düğümler arasında dağıtılacaktır. Eğer iki
 işlem birbiriyle çelişirse, ikinci olan işlem reddedilecek ve bloğun bir parçası olmayacaktır.
