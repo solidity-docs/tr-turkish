@@ -351,8 +351,24 @@ Aşağıda Solidity'nin tüm geliştirmeleri için bağımlılıklar verilmişti
     gereksinimi karşılayan herhangi bir sürümle derleme yapabilirsiniz. Ancak bunu yaparsanız, SMT testlerini atlamak
     için lütfen ``scripts/tests.sh`` dosyasına ``--no-smt`` seçeneğini de eklemeyi unutmayın.
 
+<<<<<<< HEAD
 Minimum Derleyici Sürümleri
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=======
+.. note::
+    By default the build is performed in *pedantic mode*, which enables extra warnings and tells the
+    compiler to treat all warnings as errors.
+    This forces developers to fix warnings as they arise, so they do not accumulate "to be fixed later".
+    If you are only interested in creating a release build and do not intend to modify the source code
+    to deal with such warnings, you can pass ``-DPEDANTIC=OFF`` option to CMake to disable this mode.
+    Doing this is not recommended for general use but may be necessary when using a toolchain we are
+    not testing with or trying to build an older version with newer tools.
+    If you encounter such warnings, please consider
+    `reporting them <https://github.com/ethereum/solidity/issues/new>`_.
+
+Minimum Compiler Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+>>>>>>> v0.8.17
 
 Aşağıdaki C++ derleyicileri ve minimum sürümleri Solidity kod tabanını derleyebilir:
 

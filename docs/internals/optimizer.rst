@@ -23,7 +23,15 @@ olarak Yul kodu için oluşturulan Yul iyileştiriciyi, örneğin ABI kodlayıc�
 Bir Solidity kaynağına özel olarak optimize edilmiş bir Yul IR üretmek için ``solc --ir-optimized --optimize`` kullanılabilir.
 Benzer şekilde, bağımsız bir Yul modu için ``solc --strict-assembly --optimize`` kullanılabilir.
 
+<<<<<<< HEAD
 Aşağıda hem optimize edici modüller hem de optimizasyon adımları hakkında daha fazla ayrıntı bulabilirsiniz.
+=======
+.. note::
+    The `peephole optimizer <https://en.wikipedia.org/wiki/Peephole_optimization>`_ and the inliner are always
+    enabled by default and can only be turned off via the :ref:`Standard JSON <compiler-api>`.
+
+You can find more details on both optimizer modules and their optimization steps below.
+>>>>>>> v0.8.17
 
 Solidity Kodunu Optimize Etmenin Faydaları
 ============================================
@@ -668,7 +676,7 @@ olan ifadeler değiştirilmeden kullanılır. Çakışan İfade değerleri de a�
 
 - "unused", "undecided" -> "undecided"
 - "unused", "used" -> "used"
-- "undecided, "used" -> "used"
+- "undecided", "used" -> "used"
 
 For-döngüleri açısından koşul, gövde ve son bölüm, koşulda birleşen kontrol akışı dikkate
 alınarak iki kez kontrol edilir. Başka bir ifadeyle, temel olarak üç kontrol akış yolu

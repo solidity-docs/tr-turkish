@@ -143,7 +143,7 @@ Bir sözleşmenin depolama düzeni :ref:`standart JSON arayüzü <compiler-api>`
 her bir elemanın aşağıdaki forma sahip olduğu bir dizidir:
 
 
-.. code::
+.. code-block:: json
 
 
     {
@@ -167,7 +167,7 @@ Yukarıdaki örnek, ``fileA`` kaynak biriminden ``contract A { uint x; }`` depol
 Verilen ``typep``, bu durumda ``t_uint256``, ``types`` içinde şu forma sahip bir elemanı temsil eder:
 
 
-.. code::
+.. code-block:: json
 
     {
         "encoding": "inplace",
@@ -223,7 +223,7 @@ ve iç içe geçmiş türler içeren bir sözleşme ve depolama düzeni gösteri
         bytes b1;
     }
 
-.. code:: json
+.. code-block:: json
 
     {
       "storage": [

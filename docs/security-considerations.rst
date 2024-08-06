@@ -93,8 +93,13 @@ yapmasına izin verecektir:
         }
     }
 
+<<<<<<< HEAD
 Yeniden Giriş'den(Re-entrancy) kaçınmak için, aşağıda daha ayrıntılı olarak açıklandığı gibi
 Checks-Effects-Interactions kalıbını kullanabilirsiniz:
+=======
+To avoid re-entrancy, you can use the Checks-Effects-Interactions pattern as
+demonstrated below:
+>>>>>>> v0.8.17
 
 .. code-block:: solidity
 
@@ -112,10 +117,24 @@ Checks-Effects-Interactions kalıbını kullanabilirsiniz:
         }
     }
 
+<<<<<<< HEAD
 Yeniden girişin yalnızca Ether aktarımının değil, başka bir sözleşmedeki herhangi
 bir fonksiyon çağrısının da bir etkisi olduğunu unutmayın. Ayrıca, çoklu sözleşme
 içeren durumları da hesaba katmanız gerekmektedir. Çağrılan bir sözleşme, bağımlı
 olduğunuz başka bir sözleşmenin yapısını değiştirebilir.
+=======
+The Checks-Effects-Interactions pattern ensures that all code paths through a contract complete all required checks
+of the supplied parameters before modifying the contract's state (Checks); only then it makes any changes to the state (Effects);
+it may make calls to functions in other contracts *after* all planned state changes have been written to
+storage (Interactions). This is a common foolproof way to prevent *re-entrancy attacks*, where an externally called
+malicious contract is able to double-spend an allowance, double-withdraw a balance, among other things, by using logic that calls back into the
+original contract before it has finalized its transaction.
+
+Note that re-entrancy is not only an effect of Ether transfer but of any
+function call on another contract. Furthermore, you also have to take
+multi-contract situations into account. A called contract could modify the
+state of another contract you depend on.
+>>>>>>> v0.8.17
 
 Gas Limiti ve Döngüler
 =======================

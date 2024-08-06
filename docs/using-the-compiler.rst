@@ -605,6 +605,7 @@ Girdi Açıklaması
 Hata Türleri
 ~~~~~~~~~~~~~~~
 
+<<<<<<< HEAD
 1. ``JSONError``: JSON girdisi gerekli biçime uymuyor, örneğin girdi bir JSON nesnesi değil, dil desteklenmiyor vb.
 2. ``IOError``: Çözümlenemeyen URL veya sağlanan kaynaklardaki hash uyuşmazlığı gibi IO ve içe aktarma işleme hataları.
 3. ``ParserError``: Kaynak kodu dil kurallarına uygun değil.
@@ -619,6 +620,23 @@ Hata Türleri
 12. ``FatalError``: Ölümcül hata doğru şekilde işlenmedi - bu bir sorun olarak raporlanmalıdır.
 13. ``Warning``: Derlemeyi durdurmayan, ancak mümkünse ele alınması gereken bir uyarı.
 14. ``Info``: Derleyicinin kullanıcının yararlı bulabileceğini düşündüğü, ancak tehlikeli olmayan ve mutlaka ele alınması gerekmeyen bilgiler.
+=======
+1. ``JSONError``: JSON input doesn't conform to the required format, e.g. input is not a JSON object, the language is not supported, etc.
+2. ``IOError``: IO and import processing errors, such as unresolvable URL or hash mismatch in supplied sources.
+3. ``ParserError``: Source code doesn't conform to the language rules.
+4. ``DocstringParsingError``: The NatSpec tags in the comment block cannot be parsed.
+5. ``SyntaxError``: Syntactical error, such as ``continue`` is used outside of a ``for`` loop.
+6. ``DeclarationError``: Invalid, unresolvable or clashing identifier names. e.g. ``Identifier not found``
+7. ``TypeError``: Error within the type system, such as invalid type conversions, invalid assignments, etc.
+8. ``UnimplementedFeatureError``: Feature is not supported by the compiler, but is expected to be supported in future versions.
+9. ``InternalCompilerError``: Internal bug triggered in the compiler - this should be reported as an issue.
+10. ``Exception``: Unknown failure during compilation - this should be reported as an issue.
+11. ``CompilerError``: Invalid use of the compiler stack - this should be reported as an issue.
+12. ``FatalError``: Fatal error not processed correctly - this should be reported as an issue.
+13. ``YulException``: Error during Yul Code generation - this should be reported as an issue.
+14. ``Warning``: A warning, which didn't stop the compilation, but should be addressed if possible.
+15. ``Info``: Information that the compiler thinks the user might find useful, but is not dangerous and does not necessarily need to be addressed.
+>>>>>>> v0.8.17
 
 
 .. _compiler-tools:

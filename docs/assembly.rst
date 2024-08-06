@@ -256,10 +256,17 @@ Dinamik array'in uzunluğu array'in ilk slotunda saklanır ve diğer slotlara ar
 Hafıza Güvenliği
 ================
 
+<<<<<<< HEAD
 Inline assembly kullanmadan; derleyici(compiler), iyi tanımlanmış bir durumda kalmak için her zaman belleğe güvenir. Bu özellikle 
 :ref:`Yul IR üzerinden yeni kod oluşturma hattı Yul IR <ir-breaking-changes>` ile ilgilidir. Bu kod parçası yerel değişkenleri 
 stack üzerinden belleğe atarak stack-too-deep hatasından kaçınmayı sağlar ve eğer bazı kesin varsayımlara uyuyorsa ekstra 
 bellek optimizasyonları uygulayabilir.
+=======
+While we recommend to always respect Solidity's memory model, inline assembly allows you to use memory
+in an incompatible way. Therefore, moving stack variables to memory and additional memory optimizations are,
+by default, globally disabled in the presence of any inline assembly block that contains a memory operation
+or assigns to Solidity variables in memory.
+>>>>>>> v0.8.17
 
 
 Biz her ne kadar Solidity'nin kendi bellek modeline saygı gösterilmesini önersek de 

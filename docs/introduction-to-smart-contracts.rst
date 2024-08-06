@@ -176,9 +176,17 @@ Web uygulamaları gibi Ethereum istemcileri, blok zincirinde yayılan (emit) bu 
 Event yayılır yayılmaz, veri alıcısı ``from``, ``to`` ve ``amount`` argümanlarını alır,
 bu da alım satım işlemlerinin takip edilmesini mümkün kılar.
 
+<<<<<<< HEAD
 Bu olayı(event) dinlemek amacıyla, ``Coin`` sözleşme nesnesini oluşturmak için `web3.js <https://github.com/ethereum/web3.js/>`_
 kütüphanesini kullanan aşağıdaki JavaScript kodunu kullanabilirsiniz. Ve herhangi bir kullanıcı arayüzü (user interface),
 otomatik olarak oluşturulan ``balances`` fonksiyonunu yukarıdan sizin için çağırır::
+=======
+To listen for this event, you could use the following
+JavaScript code, which uses `web3.js <https://github.com/ethereum/web3.js/>`_ to create the ``Coin`` contract object,
+and any user interface calls the automatically generated ``balances`` function from above:
+
+.. code-block:: javascript
+>>>>>>> v0.8.17
 
     Coin.Sent().watch({}, '', function(error, result) {
         if (!error) {
@@ -473,10 +481,15 @@ tekrarlamalı çağrılar yerine döngüler tercih edileceği anlamına gelir. A
 bir mesaj çağrısında gazın sadece 63 / 64'ü iletilebilir; bu, pratikte 1000 bit'ten
 daha az bir alan sınırlamasına neden olur.
 
-.. index:: delegatecall, callcode, library
+.. index:: delegatecall, library
 
+<<<<<<< HEAD
 Delegatecall / Çağrı Kodu ve Kütüphaneler
 ==========================================
+=======
+Delegatecall and Libraries
+==========================
+>>>>>>> v0.8.17
 
 Bir mesaj çağrısı ile temelde aynı anlama gelen **delegatecall**, hedef
 adresteki kodun arama sözleşmesi bağlamında (yani adresinde) yürütülmesi ve

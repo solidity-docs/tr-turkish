@@ -30,8 +30,12 @@ Takım Toplantıları
 Tartışmak istediğiniz sorunlar veya pull request'ler varsa ya da ekibin ve katkıda
 bulunanların neler üzerinde çalıştığını duymak istiyorsanız, herkese açık takım toplantılarımıza katılabilirsiniz:
 
+<<<<<<< HEAD
 - Pazartesi günleri saat 15:00 CET/CEST. Türkiye saati ile 16:00, 
 - Çarşamba günleri 14:00 CET/CEST.
+=======
+- Mondays and Wednesdays at 3pm CET/CEST.
+>>>>>>> v0.8.17
 
 Her iki çağrı da `Jitsi <https://meet.ethereum.org/solidity>`_ üzerinde gerçekleşir.
 

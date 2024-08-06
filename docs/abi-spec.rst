@@ -14,9 +14,14 @@ blok zinciri dışından hem de sözleşmeler arası etkileşimde bulunmanın st
 Veriler, bu spesifikasyonda açıklandığı gibi türlerine göre kodlanır. Şifreleme kendi
 kendini tanımlamaz ve bu nedenle şifreyi çözmek için bir şema gerekir.
 
+<<<<<<< HEAD
 Bir sözleşmenin arayüz fonksiyonlarının güçlü bir şekilde yazıldığını, derleme zamanında
 bilindiğini ve statik olduğunu varsayıyoruz. Tüm sözleşmelerin, çağırdıkları sözleşmelerin
 arayüz tanımlamalarına derleme zamanında sahip olacağını varsayıyoruz.
+=======
+We assume that the interface functions of a contract are strongly typed, known at compilation time and static.
+We assume that all contracts will have the interface definitions of any contracts they call available at compile-time.
+>>>>>>> v0.8.17
 
 Bu spesifikasyon, arayüzü dinamik olan veya başka bir şekilde yalnızca çalışma zamanında
 bilinen sözleşmeleri ele almaz.
@@ -27,12 +32,21 @@ bilinen sözleşmeleri ele almaz.
 Function Selector (Function Selector)
 ===========================================
 
+<<<<<<< HEAD
 Bir fonksiyon çağrısı için çağrı verisinin(call data) ilk dört baytı çağrılacak
 fonksiyonu belirtmektedir. Bu, fonksiyonun imzasının Keccak-256 hash'inin ilk (sol,
 büyük endian'da yüksek dereceden) dört baytıdır. İmza, veri konumu belirteci olmadan
 temel prototipin kanonik ifadesi, yani parametre türlerinin parantezli listesiyle
 birlikte fonksiyon adı olarak tanımlanır. Parametre tipleri tek bir virgülle ayrılır -
 boşluk kullanılmaz.
+=======
+The first four bytes of the call data for a function call specifies the function to be called. It is the
+first (left, high-order in big-endian) four bytes of the Keccak-256 hash of the signature of
+the function. The signature is defined as the canonical expression of the basic prototype without data
+location specifier, i.e.
+the function name with the parenthesised list of parameter types. Parameter types are split by a single
+comma — no spaces are used.
+>>>>>>> v0.8.17
 
 .. note::
     Bir fonksiyonun geri dönüş tipi bu imzanın bir parçası değildir. ref:`Solidity'nin
@@ -133,8 +147,13 @@ sütunda ise bunları temsil eden ABI tipleri verilmiştir.
    okuma gerekir. ABI'nin önceki bir sürümünde, okuma sayısı en kötü senaryoda toplam
    dinamik parametre sayısı ile doğrusal olarak ölçeklenmekteydi.
 
+<<<<<<< HEAD
 2. Bir değişken veya dizi elemanının verileri diğer verilerle iç içe geçmez ve yeniden
    konumlandırılabilir, yani yalnızca ilişkili "adresler" kullanabilirler.
+=======
+2. The data of a variable or an array element is not interleaved with other data and it is
+   relocatable, i.e. it only uses relative "addresses".
+>>>>>>> v0.8.17
 
 
 Şifrelemenin Formal Spesifikasyonu
@@ -250,7 +269,12 @@ Sözleşmeye göre:
     }
 
 
+<<<<<<< HEAD
 Böylece ``Foo`` örneğimiz için ``69`` ve ``true`` parametreleriyle ``baz`` ı çağırmak istersek, toplam 68 bayt iletiriz, bu da şu şekilde ayrılabilir:
+=======
+Thus, for our ``Foo`` example if we wanted to call ``baz`` with the parameters ``69`` and
+``true``, we would pass 68 bytes total, which can be broken down into:
+>>>>>>> v0.8.17
 
 - ``0xcdcd77c0``: Method ID. Bu, ``baz(uint32,bool)`` imzasının ASCII formunun Keccak hash'inin ilk 4 baytı olacak şekilde türetilecektir.
 - ``0x000000000000000000000000000000000000000000000045``: ilk parametre, 32 bayta doldurulmuş bir uint32 değeri ``69``
@@ -595,10 +619,18 @@ Hatalar aşağıdaki gibi görünür:
   * ``components``: tuple türleri için kullanılır (daha fazla bilgi aşağıdadır).
 
 .. note::
+<<<<<<< HEAD
   JSON dizisinde aynı ada ve hatta aynı imzaya sahip birden fazla hata(error) olabilir,
   örneğin hatalar akıllı sözleşmedeki farklı dosyalardan kaynaklanıyorsa veya başka bir
   akıllı sözleşmeden referans alınıyorsa. ABI için hatanın nerede tanımlandığı değil,
   yalnızca adı önemlidir.
+=======
+  There can be multiple errors with the same name and even with identical signature
+  in the JSON array; for example, if the errors originate from different
+  files in the smart contract or are referenced from another smart contract.
+  For the ABI, only the name of the error itself is relevant and not where it is
+  defined.
+>>>>>>> v0.8.17
 
 
 Örneğin,
@@ -644,6 +676,7 @@ JSON ile sonuçlanacaktır:
 Tuple tiplerinin kullanılması
 ------------------------------
 
+<<<<<<< HEAD
 İsimler bilinçli olarak ABI şifrelemesinin bir parçası olmamasına rağmen, son kullanıcıya
 gösterilmesini sağlamak için JSON'a dahil edilmeleri çok önemlidir. Yapı aşağıdaki şekilde
 iç içe geçmiştir:
@@ -654,6 +687,18 @@ kadar olan dize açıklaması ``tuple`` kelimesiyle ``type`` önekinde saklanır
 ve ardından ``[]`` ve ``[k]`` tamsayıları ``k`` ile bir dizi olacaktır. Tuple`ın bileşenleri
 daha sonra dizi tipinde olan ve üst düzey nesne ile aynı yapıya sahip olan ``components``
 üyesinde saklanır, ancak ``indexed`` öğesine bu durumda izin verilmez.
+=======
+Despite the fact that names are intentionally not part of the ABI encoding, they do make a lot of sense to be included
+in the JSON to enable displaying it to the end user. The structure is nested in the following way:
+
+An object with members ``name``, ``type`` and potentially ``components`` describes a typed variable.
+The canonical type is determined until a tuple type is reached and the string description up
+to that point is stored in ``type`` prefix with the word ``tuple``, i.e. it will be ``tuple`` followed by
+a sequence of ``[]`` and ``[k]`` with
+integers ``k``. The components of the tuple are then stored in the member ``components``,
+which is of an array type and has the same structure as the top-level object except that
+``indexed`` is not allowed there.
+>>>>>>> v0.8.17
 
 Örnek olarak, kod
 
@@ -735,6 +780,7 @@ JSON ile sonuçlanacaktır:
 Katı Şifreleme Modu
 ====================
 
+<<<<<<< HEAD
 Sıkı şifreleme modu, yukarıdaki resmi spesifikasyonda tanımlandığı gibi tam olarak aynı
 şifrelemeye neden olan moddur. Bu, ofsetlerin veri alanlarında çakışma yaratmadan mümkün
 olduğunca küçük olması gerektiği ve dolayısıyla hiçbir boşluğa izin verilmediği anlamına gelir.
@@ -742,6 +788,15 @@ olduğunca küçük olması gerektiği ve dolayısıyla hiçbir boşluğa izin v
 Genellikle, ABI şifre çözücüler sadece ofset işaretçilerini takip ederek basit bir şekilde
 yazılır, ancak bazı şifre çözücüler katı modu zorlayabilir. Solidity ABI şifre çözücü şu
 anda katı modu kullanmayı zorunlu kılmaz, ancak şifreleyici her zaman katı modda veri oluşturur.
+=======
+Strict encoding mode is the mode that leads to exactly the same encoding as defined in the formal specification above.
+This means that offsets have to be as small as possible while still not creating overlaps in the data areas, and thus no gaps are
+allowed.
+
+Usually, ABI decoders are written in a straightforward way by just following offset pointers, but some decoders
+might enforce strict mode. The Solidity ABI decoder currently does not enforce strict mode, but the encoder
+always creates data in strict mode.
+>>>>>>> v0.8.17
 
 Standart Olmayan Paket Modu
 =====================================
@@ -766,6 +821,7 @@ Ayrıca, struct'ların yanı sıra iç içe diziler de desteklenmez.
 
 Daha spesifik olarak:
 
+<<<<<<< HEAD
 - Şifreleme sırasında her şey in-place olarak şifrelenir. Bu, ABI şifrelemesi gibi
   baş ve kuyruk arasında bir ayrım olmadığı ve bir dizinin uzunluğunun şifrelenmediği
   anlamına gelir.
@@ -777,6 +833,20 @@ Daha spesifik olarak:
   uzunluk alanları olmadan şifrelenir.
 - Bir dizinin veya struct'ın parçası olmadığı sürece ``string`` veya ``bytes``
   şifrelemesinin sonuna doldurma uygulanmaz (bu durumda 32 baytın katlarına kadar doldurulur).
+=======
+- During the encoding, everything is encoded in-place. This means that there is
+  no distinction between head and tail, as in the ABI encoding, and the length
+  of an array is not encoded.
+- The direct arguments of ``abi.encodePacked`` are encoded without padding,
+  as long as they are not arrays (or ``string`` or ``bytes``).
+- The encoding of an array is the concatenation of the
+  encoding of its elements **with** padding.
+- Dynamically-sized types like ``string``, ``bytes`` or ``uint[]`` are encoded
+  without their length field.
+- The encoding of ``string`` or ``bytes`` does not apply padding at the end,
+  unless it is part of an array or struct (then it is padded to a multiple of
+  32 bytes).
+>>>>>>> v0.8.17
 
 Genel olarak, eksik uzunluk değeri nedeniyle dinamik olarak boyutlandırılmış iki
 öğe olduğu anda şifreleme belirsizleşir.
@@ -802,9 +872,15 @@ Fonksiyonları çağırırken paketlenmiş şifreleme kullanılmadığından, bi
 İndekslenmiş Event Parametrelerinin Şifrelenmesi
 =================================================
 
+<<<<<<< HEAD
 Değer türü olmayan indekslenmiş event parametreleri, yani diziler ve struct'lar
 doğrudan saklanmaz, bunun yerine bir şifrelemenin keccak256-hash'i saklanır. Bu
 şifreleme aşağıdaki gibi tanımlanmaktadır:
+=======
+Indexed event parameters that are not value types, i.e. arrays and structs are not
+stored directly but instead a Keccak-256 hash of an encoding is stored. This encoding
+is defined as follows:
+>>>>>>> v0.8.17
 
 - bir ``bytes`` ve ``string`` değerinin şifrelenmesi, herhangi bir doldurma veya
   uzunluk öneki olmaksızın sadece string içeriğinden ibarettir.

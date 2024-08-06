@@ -111,8 +111,20 @@ Modifier'lar eklendikleri fonksiyonların parametrelerine veya return değerleri
 Eğer bir parametreyi bir modifier'da kullanmak istiyorsanız, o modifier'ı eklediğiniz yerde
 parametreyi de vermelisiniz. Fonksiyon çağırma yapısına benzer bir şekilde kullanılırlar.
 
+<<<<<<< HEAD
 Modifier'daki veya fonksiyon'daki return işlemi sadece o yazıldığı modifier'dan veya fonksiyon'dan
 çıkmaya yarar. Program akışı ``_`` işaretinin olduğu yerden çalışmaya devam eder.
+=======
+In function modifiers, it is necessary to specify when you want the function to which the modifier is
+applied to be run. The placeholder statement (denoted by a single underscore character ``_``) is used to
+denote where the body of the function being modified should be inserted. Note that the
+placeholder operator is different from using underscores as leading or trailing characters in variable
+names, which is a stylistic choice.
+
+Explicit returns from a modifier or function body only leave the current
+modifier or function body. Return variables are assigned and
+control flow continues after the ``_`` in the preceding modifier.
+>>>>>>> v0.8.17
 
 .. warning::
     Daha önceki Solidity versiyonlarında modifier'a sahip fonksiyonlarda ``return`` ifadesi farklı

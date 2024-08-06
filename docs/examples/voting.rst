@@ -188,6 +188,14 @@ oyu almış teklifi geri döndürecek.
 Olası İyileştirmeler
 =====================
 
+<<<<<<< HEAD
 Şu an tüm katılımcılara yetki vermek için çok sayıda işlem 
 gerçekleştirilmesi gerekiyor. Daha iyi bir yöntem düşünebiliyor 
 musunuz?
+=======
+Currently, many transactions are needed to
+assign the rights to vote to all participants.
+Moreover, if two or more proposals have the same
+number of votes, ``winningProposal()`` is not able
+to register a tie. Can you think of a way to fix these issues?
+>>>>>>> v0.8.17

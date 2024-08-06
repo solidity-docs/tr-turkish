@@ -180,19 +180,38 @@ türüne dönüştürülebilir. Sözleşme türü için, bu dönüştürmeye yal
 .. note::
     ``address`` türünde bir değişkene ihtiyacınız varsa ve buna Ether göndermeyi planlıyorsanız, bu gereksinimi görünür kılmak için türünü ``address payable`` olarak bildirin. Ayrıca, bu ayrımı veya dönüşümü mümkün olduğunca erken yapmaya çalışın.
 
+<<<<<<< HEAD
 Operatörler:
+=======
+    The distinction between ``address`` and ``address payable`` was introduced with version 0.5.0.
+    Also starting from that version, contracts are not implicitly convertible to the ``address`` type, but can still be explicitly converted to
+    ``address`` or to ``address payable``, if they have a receive or payable fallback function.
+
+
+Operators:
+>>>>>>> v0.8.17
 
 * ``<=``, ``<``, ``==``, ``!=``, ``>=`` ve ``>``
 
 .. warning::
+<<<<<<< HEAD
     Daha büyük bir bayt boyutu kullanan bir türü bir ``address``e, örneğin ``bytes32``ye dönüştürürseniz, ``address`` kısaltılır. Dönüştürme belirsizliğini azaltmak için sürüm 0.4.24 ve derleyici kuvvetinin daha yüksek sürümü, dönüştürmede kesmeyi açık hale getirirsiniz.
      Örneğin, ``0x111122223333444455556666777788889999AAAABBBBCCCCDDDDEEEEFFFFCCC`` 32 bayt değerini alın.
+=======
+    If you convert a type that uses a larger byte size to an ``address``, for example ``bytes32``, then the ``address`` is truncated.
+    To reduce conversion ambiguity, starting with version 0.4.24, the compiler will force you to make the truncation explicit in the conversion.
+    Take for example the 32-byte value ``0x111122223333444455556666777788889999AAAABBBBCCCCDDDDEEEEFFFFCCCC``.
+>>>>>>> v0.8.17
 
     ``address(uint160(bytes20(b)))`` kullanabilirsiniz, bu da ``0x111122223333444455556666777788889999aAaa`` ile sonuçlanır,
      veya ``0x777788889999AaAAbBbbCccccddDdeeeEfFFfCcCc`` ile sonuçlanan ``address(uint160(uint256(b)))`` i kullanabilirsiniz.
 
 .. note::
+<<<<<<< HEAD
     ``address`` ve ``address payable`` arasındaki ayrım, 0.5.0 sürümüyle tanıtıldı. Ayrıca bu versiyondan başlayarak, sözleşmeler adres türünden türetilmez, ancak yine de bir alma veya ödeme geri dönüş fonksiyonu varsa, açıkça ``address`` e veya ``address payable`` a dönüştürülebilir.
+=======
+    Mixed-case hexadecimal numbers conforming to `EIP-55 <https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md>`_ are automatically treated as literals of the ``address`` type. See :ref:`Address Literals<address_literals>`.
+>>>>>>> v0.8.17
 
 .. _members-of-addresses:
 
@@ -288,8 +307,14 @@ Her üç fonksiyon, ``call``, ``delegatecall`` ve ``staticcall`` çok düşük d
 
 * ``code`` and ``codehash``
 
+<<<<<<< HEAD
 Herhangi bir akıllı sözleşme için dağıtılan kodu sorgulayabilirsiniz. EVM bayt kodunu boş olabilecek bir ``bytes memory`` olarak almak için ``.code`` kullanın. ``.codehash`` kullanın, bu kodun Keccak-256 karmasını alın (``bytes32`` olarak). ``addr.codehash``in ``keccak256(addr.code)`` kullanmaktan daha ucuz olduğunu unutmayın.
 
+=======
+You can query the deployed code for any smart contract. Use ``.code`` to get the EVM bytecode as a
+``bytes memory``, which might be empty. Use ``.codehash`` to get the Keccak-256 hash of that code
+(as a ``bytes32``). Note that ``addr.codehash`` is cheaper than using ``keccak256(addr.code)``.
+>>>>>>> v0.8.17
 
 .. note::
     Tüm sözleşmeler ``address`` türüne dönüştürülebilir, bu nedenle ``address(this).balance`` kullanılarak mevcut sözleşmenin bakiyesini sorgulamak mümkündür.
